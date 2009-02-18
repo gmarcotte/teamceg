@@ -5,3 +5,25 @@
 This page contains overview information and links to resources for all of the technologies that we are using on this project.
 
 
+== Subversion ==
+
+A version control tool used by Google Code for managing our project code.
+
+===Windows:=== 
+ * [http://www.collab.net/downloads/subversion/ Command-Line Client]: The essential command-line tool for Subversion.
+ * [http://tortoisesvn.net/downloads TortoiseSVN]: Add Subversion interface to Windows Explorer for GUI-like access.
+
+===MacOS:===
+ * [http://subversion.tigris.org/getting.html#osx Command-Line Client]: Essential command-line tool for Subversion.
+
+===Linux:===
+ * [http://subversion.tigris.org/getting.html Command-Line Client]: Essential command-line tool for Subversion. Find the proper installation for your distro.
+
+===Integration for IDEs:===
+ * [http://www.visualsvn.com/visualsvn/ VisualSVN]: Add Subversion to Visual Studio (not free, but has a 30-day trial).
+ * [http://subclipse.tigris.org/servlets/ProjectProcess?pageID=p4wYuA Subclipse]: A Subversion plugin for use in the Eclipse IDE.
+
+===Resources:===
+ * SubversionTutorial: An overview tutorial on command-line Subversion.
+ * [http://svnbook.red-bean.com/en/1.5/index.html Subversion Book]: A free online book covering all aspects of using Subversion.  Goes into lots of detail, definitely more than we need for this project.  Chapters 1 and 2 are probably the most useful.  Chapter 9 is good for reference.
+ 
