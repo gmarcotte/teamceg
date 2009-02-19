@@ -1,4 +1,4 @@
-#Open Source/Available Shell Emulators 
+#summary Open Source/Available Shell Emulators
 
 == Introduction ==
 These are the open-source shell emulators that I have found that seem to actually be functional.
