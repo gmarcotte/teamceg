@@ -41,4 +41,4 @@ Running record of notes from our team meetings.
   * Commands: compile, run, debug
 
 ===Technologies===
-  * PyJamas, Django, Testbed Server
+  * !PyJamas, Django, Testbed Server
