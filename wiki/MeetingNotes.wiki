@@ -1,12 +1,44 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
-=  =
+= Sun, Feb 22 =
 
-== Sun, Feb 22 ==
+==Discuss Design Ideas==
 
-*Finalize Group*  
-Yay TeamCEG.
+===Container===
 
-*Discuss Design Ideas*
+  * Flashable
+  * Pop-out
+  * In-place resize
+  * Drag & drop
 
+===Configuration Options===
+  * Flash rate
+  * Ping noise on/off
+
+===Revision Browser===
+
+===Sketch Pad===
+  * Save
+  * Draw
+
+===File Navigator===
+  * Color scheme
+  * Tree structure
+  * Buttons for operation
+
+===Interactive (AJAX) Text Windows===
+====All can ink highlight====
+====Code (Editor & Eavesdrop)====
+  * Syntax highlighting
+  * Monospaced font
+  * Synch to server (project-level)
+  * Discard changes since last synch (project-level)
+  * Save a working copy (user-level)
+====Text Chat====
+====Console====
+  * Monospaced font
+  * Commands: compile, run, debug
+
+===Technologies===
+  * PyJamas, Django, Testbed Server
