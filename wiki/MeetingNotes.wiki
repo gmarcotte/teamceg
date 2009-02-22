@@ -8,4 +8,4 @@ Running record of notes from our team meetings.
 =  =
 == Sun, Feb 22 ==
 
-* Finalize group *  Yay TeamCEG.
+  * Finalize group *  Yay TeamCEG.
