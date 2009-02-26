@@ -1,0 +1,4 @@
+django http://code.djangoproject.com/svn/django/trunk/django
+pyjamas http://pyjamas.svn.sourceforge.net/svnroot/pyjamas/trunk
+django-evolution http://django-evolution.googlecode.com/svn/trunk/django_evolution
+libcommonDjango http://svn.pimentech.org/pimentech/libcommonDjango
