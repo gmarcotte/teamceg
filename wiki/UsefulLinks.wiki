@@ -14,4 +14,4 @@
  * Django: http://docs.djangoproject.com/en/dev/
 
 = Examples = 
- * Pyjamas http://pyjs.org/examples/kitchensink/output
+ * Pyjamas http://pyjs.org/examples/kitchensink/output/kitchensink.html
