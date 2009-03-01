@@ -1,6 +1,21 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Sun, March 1 =
+
+== For Next Week ==
+
+== Server Notes ==
+Ubuntu server has been installed on old mac. Seems to be working, but we cannot ping it or ssh to it. We sent a request to OIT to figure out how to make this work. The alias is teamceg.princeton.edu.
+
+Server also has Django already.
+
+== Pyjamas and other Things ==
+Pyjamas, Django and a few other things are now in source. 
+
+
+
+
 = Sun, Feb 22 =
 
 ==Discuss Design Ideas==
