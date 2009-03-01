@@ -8,7 +8,7 @@ Running record of notes from our team meetings.
  * Try to be able to connect to our sever (waiting on response from OIT).
 
 == Server Notes ==
-Ubuntu server has been installed on old mac. Seems to be working, but we cannot ping it or ssh to it. We sent a request to OIT to figure out how to make this work. The alias is teamceg.princeton.edu.
+Ubuntu server has been installed on old mac. Seems to be working at least locally, but we cannot ping it or ssh to it. We sent a request to OIT to figure out how to make this work. The alias is teamceg.princeton.edu.
 
 Server also has Django already.
 
