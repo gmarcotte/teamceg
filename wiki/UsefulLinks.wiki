@@ -1,5 +1,4 @@
-#labels Phase-Implementation
-#Links to various resources on our tecnologies
+#summary Links to various resources on our tecnologies
 
 = Tutorials =
 
