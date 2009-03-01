@@ -12,3 +12,6 @@
 
  * Python Libraries: http://docs.python.org/library/index.html
  * Django: http://docs.djangoproject.com/en/dev/
+
+= Examples = 
+ * Pyjamas http://pyjs.org/examples/kitchensink
