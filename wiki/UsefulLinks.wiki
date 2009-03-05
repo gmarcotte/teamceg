@@ -15,3 +15,4 @@
 
 = Examples = 
  * Pyjamas http://pyjs.org/examples/kitchensink/output/KitchenSink.html
+ * More Pyjamas http://pyjs.org/examples/showcase/build/Showcase.html#state%20number%202
