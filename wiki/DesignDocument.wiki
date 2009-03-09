@@ -38,13 +38,16 @@ Christina and Ellen decide to split up so Ellen can write a function they need. 
 
 <h3>Architecture:</h3>
 
+<p>
 Our application will have two main components: a client-side web application that
 the user interacts with via a web browser, and server-side code that the client
 applications interacts with via AJAX.  We want our application to be as responsive
 as possible, ideally to the point that the user is not consciously aware that he
 is using a web application, so the AJAX communication will be of the utmost
 importance.
+</p>
 
+<p>
 The client-side application will be developed in Python using the Pyjamas toolkit.
 An almost exact port of Google Web Toolkit, Pyjamas allows for advanced web interfaces
 to be defined in a standard programming language (Python) and then compiled into
@@ -60,8 +63,10 @@ performance is not an issue.  Almost all of the GWT tutorials and examples that 
 have been adapted to Pyjamas.  And the development team and use of Pyjamas seems widespread
 enough to ensure that the code is stable and functional, and that we will be able to find
 documentation and support.
+</p>
 
-Client-Side Interface (class hierarchy):
+
+<b>Client-Side Interface (class hierarchy)</b>:
 
 Container:
 <ul>
@@ -148,22 +153,35 @@ TextChat extends TextEntry:
  <li>Color-coding of usernames</li>
 </ul>
 
+<b>Server-Side Functionality:</b>
+
+<p>
 The server-side application will be developed in Python and run on top of the Django web framework.
 The primary responsibilities of the server-side code will be management of persistent data, providing
 an administrative interface for the application, maintaining communication between users, and
 facilitating AJAX communications with the client session.
+</p>
 
+<p>
 The major models we will be storing are:
-User: basic user information
-Class: for organizing users and projects into courses and tracking professor/TA/student status
-Project: details about a project, especially file storage info
-Interactions: a single content item to be shared between users (e.g. a chat message, console command, etc.
+<ul>
+<li>User: basic user information</li>
+<li>Class: for organizing users and projects into courses and tracking professor/TA/student status</li>
+<li>Project: details about a project, especially file storage information.</li>
+<li>Interactions: a single content item to be shared between users (e.g. a chat message, console command, etc.</li>
+</ul>
+</p>
 
+<p>
 The AJAX communication between the client and the server will be performed using the JSON protocol,
 and facilitated with the JSONRpc Python library.
+</p>
 
-We are currently running our software on a Macbook running Ubuntu via VMWare. The database storage is via MySQL.  Our objective is to be as flexible as possible and produce software that can be installed on any server, so it will not be tied just to our setup.
-
+<p>
+We are currently running our software on a Macbook running Ubuntu via VMWare. The database
+storage is via MySQL.  Our objective is to be as flexible as possible and produce
+software that can be installed on any server, so it will not be tied just to our setup.
+</p>
 
 <h3>Milestones:</h3>
 
