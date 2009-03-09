@@ -1,4 +1,5 @@
 
+
 <head>
 <title>TeamCEG's Design Document</title>
 <h1 align="center">TeamCEG's Design Document</h1>
@@ -265,12 +266,54 @@ software that can be installed on any server, so it will not be tied just to our
 
 <h2>Milestones:</h2>
 
+<p><b> Pyjamas Hello, World </b>
+</p>
+
+<p><b> User Registration </b>
+</p>
+
+<p><b> Single-User Login </b>
+</p>
+
+<p><b> Single-User Session with File Tree </b>
+</p>
+
+<p><b> Single-User Session with Document Editing </b>
+</p>
+
+<p><b> Single-User Session with Console </b>
+</p>
+
+<p><b> Single-User Session - Full Functionality </b>
+</p>
+
+<p><b> Two-User Collaborative Session with Text Chat</b>
+</p>
+
+<p><b> Two-User Collaborative Session with Audio </b>
+</p>
+
+<p><b> Two-User Collaborative Session with Document Editing </b>
+</p>
+
+<p><b> Two-User Session Switching between Collaborative and Independent </b>
+</p>
+
+<p><b> Two-User Independent Session with Document Editing </b>
+</p>
+
+
+<p><b> Two-User Session - Full Functionality </b>
+</p>
 <p>
 </p>
 
 
 
 <h2>Risks and Open Issues:</h2>
+<p><b> Experience </b>
+Only one of our team member has significant experience with Django, and 
+</p>
 
 <p>
 </p>
