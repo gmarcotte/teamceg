@@ -64,71 +64,105 @@ documentation and support.
 Client-Side Interface (class hierarchy):
 
 Container:
- * Auto-updates with server to keep content current
- * A single region of content in the user's browser
- * Can be moved via drag-and-drop or resized
- * Can be "popped out" into a new browser window (e.g. for full-screen)
- * Can be "flashed" with a blinking color overlay (and optional sound effect) to alert the user to an item of interest.
+<ul>
+ <li>Auto-updates with server to keep content current</li>
+ <li>A single region of content in the user's browser</li>
+ <li>Can be moved via drag-and-drop or resized</li>
+ <li>Can be "popped out" into a new browser window (e.g. for full-screen)</li>
+ <li>Can be "flashed" with a blinking color overlay (and optional sound effect) to alert the user to an item of interest.</li>
+</ul>
 
 Sketchpad extends Container:
- * Full-window overlay that allows collaborative drawing/sketching.
- * Basic drawing tools: pen width, pen color, eraser, clear
- * Drawings can be saved as images to server
+<ul>
+ <li>Full-window overlay that allows collaborative drawing/sketching.</li>
+ <li>Basic drawing tools: pen width, pen color, eraser, clear</li>
+ <li>Drawings can be saved as images to server</li>
+</ul>
 
 FileNavigator extends Container:
- * Expandable tree navigation structure for all files in the project
- * Color-coding of files to indicate in-use/modified status
+<ul>
+ <li>Expandable tree navigation structure for all files in the project</li>
+ <li>Color-coding of files to indicate in-use/modified status</li>
+</ul>
 
 ConfigurationPanel extends Container:
- * Allows user to control the application and customize the interface, with options for:
-  * Setting the flash color and rate for Containers.
-  * Turning sound effects on and off.
-  * Changing the mode of operation (independent, collaborative, sketchpad)
-  * Opening new projects
-  * Customizing syntax highlighting
+<ul>
+ <li>Allows user to control the application and customize the interface, with options for:
+ <ul>
+  <li>Setting the flash color and rate for Containers.</li>
+  <li>Turning sound effects on and off.</li>
+  <li>Changing the mode of operation (independent, collaborative, sketchpad)</li>
+  <li>Opening new projects</li>
+  <li>Customizing syntax highlighting</li>
+ </ul>
+ </li>
+</ul>
 
 AudioControl extends Container:
- * Iconic and color-coded indicators for connectivity
- * Sliders and mute buttons for microphone and speaker volume
+<ul>
+ <li>Iconic and color-coded indicators for connectivity</li>
+ <li>Sliders and mute buttons for microphone and speaker volume</li>
+</ul>
 
 RevisionBrowser extends Container:
- * Displays summary of all past versions of a selected file
- * Allows for reverting, loading diffs, or loading the past revision into a CodeView container
+<ul>
+ <li>Displays summary of all past versions of a selected file</li>
+ <li>Allows for reverting, loading diffs, or loading the past revision into a CodeView container</li>
+</ul>
 
 TextContainer extends Container:
- * For displaying text content
- * Allows any portion of text to be "highlighted" by any user, which causes that text to be highlighted on the screen of any user with that container open.  Highlighting is color-coded by user.
+<ul>
+ <li>For displaying text content</li>
+ <li>Allows any portion of text to be "highlighted" by any user, which causes that text to be highlighted on the screen of any user with that container open.  Highlighting is color-coded by user.</li>
+</ul>
 
 CodeView extends TextContainer:
- * For displaying significant amounts of code.
- * Built-in syntax highlighting, determined from filename.
- * Monospaced font
- * Line numbers
- * Not editable
+<ul>
+ <li>For displaying significant amounts of code</li>
+ <li>Built-in syntax highlighting, determined from filename.</li>
+ <li>Monospaced font</li>
+ <li>Line numbers</li>
+ <li>Not editable</li>
+</ul>
 
 CodeEdit extends TextContainer:
- * Editable
- * Auto-saves to a user-level working copy on server periodically
+<ul>
+ <li>Editable</li>
+ <li>Auto-saves to a user-level working copy on server periodically</li>
+</ul>
 
 TextEntry extends TextContainer:
- * Has a small box for user to enter text, and a larger non-editable box to show the results of previously entered text.
+<ul>
+ <li>Has a small box for user to enter text, and a larger non-editable box to show the results of previously entered text.</li>
+</ul>
 
 Console extends TextEntry:
- * Offers simulation of a very basic console.  Available commands include compile, run, and debug.
+<ul>
+ <li>Offers simulation of a very basic console.  Available commands include compile, run, and debug.</li>
+</ul>
 
 TextChat extends TextEntry:
- * A basic chat box for text communication between users.
- * Timestamped entries
- * Color-coding of usernames
-
+<ul>
+ <li>A basic chat box for text communication between users.</li>
+ <li>Timestamped entries</li>
+ <li>Color-coding of usernames</li>
+</ul>
 
 The server-side application will be developed in Python and run on top of the Django web framework.
-The primary responsibility of the 
+The primary responsibilities of the server-side code will be management of persistent data, providing
+an administrative interface for the application, maintaining communication between users, and
+facilitating AJAX communications with the client session.
 
+The major models we will be storing are:
+User: basic user information
+Class: for organizing users and projects into courses and tracking professor/TA/student status
+Project: details about a project, especially file storage info
+Interactions: a single content item to be shared between users (e.g. a chat message, console command, etc.
 
-<p>
-</p>
+The AJAX communication between the client and the server will be performed using the JSON protocol,
+and facilitated with the JSONRpc Python library.
 
+We are currently running our software on a Macbook running Ubuntu via VMWare. The database storage is via MySQL.  Our objective is to be as flexible as possible and produce software that can be installed on any server, so it will not be tied just to our setup.
 
 
 <h3>Milestones:</h3>
@@ -143,10 +177,3 @@ The primary responsibility of the
 <p>
 </p>
 
-
-
-</body>
-
-
-
-</div></font></html>
