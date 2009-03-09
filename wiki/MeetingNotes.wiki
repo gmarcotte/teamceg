@@ -1,6 +1,25 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Mon, March 9 =
+
+== For This Week and Spring Break ==
+ * Christina 
+   * needs to get the server working, seems like there might be an issue with OIT and our server doing evil NAT things
+   * Pyjamas HelloWorld
+ * Ellen
+   * Pyjamas HelloWorld
+ * Garrett
+   * Pyjamas HelloWorld
+
+== Working on the Design Document ==
+ * Ellen did some preliminary work on the design document over the weekend
+ * Christina and Garrett mostly finished it together today
+ * Whole group met to go over the final design document
+ * Design document is done?
+
+
+
 = Sun, March 1 =
 
 == For Next Week ==
