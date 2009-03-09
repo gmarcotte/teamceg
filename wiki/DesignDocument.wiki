@@ -1,0 +1,78 @@
+#summary One-sentence summary of this page.
+
+= Design Doc =
+
+<html><div style="width: 700px">
+
+<head>
+<title>TeamCEG's Design Document</title>
+<h1 align="center">TeamCEG's Design Document</h1>
+<h3 align="center">March 13, 2009</h3>
+</head>
+
+
+<body>
+
+
+<h3>Identification:</h3>
+<p><ul>
+<li>Project Name: Pairgramming</li>
+<li>Group Member Names: Garrett Marcotte (<i>marcotte</i>), Christina Ilvento (<i>cilvento</i>), Ellen Kim (<i>ellenkim</i>)</li>
+<li>Project Manager: Ellen Kim (<i>ellenkim</i>)</li>
+<li>URL: http://code.google.com/p/teamceg/</li>
+</ul>
+</p>
+
+
+<h3>Primary Goal:</h3>
+<p>
+	The primary goal of this project is to create a web-based interface for fully collaborative programming.  </p>
+
+
+<h3>Overview:</h3>
+<p>
+	Paired programming is a commonly used learning and coding practice introduced and encouraged in COS 126, 226, and 217 at Princeton.  However, students often have difficulty scheduling blocks of time to code together due to their busy schedules.  Pairgramming saves students time by enabling them to pair program remotely.  Pairgramming will save students from hikes out to Friend Center through the snow, and let them work together in spare half hour between classes or before bed.  Pairgramming will also enable Friend 006/007 lab TA's to work from the comfort of their rooms so they can study or do other things if no one needs help.  It will also be easier for professors to answer students' vague questions because they can log in and view the flagged spots in students' code.  </p>
+<p>
+	Features will include real-time two-way audio communication, a functional console with monospaced font and basic commands (compile, run, debug), an interactive text editor with syntax highlighting, a basic text chat, a revision browser (using Subversion), a collapsible tree-style file navigator, and the ability to "ink" or highlight text.  </p>
+<p>
+	The most well-known example of a web-based multiple user text editor is Google Documents, where two or more people can log in and edit the same document at the same time, and see changes made by the other users in almost real-time (update times may vary from less than 1 second to almost 1 minute).  However, our text will be updated frequently and consistently enough that the observing partner will be able to watch their partner code.  There are a couple open-source shell emulators online already in use, like by students at the University of Cambridge (???).  However, our shell will also be viewable by the other partner.  </p>
+<p>
+	[FIX THIS SECTION???]  The web application will probably be coded in Python using Pyjamas (GWT in Python) for client-side and user interface, and Django for server-side.  The server is, for now, Christina's Old Mac (COM :P) set up with Linux, Apache 2.0, and MySQL.  </p>
+
+
+<h3>User Scenarios:</h3>
+	<p><b>New Student, New Project...</b>&nbsp&nbsp
+Peng is a student in COS 217.  He is starting the Buffer Overrun assignment with his partner Matt.  He goes to our login page and creates a new username and password with our server.  He verifies his registration by initially using the password we e-mail to him (???).  Then at the login page, Peng enters his partner's username.  The project selection dropdown list does not show any existing projects that he and Matt share because both are new users.  Peng selects "Create new project" at the bottom of the dropdown list.  He also selects his preferences and selects the Class privacy settings, indicating he will allow professors, preceptors, and Friend 006/007 TA's to view the code in this project.  He clicks "Create my project!" and the Pairgramming application comes up.  </p>
+	<p><b>Students Pair Programming: Collaborative Mode...</b>&nbsp&nbsp
+Christina is a student in COS 126.  She is starting the HelloWorld assignment with her partner Ellen.  She goes to the login page, enters her username, passworld, and partner's name.  She selects HelloWorld from the project selection dropdown list and opens the project.  She logged in before Ellen so she becomes the "driver" (partner who codes) by default.  Ellen logs in by the same protocol from her computer elsewhere.  Christina sees Ellen join the project and clicks to initiate Audio; Ellen sees the flashing popup(???) and confirms.  They greet each other and Christina starts coding.  Ellen can see Christina's typing in the editor and console.  Ellen is tired of hearing Christina's typing and tells her she will mute audio for a while; Christina sees the audio controls flash twice and turn red (gray if audio is for some reason not possible) as Ellen mutes her.  Christina starts playing The Beatles and continues coding.  They communicate via the text chat and highlighting relevant lines.  </p>
+	<p><b>Students Pair Programming (cont.): Independent Mode...</b>&nbsp&nbsp
+Christina and Ellen decide to split up so Ellen can write a function they need.  Christina, who had been coding in Collaborative Mode, selects Independent Mode.  The layout changes to show Eavesdrop, a small version of their partner's editor window which updates every 10 seconds; the Eavesdrop window shades out gray when their partner is inactive for more than 20 seconds.  Ellen has written and tested the function and tries to edit the main code to use her new function, but sees that she can't open it because Christina is using it.  She lets Christina know she's ready and presses Synch to synchronize her changes with the server's version of the files, and selects "Passenger"(???), then changes her mind and selects "Driver"(USE THIS NAME???) because she wants to code this time.  Christina finishes her statement, clicks Synch, and accepts "Passenger" role.  They are now switched back to Collaborative mode and they continue coding together.  </p>
+	<p><b>CAN ADD ANOTHER ONE ABOUT ASKING FOR HELP AND HAVING A TA COME IN BUT WE SHOULD PROBABLY DISCUSS IT FIRST</b>
+Text here.  ???</p>
+
+<h3>Architecture:</h3>
+
+<p>
+</p>
+
+
+
+<h3>Milestones:</h3>
+
+<p>
+</p>
+
+
+
+<h3>Risks and Open Issues:</h3>
+
+<p>
+</p>
+
+
+
+</body>
+
+
+
+</div></font></html>
