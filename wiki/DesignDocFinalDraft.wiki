@@ -18,7 +18,7 @@
 
 <h2>Overview:</h2>
 <p>
-	Paired programming is a commonly used learning and coding practice introduced and encouraged in COS 126, 226, and 217 at Princeton.  However, students often have difficulty scheduling blocks of time to code together due to their busy schedules.  Pairgramming saves students time by enabling them to pair program remotely.  Pairgramming will save students from hikes out to Friend Center through the snow, and let them work together in spare half hour between classes or before bed, and also make working together over breaks or while travelling easier.  If we have the time to implement this, Pairgramming will also enable Friend lab TA's to work from the comfort of their own rooms, or anywhere else that they choose, so they can study or do other things if no one needs help.  It will also be easier for professors to answer students' vague questions outside of office hours because they can log in and view the flagged spots in students' code.  </p>
+	Paired programming is a commonly used learning and coding practice introduced and encouraged in COS 126, 226, and 217 at Princeton.  However, students often have difficulty scheduling blocks of time to code together due to their busy schedules.  Pairgramming saves students time by enabling them to pair program remotely.  Pairgramming will save students from hikes out to Friend Center through the snow, and let them work together in spare half hour between classes or before bed, and also make working together over breaks or while travelling easier.   </p>
 <p>
     Our solution will include the ability to pair program, where the "driver" is able to edit code and build/debug/run and the "passenger" can observe the driver's actions, and also the ability for each partner to independently work on the same project where each partner can work on different sections of the code in a subversion-like check-out environment.
 <p>
@@ -34,7 +34,7 @@
 	<p><b>New Student</b>
 Peng is a student in COS 217 who has not registered with Pairgramming.  He is starting the Buffer Overrun assignment with his partner Matt, who has already registered with Pairgramming.  He goes to the Pairgramming login page and creates a new username and password with our server.  Our login will be separate from Princeton's LDAP.  Peng will be able to create the new project with his new username and password without any additional confimation steps. </p>
 <p><b>Returning Student, New Partner, New Project</b>
-Garrett is a student in COS 226. He is already registered with Pairgramming. Garrett wants to work with Kathleen, who is also registered with Pairgramming, on a new project. The two have never worked together using Pairgramming. Garrett goes to the Pairgramming login page and enters his username and password; our server verifies his account and sends him to his home screen, where he enters Kathleen's Pairgramming username. No projects will populate the project selection dropdown list, because the two users have no projects in common. Garrett selects "Create new project", the only option in the list. Garrett then sets the privacy settings to "Class - 226" and clicks "Create our project!" and enters the project name, and the Pairgramming application loads in the browser.
+Garrett is a student in COS 226. He is already registered with Pairgramming. Garrett wants to work with Kathleen, who is also registered with Pairgramming, on a new project. The two have never worked together using Pairgramming. Garrett goes to the Pairgramming login page and enters his username and password; our server verifies his account and sends him to his home screen, where he enters Kathleen's Pairgramming username. No projects will populate the project selection dropdown list, because the two users have no projects in common. Garrett selects "Create new project", the only option in the list. Garrett then clicks "Create our project!" and enters the project name, and the Pairgramming application loads in the browser.
 <p><b>Returning Student, Same Partner</b>
 Ellen is a student in COS 226. She is already registered with Pairgramming. Ellen wants to work with Christina, whom she has worked with several times before. To create a new project, Ellen enters her username and password, which is verified, then Christina's username and then enters the new project title and creates the new project. To work on an existing project, Ellen enters her username and password, Christina's username and then selects the project from the project list. </p>
 
@@ -49,27 +49,6 @@ Christina and Ellen decide to split up so Ellen can write a function they need i
     <p><b>Students Pair Programming: Switching to Collaborative Mode</b>
     Ellen lets Christina know she's ready to switch back to collaborative mode and presses Synch to synchronize her changes with the server's version of the files, and then selects "Driver" because she wants to code this time.  Christina finishes her last changes, clicks Synch, and accepts "Passenger" role.  They are now switched back to collaborative mode and they continue coding together.  </p>
 
-<p><b>New Professor ** Wishlist Feature</b>
-    Professor Clark wants to register with Pairgramming so he can check up on his COS 126 students. He navigates to the Paigramming login page, creates a new username with our server, indicating that he would like instructor priviledges and also provides his princeton email address. A message appears telling Professor Clark to wait for a confirmation email at the address he provided before trying to log in. A notification is then sent to our administrators, and if the request appears legitimate (ie the address provided is doug AT princeton DOT edu and we can verify that this is Professor Clark's email account) we will create the instructor account, and send Professor Clark a verification email with a temporary password. Professor Clark then uses this password to log in, and is forced to change his password during the first session. 
-</p>
-
-
-<p><b>New TA ** Wishlist Feature</b>
-    Sajid the TA wants to register with Pairgramming so he can help 126/226/217 students from his room rather than walking out the Friend Center. He navigates to the Paigramming login page, creates a new username with our server, indicating that he would like instructor priviledges and also provides his princeton email address. A message appears telling Sajid to wait for a confirmation email at the address he provided before trying to log in. A notification is then sent to our administrators, and if the request appears legitimate (ie the address provided is smehmood AT princeton DOT edu and we can verify that this is Sajid's email account and that he is a lab TA) we will create the instructor account, and send Sajid a verification email with a temporary password. Sajid then uses this password to log in, and is forced to change his password during the first session. 
-</p>
-
-<p><b>Creating a Class ** Wishlist Feature</b>
-    Professor Clark now wants to create his COS 126 class for his students to use. He logs in to Pairgramming and in his options menu selects "New Class". He then enters the class number and lists all of the other users he wants to designate as instructors (ie preceptors). We will also have an option to include all of the lab TAs so that Professor Clark does not have to list their usernames. 
-</p>
-
-
-<p><b>Helping a Student: Logging In ** Wishlist Feature</b>
-    Professor Dondero has received an email (at some ungodly hour) from Garrett and Christina asking for help on the Heap Manager assignment.  It seems to be a subtle bug so Professor Dondero navigates to the Pairgramming login page, enters his username and password, indicates that he is an instructor and then selects Garrett and Christina's project from the project drop-down menu. He then hits enter and is presented with the normal Pairgramming UI in driver mode if neither Garrett nor Christina is logged in. If either is logged in, a popup will notify them that an instructor wants to enter their session, and they must choose accept or decline and Professor Dondero will be presented with a "waiting" page. In order to accept, the students must be in collaborative mode, so they have to synch their changes and return to collaborative mode if they are in independent mode before they can accept. If they choose accept, Professor Dondero will then be logged in as a passenger on their project, with full passenger capabilities. If they decline, they can specify a message to be sent (ie "We just need a few more minutes to finish up and synch") and the message will display for Professor Dondero saying that the students declined him with their message appended. 
-</p>
-
-<p><b>Helping a Student ** Wishlist Feature</b>
-    Once Professor Dondero is logged in, he has the same capabilities as the passenger normally would, including audio and text chat. Also, the professor can be switched to be the driver. 
-</p>
 
 <h3>Controls and Windows</h3>
     <p><b>Audio Controls</b>
