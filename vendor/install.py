@@ -7,7 +7,6 @@ __author__ = ['Garrett Marcotte (marcotte@princeton.edu)']
 
 import os
 import shutil
-import sys
 
 def main():
   
