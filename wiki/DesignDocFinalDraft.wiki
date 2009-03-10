@@ -43,10 +43,10 @@ Garrett is a student in COS 226. He is already registered with Pairgramming. Gar
 
 <h3>Controls and Windows</h3>
     <p><b>Audio Controls</b>
-    Audio will be disabled by default when the second user logs into a session. If audio is unavailable (no microphone input from one of the users) the audio controls will be grayed out. If audio is available, when the second user logs in, the first user will be notified and must click the audio controls to enable audio communication. When one of the users mutes their microphone input or the other user's audio feed, the both user's audio controls turn red.
+    Audio will be disabled by default when the second user logs into a session. If audio is unavailable (no microphone input from one of the users) the audio controls will be grayed out. If audio is available, when the second user logs in, the first user will be notified and must click the audio controls to enable audio communication. When one of the users mutes their microphone input or the other user's audio feed, both user's audio controls turn red.
     </p>
     <p><b>Ink</b>
-    All text in the editor and console can be highlighted by either user in collaborative mode to point out specific areas that their partner may want to look at. The highlighted regions can be cleared by pressing the clear button. And each user can select different colors of highlighter, if they choose. 
+    All text in the editor and console can be highlighted by either user in collaborative mode to point out specific areas that their partner may want to look at. The highlighted regions can be cleared by pressing the clear button. Each user can also select different colors of highlighter. 
     </p>
     <p><b>Window Ping/Flash</b>
     Every window can be "pinged" or "flashed" by clicking a button to cause the window to flash in the other user's view until they click on the window. The purpose of this functionality is to allow a user to draw their partner's attention to a specific window if they are worried that their partner is zoning out, or is not paying attention to them. This will be especially useful during times when audio is disabled or not available. 
