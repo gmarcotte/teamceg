@@ -366,3 +366,6 @@ We are, at this point, assuming that we will be able to synchronize to a fine en
 <p><b> Server Issues </b>
 We have been having problems setting up our testbed server (including OIT threatening to disable Christina's account), but we are hopeful that we will be able to resolve this before Spring Break. 
 </p>
+<p><b> Adoption </b>
+We are designing this project with a specific user group in mind (namely Princeton undergraduates) but it's not clear if it will get much use. Adoption will also have a lot to do with how good the final product is, but there is still a question of how many people would want to use this tool in their day-to-day programming. 
+</p>
