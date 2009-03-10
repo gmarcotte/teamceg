@@ -51,6 +51,10 @@ Garrett is a student in COS 226. He is already registered with Pairgramming. Gar
     <p><b>Window Ping/Flash</b>
     Every window can be "pinged" or "flashed" by clicking a button to cause the window to flash in the other user's view and make a noise. The purpose of this functionality is to allow a user to draw their partner's attention to a specific window if they are worried that their partner is zoning out, or is not paying attention to them. This will be especially useful during times when audio is disabled or not available. 
     </p>
+
+ <p><b>File Tree</b>
+    The file tree will allow users to create, open, and delete files in their project on the server. In independent mode, it will also  indicate if a file has been edited by the other user. 
+    </p>
     <p><b>Text Chat</b>
     The text chat window will be similar to other chat applications, such as iChat, gChat, AIM, etc. Additionally, users will be allowed to use special tags to transmit formatted code in the form <pre> 
 {{{
@@ -63,7 +67,7 @@ Garrett is a student in COS 226. He is already registered with Pairgramming. Gar
     in the spirit of GoogleCode, etc. to allow code to be transmitted in a useable form. 
     </p>
     <p><b>Editor</b>
-    The editor will look similar to other code editors such as Emacs, and will support automatic syntax coloring. All changes in the editor on the driver side will be reflected on the passenger side as with as little delay as possible, and only the driver will be able to edit in collaborative mode. The passenger can highlight sections of the code using ink in collaborative mode to point out certain areas that they want to discuss, and can also scroll up and down in the editor to view different parts of the code in the same file. In independent mode, each user can manipulate the editor independently. 
+    The editor will look similar to other code editors such as Emacs, and will support automatic smart syntax coloring. All changes in the editor on the driver side will be reflected on the passenger side with as little delay as possible, and only the driver will be able to edit in collaborative mode. The passenger can highlight sections of the code using ink in collaborative mode to point out areas that they want to discuss, and can also scroll up and down in the editor to view different parts of the code in the same file. In independent mode, each user can manipulate the editor independently. 
     </p>
     <p><b>Console</b>
     The rules for the console are the same as for the editor. The driver can interact with console in collaborative mode, and each user can interact separately with the console in independent mode. The console will have a limited functionality similar to the bash [shell], but will not support using plain text editors, modifying, creating or deleting files, etc. within the console window. Our hope is that users will not have to learn any new commands, but will simply have to pay attention to what sort of commands are not supported. 
