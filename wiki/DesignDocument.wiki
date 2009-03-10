@@ -363,3 +363,6 @@ Our group only has three members, which means that each person will have to cont
 <p><b> Synchronization </b>
 We are, at this point, assuming that we will be able to synchronize to a fine enough grain to make this project viable. If there is too much of a lag in the updates in each editor/console view, then it will create a very poor user experience, and we will have to think very carefully about how to work around this. Audio synchronization may also be an issue. 
 </p>
+<p><b> Server Issues </b>
+We have been having problems setting up our testbed server (including OIT threatening to disable Christina's account), but we are hopeful that we will be able to resolve this before Spring Break. 
+</p>
