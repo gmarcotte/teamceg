@@ -49,25 +49,25 @@ Christina and Ellen decide to split up so Ellen can write a function they need i
     <p><b>Students Pair Programming: Switching to Collaborative Mode</b>
     Ellen lets Christina know she's ready to switch back to collaborative mode and presses Synch to synchronize her changes with the server's version of the files, and then selects "Driver" because she wants to code this time.  Christina finishes her last changes, clicks Synch, and accepts "Passenger" role.  They are now switched back to collaborative mode and they continue coding together.  </p>
 
-<p><b>New Professor</b>
+<p><b>New Professor ** Wishlist Feature</b>
     Professor Clark wants to register with Pairgramming so he can check up on his COS 126 students. He navigates to the Paigramming login page, creates a new username with our server, indicating that he would like instructor priviledges and also provides his princeton email address. A message appears telling Professor Clark to wait for a confirmation email at the address he provided before trying to log in. A notification is then sent to our administrators, and if the request appears legitimate (ie the address provided is doug AT princeton DOT edu and we can verify that this is Professor Clark's email account) we will create the instructor account, and send Professor Clark a verification email with a temporary password. Professor Clark then uses this password to log in, and is forced to change his password during the first session. 
 </p>
 
 
-<p><b>New TA</b>
+<p><b>New TA ** Wishlist Feature</b>
     Sajid the TA wants to register with Pairgramming so he can help 126/226/217 students from his room rather than walking out the Friend Center. He navigates to the Paigramming login page, creates a new username with our server, indicating that he would like instructor priviledges and also provides his princeton email address. A message appears telling Sajid to wait for a confirmation email at the address he provided before trying to log in. A notification is then sent to our administrators, and if the request appears legitimate (ie the address provided is smehmood AT princeton DOT edu and we can verify that this is Sajid's email account and that he is a lab TA) we will create the instructor account, and send Sajid a verification email with a temporary password. Sajid then uses this password to log in, and is forced to change his password during the first session. 
 </p>
 
-<p><b>Creating a Class</b>
+<p><b>Creating a Class ** Wishlist Feature</b>
     Professor Clark now wants to create his COS 126 class for his students to use. He logs in to Pairgramming and in his options menu selects "New Class". He then enters the class number and lists all of the other users he wants to designate as instructors (ie preceptors). We will also have an option to include all of the lab TAs so that Professor Clark does not have to list their usernames. 
 </p>
 
 
-<p><b>Helping a Student: Logging In</b>
+<p><b>Helping a Student: Logging In ** Wishlist Feature</b>
     Professor Dondero has received an email (at some ungodly hour) from Garrett and Christina asking for help on the Heap Manager assignment.  It seems to be a subtle bug so Professor Dondero navigates to the Pairgramming login page, enters his username and password, indicates that he is an instructor and then selects Garrett and Christina's project from the project drop-down menu. He then hits enter and is presented with the normal Pairgramming UI in driver mode if neither Garrett nor Christina is logged in. If either is logged in, a popup will notify them that an instructor wants to enter their session, and they must choose accept or decline and Professor Donder will be presented with a "waiting" page. In order to accept, the students must be in collaborative mode, so they have to synch their changes and return to collaborative mode if they are in independent mode before they can accept. If they choose accept, Professor Dondero will then be logged in as a passenger on their project, with full passenger capabilities. If they decline, they can specify a message to be sent (ie "We just need a few more minutes to finish up and synch") and the message will display for Professor Dondero saying that the students declined him with their message appended. 
 </p>
 
-<p><b>Helping a Student</b>
+<p><b>Helping a Student ** Wishlist Feature</b>
     Once Professor Dondero is logged in, he has the same capabilities as the passenger normally would, including audio and text chat. Also, the professor can be switched to be the driver. 
 </p>
 
@@ -102,9 +102,6 @@ Christina and Ellen decide to split up so Ellen can write a function they need i
     The eavesdrop window appears only in independent mode, and shows each user a snapshot of the other users editor window updating about every 10 seconds. When the other user has been inactive (in the editor <i>and</i> the console for more than 20 seconds, the eavesdrop window turns grey. All pings/flashes to the eavesdrop window are reflected in the other user's eavesdrop window, not their editor or console. 
     </p>
     
-
-	<p><b>CAN ADD ANOTHER ONE ABOUT ASKING FOR HELP AND HAVING A TA COME IN BUT WE SHOULD PROBABLY DISCUSS IT FIRST</b>
-Text here.  ???</p>
 
 <h2>Architecture:</h2>
 
