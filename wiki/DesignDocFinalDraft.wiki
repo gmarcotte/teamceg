@@ -53,7 +53,7 @@ Garrett is a student in COS 226. He is already registered with Pairgramming. Gar
     </p>
 
  <p><b>File Tree</b>
-    The file tree will allow users to create, open, and delete files in their project on the server. In independent mode, it will also  indicate if a file has been edited by the other user. 
+    The file tree will allow users to create, open, and delete files in their project on the server. In independent mode, it will also  indicate if a file has been modified by the other user. 
     </p>
     <p><b>Text Chat</b>
     The text chat window will be similar to other chat applications, such as iChat, gChat, AIM, etc. Additionally, users will be allowed to use special tags to transmit formatted code in the form <pre> 
@@ -82,7 +82,7 @@ Garrett is a student in COS 226. He is already registered with Pairgramming. Gar
 <p>
 Our application will have two main components: a client-side web application that
 the user interacts with via a web browser, and server-side code that the client
-applications interacts with via AJAX.  We want our application to be as responsive
+application interacts with via AJAX.  We want our application to be as responsive
 as possible, ideally to the point that the user is not consciously aware that he
 is using a web application, so the AJAX communication will be of the utmost
 importance.
@@ -118,7 +118,7 @@ Container:
  <li>Can be "flashed" with a blinking color overlay (and optional sound effect) to alert the user to an item of interest.</li>
 </ul>
 
-Sketchpad extends Container:
+Sketchpad extends Container (this is a wish-list feature):
 <ul>
  <li>Full-window overlay that allows collaborative drawing/sketching.</li>
  <li>Basic drawing tools: pen width, pen color, eraser, clear</li>
@@ -150,7 +150,7 @@ AudioControl extends Container:
  <li>Sliders and mute buttons for microphone and speaker volume</li>
 </ul>
 
-RevisionBrowser extends Container:
+RevisionBrowser extends Container (this is a wish-list feature):
 <ul>
  <li>Displays summary of all past versions of a selected file</li>
  <li>Allows for reverting, loading diffs, or loading the past revision into a CodeView container</li>
