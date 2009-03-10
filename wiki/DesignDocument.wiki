@@ -302,6 +302,7 @@ software that can be installed on any server, so it will not be tied just to our
 <b> By April 10 (prototype demo): </b>
 <ul>
 <li>Full suite of single-user tests, stable behavior, no P1 bugs outstanding.</li>
+</ul>
 </p>
 
 
