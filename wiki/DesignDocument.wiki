@@ -350,6 +350,20 @@ software that can be installed on any server, so it will not be tied just to our
 </p>
 
 <h2>Risks and Open Issues:</h2>
+
+<h2>Risks and Open Issues:</h2>
 <p><b> Experience </b>
-Only one of our team member has significant experience with Django, and 
+Only one of our team member has significant experience with Django, and none of us has experience using Pyjamas. This represents a risk factor because all of us will have to learn a significant new tool/skill to be able to contribute to the project. Additionally, one of our group has very limited python experience and one has only intermediate python skills. 
+</p>
+
+<p><b> Pyjamas </b>
+As far as we can tell, Pyjamas will allow us to create the kind of client-side interface we want in a stable environment without too much of a headache. However, none of us has used Pyjamas before, so it may turn out that this technology is not ideal or presents tricky implementation issues. 
+</p>
+
+<p><b> Group Size </b>
+Our group only has three members, which means that each person will have to contribute a significant amount to the code and make sure to keep on top of deadlines. Compared to a group of five, we have less room for slacking off. 
+</p>
+
+<p><b> Synchronization </b>
+We are, at this point, assuming that we will be able to synchronize to a fine enough grain to make this project viable. If there is too much of a lag in the updates in each editor/console view, then it will create a very poor user experience, and we will have to think very carefully about how to work around this. Audio synchronization may also be an issue. 
 </p>
