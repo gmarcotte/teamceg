@@ -270,7 +270,7 @@ software that can be installed on any server, so it will not be tied just to our
 </p>
 
 <p>
-<b> By March 20: </b>
+<b> By March 20 (End of Spring Break): </b>
 <ul>
 <li>Interface for user registration, class creation and confirming professors & TAs</li>
 <li>Interface for one user to log in, create a project and view existing projects</li>
@@ -348,8 +348,6 @@ software that can be installed on any server, so it will not be tied just to our
 <li>throw a cegger</li>
 </ul>
 </p>
-
-<h2>Risks and Open Issues:</h2>
 
 <h2>Risks and Open Issues:</h2>
 <p><b> Experience </b>
