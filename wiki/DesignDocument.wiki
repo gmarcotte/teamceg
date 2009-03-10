@@ -281,7 +281,7 @@ software that can be installed on any server, so it will not be tied just to our
 <b> By March 27: </b>
 <ul>
 <li>Container base class core functionality: pop-out, flash/ping, AJAX updates
-<li>TextContainer core functionality: user-to-user highlighting
+<li>TextContainer core functionality: user-to-user highlighting</li>
 <li>File navigation panel functional.  Allows: creating, deleting, uploading and downloading files. </li>
 <li>Revision browser functional, allows seeing summaries of past changes to files, reverting files to previous revisions, and comparing revisions.</li>
 </ul>
