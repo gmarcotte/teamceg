@@ -1,4 +1,4 @@
 django http://code.djangoproject.com/svn/django/trunk/django
-pyjamas http://pyjamas.svn.sourceforge.net/svnroot/pyjamas/trunk
+pyjamas -r221 http://pyjamas.svn.sourceforge.net/svnroot/pyjamas/trunk
 django_evolution http://django-evolution.googlecode.com/svn/trunk/django_evolution
 pimentech http://svn.pimentech.org/pimentech/libcommonDjango/django/pimentech
