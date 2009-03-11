@@ -1,3 +1,5 @@
+#summary Running record of notes from our team meetings.
+
 = Introduction =
 Running record of notes from our team meetings. 
 
