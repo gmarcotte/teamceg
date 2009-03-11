@@ -1,3 +1,5 @@
+#summary Full-featured first-draft design doc, very optimistic.
+
 <h1 align="center">TeamCEG's Design Document</h1>
 <h3 align="center">March 13, 2009</h3>
 
