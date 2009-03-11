@@ -56,4 +56,24 @@ $ python pear-pylint.py urls.py
 You should not get any import errors in python, or complaints from django or pylint.  Pylint may give errors about the urls.py file (that's its job), but it should have
 no problems running.
 
+= Run the Tutorial App =
 
+cd into the pear/media folder and run:
+{{{
+>> python build.py
+}}}
+
+It should run without errors, and eventually tell you to load the TodoApp.html file in a browser.  Don't do this, it won't work.  Instead you want to access it through Django.
+
+cd back into the pear folder and start the local Django server:
+{{{
+$ python manage.py runserver
+}}}
+
+then open a browser and go to:
+
+http://localhost:8000/site_media/output/TodoApp.html
+
+Make sure the Task entry AJAX works properly (add with enter, click to delete)
+
+Yay! All set up!
