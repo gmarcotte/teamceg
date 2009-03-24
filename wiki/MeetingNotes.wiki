@@ -3,6 +3,16 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Tue, March 24 =
+== Spring Break Progress ==
+ * Minimal progress
+ * Testbed server now ssh-able
+ * Tutorials completed
+
+== During Meeting ==
+ * Setup server so we can program on the server
+ * Got Ellen's local machine working?
+
 = Mon, March 9 =
 
 == For This Week and Spring Break ==
