@@ -53,6 +53,8 @@ $ python manage.py shell
 $ python pear-pylint.py urls.py
 }}}
 
+In the current file, you have to move the import statement to *after* the path setting. (CCI)
+
 You should not get any import errors in python, or complaints from django or pylint.  Pylint may give errors about the urls.py file (that's its job), but it should have
 no problems running.
 
