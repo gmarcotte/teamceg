@@ -21,7 +21,7 @@ Open a console and cd into the vendor directory.  Run the install.py script.
 
 Run MySQL and log in as the root user (that you set up during installation).
 Then run the following (you can replace pear_user and PEAR333 with whatever
-username and password you want):
+username and password you want (created in advance!)):
 {{{
 mysql> create database pear_sandbox;
 mysql> grant all on pear_sandbox.* to pear_user identified by 'PEAR333';
