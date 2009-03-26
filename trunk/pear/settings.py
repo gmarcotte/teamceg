@@ -37,7 +37,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
-    'pear.todo',
+    'pear.accounts',
+    'pear.projects'
 )
 
 MIDDLEWARE_CLASSES = (
