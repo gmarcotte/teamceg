@@ -12,24 +12,24 @@ import stat
 def main():
   
   ### Set up pimentech's libcommonDjango libraries ###
-  if hasattr(os, 'symlink'):
-    print "Symlinking pimentech..."
-    if os.path.exists('django/pimentech'):
-      os.remove('django/pimentech')
-    os.symlink('pimentech', 'django/pimentech')
+  #if hasattr(os, 'symlink'):
+   # print "Symlinking pimentech..."
+    #if os.path.exists('django/pimentech'):
+     # os.remove('django/pimentech')
+    #os.symlink('pimentech', 'django/pimentech')
     
-  else:
-    print "Copying pimentech..."
-    # If pimentech is already in Django, it is old so get rid of it
-    if os.path.exists('django/pimentech'):
-      # First we have to make all of .svn writeable
-      for (root, dirs, files) in os.walk('django/pimentech', topdown=False):
-        for name in files:
-          os.chmod(os.path.join(root, name), stat.S_IWRITE)
-        for name in dirs:
-          os.chmod(os.path.join(root, name), stat.S_IWRITE)
-      shutil.rmtree('django/pimentech')
-    shutil.copytree('pimentech', 'django/pimentech')
+  #else:
+  print "Copying pimentech..."
+  # If pimentech is already in Django, it is old so get rid of it
+  if os.path.exists('django/pimentech'):
+    # First we have to make all of .svn writeable
+    for (root, dirs, files) in os.walk('django/pimentech', topdown=False):
+      for name in files:
+        os.chmod(os.path.join(root, name), stat.S_IWRITE)
+      for name in dirs:
+        os.chmod(os.path.join(root, name), stat.S_IWRITE)
+    shutil.rmtree('django/pimentech')
+  shutil.copytree('pimentech', 'django/pimentech')
   ####################################################
   
   ## Set up Logilab Common ##
