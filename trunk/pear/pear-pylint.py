@@ -13,12 +13,12 @@ import sys
 # Pear Modules
 import python_path
 
-# Pylint Modules
-from pylint import lint
-
 # Update the Python path so that PyLint knows about our vendor modules
 vendor_path = os.path.join(os.path.dirname(__file__), '../vendor')
 python_path.add_sys_path(vendor_path)
+
+# Pylint Modules
+from pylint import lint
 
 opts = [
     "--rcfile=pear-pylintrc.cfg",
