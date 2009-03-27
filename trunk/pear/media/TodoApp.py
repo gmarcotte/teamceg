@@ -11,7 +11,7 @@ class TodoApp:
 
     self.todoList = ListBox()
     self.todoList.setVisibleItemCount(7)
-    self.todoList.setWidth("200px")
+    self.todoList.setWidth("400px")
     self.todoList.addClickListener(self)
 
     panel.add(Label("Add New Todo:"))
@@ -34,8 +34,9 @@ class TodoApp:
     if keyCode == KeyboardListener.KEY_ENTER and sender == self.todoTextBox:
       id = self.remote.addTask(sender.getText(),self)
       sender.setText("")
-
+      
     if id<0:
+      self.todoList.setText("error")
       console.error("Server Error or Invalid Response")
 
 
@@ -56,6 +57,10 @@ class TodoApp:
       console.error("none!")
 
   def onRemoteError(self, code, message, request_info):
+    self.todoTextBox.setText("SERIOUS ERROR")
+    self.todoList.addItem(message)
+    self.todoList.addItem(code)
+    self.todoList.addItem(request_info)
     console.error("Server Error or Invalid Response: ERROR " + code + " - " + message)
 
 class DataService(JSONProxy):

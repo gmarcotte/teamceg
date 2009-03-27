@@ -38,7 +38,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INSTALLED_APPS = (
     'pear.accounts',
-    'pear.projects'
+    'pear.projects',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.sites'
 )
 
 MIDDLEWARE_CLASSES = (
