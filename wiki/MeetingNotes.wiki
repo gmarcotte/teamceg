@@ -33,6 +33,7 @@ We put in some things that we might not end up using so that just in case we hav
  # We re-direct them to LDAP
  # They authenticate themselves
  # We use the returned netid as their username
+Authentication and project selection are going to be in Django. We will only use Pyjamas once we are actually in the Pairgramming part of the site. 
 
 
 = Tue, March 24 =
