@@ -3,6 +3,38 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Thu, March 26 =
+== Group Work ==
+ * Started some real coding!
+    * Garrett started working on authentication stuff
+    * Christina started working on interfacing with LDAP and wrote the profile, project and course models
+    * Ellen started working on the front-end of the login page in Pyjamas
+ * Started learning how to compile Pyjamas to javascript and actually test our stuff
+
+== Model Structure ==
+=== Profile ===
+ * major
+ * class year
+=== Project ===
+ * programmers (model User)
+ * course (model Course)
+=== Course ===
+ * name
+ * department
+ * course number
+ * professor (model User) (still a wishlist feature)
+ * year
+ * semester
+ * TAs (model User) (still a wishlist feature)
+We put in some things that we might not end up using so that just in case we have time we won't have to make changes to our basic model types. 
+
+== Authentication Scheme ==
+ # User navigates to our page
+ # We re-direct them to LDAP
+ # They authenticate themselves
+ # We use the returned netid as their username
+
+
 = Tue, March 24 =
 == Spring Break Progress ==
  * Minimal progress
@@ -11,7 +43,7 @@ Running record of notes from our team meetings.
 
 == During Meeting ==
  * Setup server so we can program on the server
- * Got Ellen's local machine working?
+ * Got Ellen's local machine working
 
 = Mon, March 9 =
 
