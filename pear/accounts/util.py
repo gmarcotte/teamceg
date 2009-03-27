@@ -1,6 +1,7 @@
 from django.core import exceptions
 from django.contrib.auth import models as auth_models
 
+
 def make_username_from_email(email):
   """Returns a unique username from the email address.
  
