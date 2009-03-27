@@ -12,6 +12,12 @@ Running record of notes from our team meetings.
  * Started learning how to compile Pyjamas to javascript and actually test our stuff
  * Decided to use Django forms for registration, login and project selection
 
+== Current Functionality ==
+ * Got registration working
+   * Still cannot login
+   * Do not send emails with random passwords yet
+   * Data *is* stored in the database
+
 == Model Structure ==
 === Profile ===
  * major
