@@ -9,7 +9,7 @@ from django.forms import fields
 
 
 class BasicBackend(backends.ModelBackend):
-  def get_user(self):
+  def get_user(self, user_id):
     try:
       return models.User.objects.get(pk=user_id)
     except models.User.DoesNotExist:

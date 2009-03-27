@@ -3,6 +3,8 @@ from django.conf import settings
 
 
 urlpatterns = patterns('',
-    (r'^services/$', 'todo.views.service'),
-    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC}),
+    (r'^$', 'pear.projects.views.index'),
+    (r'^login$', 'pear.accounts.views.login'),
+    (r'^register$', 'pear.accounts.views.register'),
+    
 )
