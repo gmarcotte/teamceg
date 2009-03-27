@@ -17,10 +17,10 @@ class Course(models.Model):
   name = models.CharField(max_length=30)
   department = models.CharField(max_length=10)
   number = models.CharField(max_length=10)
-  professor = models.ManyToManyField(User, related_name='courses taught')
+  professor = models.ManyToManyField(User, related_name='courses_taught')
   year = models.PositiveSmallIntegerField(max_length=1, choices=YEAR_CHOICES)
   semester = models.CharField(max_length=1, choices=SEM_CHOICES)
-  TAs = models.ManyToManyField(User, related_name='courses TA-ed')
+  TAs = models.ManyToManyField(User, related_name='courses_taed')
   
   def __unicode__(self):
     stri = str(name) + str(department) + str(number) + str(professor)

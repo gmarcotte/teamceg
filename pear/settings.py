@@ -16,6 +16,7 @@ MANAGERS = ADMINS
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 USE_I18N = False
+DEBUG = True
 
 
 
@@ -41,8 +42,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.humanize',
+    'django.contrib.sessions',
+    'django.contrib.sites',
     'pear.accounts',
-    'pear.projects'
+    'pear.projects',
 )
 
 MIDDLEWARE_CLASSES = (
