@@ -6,13 +6,13 @@ from django.contrib.auth.models import User
 class Course(models.Model):
   YEAR_CHOICES = (
     (1,'08-09'),
-	(2,'09-10'),
-	(3,'10-11'),
-	(4,'11-12'),
+    (2,'09-10'),
+    (3,'10-11'),
+    (4,'11-12'),
   )
   SEM_CHOICES = (
     ('F','Fall'),
-	('S','Spring'),
+    ('S','Spring'),
   )
   name = models.CharField(max_length=30)
   department = models.CharField(max_length=10)
