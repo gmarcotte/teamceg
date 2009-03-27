@@ -24,15 +24,14 @@ class RegistrationForm(forms.Form):
       
   def save(self):
     # Create the new user
+    # The authentication library did not like what we were doing before, so
+    # this has been changed CCI
     password = auth_models.User.objects.make_random_password()
-    
-    u = auth_models.User(
-        email = self.cleaned_data['email'],
-        first_name = self.cleaned_data['first_name'],
-        last_name = self.cleaned_data['last_name'],
-        username = pear.accounts.util.make_username_from_email(self.cleaned_data['email']),
-        password = password
-    )
+    username = pear.accounts.util.make_username_from_email(self.cleaned_data['email'])
+    u = auth_models.User.objects.create_user(username,'junk@addr.com',password)
+    u.first_name = self.cleaned_data['first_name']
+    u.last_name = self.cleaned_data['last_name']
+    u.email = self.cleaned_data['email']
     u.save()
     
     # Create a profile for the new user
@@ -49,3 +48,4 @@ class RegistrationForm(forms.Form):
 class LoginForm(forms.Form):
   email = forms.EmailField('E-Mail Address')
   password = forms.CharField('Password')
+  
