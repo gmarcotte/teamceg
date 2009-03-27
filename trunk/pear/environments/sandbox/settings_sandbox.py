@@ -23,7 +23,6 @@ STATIC_SERVE = True
 ADMIN_MEDIA_PREFIX = '/admin_media'
 MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../media/'))
 MEDIA_URL = 'http://localhost:8000'
-STATIC = str(os.path.join(os.path.dirname(__file__), 'media').replace('\\', '/'))
 
 
 # Django configuration
