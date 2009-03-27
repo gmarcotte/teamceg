@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = (
 
 
 # Princeton LDAP Configuration
-USE_LDAP = True
+USE_LDAP = False
 
 
 # Get the environment-specific settings
