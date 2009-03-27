@@ -24,6 +24,10 @@ SECRET_KEY = "-y9__BvT\u-ioaA_dy_-m8v;_7Uf*_p4-t7-zH4*Z&t4V_Q}85*"
 ROOT_URLCONF = 'pear.urls'
 APPEND_SLASH = True
 
+AUTHENTICATION_BACKENDS = (
+    'pear.accounts.backends.EmailBackend',
+)
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
@@ -38,21 +42,19 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 INSTALLED_APPS = (
     'pear.accounts',
-    'pear.projects',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.sites'
+    'pear.projects'
 )
 
 MIDDLEWARE_CLASSES = (
-    "django.middleware.gzip.GZipMiddleware",
-    "django.contrib.csrf.middleware.CsrfMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.doc.XViewMiddleware",
 )
+
+
+# Princeton LDAP Configuration
+USE_LDAP = True
 
 
 # Get the environment-specific settings
