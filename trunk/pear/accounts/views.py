@@ -41,7 +41,7 @@ def login(request):
           email=request.POST['email']).username
       user = auth.authenticate(username=user_name, 
                                password=request.POST['password'])
-    except exceptions.ObjectDoesNotExist:
+    except exceptions.ObjectDoesNotExist: #exceptions is undefined!!!
       user = None
 
     if user is not None:
@@ -66,7 +66,7 @@ def login(request):
            'form': form},
           context_instance=template.RequestContext(request))
           
-  form = dp.accounts.forms.LoginForm(label_suffix="")
+  form = pear.accounts.forms.LoginForm(label_suffix="")
   return shortcuts.render_to_response(
       'global/accounts/login.html', 
       {'form': form},
