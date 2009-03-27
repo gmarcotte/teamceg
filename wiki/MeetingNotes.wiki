@@ -10,6 +10,7 @@ Running record of notes from our team meetings.
     * Christina started working on interfacing with LDAP and wrote the profile, project and course models
     * Ellen started working on the front-end of the login page in Pyjamas
  * Started learning how to compile Pyjamas to javascript and actually test our stuff
+ * Decided to use Django forms for registration, login and project selection
 
 == Model Structure ==
 === Profile ===
