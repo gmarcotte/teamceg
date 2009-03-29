@@ -5,13 +5,13 @@
 <div style="width:600px"><font face="Palatino Linotype, Times New Roman">
 <img src="{{MEDIA_URL}}/img/header.jpg" alt="Pairgramming ...for fully collaborative paired programming from wherever you choose" id="header" style="" WIDTH="450px" />
 
+
+{% if user.is_authenticated %}
 <p>
 <br>
 Welcome to Pairgramming, where all your interactive online paired programming dreams come true.
 </p>
-
-
-{% if user.is_authenticated %}<p>
+<p>
 <br>
 If you want to log out, click "Logout".  You can change your password by clicking "Change my password".  You can delete your account by clicking "Delete my account" but you probably don't want to do that.  As usual, if you have any comments or questions, please send us an e-mail (click or to pairgramming@gmail.com).
 </p>
