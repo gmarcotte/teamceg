@@ -86,7 +86,7 @@ def reset_password(request):
       form.save()
       return http.HttpResponseRedirect(redirect_to)
   else:
-    form.pear.accounts.forms.PasswordResetForm()
+    form = pear.accounts.forms.PasswordResetForm() # ERROR
   
   return shortcuts.render_to_response(
       'global/accounts/reset_password.html',
