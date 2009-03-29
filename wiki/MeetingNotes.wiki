@@ -3,6 +3,20 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Sat, March 28 =
+== Progress ==
+ * Can now actually get into the testbed server remotely
+ * Christina got user authentication partially working 
+
+== Group Work ==
+ # User Login
+ # Email users with initial passwords
+ # Setup pairgramming@gmail.com
+ # Setup reset password
+ # Setup password changing 
+ # Some changes to UI
+ # Account Deletion
+
 = Thu, March 26 =
 == Group Work ==
  * Started some real coding!
