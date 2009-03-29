@@ -19,12 +19,12 @@ class BasicBackend(backends.ModelBackend):
 class EmailBackend(BasicBackend):
   def authenticate(self, username=None, password=None):
     if fields.email_re.search(username):
-      try:
-        user = models.User.objects.get(email__exact = username)
-        if user.check_password(password):
-          return user
-      finally:
+      users = models.User.objects.filter(email__exact = username)
+      if not users:
         return None
+      if not users[0].check_password(password):
+        return None
+      return users[0]      
 	  
 	  
 # from the oit CAS page https://sp.princeton.edu/oit/sdp/CAS/Wiki%20Pages/Python.aspx
