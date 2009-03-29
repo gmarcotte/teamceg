@@ -13,9 +13,10 @@ Running record of notes from our team meetings.
  # Email users with initial passwords
  # Setup pairgramming@gmail.com
  # Setup reset password
- # Setup password changing 
- # Some changes to UI
+ # Setup password changing and email 
+ # Some changes to UI including banner
  # Account Deletion
+ # Account Deletion email
 
 = Thu, March 26 =
 == Group Work ==
