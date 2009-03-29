@@ -22,7 +22,8 @@ class RegistrationForm(forms.Form):
     except auth_models.User.DoesNotExist:
       return self.cleaned_data['email']
     raise forms.ValidationError('This email address is already registered.  '
-                                'Please choose another.')
+                                'Please choose another, or try to login '
+                                'with the link below.')
       
   def save(self):
     # Create the new user
@@ -46,8 +47,16 @@ class RegistrationForm(forms.Form):
     
 	
     # Send an email to the user
-    dict = {"email": u.email, "password": password, "lname": u.last_name, "fname": u.first_name, "year": p.class_year, "major": p.major}
-    emailer.render_and_send(u.email,'Thank you for registering with Pairgramming!', 'emails/registration_confirm.txt', dict)
+    dict = {"email": u.email, 
+            "password": password, 
+            "lname": u.last_name, 
+            "fname": u.first_name, 
+            "year": p.class_year, 
+            "major": p.major}
+    emailer.render_and_send(u.email,
+                            'Thank you for registering with Pairgramming!',
+                            'emails/registration_confirm.txt', 
+                            dict)
 
 
 class LoginForm(forms.Form):
@@ -69,3 +78,76 @@ class LoginForm(forms.Form):
     else:
       self.cleaned_data['user'] = user
     return self.cleaned_data
+  
+
+class PasswordResetForm(forms.Form):
+  email = forms.EmailField(
+      'E-Mail Address',
+      widget = forms.TextInput(attrs={'size': '20'}))
+  
+  def clean_email(self):
+    users = auth_models.User.objects.filter(email__exact = self.cleaned_data['email'])
+    if users:
+      return self.cleaned_data['email']
+    else:
+      raise forms.ValidationError(
+          'That email address has not been registered.  Please try another '
+          'address or click on the link below to register a new account.')
+      
+  def save(self):
+    user = auth_models.User.objects.get(email__exact = self.cleaned_data['email'])
+    new_password = auth_models.User.objects.make_random_password()
+    user.set_password(new_password)
+    
+    dict = {"email": self.cleaned_data['email'], 
+            "password": new_password}
+    emailer.render_and_send(self.cleaned_data['email'],
+                            'Your new Pairgramming password',
+                            'emails/reset_password.txt', 
+                            dict)
+    
+
+class PasswordChangeForm(forms.Form):
+  old_password = forms.CharField(
+      'Current Password',
+      widget = forms.PasswordInput(attrs={'size': '20'}))
+  
+  new_password = forms.CharField(
+      'New Password',
+      widget = forms.PasswordInput(attrs={'size': '20'}))
+  
+  new_password_confirm = forms.CharField(
+      'Confirm New Password',
+      widget = forms.PasswordInput(attrs={'size': '20'}))
+  
+  def __init__(self, user, *args, **kwargs):
+    self.user = user
+    super(PasswordChangeForm, self).__init__(*args, **kwargs)
+  
+  def clean_old_password(self):
+    """Validate that the user entered the correct current password."""
+    if not self.user.check_password(self.cleaned_data['old_password']):
+      raise forms.ValidationError(
+          'Incorrect Password.  Please try again or click the link below '
+          'to reset your password.')
+    return self.cleaned_data['old_password']
+  
+  def clean(self):
+    """Validates that the user entered the same password in both boxes."""
+    if not (self.cleaned_data['new_password'] == self.cleaned_data['new_password_confirm']):
+      raise forms.ValidationError(
+           'The new passwords did not match. Please try again.')
+    return self.cleaned_data
+  
+  def save(self):
+    self.user.set_password(self.cleaned_data['new_password'])
+    self.user.save()
+    
+    emailer.render_and_send(self.user.email,
+                            'Your Pairgramming password has been changed',
+                            'emails/change_password.txt', {})
+    
+    
+  
+  
+    

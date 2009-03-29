@@ -46,12 +46,54 @@ def login(request):
       'global/accounts/login.html', 
       {'form': form},
       context_instance=template.RequestContext(request))
-  
+
+
 def logout(request):
   """Logout the current user."""
   redirect_to = request.REQUEST.get('next', '/')
   auth.logout(request)
   return http.HttpResponseRedirect(redirect_to)
+
+
+def change_password(request):
+  """Allow the currently logged in user to change passwords."""
+  redirect_to = request.REQUEST.get('next', '/')
+  
+  if not request.user.is_authenticated():
+      return http.HttpResponseRedirect(redirect_to)
+  
+  if request.method == "POST":
+    form = pear.accounts.forms.PasswordChangeForm(request.user, data=request.POST)
+    if form.is_valid():
+      form.save()
+      return http.HttpResponseRedirect(redirect_to)
+  else:
+    form = pear.accounts.forms.PasswordChangeForm(request.user)
+    
+  return shortcuts.render_to_response(
+      'global/accounts/change_password.html',
+      {'form': form},
+      context_instance=template.RequestContext(request))
+
+
+def reset_password(request):
+  """Allow a user to reset password via email."""
+  redirect_to = request.REQUEST.get('next', '/')
+  
+  if request.method == "POST":
+    form = pear.accounts.forms.PasswordResetForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return http.HttpResponseRedirect(redirect_to)
+  else:
+    form.pear.accounts.forms.PasswordResetForm()
+  
+  return shortcuts.render_to_response(
+      'global/accounts/reset_password.html',
+      {'form': form},
+      context_instance=template.RequestContext(request))
+  return http.HttpResponseRedirect(redirect_to)
+
 
 def delete(request):
   """Delete all information associated with user."""
