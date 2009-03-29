@@ -9,8 +9,8 @@ import os
 # Database setup
 DATABASE_ENGINE = 'mysql'
 DATABASE_NAME = 'pear_sandbox'
-DATABASE_USER = 'pear'
-DATABASE_PASSWORD = 'PEAR333'
+DATABASE_USER = 'u'
+DATABASE_PASSWORD = 'p'
 DATABASE_HOST = ''
 DATABASE_PORT = ''
 
