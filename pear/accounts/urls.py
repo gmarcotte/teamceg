@@ -4,5 +4,7 @@ urlpatterns = defaults.patterns('pear.accounts.views',
     (r'^login/$', 'login'),
     (r'^register/$', 'register'),
     (r'^logout/$', 'logout'),
-	(r'^delete/$', 'delete'),
+    (r'^passwordchange/$', 'change_password'),
+    (r'^passwordreset/$', 'reset_password'),
+    (r'^delete/$', 'delete'),
 )
