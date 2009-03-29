@@ -98,6 +98,7 @@ class PasswordResetForm(forms.Form):
     user = auth_models.User.objects.get(email__exact = self.cleaned_data['email'])
     new_password = auth_models.User.objects.make_random_password()
     user.set_password(new_password)
+    user.save()
     
     dict = {"email": self.cleaned_data['email'], 
             "password": new_password}
