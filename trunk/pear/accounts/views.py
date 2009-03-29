@@ -52,3 +52,23 @@ def logout(request):
   redirect_to = request.REQUEST.get('next', '/')
   auth.logout(request)
   return http.HttpResponseRedirect(redirect_to)
+
+def delete(request):
+  """Delete all information associated with user."""
+  if request.user.is_authenticated():
+    if request.method == "POST":
+      #log out the user
+      usr = request.user
+      auth.logout(request)
+      #delete the user
+      usr.delete()
+      return shortcuts.render_to_response('global/index.html')
+    else:
+      return shortcuts.render_to_response('global/accounts/delete.html')
+      
+  else:
+    form = pear.accounts.forms.LoginForm()
+    return shortcuts.render_to_response(
+      'global/accounts/login.html', 
+      {'form': form},
+      context_instance=template.RequestContext(request))
