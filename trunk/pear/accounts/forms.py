@@ -1,10 +1,11 @@
 from django import forms
-from django.template import loader
+from django.template import loader, Template
 from django.contrib.auth import models as auth_models
 from django.contrib import auth
 
 import pear.accounts.models
 import pear.accounts.util
+from pear.core import emailer
 
 
 class RegistrationForm(forms.Form):
@@ -43,7 +44,10 @@ class RegistrationForm(forms.Form):
     )
     p.save()
     
-    # TODO: Send an email to the user
+	
+    # Send an email to the user
+    dict = {"email": u.email, "password": password, "lname": u.last_name, "fname": u.first_name, "year": p.class_year, "major": p.major}
+    emailer.render_and_send(u.email,'Thank you for registering with Pairgramming!', 'emails/registration_confirm.txt', dict)
 
 
 class LoginForm(forms.Form):

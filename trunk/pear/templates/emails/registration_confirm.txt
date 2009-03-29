@@ -2,9 +2,15 @@ Thank you for signing up on Pairgramming.  You have been assigned a temporary
 password.  You will be prompted to set a password of your choice the first
 time you login.  Your login credentials are:
 
-Username: {{ username }}
+Email: {{ email }}
 Password: {{ password }}
+
+Account Information: 
+First Name: {{ fname }}
+Last Name: {{ lname }}
+Class Year: {{ year }}
+Major: {{ major }}
 
 Thanks and happy coding!
 
-- The Pairgramming Development Team
+- teamCEG
