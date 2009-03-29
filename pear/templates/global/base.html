@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+
+<head>
+<title>{% block title %}{% if page_title %}{{ page_title }} - {% endif %}{% endblock %}{{ HTML_TITLE_BASE }}</title>
+
+<meta http-equiv="Content-Type" content="text/html" />
+<meta name="language" content="en" />
+<meta name="author" content="teamceg" />
+{% if meta_keywords %}<meta name="keywords" content="{{ meta_keywords }}" />{% endif %}
+{% if meta_description %}<meta name="description" content="{{ meta_description }}" />{% endif %}
+{% block meta %}
+{% endblock %}
+
+<link rel="stylesheet" href="{{ MEDIA_URL }}/css/global.css" media="screen,print" />
+{% block css_style %}
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
+</head>
+
+<body class="{% block bodyclass %}{% endblock %}">
+
+<div id="header">
+<img src="{{MEDIA_URL}}/img/header.jpg" alt="Pairgramming ...for fully collaborative paired programming from wherever you choose" width="450px" />
+</div>
+
+<div id="content-main">
+{% block content %}{% endblock %}
+</div>
+
+<div id="footer">
+<p>A teamCEG production</p>
+</div>
+
+</body>
+</html>

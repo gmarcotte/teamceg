@@ -1,0 +1,12 @@
+body {
+  width: 600px;
+  font-family: "Palatino Linotype", Times, serif;
+}
+
+div#footer {
+	font-size: smaller;
+	font-style: italic;
+	color: gray;
+}
+
+ 
