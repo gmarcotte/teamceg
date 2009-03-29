@@ -6,6 +6,7 @@ from django import http
 from django.core import exceptions
 
 import pear.accounts.forms
+from pear.core import emailer
 
 def register(request):
   """Allows a new user to register an account.
@@ -103,6 +104,9 @@ def delete(request):
       usr = request.user
       auth.logout(request)
       #delete the user
+      emailer.render_and_send(usr.email,
+                            'Your Pairgramming account has been deleted',
+                            'emails/delete_account.txt', {})
       usr.delete()
       return shortcuts.render_to_response('global/index.html')
     else:
