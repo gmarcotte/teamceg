@@ -1,15 +1,27 @@
 <html>
 
 <body>
+
+
 {% if user.is_authenticated %}
+<div style="width:px"><font face="Palatino Linotype, Times New Roman">
 <img src="{{MEDIA_URL}}/img/header.jpg" alt="pairgramming" id="header" style="" WIDTH="400px"//>
+<font size="2">
+<p><br>Welcome to Pairgramming, where all your interactive paired programming dreams come true.</p><br>
+</font></div>
+
+
 {% else %}
-<img src="{{MEDIA_URL}}/img/header.jpg" alt="pairgramming" id="header" style="" WIDTH="450px">
-<font size="2" face="Palatino Linotype">
+<div style="width:px"><font face="Palatino Linotype, Times New Roman">
+<img src="{{MEDIA_URL}}/img/header.jpg" alt="pairgramming" id="header" style="" WIDTH="400px">
+<font size="2">
 <p><br>Please click "Log in" to log in, or click "Create new account" to create a new account.</p><br>
 </font>
 <p><a href="/accounts/login/"><img src="{{MEDIA_URL}}/img/Login_button.jpg" width="200px"></a></p>
 <p><a href="/accounts/register/"><img src="{{MEDIA_URL}}/img/Create_new_account_button.jpg" width="200px"></a></p>
+</font></div>
+
+
 {% endif %}
 </body>
 
