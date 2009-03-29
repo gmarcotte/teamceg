@@ -65,4 +65,10 @@ MIDDLEWARE_CLASSES = (
 USE_LDAP = False
 
 # Get the environment-specific settings
+#pylint: disable-msg=W0401
+#pylint: disable-msg=W0614
+# Pylint complains because this is a wildcard import and because we don't
+# actually use anything that is imported in this file.  However, those are
+# both okay here since it is a configuration file and we need everything
+# accessible in the settings module
 from settings_local import *
