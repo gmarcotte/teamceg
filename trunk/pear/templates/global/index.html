@@ -2,10 +2,14 @@
 
 <body>
 {% if user.is_authenticated %}
-<a href="/accounts/logout/">Log Out</a>
+<img src="{{MEDIA_URL}}/img/header.jpg" alt="pairgramming" id="header" style="" WIDTH="400px"//>
 {% else %}
-<a href="/accounts/login/">Log In</a><br />
-<a href="/accounts/register/">Register</a>
+<img src="{{MEDIA_URL}}/img/header.jpg" alt="pairgramming" id="header" style="" WIDTH="450px">
+<font size="2" face="Palatino Linotype">
+<p><br>Please click "Log in" to log in, or click "Create new account" to create a new account.</p><br>
+</font>
+<p><a href="/accounts/login/"><img src="{{MEDIA_URL}}/img/Login_button.jpg" width="200px"></a></p>
+<p><a href="/accounts/register/"><img src="{{MEDIA_URL}}/img/Create_new_account_button.jpg" width="200px"></a></p>
 {% endif %}
 </body>
 
