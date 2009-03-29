@@ -1,5 +1,7 @@
-"""Settings for the sandbox (developer computer, non-server) environment.
+"""Settings for the production environment.
 """
+
+#TODO(marcotte): This is not configured yet!
 
 __author__ = ['Garrett Marcotte (marcotte@princeton.edu)']
 
@@ -31,11 +33,11 @@ TEMPLATE_DIRS = (
 )
 
 # E-Mail Configuration
-ENABLE_EMAIL = False
-EMAIL_SERVER = ''
-EMAIL_USER = ''
+ENABLE_EMAIL = True
+EMAIL_SERVER = 'smtp.google.com'
+EMAIL_SENDER = 'pairgramming@gmail.com'
 EMAIL_PASSWORD = ''
-EMAIL_PORT = 0
+EMAIL_PORT = 587
 
 # Version info
-PEAR_VERSION = 'Sandbox'
+PEAR_VERSION = 'Pre-Release'

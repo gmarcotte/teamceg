@@ -18,8 +18,6 @@ LANGUAGE_CODE = 'en-us'
 USE_I18N = False
 DEBUG = True
 
-
-
 # Django Setup
 SECRET_KEY = "-y9__BvT\u-ioaA_dy_-m8v;_7Uf*_p4-t7-zH4*Z&t4V_Q}85*"
 ROOT_URLCONF = 'pear.urls'
@@ -39,6 +37,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.request',
+    'pear.core.context_processors.settings_vars',
 )
 
 INSTALLED_APPS = (
@@ -59,10 +58,8 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.doc.XViewMiddleware",
 )
 
-
 # Princeton LDAP Configuration
 USE_LDAP = False
-
 
 # Get the environment-specific settings
 from settings_local import *
