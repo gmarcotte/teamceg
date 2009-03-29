@@ -1,11 +1,6 @@
-<html>
+{% extends "global/base.html" %}
 
-<body>
-
-<div style="width:600px"><font face="Palatino Linotype, Times New Roman">
-<img src="{{MEDIA_URL}}/img/header.jpg" alt="Pairgramming ...for fully collaborative paired programming from wherever you choose" id="header" style="" WIDTH="450px" />
-
-
+{% block content %}
 {% if user.is_authenticated %}
 <p>
 <br>
@@ -35,10 +30,6 @@ If you have any questions or comments, don't hesitate to send us an e-mail; you 
 <p><a href="/accounts/passwordreset/"><img src="{{MEDIA_URL}}/img/Reset_password_button.jpg" width="250px"></a></p>
 <p><a href="mailto:pairgramming@gmail.com"><img src="{{MEDIA_URL}}/img/Email_us_button.jpg" width="250px"></a></p>
 
-
 {% endif %}
 
-</font></div>
-</body>
-
-</html>
+{% endblock %}

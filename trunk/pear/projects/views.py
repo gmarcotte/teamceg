@@ -12,12 +12,12 @@ def index(request):
 		#project_list = blah?
     return shortcuts.render_to_response(
         'global/index.html',
-        {},
+        {'page_title': 'My Projects',},
         context_instance=template.RequestContext(request))
     
   else:
     #display the registration/login page
 	  return shortcuts.render_to_response(
         'global/index.html',
-        {},
+        {'page_title': 'Welcome'},
         context_instance=template.RequestContext(request))

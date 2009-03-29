@@ -45,7 +45,8 @@ def login(request):
     
   return shortcuts.render_to_response(
       'global/accounts/login.html', 
-      {'form': form},
+      {'page_title': "Log In",
+       'form': form,},
       context_instance=template.RequestContext(request))
 
 
@@ -73,7 +74,8 @@ def change_password(request):
     
   return shortcuts.render_to_response(
       'global/accounts/change_password.html',
-      {'form': form},
+      {'page_title': 'Change Password',
+       'form': form},
       context_instance=template.RequestContext(request))
 
 
@@ -91,13 +93,16 @@ def reset_password(request):
   
   return shortcuts.render_to_response(
       'global/accounts/reset_password.html',
-      {'form': form},
+      {'page_title': 'Reset Password',
+       'form': form},
       context_instance=template.RequestContext(request))
   return http.HttpResponseRedirect(redirect_to)
 
 
 def delete(request):
   """Delete all information associated with user."""
+  redirect_to = request.REQUEST.get('next', '/')
+  
   if request.user.is_authenticated():
     if request.method == "POST":
       #log out the user
@@ -105,16 +110,15 @@ def delete(request):
       auth.logout(request)
       #delete the user
       emailer.render_and_send(usr.email,
-                            'Your Pairgramming account has been deleted',
-                            'emails/delete_account.txt', {})
+                              'Your Pairgramming account has been deleted',
+                              'emails/delete_account.txt', {})
       usr.delete()
-      return shortcuts.render_to_response('global/index.html')
+      return http.HttpResponseRedirect(redirect_to)
     else:
-      return shortcuts.render_to_response('global/accounts/delete.html')
-      
+      return shortcuts.render_to_response(
+          'global/accounts/delete.html',
+          {'page_title': 'Permanently Delete Account',},
+          context_instance=template.RequestContext(request))
+
   else:
-    form = pear.accounts.forms.LoginForm()
-    return shortcuts.render_to_response(
-      'global/accounts/login.html', 
-      {'form': form},
-      context_instance=template.RequestContext(request))
+    return http.HttpResponseRedirect('/accounts/login')
