@@ -80,6 +80,22 @@ def main():
     print "Errors installing PyLint! Please perform manual install!"
   ####################################################
   
+  ## Set up pexpect ##
+  try:
+    import pexpect
+    print "pexpect already installed..."
+  except ImportError, e:
+    print "Installing pexpect..."
+    os.chdir('pexpect')
+    os.system("python setup.py install")
+    os.chdir("..")  
+  
+  try:
+    import pexpect
+  except ImportError, e:
+    print "Errors installing pexpect! Please perform manual install!"
+  ####################################################
+  
   
 if __name__ == '__main__':
   main()
