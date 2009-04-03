@@ -3,33 +3,66 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Course(models.Model):
-  YEAR_CHOICES = (
+
+YEAR_CHOICES = (
     (1,'08-09'),
     (2,'09-10'),
     (3,'10-11'),
     (4,'11-12'),
-  )
-  SEM_CHOICES = (
-    ('F','Fall'),
-    ('S','Spring'),
-  )
-  name = models.CharField(max_length=30)
-  department = models.CharField(max_length=10)
-  number = models.CharField(max_length=10)
-  professor = models.ManyToManyField(User, related_name='courses_taught')
-  year = models.PositiveSmallIntegerField(max_length=1, choices=YEAR_CHOICES)
-  semester = models.CharField(max_length=1, choices=SEM_CHOICES)
-  TAs = models.ManyToManyField(User, related_name='courses_taed')
+)
+
+SEM_CHOICES = (
+    (0,'Fall'),
+    (1,'Spring'),
+)
+
+
+class Course(models.Model):
+  name = models.CharField(
+      max_length=100, blank=True)
+  
+  department = models.CharField(
+      max_length=10, blank=True)
+  
+  number = models.CharField(
+      max_length=10, blank=True)
+  
+  professor = models.ManyToManyField(
+      User, related_name='courses_taught')
+  
+  year = models.PositiveSmallIntegerField(
+      choices=YEAR_CHOICES, null=True)
+  
+  semester = models.PositiveSmallIntegerField(
+      choices=SEM_CHOICES, null=True)
+  
+  tas = models.ManyToManyField(
+      User, related_name='courses_taed')
   
   def __unicode__(self):
-    stri = str(name) + str(department) + str(number) + str(professor)
-    return stri
-	
+    return ("%s %s: %s, %s %s" 
+            % (self.department, self.number, self.name,
+               self.year, self.semester))
+
+
 class Project(models.Model):
-  programmers = models.ManyToManyField(User)
-  course = models.ForeignKey(Course)
+  name = models.CharField(
+      max_length=50)
+  
+  description = models.TextField(
+      blank=True)
+  
+  directory = models.CharField(
+      max_length=20)
+  
+  repos = models.CharField(
+      max_length=100, blank=True)
+  
+  programmers = models.ManyToManyField(
+      User, related_name='projects')
+  
+  course = models.ForeignKey(
+      Course, related_name='projects')
   
   def __unicode__(self):
-    stri = str(self.course) + str(self.programmers)
-    return stri
+    return self.name
