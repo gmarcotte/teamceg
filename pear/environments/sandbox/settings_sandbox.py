@@ -38,5 +38,8 @@ EMAIL_USER = ''
 EMAIL_PASSWORD = ''
 EMAIL_PORT = 0
 
+# Initialization Options
+ALLOW_INITIALIZE_SCRIPT = True
+
 # Version info
 PEAR_VERSION = 'Sandbox'
