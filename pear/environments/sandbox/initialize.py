@@ -130,10 +130,13 @@ def set_root_password(output_file=None):
   
   try:
     root_user = models.PearUser.objects.get(id=1)
+    root_user.is_active = True
+    root_user.is_staff = True
+    root_user.is_superuser = True
     root_password = ask_input_question('Enter password for admin root user: ', 'pw')
     
     root_user.set_password(root_password)
-    root_user.save
+    root_user.save()
     
     # Check that password was correctly saved
     if not root_user.check_password(root_password):
