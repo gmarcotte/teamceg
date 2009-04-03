@@ -11,7 +11,6 @@ from django.conf.urls import defaults
 
 #for admin...
 from django.contrib import admin
-from django.conf.urls.defaults import *
 admin.autodiscover()
 
 #pylint: disable-msg=C0103
