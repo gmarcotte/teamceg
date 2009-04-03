@@ -31,4 +31,7 @@ class CourseOptions(admin.ModelAdmin):
   ta_display.short_description = 'TAs'
   ta_display.allow_tags = True
 admin.site.register(models.Course, CourseOptions)
+
+
+admin.site.register(models.Project, admin.ModelAdmin)
   

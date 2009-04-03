@@ -9,8 +9,10 @@ __author__ = ['Garrett Marcotte (marcotte@princeton.edu)']
 from django.conf import settings
 from django.conf.urls import defaults
 
-#for admin...
+# Configure the admin
 from django.contrib import admin
+from pear.core import base_admin
+admin.site = base_admin.PearAdminSite()
 admin.autodiscover()
 
 #pylint: disable-msg=C0103
