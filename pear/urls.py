@@ -21,7 +21,7 @@ urlpatterns = defaults.patterns('',
     
     (r'^accounts/', defaults.include('pear.accounts.urls')),
     
-    (r'^admin/', include(admin.site.urls)),
+    (r'^admin/', defaults.include(admin.site.urls)),
 )
 
 if settings.STATIC_SERVE:
