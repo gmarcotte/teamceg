@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from pear.core import timestamp
+
 
 YEAR_CHOICES = (
     (1,'08-09'),
@@ -17,7 +19,7 @@ SEM_CHOICES = (
 )
 
 
-class Course(models.Model):
+class Course(timestamp.TimestampedModel):
   name = models.CharField(
       max_length=100, blank=True)
   
@@ -45,7 +47,7 @@ class Course(models.Model):
                self.year, self.semester))
 
 
-class Project(models.Model):
+class Project(timestamp.TimestampedModel):
   name = models.CharField(
       max_length=50)
   
