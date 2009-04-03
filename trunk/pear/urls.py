@@ -9,6 +9,11 @@ __author__ = ['Garrett Marcotte (marcotte@princeton.edu)']
 from django.conf import settings
 from django.conf.urls import defaults
 
+#for admin...
+from django.contrib import admin
+from django.conf.urls.defaults import *
+admin.autodiscover()
+
 #pylint: disable-msg=C0103
 # Django forces us to use this name, even though our standard would
 # expect URLPATTERNS as a valid module-level name
@@ -17,6 +22,7 @@ urlpatterns = defaults.patterns('',
     
     (r'^accounts/', defaults.include('pear.accounts.urls')),
     
+    (r'^admin/', include(admin.site.urls)),
 )
 
 if settings.STATIC_SERVE:
