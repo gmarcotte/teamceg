@@ -95,6 +95,7 @@ def ask_input_question(question, default=''):
     answer = answer.replace('\n', '').strip()
     if not answer:
       answer = default
+    return answer
 
 
 def create_root_user():
