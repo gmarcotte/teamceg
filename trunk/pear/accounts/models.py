@@ -48,3 +48,6 @@ class Profile(timestamp.TimestampedModel):
   
   def get_public_key(self):
     return self.public_key
+    
+  def get_private_key(self):
+    return self.private_key

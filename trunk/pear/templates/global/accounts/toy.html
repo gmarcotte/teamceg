@@ -1,0 +1,13 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<p>Please follow the directions below to setup server access.</p>
+<br>
+<form action="" method="POST">
+<table>
+{{ form.as_table }}
+</table>
+<input type="submit" value="Go!" />
+</form>
+<textarea rows="10" cols="50"> {{ feedback }} </textarea>
+{% endblock %}

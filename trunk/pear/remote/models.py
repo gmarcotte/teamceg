@@ -11,3 +11,4 @@ class SSHConnection(timestamp.TimestampedModel):
   
   def __unicode__(self):
     return str(self.major) + str(self.class_year)
+
