@@ -23,6 +23,8 @@ urlpatterns = defaults.patterns('',
     
     (r'^accounts/', defaults.include('pear.accounts.urls')),
     
+    (r'^projects/', defaults.include('pear.projects.urls')),
+    
     (r'^admin/', defaults.include(admin.site.urls)),
 )
 

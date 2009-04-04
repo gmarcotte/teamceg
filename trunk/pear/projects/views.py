@@ -1,9 +1,10 @@
 from django import shortcuts
 from django import template
 from django import http
+from django.core import exceptions
 
-import pear.accounts.models
 import pear.projects.models
+import pear.projects.forms
 
 
 def index(request):
@@ -20,4 +21,19 @@ def index(request):
 	  return shortcuts.render_to_response(
         'global/index.html',
         {'page_title': 'Welcome'},
+        context_instance=template.RequestContext(request))
+
+
+def projtest(request):
+	  #display all of their projects
+    if request.method == 'POST':
+      form = pear.projects.forms.NewProjectForm(request)
+      if form.is_valid():
+        form.save()
+        return http.HttpResponseRedirect()
+    else:
+      form = pear.projects.forms.NewProjectForm()
+    return shortcuts.render_to_response(
+        'global/projects/newproject.html',
+        {'page_title': 'My Projects', 'form': form,},
         context_instance=template.RequestContext(request))
