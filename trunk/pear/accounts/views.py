@@ -4,10 +4,17 @@ from django.contrib import auth
 from django.contrib.auth import models as auth_models
 from django import http
 from django.core import exceptions
+from django.views.decorators import cache
+from django.db import models
 
 import pear.accounts.forms
+import pear.accounts.models
 from pear.remote import localkeys
 from pear.core import emailer
+
+
+MAX_STAFF_AJAX_SEARCH_RESULTS = 10
+
 
 def register(request):
   """Allows a new user to register an account.
@@ -123,7 +130,8 @@ def delete(request):
 
   else:
     return http.HttpResponseRedirect('/accounts/login')
-
+  
+  
 def servers(request):
   """Delete all information associated with user."""
   redirect_to = request.REQUEST.get('next', '/')
@@ -177,4 +185,37 @@ def toy(request):
           context_instance=template.RequestContext(request))
 
   else:
-    return http.HttpResponseRedirect('/accounts/login')
+    return http.HttpResponseRedirect('/accounts/login')  
+  
+  
+################ AJAX VIEWS ####################################################
+
+@cache.never_cache
+def ajax_user_search(request):
+  """AJAX call that returns a JSON array of staff members matching search field.
+  
+  The method looks for the GET parameter 'q' for search terms. One can change
+  the default max search results by passing a GET parameter 'max'.
+  """
+  
+  # Default max results
+  if request.GET.has_key('max'):
+    max_results = int(request.GET['max'])
+  else:
+    max_results = MAX_STAFF_AJAX_SEARCH_RESULTS
+  
+  if request.GET.has_key('q'):
+    users = pear.accounts.models.PearUser.objects.filter(is_active = 1)
+    
+    for word in request.GET['q'].split(' '):
+      users = users.filter(models.Q(first_name__icontains=word) | 
+                           models.Q(last_name__icontains=word) |
+                           models.Q(email__icontains=word))
+    new_list = []
+    for user in users[:max_results]:
+      new_list.append('{"id": "%s", "value": "%s %s"}' 
+                      % (user.id, user.first_name, user.last_name))
+    
+    return http.HttpResponse('{"results": [%s]}' % (','.join(new_list)))              
+  else:    
+    return http.HttpResponse('{"results": []}')

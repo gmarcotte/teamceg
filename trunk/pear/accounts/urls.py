@@ -8,4 +8,7 @@ urlpatterns = defaults.patterns('pear.accounts.views',
     (r'^passwordreset/$', 'reset_password'),
     (r'^delete/$', 'delete'),
     (r'^servers/$', 'servers'),
+    
+    # AJAX Views
+    (r'^ajax/usersearch/$', 'ajax_user_search'),
 )

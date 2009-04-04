@@ -1,9 +1,9 @@
 #projects: models.py
 #CCI 3/27/09
 from django.db import models
-from django.contrib.auth.models import User
 
 from pear.core import timestamp
+import pear.accounts.models
 
 
 YEAR_CHOICES = (
@@ -30,7 +30,7 @@ class Course(timestamp.TimestampedModel):
       max_length=10, blank=True)
   
   professor = models.ManyToManyField(
-      User, related_name='courses_taught')
+      pear.accounts.models.PearUser, related_name='courses_taught')
   
   year = models.PositiveSmallIntegerField(
       choices=YEAR_CHOICES, null=True)
@@ -39,7 +39,7 @@ class Course(timestamp.TimestampedModel):
       choices=SEM_CHOICES, null=True)
   
   tas = models.ManyToManyField(
-      User, related_name='courses_taed')
+      pear.accounts.models.PearUser, related_name='courses_taed')
   
   def __unicode__(self):
     return ("%s %s: %s, %s %s" 
@@ -61,7 +61,7 @@ class Project(timestamp.TimestampedModel):
       max_length=100, blank=True)
   
   programmers = models.ManyToManyField(
-      User, related_name='projects')
+      pear.accounts.models.PearUser, related_name='projects')
   
   course = models.ForeignKey(
       Course, related_name='projects', null=True)
