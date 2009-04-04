@@ -64,7 +64,7 @@ class Project(timestamp.TimestampedModel):
       User, related_name='projects')
   
   course = models.ForeignKey(
-      Course, related_name='projects')
+      Course, related_name='projects', null=True)
   
   def __unicode__(self):
     return self.name
