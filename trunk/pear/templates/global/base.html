@@ -13,9 +13,18 @@
 {% endblock %}
 
 <link rel="stylesheet" href="{{ MEDIA_URL }}/css/global.css" media="screen,print" />
+
+
+{% if form %}
+  {{ form|print_form_css }}
+{% endif %}
 {% block css_style %}
 {% endblock %}
 
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/mootools/mootools.v1.11.js"></script>
+{% if form %}
+  {{ form|print_form_js }}
+{% endif %}
 {% block javascript %}
 {% endblock %}
 </head>
