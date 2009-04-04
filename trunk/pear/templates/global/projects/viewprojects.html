@@ -1,0 +1,14 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<p>Behold, your projects!</p>
+
+<ul>
+{% for proj in list %}
+  <li>{{ proj.name }}</li>
+{% endfor %}
+</ul>
+
+</form>
+
+{% endblock %}
