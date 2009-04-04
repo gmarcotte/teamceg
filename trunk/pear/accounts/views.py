@@ -6,6 +6,7 @@ from django import http
 from django.core import exceptions
 
 import pear.accounts.forms
+from pear.remote import localkeys
 from pear.core import emailer
 
 def register(request):
@@ -118,6 +119,29 @@ def delete(request):
       return shortcuts.render_to_response(
           'global/accounts/delete.html',
           {'page_title': 'Permanently Delete Account',},
+          context_instance=template.RequestContext(request))
+
+  else:
+    return http.HttpResponseRedirect('/accounts/login')
+
+def servers(request):
+  """Delete all information associated with user."""
+  redirect_to = request.REQUEST.get('next', '/')
+  
+  if request.user.is_authenticated():
+    if request.method == "POST":
+      form = pear.accounts.forms.ServerAddForm(request.user, data=request.POST)
+      # do the stuff to add the server!
+      usr = request.user
+      if form.is_valid():
+        localkeys.set_remote_keys(form.cleaned_data['user_name'],form.cleaned_data['password'],form.cleaned_data['server_name'], usr.profile.get().get_public_key())
+      return http.HttpResponseRedirect(redirect_to)
+    else:
+      form = pear.accounts.forms.ServerAddForm(request.user)
+      return shortcuts.render_to_response(
+          'global/accounts/servers.html',
+          {'page_title': 'Add a new server',
+           'form':form},
           context_instance=template.RequestContext(request))
 
   else:

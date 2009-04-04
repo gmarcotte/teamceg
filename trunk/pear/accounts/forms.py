@@ -6,6 +6,7 @@ from django.contrib import auth
 import pear.accounts.models
 import pear.accounts.util
 from pear.core import emailer
+from pear.remote import localkeys
 
 
 class RegistrationForm(forms.Form):
@@ -37,11 +38,14 @@ class RegistrationForm(forms.Form):
     u.email = self.cleaned_data['email']
     u.save()
     
+    keypath = "/Users/christinailvento/Documents/JUNIOR/Cos333/Project/teamceg/keys/" + username
     # Create a profile for the new user
     p = pear.accounts.models.Profile(
         class_year = self.cleaned_data['class_year'],
         major = self.cleaned_data['major'],
-        user = u
+        user = u,
+        private_key = keypath,
+        public_key = localkeys.create_keys(keypath)
     )
     p.save()
     
@@ -148,7 +152,34 @@ class PasswordChangeForm(forms.Form):
                             'Your Pairgramming password has been changed',
                             'emails/change_password.txt', {})
     
-    
+class ServerAddForm(forms.Form):
+  server_name = forms.CharField(
+      'Server Name (ie hats.princeton.edu)',
+      widget = forms.TextInput(attrs={'size': '40'}))
+  user_name = forms.CharField(
+      'Username on server',
+      widget = forms.TextInput(attrs={'size': '20'}))
+      
+  password = forms.CharField(
+      'Password',
+      widget = forms.PasswordInput(attrs={'size': '20'}))
+  
+  def __init__(self, user, *args, **kwargs):
+    self.user = user
+    super(ServerAddForm, self).__init__(*args, **kwargs)
+  
+  def save(self):
+    # make a SSHConnection object
+    new_serv = pear.remote.models.SSHConnection(
+               server = self.cleaned_data(['server_name']),
+               user = self.user
+    )
+    new_serv.save()
+    dict = {"server": self.cleaned_data['server'], 
+            "username": self.cleaned_data['uid']}
+    emailer.render_and_send(self.user.email,
+                            'You have added a server in Pairgramming',
+                            'emails/add_server.txt', dict)
   
   
     
