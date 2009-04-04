@@ -25,6 +25,8 @@ HTML_TITLE_BASE = 'Pairgramming'
 SECRET_KEY = "-y9__BvT\u-ioaA_dy_-m8v;_7Uf*_p4-t7-zH4*Z&t4V_Q}85*"
 ROOT_URLCONF = 'pear.urls'
 APPEND_SLASH = True
+LOGIN_URL = "/accounts/login/"
+AUTH_PROFILE_MODULE = 'pear.accounts.models.PearUser'
 
 AUTHENTICATION_BACKENDS = (
     'pear.accounts.backends.EmailBackend',
@@ -61,6 +63,7 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "pear.middleware.pearuser.PearUserMiddleware",
     "django.middleware.doc.XViewMiddleware",
 )
 
