@@ -52,6 +52,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'pear.accounts',
     'pear.projects',
+    
+    # This one must be last
+    'pear.core.templatetags',
 )
 
 MIDDLEWARE_CLASSES = (
