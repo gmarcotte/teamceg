@@ -3,6 +3,29 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Fri, April 3 =
+== Group Progress ==
+=== For Next Time ===
+ # User join project (already existing)
+ # Subversion Interface to project files
+ # Streaming for SSH/etc.
+ # Web-server accessible
+
+=== Accomplished ===
+ # SSH Connection and RSA key pair Generation
+ # Admin Interface for all models
+ # SSH connection model and configuration by user
+ # Project model
+ # User project creation
+ # User project index
+== TA Meeting ==
+Met with Peng and discussed our project from the prior week, demo-ed our user registration/login
+ * One issue we ran into was gmail requiring us to login manually for the pairgramming account using a CAPTCHA, this may be an issue going forward, but we are not sure
+
+= Thu, April 2 =
+== Progress == 
+ * Met with Prof. Dondero and discussed some design changes, enlisted him as client and tester
+
 = Sat, March 28 =
 == Progress ==
  * Can now actually get into the testbed server remotely
