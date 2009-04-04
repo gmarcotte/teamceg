@@ -6,7 +6,6 @@ from django.core import exceptions
 import pear.projects.models
 import pear.projects.forms
 
-
 def index(request):
   if (request.user.is_authenticated()):
 	  #display all of their projects
@@ -25,15 +24,14 @@ def index(request):
 
 
 def projtest(request):
-	  #display all of their projects
     if request.method == 'POST':
-      form = pear.projects.forms.NewProjectForm(request)
+      form = pear.projects.forms.NewProjectForm(request.POST)
       if form.is_valid():
         form.save()
-        return http.HttpResponseRedirect()
+        return http.HttpResponseRedirect('/')
     else:
       form = pear.projects.forms.NewProjectForm()
     return shortcuts.render_to_response(
         'global/projects/newproject.html',
-        {'page_title': 'My Projects', 'form': form,},
+        {'page_title': 'New Project', 'form': form,},
         context_instance=template.RequestContext(request))
