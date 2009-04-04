@@ -14,8 +14,8 @@ YEAR_CHOICES = (
 )
 
 SEM_CHOICES = (
-    (0,'Fall'),
-    (1,'Spring'),
+    (1,'Fall'),
+    (2,'Spring'),
 )
 
 
@@ -30,7 +30,8 @@ class Course(timestamp.TimestampedModel):
       max_length=10, blank=True)
   
   professor = models.ManyToManyField(
-      pear.accounts.models.PearUser, related_name='courses_taught')
+      pear.accounts.models.PearUser, 
+      related_name='courses_taught')
   
   year = models.PositiveSmallIntegerField(
       choices=YEAR_CHOICES, null=True)
@@ -39,12 +40,18 @@ class Course(timestamp.TimestampedModel):
       choices=SEM_CHOICES, null=True)
   
   tas = models.ManyToManyField(
-      pear.accounts.models.PearUser, related_name='courses_taed')
+      pear.accounts.models.PearUser, 
+      related_name='courses_taed')
   
   def __unicode__(self):
-    return ("%s %s: %s, %s %s" 
-            % (self.department, self.number, self.name,
-               self.year, self.semester))
+    if self.semester:
+      return ("%s %s: %s, %s %s" 
+              % (self.department, self.number, self.name,
+                 self.get_semester_display(), self.get_year_display()))
+    else:
+      return ("%s %s: %s, %s"
+              % (self.department, self.number, self.name, 
+                 self.get_year_display()))
 
 
 class Project(timestamp.TimestampedModel):

@@ -16,14 +16,23 @@ class NewProjectForm(forms.Form):
       obj_name='partner',
       url='/accounts/ajax/usersearch/?')
   
-  def save(self):
+  course = pear_fields.ModelHasOneField(
+      label="Course",
+      required=False,
+      model=pear.projects.models.Course,
+      obj_name='course',
+      url='/projects/ajax/coursesearch/?')
+  
+  def save(self, user):
     # Create the new project
     pr = pear.projects.models.Project(
         name = self.cleaned_data['name'],
         description = self.cleaned_data['description'],
         directory = self.cleaned_data['directory'],
-        #nEED tO aDD pROGRAMMERS
+        course = self.cleaned_data['course'],
         #nEED tO aDD rEPOS
-        #nEED tO aDD cOURSE
     )
     pr.save()
+    
+    pr.programmers = self.cleaned_data['partners']
+    pr.programmers.add(user)
