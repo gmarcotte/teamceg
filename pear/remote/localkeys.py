@@ -57,13 +57,18 @@ def set_remote_keys(username, password, server, pub_key_file):
     # the interact is necessary... it's a bit magical
     ssh.interact()
   
-  
+
 # does a test login  
-def test_login(username, server, key_file):
+def ssh_login(username, server, key_file, command = ''):
   if settings.USE_PEXPECT:
     login = "ssh -i "+ key_file + " " + username + "@" + server
     ssh = pexpect.spawn(login)
-    ssh.interact()
+    #ssh.interact()
+    response = ssh.read_nonblocking(size=10000, timeout=10)
+    ssh.sendline(command)
+    response + ssh.read_nonblocking(size=2000,timeout=10)
+    return response + ssh.read_nonblocking(size=2000,timeout=10)
+
     
 # testing method  
 #k = create_keys('mykey')

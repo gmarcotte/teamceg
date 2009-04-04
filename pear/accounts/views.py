@@ -146,3 +146,35 @@ def servers(request):
 
   else:
     return http.HttpResponseRedirect('/accounts/login')
+    
+    
+def toy(request):
+  """Delete all information associated with user."""
+  redirect_to = request.REQUEST.get('next', '/')
+  servresponse = ''
+  if request.user.is_authenticated():
+    if request.method == "POST":
+      form = pear.accounts.forms.ToyForm(request.user, data=request.POST)
+      # do the stuff to add the server!
+      usr = request.user
+      # do stuff
+      if form.is_valid():
+        servresponse = localkeys.ssh_login(form.cleaned_data['user_name'], form.cleaned_data['server_name'], usr.profile.get().get_private_key(),form.cleaned_data['command'])
+      return shortcuts.render_to_response(
+          'global/accounts/toy.html',
+          {'page_title': 'Toy Shell',
+           'form':form,
+           'feedback': servresponse},
+          context_instance=template.RequestContext(request))
+      
+    else:
+      form = pear.accounts.forms.ToyForm(request.user)
+      return shortcuts.render_to_response(
+          'global/accounts/toy.html',
+          {'page_title': 'Toy Shell',
+           'form':form,
+           'feedback':'Type stuff in...'},
+          context_instance=template.RequestContext(request))
+
+  else:
+    return http.HttpResponseRedirect('/accounts/login')

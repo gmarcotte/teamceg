@@ -181,5 +181,19 @@ class ServerAddForm(forms.Form):
                             'You have added a server in Pairgramming',
                             'emails/add_server.txt', dict)
   
+class ToyForm(forms.Form):
+  server_name = forms.CharField(
+      'Server Name (ie hats.princeton.edu)',
+      widget = forms.TextInput(attrs={'size': '40'}))
+  user_name = forms.CharField(
+      'Username on server',
+      widget = forms.TextInput(attrs={'size': '20'}))
+  command = forms.CharField(
+      'Command to execute',
+      widget = forms.TextInput(attrs={'size': '100'}))
+  
+  def __init__(self, user, *args, **kwargs):
+    self.user = user
+    super(ToyForm, self).__init__(*args, **kwargs)
   
     
