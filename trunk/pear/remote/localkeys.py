@@ -7,7 +7,6 @@
 #
 
 # generates the RSA key pair for the user to use
-# TODO: generate based on host name? Maybe not.
 import pexpect
 import sys
 
