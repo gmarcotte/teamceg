@@ -12,7 +12,11 @@ LOGIN_ERROR_MESSAGE = ("Please enter a correct username and password. "
 LOGIN_FORM_KEY = 'this_is_the_login_form'
 
 class PearAdminSite(admin.AdminSite):
-    
+  
+  def __init__(self, *args, **kwargs):
+    super(PearAdminSite, self).__init__(*args, **kwargs)
+    self.root_path = '/admin/'
+  
   @cache.never_cache
   def login(self, request):
     """
