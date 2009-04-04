@@ -1,0 +1,14 @@
+You have added a server to your pairgramming account. You will now be 
+able to log into this server and program with all of the tools it
+provides! 
+
+Server Information: 
+Server Name: {{ server }}
+Your Username: {{ username }}
+
+
+Please contact us at pairgramming@gmail.com if there is any error in
+this information!
+
+Thanks
+- teamCEG

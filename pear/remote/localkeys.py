@@ -61,8 +61,8 @@ def test_login(username, server, key_file):
   ssh.interact()
   
 # testing method  
-k = create_keys('mykey')
-print 'Created new key-set, now trying to login....'
-set_remote_keys('cilvento', '', 'hats.princeton.edu', k)  
-print 'Okay, apparently the keys have been set.... lets check!'
-test_login('cilvento', 'hats.princeton.edu', 'mykey')
+#k = create_keys('mykey')
+#print 'Created new key-set, now trying to login....'
+#set_remote_keys('cilvento', '', 'hats.princeton.edu', k)  
+#print 'Okay, apparently the keys have been set.... lets check!'
+#test_login('cilvento', 'hats.princeton.edu', 'mykey')
