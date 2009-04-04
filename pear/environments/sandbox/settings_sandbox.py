@@ -41,5 +41,8 @@ EMAIL_PORT = 0
 # Initialization Options
 ALLOW_INITIALIZE_SCRIPT = True
 
+# Use pexpect
+USE_PEXPECT = False
+
 # Version info
 PEAR_VERSION = 'Sandbox'
