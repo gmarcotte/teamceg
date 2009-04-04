@@ -1,14 +1,20 @@
 from django import forms
-from django.template import loader, Template
 
+import pear.accounts.models
 import pear.projects.models
+from pear.core.forms import fields as pear_fields
 
 class NewProjectForm(forms.Form):
   name = forms.CharField('Project Name', required=True)
   description = forms.CharField('Project Description', required=False)
   directory = forms.CharField('Directory', required=False)
-  programmers = forms.CharField('Programmers names', required=False)
-  course = forms.CharField('Course Affiliation', required=False)
+  
+  partners = pear_fields.ModelHasManyField(
+      label="Partners",
+      required=False,
+      model=pear.accounts.models.PearUser,
+      obj_name='partner',
+      url='/accounts/ajax/usersearch/?')
   
   def save(self):
     # Create the new project
