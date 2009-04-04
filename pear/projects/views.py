@@ -40,6 +40,5 @@ def CreateProject(request):
 def ProjectIndex(request):
   u = request.user
   list = u.projects.all()  # returns all projects associated with that user
-  n = len(list)
   return shortcuts.render_to_response('global/projects/viewprojects.html',
       {'page_title': 'View Projects', 'list': list,})
