@@ -1,6 +1,10 @@
 from django.conf.urls import defaults
 
 urlpatterns = defaults.patterns('pear.projects.views',
-    (r'^newproject/$', 'CreateProject'),
-    (r'^viewprojects/$', 'ProjectIndex'),
+    (r'^newproject/$', 'create_project'),
+    (r'^viewprojects/$', 'project_index'),
+    
+    
+    # Ajax Views
+    (r'^ajax/coursesearch/$', 'ajax_course_search'),
 )

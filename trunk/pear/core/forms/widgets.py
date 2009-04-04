@@ -1,4 +1,4 @@
-"""Custom widgets for use across dp2007 forms."""
+"""Custom widgets for use across pear forms."""
 
 __author__ = ["Chris Chan (ckctwo@princeton.edu)",
               "Garrett Marcotte (marcotte@princeton.edu)"]
@@ -6,6 +6,7 @@ __author__ = ["Chris Chan (ckctwo@princeton.edu)",
 
 # Django modules
 from django.conf import settings
+from django.core import exceptions
 from django.forms import util
 from django.forms import widgets as django_widgets
 from django.utils import safestring
@@ -47,6 +48,46 @@ class ModelHasManyWidget(django_widgets.Widget):
   class Media:
     js = ("%s/js/bsn.AutoSuggest_2.1.3.js" % settings.MEDIA_URL, 
           "%s/js/AutoSuggestHasMany.js" % settings.MEDIA_URL,)
+    css = {
+           'all': ("%s/css/autosuggest_inquisitor.css" % settings.MEDIA_URL,
+                   "%s/css/forms.css" % settings.MEDIA_URL)}
+    
+
+class ModelHasOneWidget(django_widgets.Widget):
+  """Widget that auto-suggests a ForeignKey field."""
+  def __init__(self, attrs=None, url="", model=None):
+    self.attrs = attrs or {}
+    self.attrs.update({'size': '35', 'class': 'vModelHasOneWidget', 'src': url})
+    self.model = model
+      
+  def render(self, name, value, attrs=None):
+    if not value: 
+      value = None
+    
+    final_attrs = self.build_attrs(attrs, name=name)
+    
+    output = []
+    try:
+      obj = self.model.objects.get(id=value)
+      output.append(u'<span id="%s_%s">%s <a href="#" '
+                    'onclick="remove_assignone_id(\'%s\', \'%s\'); return false;">'
+                    '[Remove]</a></span>' % (name, value, obj, name, value))
+      output.append(u'<input type="text" id="id_%s_input" name="%s_input" '
+                    'value="" style="display: none;" %s>' 
+                    % (name, name, util.flatatt(final_attrs)))
+      output.append(u'<input type="hidden" id="id_%s" name="%s" value="%s">' 
+                    % (name, name, value))
+        
+    except exceptions.ObjectDoesNotExist:
+      output.append(u'<input type="text" id="id_%s_input" name="%s_input" value="" %s>' 
+                    % (name, name, util.flatatt(final_attrs)))
+      output.append(u'<input type="hidden" id="id_%s" name="%s" value="%s">' 
+                    % (name, name, value))
+    return safestring.mark_safe(''.join(output))
+  
+  class Media:
+    js = ("%s/js/bsn.AutoSuggest_2.1.3.js" % settings.MEDIA_URL, 
+          "%s/js/AutoSuggestHasOne.js" % settings.MEDIA_URL,)
     css = {
            'all': ("%s/css/autosuggest_inquisitor.css" % settings.MEDIA_URL,
                    "%s/css/forms.css" % settings.MEDIA_URL)}
