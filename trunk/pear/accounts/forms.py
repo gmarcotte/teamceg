@@ -1,14 +1,36 @@
 from django import forms
-from django.template import loader, Template
-from django.contrib.auth import models as auth_models
 from django.contrib import auth
 
-import pear.accounts.models
+from pear.accounts import models as accounts_models
 import pear.accounts.util
 from pear.core import emailer
 from pear.remote import localkeys
 
 
+class InviteUserForm(forms.Form):
+  email = forms.EmailField('E-Mail Address')
+  first_name = forms.CharField('First Name', required=False)
+  
+  def clean_email(self):
+    """Validates that no user already exists with this email address."""
+    try:
+      user = accounts_models.PearUser.objects.get(email__exact=self.cleaned_data['email'])
+    except accounts_models.PearUser.DoesNotExist:
+      return self.cleaned_data['email']
+    raise forms.ValidationError('This email address is already registered.  '
+                                'This person must already have a Pairgramming '
+                                'account.')
+  
+  def save(self):
+    # Send an email to the person
+    dict = {"email": self.cleaned_data['email'],
+            "fname": self.cleaned_data['first_name'],}
+    emailer.send_mail(self.cleaned_data['email'], 
+                      'Pairgramming is awesome',
+                      ('Hey, you should register a Pairgramming account by '
+                       'going to OUR WEB SITE!'))
+    
+    
 class RegistrationForm(forms.Form):
   email = forms.EmailField('E-Mail Address')
   first_name = forms.CharField('First Name', required=False)

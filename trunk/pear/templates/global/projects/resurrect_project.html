@@ -1,0 +1,16 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<p>You are about to resurrect:</p>
+
+<p>{{ project.name }}</p>
+
+<p>{{ project.description }}</p>
+
+<p>
+<form action="" method="POST">
+<input type="submit" value="Throw the Switch, Igor!" name="resurrect">
+<input type="submit" value="Cancel" name="cancel">
+</form>
+</p>
+{% endblock %}

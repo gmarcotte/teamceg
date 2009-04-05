@@ -1,7 +1,6 @@
 #projects: models.py
 #CCI 3/27/09
 from django.db import models
-from django.conf import settings
 
 from pear.core import timestamp
 import pear.accounts.models
@@ -84,11 +83,21 @@ class Project(timestamp.TimestampedModel):
   def __unicode__(self):
     return self.name
   
-  
   # Available URLs
-  def join_url(self):
-    return '%s/projects/%s/join/' % (settings.SERVER_HOSTNAME, self.id)
+  def edit_url(self):
+    return '/projects/%s/edit/' % self.id
   
+  def join_url(self):
+    return '/projects/%s/join/' % self.id
+  
+  def leave_url(self):
+    return '/projects/%s/leave/' % self.id
+  
+  def delete_url(self):
+    return '/projects/%s/delete/' % self.id
+  
+  def resurrect_url(self):
+    return '/projects/%s/resurrect/' % self.id
   
   
   
