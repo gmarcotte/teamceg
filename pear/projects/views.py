@@ -42,7 +42,19 @@ def project_index(request):
       {'page_title': 'View Projects', 'list': list,},
       context_instance=template.RequestContext(request))
   
-  
+
+def add_partner(request):
+  if request.method == 'POST':
+      form = pear.projects.forms.AddPartnerForm(request.POST)
+      if form.is_valid():
+        form.save(request.user)
+        return http.HttpResponseRedirect('/')
+  else:
+      form = pear.projects.forms.AddPartnerForm()
+  return shortcuts.render_to_response(
+      'global/projects/addpartner.html',
+      {'page_title': 'Add Partner', 'form': form,},
+      context_instance=template.RequestContext(request))
   
 ##################### AJAX VIEWS ###############################################
 
