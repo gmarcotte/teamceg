@@ -2,6 +2,7 @@ from django import forms
 
 import pear.accounts.models
 import pear.projects.models
+from pear.projects.models import Project
 from pear.core.forms import fields as pear_fields
 
 class NewProjectForm(forms.Form):
@@ -34,5 +35,20 @@ class NewProjectForm(forms.Form):
     )
     pr.save()
     
+    pr.programmers = self.cleaned_data['partners']
+    pr.programmers.add(user)
+
+
+class AddPartnerForm(forms.Form):
+  partners = pear_fields.ModelHasManyField(
+      label="Partners",
+      required=False,
+      model=pear.accounts.models.PearUser,
+      obj_name='partner',
+      url='/accounts/ajax/usersearch/?')
+  project = forms.CharField('Project Name', required=True)
+  
+  def save(self, user):
+    pr = Project.objects.get(name__exact=self.cleaned_data['project'])
     pr.programmers = self.cleaned_data['partners']
     pr.programmers.add(user)
