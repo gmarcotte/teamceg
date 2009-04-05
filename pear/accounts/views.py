@@ -132,9 +132,24 @@ def delete(request):
   else:
     return http.HttpResponseRedirect('/accounts/login')
   
+
+def invite_user(request):
+  if request.method == 'POST':
+      form = pear.accounts.forms.InviteUserForm(request.POST)
+      if form.is_valid():
+        form.save()
+        return http.HttpResponseRedirect('/')
+  else:
+      form = pear.accounts.forms.InviteUserForm()
+  return shortcuts.render_to_response(
+      'global/accounts/inviteuser.html',
+      {'page_title': 'Invite a Friend', 'form': form,},
+      context_instance=template.RequestContext(request))
+  
   
 def servers(request):
   """Delete all information associated with user."""
+  #TODO(marcotte): Fix this docstring....Christina?
   redirect_to = request.REQUEST.get('next', '/')
   
   if request.user.is_authenticated():

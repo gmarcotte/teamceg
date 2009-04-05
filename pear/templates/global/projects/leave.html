@@ -1,0 +1,17 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+
+<p>You are about to leave:</p>
+
+<p>{{ project.name }}</p>
+
+<p>{{ project.description }}</p>
+
+<p>
+<form action="" method="POST">
+<input type="submit" value="Throw in the Towel" name="leave">
+<input type="submit" value="Cancel" name="cancel">
+</form>
+</p>
+{% endblock %}

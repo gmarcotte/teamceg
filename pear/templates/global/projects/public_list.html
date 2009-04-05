@@ -27,7 +27,17 @@
     {{ programmer.get_full_name }}<br />
   {% endfor %}
   </td>
-  <td><a href="{{ project.join_url }}">Join</a></td>
+ <td>
+ {% if request.user in project.programmers.all %}
+  Launch | 
+  <a href="{{ project.edit_url }}">Edit</a> |
+  <a href="{{ project.leave_url }}">Leave</a>
+  {% if project.programmers.all|length == 1 %}
+  | <a href="{{ project.delete_url }}">Delete</a>
+  {% endif %}
+ {% else %}
+  <a href="{{ project.join_url }}">Join</a></td>
+ {% endif %}
  </tr>
 {% endfor %}
 </table>
