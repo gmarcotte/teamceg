@@ -9,6 +9,7 @@
   <th>Description</th>
   <th>Course</th>
   <th>Programmers</th>
+  <th>Actions</th>
 </tr>
 {% for project in page.object_list %}
 <tr>
@@ -26,6 +27,7 @@
     {{ programmer.get_full_name }}<br />
   {% endfor %}
   </td>
+  <td><a href="{{ project.join_url }}">Join</a></td>
  </tr>
 {% endfor %}
 </table>

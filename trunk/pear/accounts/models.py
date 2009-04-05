@@ -40,8 +40,8 @@ class Profile(timestamp.TimestampedModel):
   major = models.CharField(max_length=30)
   class_year = models.CharField(max_length=30)
   user = models.ForeignKey(auth_models.User, related_name='profile')
-  private_key = models.CharField(max_length=500)
-  public_key = models.CharField(max_length=500)
+  private_key = models.CharField(max_length=500, editable=False)
+  public_key = models.CharField(max_length=500, editable=False)
   
   def __unicode__(self):
     return str(self.major) + str(self.class_year)

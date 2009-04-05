@@ -95,6 +95,33 @@ def global_project_listing(request):
        'page': page,}, 
        context_instance=template.RequestContext(request))
   
+@auth_decorators.login_required
+def join_project(request, project_id):
+  next = request.REQUEST.get('next', '/projects/')
+  try:
+    project = pear.projects.models.Project.objects.get(pk=project_id)
+  except exceptions.ObjectDoesNotExist:
+    return http.HttpResponseRedirect(next)
+  
+  if request.user in project.programmers.all():
+    return http.HttpResponseRedirect(next)
+  
+  if request.POST.has_key('cancel'):
+    return http.HttpResponseRedirect(next)
+  
+  if request.POST.has_key('join'):
+    project.programmers.add(request.user)
+    return http.HttpResponseRedirect(next)
+  
+  else:
+    return shortcuts.render_to_response(
+        'global/projects/join.html',
+        {'page_title': "Join Project %s" % project.name,
+         'project': project,},
+        context_instance=template.RequestContext(request))
+    
+  
+  
 ##################### AJAX VIEWS ###############################################
 
 def ajax_course_search(request):
