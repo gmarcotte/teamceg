@@ -1,0 +1,35 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+
+{% if project_pages %}
+<table>
+<tr>
+  <th>Name</th>
+  <th>Description</th>
+  <th>Course</th>
+  <th>Programmers</th>
+</tr>
+{% for project in page.object_list %}
+<tr>
+  <td>{{ project.name }}</td>
+  <td>{{ project.description }}</td>
+  <td>
+  {% if project.course %}
+    {{ project.course }}
+  {% else %}
+    ---
+  {% endif %}
+  </td>
+  <td>
+  {% for programmer in project.programmers.all %}
+    {{ programmer.get_full_name }}<br />
+  {% endfor %}
+  </td>
+ </tr>
+{% endfor %}
+</table>
+{% else %}
+<p>There are no public projects</p>
+{% endif %}
+{% endblock %}

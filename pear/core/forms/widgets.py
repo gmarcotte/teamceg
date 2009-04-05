@@ -61,14 +61,18 @@ class ModelHasOneWidget(django_widgets.Widget):
     self.model = model
       
   def render(self, name, value, attrs=None):
-    if not value: 
-      value = None
+    if value:
+      try:
+        obj = self.model.objects.get(pk=value)
+      except exceptions.ObjectDoesNotExist:
+        obj = None
+    else:
+      obj = None
+      value = ''
     
     final_attrs = self.build_attrs(attrs, name=name)
-    
     output = []
-    try:
-      obj = self.model.objects.get(id=value)
+    if obj:
       output.append(u'<span id="%s_%s">%s <a href="#" '
                     'onclick="remove_assignone_id(\'%s\', \'%s\'); return false;">'
                     '[Remove]</a></span>' % (name, value, obj, name, value))
@@ -78,7 +82,7 @@ class ModelHasOneWidget(django_widgets.Widget):
       output.append(u'<input type="hidden" id="id_%s" name="%s" value="%s">' 
                     % (name, name, value))
         
-    except exceptions.ObjectDoesNotExist:
+    else:
       output.append(u'<input type="text" id="id_%s_input" name="%s_input" value="" %s>' 
                     % (name, name, util.flatatt(final_attrs)))
       output.append(u'<input type="hidden" id="id_%s" name="%s" value="%s">' 

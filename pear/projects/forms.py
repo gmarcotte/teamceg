@@ -24,6 +24,11 @@ class NewProjectForm(forms.Form):
       obj_name='course',
       url='/projects/ajax/coursesearch/?')
   
+  is_public = forms.BooleanField(
+      label="Make Public?",
+      required=False,
+      help_text="Check this box to list this project in the public directory.")
+  
   def save(self, user):
     # Create the new project
     pr = pear.projects.models.Project(
@@ -31,7 +36,9 @@ class NewProjectForm(forms.Form):
         description = self.cleaned_data['description'],
         directory = self.cleaned_data['directory'],
         course = self.cleaned_data['course'],
-        #nEED tO aDD rEPOS
+        is_public = self.cleaned_data['is_public'],
+        is_active = True,
+        is_deleted = False
     )
     pr.save()
     
