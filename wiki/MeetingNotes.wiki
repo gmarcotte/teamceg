@@ -3,6 +3,18 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Sat, April 4 =
+== Group Progress ==
+=== For Next Time ===
+ # Set up console
+ # Finish up all Django site setup
+ # Prepare for prototype demo on Fri 4/10
+=== Accomplished ===
+ # Look into open src console
+ # Join a public project
+ # Invite someone to create a Pairgramming account
+ # Add partner to existing project
+
 = Fri, April 3 =
 == Group Progress ==
 === For Next Time ===
