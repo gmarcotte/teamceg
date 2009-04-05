@@ -107,7 +107,8 @@ def global_project_listing(request):
       'global/projects/public_list.html',
       {'page_title': "Browse Public Projects",
        'project_pages': project_pages,
-       'page': page,}, 
+       'page': page,
+       'get_data': get_data,}, 
        context_instance=template.RequestContext(request))
   
 @auth_decorators.login_required

@@ -31,6 +31,7 @@
  </tr>
 {% endfor %}
 </table>
+{% print_paginator_links page get_data %}
 {% else %}
 <p>There are no public projects</p>
 {% endif %}
