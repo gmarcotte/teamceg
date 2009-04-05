@@ -49,7 +49,7 @@ def add_partner(request):
   if request.method == 'POST':
       form = pear.projects.forms.AddPartnerForm(request.POST)
       if form.is_valid():
-        form.save(request.user)
+        form.save()
         return http.HttpResponseRedirect('/')
   else:
       form = pear.projects.forms.AddPartnerForm()
@@ -57,7 +57,22 @@ def add_partner(request):
       'global/projects/addpartner.html',
       {'page_title': 'Add Partner', 'form': form,},
       context_instance=template.RequestContext(request))
-  
+
+
+def invite_user(request):
+  if request.method == 'POST':
+      form = pear.projects.forms.InviteUserForm(request.POST)
+      if form.is_valid():
+        form.save()
+        return http.HttpResponseRedirect('/')
+  else:
+      form = pear.projects.forms.InviteUserForm()
+  return shortcuts.render_to_response(
+      'global/projects/inviteuser.html',
+      {'page_title': 'Invite User', 'form': form,},
+      context_instance=template.RequestContext(request))
+
+
 def global_project_listing(request):
   """Displays a list of all active, public projects."""
   

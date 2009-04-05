@@ -5,6 +5,7 @@ urlpatterns = defaults.patterns('pear.projects.views',
     (r'^newproject/$', 'create_project'),
     (r'^viewprojects/$', 'project_index'),
     (r'^addpartner/$', 'add_partner'),
+    (r'^inviteuser/$', 'invite_user'),
     (r'^(?P<project_id>\d+)/join/', 'join_project'),
     
     # Ajax Views
