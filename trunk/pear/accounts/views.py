@@ -10,6 +10,7 @@ from django.db import models
 import pear.accounts.forms
 import pear.accounts.models
 from pear.remote import localkeys
+from pear.remote import sshmanager
 from pear.core import emailer
 
 
@@ -155,11 +156,13 @@ def servers(request):
   else:
     return http.HttpResponseRedirect('/accounts/login')
     
-    
+# Toy Shell stuff  ######################    
 def toy(request):
-  """Delete all information associated with user."""
+  """."""
   redirect_to = request.REQUEST.get('next', '/')
+  id = 0
   servresponse = ''
+  rawresponse = ''
   if request.user.is_authenticated():
     if request.method == "POST":
       form = pear.accounts.forms.ToyForm(request.user, data=request.POST)
@@ -167,7 +170,21 @@ def toy(request):
       usr = request.user
       # do stuff
       if form.is_valid():
-        servresponse = localkeys.ssh_login(form.cleaned_data['user_name'], form.cleaned_data['server_name'], usr.profile.get().get_private_key(),form.cleaned_data['command'])
+        if (id == 0):
+          ## weird method, but is proof that we can hold onto a session over multiple calls to 
+          ## the localkeys code
+          rawresponse = sshmanager.ssh_login(form.cleaned_data['user_name'], form.cleaned_data['server_name'], usr.profile.get().get_private_key(),'')#form.cleaned_data['command'])
+          id = rawresponse[0]
+          servresponse = rawresponse[1]
+          rawresponse = sshmanager.ssh_command(id, form.cleaned_data['command'])
+          servresponse = servresponse + rawresponse[1] 
+          rawresponse = sshmanager.ssh_command(id, form.cleaned_data['command2'])
+          servresponse = servresponse + rawresponse[1] 
+          rawresponse = sshmanager.ssh_command(id, form.cleaned_data['command3'])
+          servresponse = servresponse + rawresponse[1] 
+          rawresponse = sshmanager.ssh_command(id)
+          servresponse = servresponse + rawresponse[1]
+          sshmanager.ssh_close(id) 
       return shortcuts.render_to_response(
           'global/accounts/toy.html',
           {'page_title': 'Toy Shell',
@@ -176,6 +193,7 @@ def toy(request):
           context_instance=template.RequestContext(request))
       
     else:
+      id = 0
       form = pear.accounts.forms.ToyForm(request.user)
       return shortcuts.render_to_response(
           'global/accounts/toy.html',
@@ -187,6 +205,29 @@ def toy(request):
   else:
     return http.HttpResponseRedirect('/accounts/login')  
   
+### IGNORE!!!
+def toyshell(request):
+  """."""
+  redirect_to = request.REQUEST.get('next', '/')
+  servresponse = ''
+  if request.user.is_authenticated():
+    # get the ajaxterm going
+    if servresponse != '':
+      return http.HttpResponseRedirect('/accounts/login') 
+    else:
+      form = pear.accounts.forms.ToyForm(request.user)
+      return shortcuts.render_to_response(
+          'global/accounts/toyshell.html',
+          {'page_title': 'Toy Shell',
+           'form':form,
+           'feedback':'Type stuff in...'},
+          context_instance=template.RequestContext(request))
+
+  else:
+    return http.HttpResponseRedirect('/accounts/login')
+
+# End Toy Shell stuff  ###################### 
+
   
 ################ AJAX VIEWS ####################################################
 

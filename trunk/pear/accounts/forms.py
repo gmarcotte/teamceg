@@ -189,7 +189,13 @@ class ToyForm(forms.Form):
       'Username on server',
       widget = forms.TextInput(attrs={'size': '20'}))
   command = forms.CharField(
-      'Command to execute',
+      'First command to execute',
+      widget = forms.TextInput(attrs={'size': '100'}))
+  command2 = forms.CharField(
+      'Second command to execute',
+      widget = forms.TextInput(attrs={'size': '100'}))
+  command3 = forms.CharField(
+      'Third command to execute',
       widget = forms.TextInput(attrs={'size': '100'}))
   
   def __init__(self, user, *args, **kwargs):

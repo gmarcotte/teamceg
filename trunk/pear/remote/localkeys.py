@@ -11,6 +11,7 @@ from django.conf import settings
 if settings.USE_PEXPECT:
   import pexpect
 import sys
+#import sshmanager
 
 # create the keys
 # returns the name of the public key file generated
@@ -58,18 +59,7 @@ def set_remote_keys(username, password, server, pub_key_file):
     ssh.interact()
   
 
-# does a test login  
-def ssh_login(username, server, key_file, command = ''):
-  if settings.USE_PEXPECT:
-    login = "ssh -i "+ key_file + " " + username + "@" + server
-    ssh = pexpect.spawn(login)
-    #ssh.interact()
-    response = ssh.read_nonblocking(size=10000, timeout=10)
-    ssh.sendline(command)
-    response + ssh.read_nonblocking(size=2000,timeout=10)
-    return response + ssh.read_nonblocking(size=2000,timeout=10)
 
-    
 # testing method  
 #k = create_keys('mykey')
 #print 'Created new key-set, now trying to login....'
