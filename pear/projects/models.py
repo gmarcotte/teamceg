@@ -1,6 +1,7 @@
 #projects: models.py
 #CCI 3/27/09
 from django.db import models
+from django.conf import settings
 
 from pear.core import timestamp
 import pear.accounts.models
@@ -79,5 +80,16 @@ class Project(timestamp.TimestampedModel):
   
   is_deleted = models.BooleanField()
   
+  # Display Methods
   def __unicode__(self):
     return self.name
+  
+  
+  # Available URLs
+  def join_url(self):
+    return '%s/projects/%s/join/' % (settings.SERVER_HOSTNAME, self.id)
+  
+  
+  
+  
+  
