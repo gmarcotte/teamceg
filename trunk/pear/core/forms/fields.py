@@ -24,7 +24,7 @@ class ModelHasManyField(fields.Field):
     Returns a list of the model objects associated with the ids in this field.
     """
     if isinstance(value, basestring) and value: 
-      value = value.split(',') 
+      value = value.split(',')
     if value:
       return self.model.objects.filter(id__in=value)
     else:

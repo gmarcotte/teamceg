@@ -4,6 +4,8 @@ from django import http
 from django.core import exceptions
 from django.views.decorators import cache
 from django.db import models
+from django.contrib.auth import decorators as auth_decorators
+from django.core import paginator
 
 import pear.projects.models
 import pear.projects.forms
@@ -19,7 +21,7 @@ def index(request):
       {'page_title': 'Welcome'},
       context_instance=template.RequestContext(request))
 
-
+@auth_decorators.login_required
 def create_project(request):
     if request.method == 'POST':
       form = pear.projects.forms.NewProjectForm(request.POST)
@@ -33,7 +35,7 @@ def create_project(request):
         {'page_title': 'New Project', 'form': form,},
         context_instance=template.RequestContext(request))
 
-
+@auth_decorators.login_required
 def project_index(request):
   u = request.user
   list = u.projects.all()  # returns all projects associated with that user
@@ -42,7 +44,7 @@ def project_index(request):
       {'page_title': 'View Projects', 'list': list,},
       context_instance=template.RequestContext(request))
   
-
+@auth_decorators.login_required
 def add_partner(request):
   if request.method == 'POST':
       form = pear.projects.forms.AddPartnerForm(request.POST)
@@ -55,6 +57,43 @@ def add_partner(request):
       'global/projects/addpartner.html',
       {'page_title': 'Add Partner', 'form': form,},
       context_instance=template.RequestContext(request))
+  
+def global_project_listing(request):
+  """Displays a list of all active, public projects."""
+  
+  get_data = {
+      'active': 1,
+      'per_page': 20,
+      'orphans': 10,
+      'page': 1
+  }
+  get_data.update(request.GET)
+  
+  projects = pear.projects.models.Project.objects.all()
+  
+  if get_data['active'] in [0, 1]:  
+    projects = pear.projects.models.Project.objects.filter(
+        is_active = get_data['active'])
+  
+  try:
+    project_pages = paginator.Paginator(projects, 
+                                        get_data['per_page'], 
+                                        get_data['orphans'], 
+                                        False)
+    try:
+      page = project_pages.page(get_data['page'])
+    except paginator.InvalidPage:
+      page = project_pages.page(1)
+  except paginator.EmptyPage:
+    project_pages = None
+    page = None
+  
+  return shortcuts.render_to_response(
+      'global/projects/public_list.html',
+      {'page_title': "Browse Public Projects",
+       'project_pages': project_pages,
+       'page': page,}, 
+       context_instance=template.RequestContext(request))
   
 ##################### AJAX VIEWS ###############################################
 

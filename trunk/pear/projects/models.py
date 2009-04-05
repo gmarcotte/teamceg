@@ -73,5 +73,11 @@ class Project(timestamp.TimestampedModel):
   course = models.ForeignKey(
       Course, related_name='projects', null=True)
   
+  is_active = models.BooleanField()
+  
+  is_public = models.BooleanField()
+  
+  is_deleted = models.BooleanField()
+  
   def __unicode__(self):
     return self.name
