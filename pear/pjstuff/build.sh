@@ -1,0 +1,1 @@
+python ../../vendor/pyjamas/builder/build.py Basic.py

@@ -1,0 +1,89 @@
+.panel {
+  background-color: #80ff80;
+  font-family: Tahoma, Helvetica, Arial;
+  cursor: ;
+}
+.menu {
+  cursor: pointer;
+}
+.footer {
+  font-family: Palatino, Georgia, Times New Roman, Times;
+  font-style: italic;
+  font-size: 11px;
+  color: #666666;
+}
+
+/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
+.gwt-DialogBox {
+      border: 2px outset;
+      background-color: white;
+    }
+.gwt-DialogBox .Caption {
+      font-family: Tahoma, Helvetica, Arial;
+      background-color: #99dd88;
+      padding: 3px;
+      margin: 2px;
+      font-weight: bold;
+      cursor: default;
+      font-size: smaller;
+    }
+.gwt-DialogBox .Contents {
+        padding: 10px;
+    }
+
+/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
+.gwt-MenuBar {
+      background-color: #99cc66;
+      border: 1px solid #99cc66;
+      cursor: default;
+}
+.gwt-MenuBar .gwt-MenuItem {
+      font-family: Tahoma, Helvetica, Arial;
+      padding: 1px 4px 1px 4px;
+      font-size: smaller;
+      cursor: default;
+}
+.gwt-MenuBar .gwt-MenuItem-selected {
+      font-family: Tahoma, Helvetica, Arial;
+      /*text-decoration: underline;*/
+      background-color: #ccff99;
+}
+
+/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
+.gwt-TabPanel {
+}
+.gwt-TabPanelBottom {
+      border: 1px solid #998855;
+}
+.gwt-TabBar {
+      background-color: #ffffff;
+}
+.gwt-TabBar .gwt-TabBarFirst {
+      height: 100%;
+      padding-left: 3px;
+}
+.gwt-TabBar .gwt-TabBarRest {
+      padding-right: 3px;
+}
+.gwt-TabBar .gwt-TabBarItem {
+      font-family: Tahoma, Helvetica, Arial;
+      font-size: smaller;
+      border-top: 0px solid #998855;
+      border-left: 1px solid #ccaa88;
+      border-right: 1px solid #ccaa88;
+      border-bottom: 1px solid #;
+      padding: 2px;
+      cursor: pointer;
+}
+.gwt-TabBar .gwt-TabBarItem-selected {
+      font-family: Tahoma, Helvetica, Arial;
+      font-size: smaller;
+      text-decoration: underline;
+      background-color: #cccc99;
+      border-top: 1px solid #ccaa88;
+      border-left: 1px solid #ccaa88;
+      border-right: 1px solid #ccaa88;
+      border-bottom: 1px solid #998855;
+      padding: 2px;
+      cursor: default;
+}
