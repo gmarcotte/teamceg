@@ -3,6 +3,14 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Thu, April 9 =
+== Group Progress ==
+ * UI considerably more spiffy
+ * Worked on getting webserver working
+
+=== Web Server  ===
+ * Tried getting basic port forwarding to work (we already have ssh capabilities) as per the vmware documentation
+
 = Wed, April 8 =
 == Progress ==
  * Ellen got the basic user interface written in pyjamas
