@@ -3,10 +3,50 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+
 = Thu, April 9 =
+== For the Alpha Test ==
+ # Django done
+ # Console finished (in IE/Safari and Firefox)
+ # Session Plumbing
+ # Text Chat 
+ # Audio
+ # File tree/navigation
+ # Webserver up
+
+== To Demo Next Week ==
+ # Single user file editing and console functionality
+ # Webserver
+
+== To Demo Tomorrow (Prototype) ==
+ # Setting up server connections
+    # file tree
+    # text editor
+ # Preliminary project stuff
+ # Demo of console and UI
+
+== Planning ==
+ # Django finalization - This week -> Garrett
+ # Session Plumbing - This weekend -> Christina (Garrett)
+ # Switch Drivers 
+ # SVN/ file in/out, clean sync/update - Started by Next Week -> Garrett
+ # Console - Finish this week -> Christina
+ # Text Editor w/ highlighting
+ # Text Chat - This week -> Christina/Ellen
+ # Audio - This week -> Ellen
+ # Cursor (viewable by both users)
+ # Interface
+ # User settings/configuration
+ # Inking Tab
+ # File Tree - Next Week -> Garrett (UI Ellen)
+ # Additional Tabs
+ # Ping/Flash
+ # Integrating Pyjamas with Django
+
 == Group Progress ==
  * UI considerably more spiffy
  * Worked on getting webserver working
+ * Worked on making console compatible with IE and safari (keypress events are not being issued properly)
 
 === Web Server  ===
  * Tried getting basic port forwarding to work (we already have ssh capabilities) as per the vmware documentation
