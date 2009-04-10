@@ -3,6 +3,12 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Wed, April 8 =
+== Progress ==
+ * Ellen got the basic user interface written in pyjamas
+ * Christina got the console hooked into the basic UI
+Ready to do a basic demo on Friday
+
 = Sat, April 4 =
 == Group Progress ==
 === For Next Time ===
