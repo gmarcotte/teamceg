@@ -11,7 +11,7 @@ Met briefly with whole group.
  # C - finished remote ssh execution code for our remote scripts
  # E - window flash
  # G - will work on server
- # Pretty much finalized with Helene v.9
+ # Committing to using Helene v. 9 (C fixed highlighting offset bug)
 == To Do Tomorrow ==
  # Finish setting up webserver and link pyjamas and django
  # Decide how to approach audio and then, based on that, text chat
