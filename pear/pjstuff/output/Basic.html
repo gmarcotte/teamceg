@@ -3,9 +3,19 @@
         <meta name="pygwt:module" content="Basic">
         <link rel='stylesheet' href='Basic.css'>
         <title>Pairgramming</title>
+        <script>
+        function myfunction() {
+        alert("Hello world.");
+        var term=document.getElementById("term");
+        term.innerHTML="<p>JUNK</p>";
+        lame.innerHTML="<p>LAME</p>";
+       // term=ajaxterm.Terminal("term",80,25); // doesn't work yet
+        }
+        </script>
     </head>
     <body bgcolor="white">
         <script language="javascript" src="pygwt.js"></script>
+        <div id="term"></div>
     </body>
 </html>
 

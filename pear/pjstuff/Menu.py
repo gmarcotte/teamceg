@@ -41,7 +41,6 @@ class Menu(MenuBar):
     # put menu bar all together
     self.addItem(MenuItem("Info", menu_info))
     self.addItem(MenuItem("Mode", menu_mode))
-    #self.addItem(MenuItem("Ink", menu_ink))
     self.addItem(MenuItem("Audio", menu_audio))
     self.addItem(MenuItem("Files", menu_files))
 
@@ -64,18 +63,6 @@ class Menu(MenuBar):
     Ink_contents = Frame("www.google.com/")
     Window.alert(Ink_contents)
   
-  #def onMenuInkHighlight(self):
-    #Window.alert("We need to add a way for them to change colors; or should we just make them use one color per person?  It might actually be less messy that way.")
-  
-  #def onMenuInkPen(self):
-    #Window.alert("We also need to decide whether to give them options for pen color.")
-  
-  #def onMenuInkClear(self):
-    #Window.alert("We should make these individual buttons on the side?  Or would side and top menus be too busy?")
-  
-  #def onMenuInkMouse(self):
-    #Window.alert("We need to figure out if we can track mouse location and show it to the other user..")
-    
   def onMenuAudioMic(self):
     Window.alert("This should pop open a microphone controls window")
   
