@@ -4,6 +4,21 @@
 Running record of notes from our team meetings. 
 
 
+= Wed, April 15 =
+== Group Meeting ==
+Met briefly with whole group.
+ # Progress slower than we wanted (car lab and independent work issues)
+ # C - finished remote ssh execution code for our remote scripts
+ # E - window flash
+ # G - will work on server
+Meeting tomorrow to finish setting up webserver and link pyjamas and django.
+
+= Fri, April 10 =
+ # Started setting up server, decided to switch to just using plain mac server
+ # Started experimenting with embedding javascript in panels directly rather than using frames
+ # Looked at open source text editor/audio/chat
+
+
 = Thu, April 9 =
 == For the Alpha Test ==
  # Django done
