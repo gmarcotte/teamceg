@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import auth
+from django.contrib.auth import models as auth_models
 
 from pear.accounts import models as accounts_models
 import pear.accounts.util
