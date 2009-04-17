@@ -59,9 +59,10 @@ class RegistrationForm(forms.Form):
     u.first_name = self.cleaned_data['first_name']
     u.last_name = self.cleaned_data['last_name']
     u.email = self.cleaned_data['email']
+    u.username = username
+    u.set_password(password)
     
     keypath = "/Users/christinailvento/Documents/JUNIOR/Cos333/Project/teamceg/keys/" + username
-    
     # Create a profile for the new user
     p = pear.accounts.models.Profile(
         class_year = self.cleaned_data['class_year'],
