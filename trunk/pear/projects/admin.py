@@ -6,7 +6,7 @@ from pear.projects import forms
 
 
 class CourseOptions(admin.ModelAdmin):
-  form = forms.AdminCourseCreateForm
+  form = forms.AdminCourseForm
   list_display = ('name', 'department', 'number', 'year_display', 'professor_display', 'ta_display')
   list_display_links = ('name',)
   
@@ -36,5 +36,20 @@ class CourseOptions(admin.ModelAdmin):
 admin.site.register(models.Course, CourseOptions)
 
 
-admin.site.register(models.Project, admin.ModelAdmin)
+class ProjectOptions(admin.ModelAdmin):
+  form = forms.AdminProjectForm
+  list_display = ('name', 'programmer_display', 'course', 'is_active', 'is_public')
+  list_display_links = ('name',)
+  list_filter = ('is_active', 'is_public', 'is_deleted')
+  
+  def programmer_display(self, obj):
+    progs = []
+    for prog in obj.programmers.all()[:2]:
+      progs.append(prog.get_full_name())
+    if obj.programmers.count() > 2:
+      progs.append('(%s more)' % obj.programmers.count() - 2)
+    return '<br />'.join(progs)
+  programmer_display.short_description = 'Programmers'
+  programmer_display.allow_tags = True
+admin.site.register(models.Project, ProjectOptions)
   

@@ -10,7 +10,8 @@ import pear.projects.models
 
 class NewProjectForm(forms.Form):
   name = forms.CharField('Project Name', required=True)
-  description = forms.CharField('Project Description', required=False)
+  description = forms.CharField('Project Description', required=False,
+                              widget=forms.Textarea())
   directory = forms.CharField('Directory', required=False)
   
   partners = pear_fields.ModelHasManyField(
@@ -38,11 +39,11 @@ class NewProjectForm(forms.Form):
     pr.is_active = True
     pr.is_deleted = False
     
-    pr.name = self.cleaned_data['name'],
-    pr.description = self.cleaned_data['description'],
-    pr.directory = self.cleaned_data['directory'],
-    pr.course = self.cleaned_data['course'],
-    pr.is_public = self.cleaned_data['is_public'],
+    pr.name = self.cleaned_data['name']
+    pr.description = self.cleaned_data['description']
+    pr.directory = self.cleaned_data['directory']
+    pr.course = self.cleaned_data['course']
+    pr.is_public = self.cleaned_data['is_public']
     pr.save()
     
     pr.programmers = self.cleaned_data['partners']
@@ -90,7 +91,7 @@ class AddPartnerForm(forms.Form):
       
       
 ######## ADMIN SITE FORMS #######
-class AdminCourseCreateForm(forms.ModelForm):
+class AdminCourseForm(forms.ModelForm):
   
   professor = pear_fields.ModelHasManyField(
       label="Professors",
@@ -109,7 +110,25 @@ class AdminCourseCreateForm(forms.ModelForm):
   class Meta:
     model = pear.projects.models.Course
         
-    
+
+class AdminProjectForm(forms.ModelForm):
+  
+  programmers = pear_fields.ModelHasManyField(
+      label="Programmers",
+      required=False,
+      model=pear.accounts.models.PearUser,
+      obj_name='programmer',
+      url='/accounts/ajax/usersearch/?')
+  
+  course = pear_fields.ModelHasOneField(
+      label="Course",
+      required=False,
+      model=pear.projects.models.Course,
+      obj_name='course',
+      url='/projects/ajax/coursesearch/?')
+  
+  class Meta:
+    model = pear.projects.models.Project
     
     
     

@@ -63,10 +63,10 @@ class Project(timestamp.TimestampedModel):
       blank=True)
   
   directory = models.CharField(
-      max_length=20)
+      max_length=20, blank=True)
   
   repos = models.CharField(
-      max_length=100, blank=True)
+      max_length=100, blank=True, editable=False)
   
   programmers = models.ManyToManyField(
       pear.accounts.models.PearUser, related_name='projects')
@@ -74,11 +74,11 @@ class Project(timestamp.TimestampedModel):
   course = models.ForeignKey(
       Course, related_name='projects', null=True)
   
-  is_active = models.BooleanField()
+  is_active = models.BooleanField(editable=False, default=True)
   
   is_public = models.BooleanField()
   
-  is_deleted = models.BooleanField()
+  is_deleted = models.BooleanField(editable=False, default=False)
   
   # Display Methods
   def __unicode__(self):
