@@ -1,4 +1,6 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, Label, HasAlignment, VerticalPanel, FlowPanel, TextArea, TextBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, Label, HasAlignment, VerticalPanel, FlowPanel, TextArea, TextBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image
+from pyjamas.Timer import Timer
+from Tooltip import TooltipListener
 from pyjamas import Window
 from Menu import Menu, MenuCmd, onMenuInfoInfo
 
@@ -9,17 +11,26 @@ class Basic:
     self.menu_bar = Menu()
     # the ink button
     self.ink = Button("Ink", getattr(self, "onInkClick"))
+    self.flash = Button("Flash", getattr(self, "setFlash"))
+    self.flash.isActive = False  # is it currently the on-flash color?
+    self.flash.Flash = False
+    self.stopflash = Button("Stop Flash", getattr(self, "offTimer"))
     # the header (menu bar & title)
     self.banner = Image("images/header_no_description.jpg")
     self.banner.setHeight("24px")
+    self.banner.addMouseListener(TooltipListener("^--", 5000, "MOUSE"))
     # put them together
     self.header = DockPanel()
     self.header.add(self.menu_bar, DockPanel.WEST)
     self.header.add(self.ink, DockPanel.WEST)
+    self.header.add(self.flash, DockPanel.WEST)
+    self.header.add(self.stopflash, DockPanel.WEST)
     self.header.add(self.banner, DockPanel.EAST)
     self.header.setCellWidth(self.menu_bar, "11%")
     self.header.setCellWidth(self.ink, "3%")
-    self.header.setCellWidth(self.banner, "86%")
+    self.header.setCellWidth(self.flash, "3%")
+    self.header.setCellWidth(self.stopflash, "3%")
+    self.header.setCellWidth(self.banner, "80%")
     self.header.setWidth("100%")
     self.header.setBorderWidth(0)
     
@@ -110,7 +121,9 @@ class Basic:
     self.panel.setWidth("100%")
     self.panel.setHeight("100%")
     
+    # visible mouse cursor stuff.. EK
     RootPanel().add(self.panel)
+    RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
     
   def onInkClick(self):
     # highlighting
@@ -140,5 +153,37 @@ class Basic:
     self._dialog.setPopupPosition(left, top)
     self._dialog.show()
     
+  def onTimer(self):
+    if self.Flash:
+      #Window.alert("should be flashing..")
+      if self.isActive:
+        self.panel.setStyleName("NORMAL")
+        #vp.setStyleName("NORMAL")
+        self.isActive = False
+        Timer(500, self)
+        #Window.alert("STOPPED FLASH")
+        return
+      if not self.isActive:
+        self.panel.setStyleName("FLASH")
+        #vp.setStyleName("FLASH")
+        self.isActive = True
+        Timer(500, self)
+        #Window.alert("STARTED FLASH")
+        return
+    #else:  # if not self.Flash:
+      #Timer(1000, getattr(self, "offTimer"))
+  def offTimer(self):
+    self.Flash = False
+    self.panel.setStyleName("WHITE")
+    #vp.setStyleName("WHITE")
+    #Window.alert("stopped the flashing")
+    return
+  def setFlash(self):
+    self.Flash = True
+    self.onTimer()
+    #Window.alert("turned on flashing")
+    return
+    
   def onClose(self):
     self._dialog.hide()
+    
