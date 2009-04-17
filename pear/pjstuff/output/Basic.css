@@ -1,3 +1,26 @@
+.FLASH{
+      background-color: #ffffff;
+      border: 3px solid #33ee44;
+      border-style: outset;
+      cursor: default;
+}
+.NORMAL{
+      background-color: #ffffff;
+      border: 3px solid #ff00bb;
+      border-style: inset;
+      cursor: default;
+}
+.WHITE{
+      background-color: #ffffff;
+      border: 0px solid #ff00bb;
+      cursor: default;
+}
+.MOUSE{
+      background-color: #ffffff;
+}
+
+
+
 .panel {
   background-color: #80ff80;
   font-family: Tahoma, Helvetica, Arial;
