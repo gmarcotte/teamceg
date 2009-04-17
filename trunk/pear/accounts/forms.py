@@ -60,6 +60,17 @@ class RegistrationForm(forms.Form):
     u.last_name = self.cleaned_data['last_name']
     u.email = self.cleaned_data['email']
     
+    keypath = "/Users/christinailvento/Documents/JUNIOR/Cos333/Project/teamceg/keys/" + username
+    
+    # Create a profile for the new user
+    p = pear.accounts.models.Profile(
+        class_year = self.cleaned_data['class_year'],
+        major = self.cleaned_data['major'],
+        user = u,
+        private_key = keypath,
+        public_key = localkeys.create_keys(keypath)
+    )
+    
     # Send an email to the user
     dict = {"email": u.email, 
             "password": password, 
@@ -72,19 +83,7 @@ class RegistrationForm(forms.Form):
                             'emails/registration_confirm.txt', 
                             dict)
     
-    
-    
     u.save()
-    
-    keypath = "/Users/christinailvento/Documents/JUNIOR/Cos333/Project/teamceg/keys/" + username
-    # Create a profile for the new user
-    p = pear.accounts.models.Profile(
-        class_year = self.cleaned_data['class_year'],
-        major = self.cleaned_data['major'],
-        user = u,
-        private_key = keypath,
-        public_key = localkeys.create_keys(keypath)
-    )
     p.save()
 
 
