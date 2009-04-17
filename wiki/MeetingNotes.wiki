@@ -9,6 +9,7 @@ Running record of notes from our team meetings.
  # Integrated Helene into pyjamas
  # Worked on tool-tip as mouse display
  # Decided we don't want to write our own audio code after all (><); possibility includes embedding skype links
+ # Got a basic listener text-area working
 
 == Individual Progress ==
  # Fixed several bugs in Helene editor code
