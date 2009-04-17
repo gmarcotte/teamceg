@@ -1,0 +1,15 @@
+/* HEADER */
+#user-tools { position:absolute; top:25px; right:0; padding:1.2em 10px; font-size:11px; text-align:right; }
+#header { overflow:hidden; }
+#branding h1 { padding:0 10px; font-size:22px; margin:15px 0; font-weight:normal; color:#f4f379; }
+#branding h2 { padding:0 10px; font-size:14px; margin:-8px 0 8px 0; font-weight:normal; color:#ffc; }
+
+/* FOOTER */
+#footer { 
+	margin: 50px 5px 0 5px;
+	border-top: 1px solid #DDDDDD;
+	padding: 5px 5px 0 5px;
+	height: 31px;
+	text-align: right;
+	font-size: 10px;
+}
