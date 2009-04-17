@@ -47,27 +47,12 @@ function autosuggest_options(url, object_name) {
 	}
 }
 
-
-if (window.addEventListener) {
-	window.addEventListener('load', function() {
-		$$('input.vModelHasManyWidget').each(function(el_input){
-			object_name = el_input.getProperty('name');
-			object_name = object_name.substring(0, object_name.lastIndexOf('s_input'));
-			url = el_input.getProperty('src');
-			
-			new bsn.AutoSuggest('id_' + object_name + 's_input', autosuggest_options(url, object_name));
-		});
-	}, false);
-}
-
-else {
-	window.attachEvent('onload', function() {
-		$$('input.vModelHasManyWidget').each(function(el_input){
-			object_name = el_input.getProperty('name');
-			object_name = object_name.substring(0, object_name.lastIndexOf('s_input'));
-			url = el_input.getProperty('src');
-			
-			new bsn.AutoSuggest('id_' + object_name + 's_input', autosuggest_options(url, object_name));
-		});
+window.addEvent('domready', function() {
+	$$('input.vModelHasManyWidget').each(function(el_input){
+		object_name = el_input.getProperty('name');
+		object_name = object_name.substring(0, object_name.lastIndexOf('s_input'));
+		url = el_input.getProperty('src');
+		
+		new bsn.AutoSuggest('id_' + object_name + 's_input', autosuggest_options(url, object_name));
 	});
-}
+});
