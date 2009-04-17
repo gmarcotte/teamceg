@@ -22,7 +22,7 @@ def send_mail(recipient, subject, text):
   """Sends mail to the specified account.    
   """
   if settings.ENABLE_EMAIL:
-    gmailUser = settings.EMAIL_USER
+    gmailUser = settings.EMAIL_SENDER
     gmailPassword = settings.EMAIL_PASSWORD
     gmailServer = settings.EMAIL_SERVER
     gmailPort = settings.EMAIL_PORT
