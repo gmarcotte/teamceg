@@ -10,8 +10,6 @@ from django.views.decorators import cache
 
 import pear.accounts.forms
 import pear.accounts.models
-from pear.remote import localkeys
-from pear.remote import sshmanager
 from pear.core import emailer
 
 
@@ -150,82 +148,7 @@ def invite_user(request):
   return shortcuts.render_to_response(
       'global/accounts/inviteuser.html',
       {'page_title': 'Invite a Friend', 'form': form,},
-      context_instance=template.RequestContext(request))
-  
-@auth_decorators.login_required
-def servers(request):
-  """Delete all information associated with user."""
-  #TODO(marcotte): Fix this docstring....Christina?
-  redirect_to = request.REQUEST.get('next', '/')
-  
-  if request.user.is_authenticated():
-    if request.method == "POST":
-      form = pear.accounts.forms.ServerAddForm(request.user, data=request.POST)
-      # do the stuff to add the server!
-      usr = request.user
-      if form.is_valid():
-        localkeys.set_remote_keys(form.cleaned_data['user_name'],form.cleaned_data['password'],form.cleaned_data['server_name'], usr.profile.get().get_public_key())
-      return http.HttpResponseRedirect(redirect_to)
-    else:
-      form = pear.accounts.forms.ServerAddForm(request.user)
-      return shortcuts.render_to_response(
-          'global/accounts/servers.html',
-          {'page_title': 'Add a new server',
-           'form':form},
-          context_instance=template.RequestContext(request))
-
-  else:
-    return http.HttpResponseRedirect('/accounts/login')
-    
-# Toy Shell stuff  ######################   
-@auth_decorators.login_required 
-def toy(request):
-  """."""
-  redirect_to = request.REQUEST.get('next', '/')
-  id = 0
-  servresponse = ''
-  rawresponse = ''
-  if request.user.is_authenticated():
-    if request.method == "POST":
-      form = pear.accounts.forms.ToyForm(request.user, data=request.POST)
-      # do the stuff to add the server!
-      usr = request.user
-      # do stuff
-      if form.is_valid():
-        if (id == 0):
-          ## weird method, but is proof that we can hold onto a session over multiple calls to 
-          ## the localkeys code
-          rawresponse = sshmanager.ssh_login(form.cleaned_data['user_name'], form.cleaned_data['server_name'], usr.profile.get().get_private_key(),'')#form.cleaned_data['command'])
-          id = rawresponse[0]
-          servresponse = rawresponse[1]
-          rawresponse = sshmanager.ssh_command(id, form.cleaned_data['command'])
-          servresponse = servresponse + rawresponse[1] 
-          rawresponse = sshmanager.ssh_command(id, form.cleaned_data['command2'])
-          servresponse = servresponse + rawresponse[1] 
-          rawresponse = sshmanager.ssh_command(id, form.cleaned_data['command3'])
-          servresponse = servresponse + rawresponse[1] 
-          rawresponse = sshmanager.ssh_command(id)
-          servresponse = servresponse + rawresponse[1]
-          sshmanager.ssh_close(id) 
-      return shortcuts.render_to_response(
-          'global/accounts/toy.html',
-          {'page_title': 'Toy Shell',
-           'form':form,
-           'feedback': servresponse},
-          context_instance=template.RequestContext(request))
-      
-    else:
-      id = 0
-      form = pear.accounts.forms.ToyForm(request.user)
-      return shortcuts.render_to_response(
-          'global/accounts/toy.html',
-          {'page_title': 'Toy Shell',
-           'form':form,
-           'feedback':'Type stuff in...'},
-          context_instance=template.RequestContext(request))
-
-  else:
-    return http.HttpResponseRedirect('/accounts/login')  
+      context_instance=template.RequestContext(request))  
   
 ################ AJAX VIEWS ####################################################
 

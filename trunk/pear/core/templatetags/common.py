@@ -21,7 +21,7 @@ def print_paginator_links(page, get_data):
     get_data['page'] = page.number - 1
     links.append('<a href="%s"> < Previous </a>' % util.make_get_string(get_data))
   
-  links.append('%s-%s of %s' % (page.start_index(), page.end_index(), page.paginator.count))
+  links.append('Viewing %s-%s of %s' % (page.start_index(), page.end_index(), page.paginator.count))
   
   if page.has_next():
     get_data['page'] = page.number + 1

@@ -51,7 +51,8 @@ class NewProjectForm(forms.Form):
 
 class EditProjectForm(forms.Form):
   name = forms.CharField('Project Name', required=True)
-  description = forms.CharField('Project Description', required=False)
+  description = forms.CharField('Project Description', required=False,
+                                widget=forms.Textarea())
   directory = forms.CharField('Directory', required=False)
   
   course = pear_fields.ModelHasOneField(
@@ -73,8 +74,6 @@ class EditProjectForm(forms.Form):
     pr.directory = self.cleaned_data['directory']
     pr.course = self.cleaned_data['course']
     pr.is_public = self.cleaned_data['is_public']
-    is_public = self.cleaned_data['is_public']
-    raise Exception
     pr.save()
 
 class AddPartnerForm(forms.Form):
