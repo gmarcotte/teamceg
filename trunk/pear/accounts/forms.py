@@ -52,12 +52,27 @@ class RegistrationForm(forms.Form):
     # Create the new user
     # The authentication library did not like what we were doing before, so
     # this has been changed CCI
+    
     password = auth_models.User.objects.make_random_password()
+    
+    # Send an email to the user
+    dict = {"email": u.email, 
+            "password": password, 
+            "lname": u.last_name, 
+            "fname": u.first_name, 
+            "year": p.class_year, 
+            "major": p.major}
+    emailer.render_and_send(u.email,
+                            'Thank you for registering with Pairgramming!',
+                            'emails/registration_confirm.txt', 
+                            dict)
+    
     username = pear.accounts.util.make_username_from_email(self.cleaned_data['email'])
     u = auth_models.User.objects.create_user(username,'junk@addr.com',password)
     u.first_name = self.cleaned_data['first_name']
     u.last_name = self.cleaned_data['last_name']
     u.email = self.cleaned_data['email']
+    
     u.save()
     
     keypath = "/Users/christinailvento/Documents/JUNIOR/Cos333/Project/teamceg/keys/" + username
@@ -70,19 +85,6 @@ class RegistrationForm(forms.Form):
         public_key = localkeys.create_keys(keypath)
     )
     p.save()
-    
-	
-    # Send an email to the user
-    dict = {"email": u.email, 
-            "password": password, 
-            "lname": u.last_name, 
-            "fname": u.first_name, 
-            "year": p.class_year, 
-            "major": p.major}
-    emailer.render_and_send(u.email,
-                            'Thank you for registering with Pairgramming!',
-                            'emails/registration_confirm.txt', 
-                            dict)
 
 
 class LoginForm(forms.Form):
