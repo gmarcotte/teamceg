@@ -36,7 +36,7 @@ class Basic:
     
     # the left side
     # editor
-    editor = SimplePanel("<div id='myhelene'></div> <script> sethelene(); </script> ")
+    editor = HTMLPanel("<div id='myhelene'></div> <script> sethelene(); </script> ")
     editor.setWidth("100%")
     editor.setHeight("100%")
     
@@ -118,7 +118,7 @@ class Basic:
     
     # visible mouse cursor stuff.. EK
     RootPanel().add(self.panel)
-    RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
+    #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
     
   def onInkClick(self):
     # highlighting
