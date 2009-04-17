@@ -29,21 +29,16 @@ class Basic:
     self.header.setCellWidth(self.menu_bar, "11%")
     self.header.setCellWidth(self.ink, "3%")
     self.header.setCellWidth(self.flash, "3%")
-    self.header.setCellWidth(self.stopflash, "3%")
-    self.header.setCellWidth(self.banner, "80%")
+    self.header.setCellWidth(self.stopflash, "10%")
+    self.header.setCellWidth(self.banner, "73%")
     self.header.setWidth("100%")
     self.header.setBorderWidth(0)
     
     # the left side
     # editor
-    editor = TabPanel()
-    editor_highlight = HTMLPanel("<div id='myhelene'></div> <script> sethelene(); </script> ")
-    editor_highlight.setWidth("100%")
-    editor_highlight.setHeight("100%")
-    editor.add(editor_highlight, "Syntax Highlighted Editor")
+    editor = HTMLPanel("<div id='myhelene'></div> <script> sethelene(); </script> ")
     editor.setWidth("100%")
     editor.setHeight("100%")
-    editor.selectTab(0)
     
     # the right side
     vp = VerticalPanel()
