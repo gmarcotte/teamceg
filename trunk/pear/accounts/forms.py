@@ -5,6 +5,7 @@ from django.contrib.auth import models as auth_models
 from pear.accounts import models as accounts_models
 import pear.accounts.util
 from pear.core import emailer
+from pear.remote import localkeys
 
 
 class InviteUserForm(forms.Form):
