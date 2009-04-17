@@ -1,7 +1,21 @@
+html, body {
+  height: 100%;
+}
+
 body {
-  width: 80%;
-  margin: auto;
+  margin: 0px;
+  padding: 0px;
+  background-color: #001100;
   font-family: "Palatino Linotype", Times, serif;
+}
+
+#outer {
+	width: 80%;
+	margin: 0px auto;	
+	background-color: white;
+	display: block;
+	overflow: auto;
+	min-height: 100%;
 }
 
 /* HEADER */
@@ -89,6 +103,7 @@ body {
 	text-align: center;
 	background-color: #006600;
 	border: thin solid #cccccc;
+	border-left: none;
 }
 
 #nav-menu ul li a {
