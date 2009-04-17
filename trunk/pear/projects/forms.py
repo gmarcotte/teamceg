@@ -1,12 +1,11 @@
 from django import forms
+from django.contrib import auth
+from django.contrib.auth import models as auth_models
 
+from pear.core import emailer
+from pear.core.forms import fields as pear_fields
 import pear.accounts.models
 import pear.projects.models
-from pear.projects.models import Project
-from pear.core.forms import fields as pear_fields
-from django.contrib.auth import models as auth_models
-from django.contrib import auth
-from pear.core import emailer
 
 
 class NewProjectForm(forms.Form):
@@ -88,3 +87,33 @@ class AddPartnerForm(forms.Form):
   def save(self, project):
     for partner in self.cleaned_data['partners']:
       project.programmers.add(partner)
+      
+      
+######## ADMIN SITE FORMS #######
+class AdminCourseCreateForm(forms.ModelForm):
+  
+  professor = pear_fields.ModelHasManyField(
+      label="Professors",
+      required=False,
+      model=pear.accounts.models.PearUser,
+      obj_name='professor',
+      url='/accounts/ajax/usersearch/?')
+  
+  tas = pear_fields.ModelHasManyField(
+      label="TAs",
+      required=False,
+      model=pear.accounts.models.PearUser,
+      obj_name='tas',
+      url='/accounts/ajax/usersearch/?')
+  
+  class Meta:
+    model = pear.projects.models.Course
+        
+    
+    
+    
+    
+    
+    
+    
+    
