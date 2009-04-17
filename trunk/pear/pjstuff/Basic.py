@@ -36,7 +36,7 @@ class Basic:
     
     # the left side
     # editor
-    editor = HTMLPanel("<div id='myhelene'></div> <script> sethelene(); </script> ")
+    editor = SimplePanel("<div id='myhelene'></div> <script> sethelene(); </script> ")
     editor.setWidth("100%")
     editor.setHeight("100%")
     
