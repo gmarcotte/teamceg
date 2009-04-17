@@ -5,7 +5,6 @@ from django.contrib.auth import models as auth_models
 from pear.accounts import models as accounts_models
 import pear.accounts.util
 from pear.core import emailer
-from pear.remote import localkeys
 
 
 class InviteUserForm(forms.Form):
@@ -175,56 +174,4 @@ class PasswordChangeForm(forms.Form):
     
     emailer.render_and_send(self.user.email,
                             'Your Pairgramming password has been changed',
-                            'emails/change_password.txt', {})
-    
-class ServerAddForm(forms.Form):
-  server_name = forms.CharField(
-      'Server Name (ie hats.princeton.edu)',
-      widget = forms.TextInput(attrs={'size': '40'}))
-  user_name = forms.CharField(
-      'Username on server',
-      widget = forms.TextInput(attrs={'size': '20'}))
-      
-  password = forms.CharField(
-      'Password',
-      widget = forms.PasswordInput(attrs={'size': '20'}))
-  
-  def __init__(self, user, *args, **kwargs):
-    self.user = user
-    super(ServerAddForm, self).__init__(*args, **kwargs)
-  
-  def save(self):
-    # make a SSHConnection object
-    new_serv = pear.remote.models.SSHConnection(
-               server = self.cleaned_data(['server_name']),
-               user = self.user
-    )
-    new_serv.save()
-    dict = {"server": self.cleaned_data['server'], 
-            "username": self.cleaned_data['uid']}
-    emailer.render_and_send(self.user.email,
-                            'You have added a server in Pairgramming',
-                            'emails/add_server.txt', dict)
-  
-class ToyForm(forms.Form):
-  server_name = forms.CharField(
-      'Server Name (ie hats.princeton.edu)',
-      widget = forms.TextInput(attrs={'size': '40'}))
-  user_name = forms.CharField(
-      'Username on server',
-      widget = forms.TextInput(attrs={'size': '20'}))
-  command = forms.CharField(
-      'First command to execute',
-      widget = forms.TextInput(attrs={'size': '100'}))
-  command2 = forms.CharField(
-      'Second command to execute',
-      widget = forms.TextInput(attrs={'size': '100'}))
-  command3 = forms.CharField(
-      'Third command to execute',
-      widget = forms.TextInput(attrs={'size': '100'}))
-  
-  def __init__(self, user, *args, **kwargs):
-    self.user = user
-    super(ToyForm, self).__init__(*args, **kwargs)
-  
-    
+                            'emails/change_password.txt', {})   

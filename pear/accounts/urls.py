@@ -8,7 +8,7 @@ urlpatterns = defaults.patterns('pear.accounts.views',
     (r'^reset_password/$', 'reset_password'),
     (r'^delete/$', 'delete'),
     (r'^invite/$', 'invite_user'),
-    (r'^servers/$', 'servers'),
+    (r'^servers/create/$', 'create_servers'),
     (r'^toy/$', 'toy'),
     (r'^toyshell/$','toyshell'),
     

@@ -54,6 +54,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'pear.accounts',
     'pear.projects',
+    'pear.remote',
     
     # This one must be last
     'pear.core.templatetags',

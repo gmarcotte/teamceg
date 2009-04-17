@@ -39,10 +39,11 @@ def create_project(request):
 @auth_decorators.login_required
 def project_index(request):
   u = request.user
-  list = u.projects.all()  # returns all projects associated with that user
+  project_list = u.projects.all()  # returns all projects associated with that user
   return shortcuts.render_to_response(
       'global/projects/viewprojects.html',
-      {'page_title': 'View Projects', 'list': list,},
+      {'page_title': 'View Projects', 
+       'project_list': project_list,},
       context_instance=template.RequestContext(request))
   
 @auth_decorators.login_required
@@ -59,7 +60,7 @@ def edit_project(request, project_id):
   if request.method == 'POST':
       form = pear.projects.forms.EditProjectForm(request.POST)
       if form.is_valid():
-        form.save(request.user)
+        form.save(project)
         return http.HttpResponseRedirect(next)
   else:
     initial = pear_util.instance_dict(project)

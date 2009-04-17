@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if project_pages %}
-<table>
+<table id="project-list">
 <tr>
   <th>Name</th>
   <th>Description</th>
@@ -41,7 +41,9 @@
  </tr>
 {% endfor %}
 </table>
+<span class="paginator-nav">
 {% print_paginator_links page get_data %}
+</span>
 {% else %}
 <p>There are no public projects</p>
 {% endif %}

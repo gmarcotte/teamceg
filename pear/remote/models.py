@@ -1,14 +1,13 @@
-#
-#  models.py
-#  sandbox
-#
-#  Created by Christina Ilvento on 4/3/09.
-#
+from django.db import models
+
+from pear.core import timestamp
+import pear.accounts.models
+
 class SSHConnection(timestamp.TimestampedModel):
-  sever = models.CharField(max_length=50) # the server name
+  server = models.CharField(max_length=50) # the server name
   user_name = models.CharField(max_length=30) # the specific user name for this server
-  user = models.ForeignKey(auth_models.User, related_name='profile')
+  user = models.ForeignKey(pear.accounts.models.PearUser, related_name='servers')
   
   def __unicode__(self):
-    return str(self.major) + str(self.class_year)
+    return '%s@%s' % (self.user_name, self.server)
 

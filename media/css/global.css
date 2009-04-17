@@ -14,8 +14,52 @@ body {
 	margin-left: 225px;	
 }
 
+/* PROJECT LISTING TABLE */
+#project-list {
+	border-collapse: collapse;
+}
 
+#project-list th,
+#project-list td {
+	border: thin solid gray;
+	text-align: center;
+	padding: 0px 5px;	
+}
 
+#project-list th {
+	font-size: small;
+}
+
+#project-list td {
+	font-size: smaller;
+}
+
+/* SERVER LISTING TABLE */
+#server-list {
+	border-collapse: collapse;
+}
+
+#server-list th,
+#server-list td {
+	border: thin solid gray;
+	text-align: center;
+	padding: 0px 5px;	
+}
+
+#server-list th {
+	font-size: small;
+}
+
+#server-list td {
+	font-size: smaller;
+}
+
+/* PAGINATOR LINKS */
+.paginator-nav {
+	font-size: small;
+	color: #555555;
+}
+	
 /* FOOTER */
 #footer {
 	font-size: smaller;
