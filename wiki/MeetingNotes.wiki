@@ -3,6 +3,16 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Thu, April 16 =
+== Group Meeting ==
+ # Got the webserver working 
+ # Integrated Helene into pyjamas
+ # Worked on tool-tip as mouse display
+
+== Individual Progress ==
+ # Fixed several bugs in Helene editor code
+ # Got flash working for the window
+
 
 = Wed, April 15 =
 == Group Meeting ==
