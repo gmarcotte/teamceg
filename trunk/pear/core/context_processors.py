@@ -6,4 +6,6 @@ def settings_vars(request):
   return {
       'MEDIA_URL': settings.MEDIA_URL,
       'HTML_TITLE_BASE': settings.HTML_TITLE_BASE,
+      'PEAR_VERSION': settings.PEAR_VERSION,
+      'SERVER_HOSTNAME': settings.SERVER_HOSTNAME,
   }
