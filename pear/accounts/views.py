@@ -138,7 +138,7 @@ def delete(request):
     return http.HttpResponseRedirect('/accounts/login')
   
 
-@auth_decorators.admin_required
+@auth_decorators.login_required
 def invite_user(request):
   if request.method == 'POST':
       form = pear.accounts.forms.InviteUserForm(request.POST)

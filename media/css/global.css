@@ -1,12 +1,66 @@
 body {
-  width: 600px;
+  width: 80%;
+  margin: auto;
   font-family: "Palatino Linotype", Times, serif;
 }
 
-div#footer {
+/* HEADER */
+#header {
+	text-align: center;	
+}
+
+/* MAIN CONTENT */
+#content-main {
+	margin-left: 225px;	
+}
+
+
+
+/* FOOTER */
+#footer {
 	font-size: smaller;
 	font-style: italic;
 	color: gray;
+	float: left;
+	clear: both;
 }
 
- 
+/* LEFT NAVIGATION MENU */
+#nav-menu {
+	width: 200px;
+	float: left;
+	clear: none;
+	overflow-x: hidden;	
+	background-color: #003300;
+}
+
+#nav-menu ul {
+	padding-left: 0px;
+	margin: 0px;	
+}
+
+#nav-menu ul li {
+	list-style-type: none;
+	margin-left: 0px;
+	text-align: center;
+	background-color: #006600;
+	border: thin solid #cccccc;
+}
+
+#nav-menu ul li a {
+	color: #CCCCCC;	
+	font-size: smaller;
+	text-decoration: none;
+	display: block;
+}
+
+#nav-menu ul li a:hover {
+	background-color: #003300;	
+}
+
+#nav-menu h5 {
+	color: #ffffff;
+	font-weight: bold;	
+	text-align: center;
+	margin: 5px 0px;
+}
