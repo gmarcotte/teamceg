@@ -243,7 +243,6 @@ var helene={
 	// inserts the helene stylesheet and attaches helene editors
 	// on each textarea with class 'helene' set.
 	init:function() {
-    alert("helene being called.");
 		helene.util.createStyleSheet(helene.options.css);
 
 		// attach helene to any textarea with class 'helene'
