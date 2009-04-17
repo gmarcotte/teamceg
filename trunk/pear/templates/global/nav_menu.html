@@ -4,6 +4,9 @@
 	<h5>My Account</h5>
 	<ul>
 		<li><a href="/accounts/logout/">Log Out</a></li>
+		{% if user.is_staff %}
+		<li><a href="/admin/">Enter Admin</a></li>
+		{% endif %}
 		<li><a href="/accounts/change_password/">Change Password</a></li>
 		<li><a href="/accounts/delete/">Delete Account</a></li>
 	</ul>
