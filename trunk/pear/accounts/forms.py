@@ -66,7 +66,6 @@ class RegistrationForm(forms.Form):
     p = pear.accounts.models.Profile(
         class_year = self.cleaned_data['class_year'],
         major = self.cleaned_data['major'],
-        user = u,
         private_key = keypath,
         public_key = localkeys.create_keys(keypath)
     )
@@ -82,8 +81,8 @@ class RegistrationForm(forms.Form):
                             'Thank you for registering with Pairgramming!',
                             'emails/registration_confirm.txt', 
                             dict)
-    
     u.save()
+    p.user = u
     p.save()
 
 
