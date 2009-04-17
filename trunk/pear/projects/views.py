@@ -247,6 +247,7 @@ def add_partners(request, project_id):
   
 ##################### AJAX VIEWS ###############################################
 
+@auth_decorators.login_required
 def ajax_course_search(request):
   """AJAX call that returns a JSON array of courses matching the search field.
   

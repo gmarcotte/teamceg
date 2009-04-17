@@ -1,11 +1,12 @@
+from django import http
 from django import shortcuts
 from django import template
 from django.contrib import auth
+from django.contrib.auth import decorators as auth_decorators
 from django.contrib.auth import models as auth_models
-from django import http
 from django.core import exceptions
-from django.views.decorators import cache
 from django.db import models
+from django.views.decorators import cache
 
 import pear.accounts.forms
 import pear.accounts.models
@@ -59,6 +60,7 @@ def login(request):
       context_instance=template.RequestContext(request))
 
 
+@auth_decorators.login_required
 def logout(request):
   """Logout the current user."""
   redirect_to = request.REQUEST.get('next', '/')
@@ -66,6 +68,7 @@ def logout(request):
   return http.HttpResponseRedirect(redirect_to)
 
 
+@auth_decorators.login_required
 def change_password(request):
   """Allow the currently logged in user to change passwords."""
   redirect_to = request.REQUEST.get('next', '/')
@@ -88,6 +91,7 @@ def change_password(request):
       context_instance=template.RequestContext(request))
 
 
+@auth_decorators.login_required
 def reset_password(request):
   """Allow a user to reset password via email."""
   redirect_to = request.REQUEST.get('next', '/')
@@ -108,6 +112,7 @@ def reset_password(request):
   return http.HttpResponseRedirect(redirect_to)
 
 
+@auth_decorators.login_required
 def delete(request):
   """Delete all information associated with user."""
   redirect_to = request.REQUEST.get('next', '/')
@@ -133,6 +138,7 @@ def delete(request):
     return http.HttpResponseRedirect('/accounts/login')
   
 
+@auth_decorators.admin_required
 def invite_user(request):
   if request.method == 'POST':
       form = pear.accounts.forms.InviteUserForm(request.POST)
@@ -146,7 +152,7 @@ def invite_user(request):
       {'page_title': 'Invite a Friend', 'form': form,},
       context_instance=template.RequestContext(request))
   
-  
+@auth_decorators.login_required
 def servers(request):
   """Delete all information associated with user."""
   #TODO(marcotte): Fix this docstring....Christina?
@@ -171,7 +177,8 @@ def servers(request):
   else:
     return http.HttpResponseRedirect('/accounts/login')
     
-# Toy Shell stuff  ######################    
+# Toy Shell stuff  ######################   
+@auth_decorators.login_required 
 def toy(request):
   """."""
   redirect_to = request.REQUEST.get('next', '/')
@@ -220,33 +227,10 @@ def toy(request):
   else:
     return http.HttpResponseRedirect('/accounts/login')  
   
-### IGNORE!!!
-def toyshell(request):
-  """."""
-  redirect_to = request.REQUEST.get('next', '/')
-  servresponse = ''
-  if request.user.is_authenticated():
-    # get the ajaxterm going
-    if servresponse != '':
-      return http.HttpResponseRedirect('/accounts/login') 
-    else:
-      form = pear.accounts.forms.ToyForm(request.user)
-      return shortcuts.render_to_response(
-          'global/accounts/toyshell.html',
-          {'page_title': 'Toy Shell',
-           'form':form,
-           'feedback':'Type stuff in...'},
-          context_instance=template.RequestContext(request))
-
-  else:
-    return http.HttpResponseRedirect('/accounts/login')
-
-# End Toy Shell stuff  ###################### 
-
-  
 ################ AJAX VIEWS ####################################################
 
 @cache.never_cache
+@auth_decorators.login_required
 def ajax_user_search(request):
   """AJAX call that returns a JSON array of staff members matching search field.
   
