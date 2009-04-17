@@ -1,0 +1,43 @@
+<div id="nav-menu">
+
+{% if user.is_authenticated %}
+	<h5>My Account</h5>
+	<ul>
+		<li><a href="/accounts/logout/">Log Out</a></li>
+		<li><a href="/accounts/change_password/">Change Password</a></li>
+		<li><a href="/accounts/delete/">Delete Account</a></li>
+	</ul>
+	
+	<h5>Server Configuration</h5>
+	<ul>
+		<li><a href="/accounts/servers/">Manage Connections</a></li>
+		<li><a href="/accounts/servers/create/">Create Connection</a></li>
+	</ul>
+	
+	<h5>Project Management</h5>
+	<ul>
+		<li><a href="/projects/my_projects/">My Projects</a></li>
+		<li><a href="/projects/create/">Create Project</a></li>
+		<li><a href="/projects/">Public Projects</a></li>
+	</ul>
+{% else %}
+	<h5>Get Started</h5>
+	<ul>
+		<li><a href="/accounts/login/">Log In</a></li>
+		<li><a href="/accounts/register/">Register</a></li>
+		<li><a href="/accounts/reset_password/">Reset Password</a></li>
+	</ul>
+	
+	<h5>Look Around</h5>
+	<ul>
+		<li><a href="/projects/">Public Projects</a></li>
+	</ul>		
+{% endif %}
+	
+	<h5>Support</h5>
+	<ul>
+		<li><a href="/support/help/">Help</a></li>
+		<li><a href="/support/faq/">FAQ</a></li>
+		<li><a href="mailto:pairgramming@gmail.com">Contact Us</a></li>
+	</ul>
+</div>
