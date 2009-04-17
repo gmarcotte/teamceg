@@ -3,15 +3,25 @@
         <meta name="pygwt:module" content="Basic">
         <link rel='stylesheet' href='Basic.css'>
         <title>Pairgramming</title>
+        <script src="helene.js"></script>
         <script>
         function myfunction() {
-        alert("Hello world.");
-        var term=document.getElementById("term");
-        term.innerHTML="<p>JUNK</p>";
-        lame.innerHTML="<p>LAME</p>";
-       // term=ajaxterm.Terminal("term",80,25); // doesn't work yet
+        //alert("myfunction being called.");
+          var term=document.getElementById("term");
+         // term.innerHTML="<p>JUNK</p>";
+         // lame.innerHTML="<p>LAME</p>";
+         // term=ajaxterm.Terminal("term",80,25); // doesn't work yet
         }
         </script>
+        <script>
+        function sethelene() {
+          alert("Calling my function.");
+          myhelene.innerHTML="<textarea name='myhelene' id='myhelene' class='helene' style='border: 2px inset buttonhighlight; width: 600px; height: 600px; color: black; font-size: 14px;' wrap='off'> here is my text</textarea>";
+          helene.init();
+        }
+        </script>
+
+        
     </head>
     <body bgcolor="white">
         <script language="javascript" src="pygwt.js"></script>

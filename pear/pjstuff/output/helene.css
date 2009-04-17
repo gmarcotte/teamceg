@@ -1,0 +1,48 @@
+.hlCanvas {
+	padding: 0px !important;
+	position: absolute !important;
+	z-index: 100 !important;
+	white-space: nowrap !important;
+	overflow: auto !important;
+	overflow-y: scroll !important;
+	background-color: white !important;
+}
+
+* html .hlCanvas {
+	background-image: url('images/line_bg.gif') !important;
+	background-repeat: repeat-y !important;
+}
+
+.hlCanvas OL {
+	margin: 0px;
+	padding: 0px;
+	min-height: 100%;
+	background-image: url('images/line_bg.gif') !important;
+	background-repeat: repeat-y !important;
+}
+
+.hlCanvas LI {
+	margin: 0px;
+	margin-left: 44px;
+	padding: 0px;
+}	
+
+.hlInput {
+	position: absolute;
+	top: 0px;
+	left: 44px;
+	height: 1em;
+	border: 0px;
+	overflow: hidden;
+	background-color: #ADD8E6;
+	width: 100%;	
+	margin: 0px;
+	padding: 0px;
+}
+.hlSelection {
+	background-color: #66FF00;
+	opacity: 0.5;
+	-moz-opacity: 0.5;
+	filter: alpha(opacity=50);
+	overflow: hidden;
+}
