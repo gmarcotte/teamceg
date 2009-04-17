@@ -54,6 +54,11 @@ class RegistrationForm(forms.Form):
     # this has been changed CCI
     
     password = auth_models.User.objects.make_random_password()
+    username = pear.accounts.util.make_username_from_email(self.cleaned_data['email'])
+    u = auth_models.User()
+    u.first_name = self.cleaned_data['first_name']
+    u.last_name = self.cleaned_data['last_name']
+    u.email = self.cleaned_data['email']
     
     # Send an email to the user
     dict = {"email": u.email, 
@@ -67,11 +72,7 @@ class RegistrationForm(forms.Form):
                             'emails/registration_confirm.txt', 
                             dict)
     
-    username = pear.accounts.util.make_username_from_email(self.cleaned_data['email'])
-    u = auth_models.User.objects.create_user(username,'junk@addr.com',password)
-    u.first_name = self.cleaned_data['first_name']
-    u.last_name = self.cleaned_data['last_name']
-    u.email = self.cleaned_data['email']
+    
     
     u.save()
     
