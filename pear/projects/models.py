@@ -21,7 +21,7 @@ SEM_CHOICES = (
 
 class Course(timestamp.TimestampedModel):
   name = models.CharField(
-      max_length=100, blank=True)
+      max_length=100)
   
   department = models.CharField(
       max_length=10, blank=True)
@@ -34,10 +34,11 @@ class Course(timestamp.TimestampedModel):
       related_name='courses_taught')
   
   year = models.PositiveSmallIntegerField(
-      choices=YEAR_CHOICES, null=True)
+      choices=YEAR_CHOICES, null=True,
+      blank=True)
   
   semester = models.PositiveSmallIntegerField(
-      choices=SEM_CHOICES, null=True)
+      choices=SEM_CHOICES, null=True, blank=True)
   
   tas = models.ManyToManyField(
       pear.accounts.models.PearUser, 

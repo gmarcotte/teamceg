@@ -2,10 +2,12 @@ from django.contrib import admin
 from django.db import models as django_models
 
 from pear.projects import models
+from pear.projects import forms
 
 
 class CourseOptions(admin.ModelAdmin):
-  list_display = ('name', 'department', 'number', 'year_display')
+  form = forms.AdminCourseCreateForm
+  list_display = ('name', 'department', 'number', 'year_display', 'professor_display', 'ta_display')
   list_display_links = ('name',)
   
   def year_display(self, obj):
@@ -18,7 +20,7 @@ class CourseOptions(admin.ModelAdmin):
   
   def professor_display(self, obj):
     profs = []
-    for prof in obj.professors.all():
+    for prof in obj.professor.all():
       profs.append(prof.get_full_name())
     return '<br />'.join(profs)
   professor_display.short_description = 'Professors'
