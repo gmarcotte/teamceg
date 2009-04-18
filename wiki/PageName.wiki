@@ -1,9 +1,0 @@
-#summary server notes
-
-= SSH =
-
-To ssh into the server:
-{{{
- >> ssh teamceg@pu108534.student.princeton.edu
- >> ssh <username>@server
-}}}
