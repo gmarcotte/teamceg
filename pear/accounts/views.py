@@ -89,7 +89,6 @@ def change_password(request):
       context_instance=template.RequestContext(request))
 
 
-@auth_decorators.login_required
 def reset_password(request):
   """Allow a user to reset password via email."""
   redirect_to = request.REQUEST.get('next', '/')
