@@ -1,1 +1,1 @@
-python ../../vendor/pyjamas/builder/build.py Basic.py
+python ../../vendor/pyjamas/builder/build.py -o ../../media/pj Basic.py

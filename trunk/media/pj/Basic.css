@@ -1,0 +1,112 @@
+.FLASH{
+      background-color: #ffffff;
+      border: 3px solid #33ee44;
+      border-style: outset;
+      cursor: default;
+}
+.NORMAL{
+      background-color: #ffffff;
+      border: 3px solid #ff00bb;
+      border-style: inset;
+      cursor: default;
+}
+.WHITE{
+      background-color: #ffffff;
+      border: 0px solid #ff00bb;
+      cursor: default;
+}
+.MOUSE{
+      background-color: #ffffff;
+}
+
+
+
+.panel {
+  background-color: #80ff80;
+  font-family: Tahoma, Helvetica, Arial;
+}
+.menu {
+  cursor: pointer;
+}
+.footer {
+  font-family: Palatino, Georgia, Times New Roman, Times;
+  font-style: italic;
+  font-size: 11px;
+  color: #666666;
+}
+
+/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
+.gwt-DialogBox {
+      border: 2px outset;
+      background-color: white;
+    }
+.gwt-DialogBox .Caption {
+      font-family: Tahoma, Helvetica, Arial;
+      background-color: #99dd88;
+      padding: 3px;
+      margin: 2px;
+      font-weight: bold;
+      cursor: default;
+      font-size: smaller;
+    }
+.gwt-DialogBox .Contents {
+        padding: 10px;
+    }
+
+/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
+.gwt-MenuBar {
+      background-color: #ffffff;
+      border: 0px solid #ffffff;
+      cursor: default;
+}
+.gwt-MenuBar .gwt-MenuItem {
+      font-family: Tahoma, Helvetica, Arial;
+      padding: 1px 4px 1px 4px;
+      font-size: smaller;
+      cursor: default;
+}
+.gwt-MenuBar .gwt-MenuItem-selected {
+      font-family: Tahoma, Helvetica, Arial;
+      /*text-decoration: underline;*/
+      background-color: #99cc66;
+      /* #ccff99 */
+}
+
+/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
+.gwt-TabPanel {
+}
+.gwt-TabPanelBottom {
+      border: 1px solid #998855;
+}
+.gwt-TabBar {
+      background-color: #ffffff;
+}
+.gwt-TabBar .gwt-TabBarFirst {
+      height: 100%;
+      padding-left: 3px;
+}
+.gwt-TabBar .gwt-TabBarRest {
+      padding-right: 3px;
+}
+.gwt-TabBar .gwt-TabBarItem {
+      font-family: Tahoma, Helvetica, Arial;
+      font-size: smaller;
+      border-top: 0px solid #998855;
+      border-left: 0px solid #ccaa88;
+      border-right: 0px solid #ccaa88;
+      border-bottom: 0px solid #;
+      padding: 2px 6px 2px 6px;
+      cursor: pointer;
+}
+.gwt-TabBar .gwt-TabBarItem-selected {
+      font-family: Tahoma, Helvetica, Arial;
+      font-size: smaller;
+      text-decoration: ;
+      background-color: #cccc99;
+      border-top: 0px solid #ccaa88;
+      border-left: 0px solid #ccaa88;
+      border-right: 0px solid #ccaa88;
+      border-bottom: 0px solid #998855;
+      padding: 2px;
+      cursor: default;
+}
