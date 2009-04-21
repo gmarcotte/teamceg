@@ -1,0 +1,6 @@
+#summary Instructions for pushing code updates to the server.
+
+ * ssh into the server (teamceg.princeton.edu) as teamceg
+ * cd to /var/django/teamceg
+ * sudo svn update whatever files you are pushing
+ * sudo apachectl restart
