@@ -3,6 +3,15 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Mon, April 20 =
+== Group Meeting ==
+ # Did the first integration of pyjamas and django
+ # Updated the server
+
+== Individual Work for Next Time ==
+ # Write up ssh documentation (C)
+ # Write up webserver update procedure (G)
+
 = Thu, April 16 =
 == Group Meeting ==
  # Got the webserver working 
