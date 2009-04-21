@@ -22,6 +22,13 @@ def index(request):
       {'page_title': 'Welcome'},
       context_instance=template.RequestContext(request))
 
+
+def launch_project(request, project_id):
+  """Launch the Pyjamas app for a given project"""
+  return shortcuts.render_to_response(
+      'Basic.html', {}, context_instance=template.RequestContext(request))
+
+
 @auth_decorators.login_required
 def create_project(request):
     if request.method == 'POST':

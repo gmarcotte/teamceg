@@ -3,9 +3,18 @@ from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window
 from Menu import Menu, MenuCmd, onMenuInfoInfo
+from pyjamas.JSONService import JSONProxy
+
+MEDIA_URL = 'http://localhost:8000'
+
+class DataService(JSONProxy):
+  def __init__(self):
+    JSONProxy.__init__(self, "/projects/services/", ["get_username",])
 
 class Basic:
   def onModuleLoad(self):
+    
+    self.remote = DataService()
     
     # the menu bar at the top
     self.menu_bar = Menu()
@@ -16,7 +25,7 @@ class Basic:
     self.flash.Flash = False
     self.stopflash = Button("Stop Flash", getattr(self, "offTimer"))
     # the header (menu bar & title)
-    self.banner = Image("images/header_no_description.jpg")
+    self.banner = Image("/pj/images/header_no_description.jpg")
     self.banner.setHeight("24px")
     self.banner.addMouseListener(TooltipListener("^--", 5000, "MOUSE"))
     # put them together
@@ -121,32 +130,21 @@ class Basic:
     #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
     
   def onInkClick(self):
-    # highlighting
-    high_check = CheckBox("Highlighter")
-    Ink_high = FlowPanel()
-    Ink_high.add(high_check)
-    # pen
-    pen_check = CheckBox("Pen")
-    Ink_pen = FlowPanel()
-    Ink_pen.add(pen_check)
-    # clear ink marks
-    
-    # show/hide mouse to partner
-    # put it together
-    Ink_contents = VerticalPanel()
-    Ink_contents.setSpacing(4)
-    Ink_contents.add(Ink_high)
-    Ink_contents.add(Ink_pen)
-    Ink_contents.add(Button("Close", getattr(self, "onClose")))
-    Ink_contents.setStyleName("Contents")
-    
-    self._dialog = DialogBox()
-    self._dialog.setHTML('<b>Ink Settings</b>')
-    self._dialog.setWidget(Ink_contents)    
-    left = (Window.getClientWidth() - 200) / 2
-    top = (Window.getClientHeight() - 100) / 2
-    self._dialog.setPopupPosition(left, top)
-    self._dialog.show()
+    window.alert('Getting username')
+    id = self.remote.get_username(self)
+    if id < 0:
+      console.error("Server Error or Invalid Response")
+    window.alert('Sent username request')  
+      
+  def onRemoteResponse(self, response, request_info):
+    window.alert('Received remote response')
+    console.info("response received")
+    if request_info.method == 'get_username':
+      console.info("HERE!")
+      for tpl in response:
+        window.alert("User: %s" % tpl[1])
+    else:
+      console.error("none!")
     
   def onTimer(self):
     if self.Flash:

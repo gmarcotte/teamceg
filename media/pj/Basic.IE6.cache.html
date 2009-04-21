@@ -1432,72 +1432,39 @@ __pyjslib_Tuple_initialize();
     var DOM_currentEvent = null;
 function DOM_init() {
 
-    // Set up capture event dispatchers.
-    $wnd.__dispatchCapturedMouseEvent = function(evt) {
-        if ($wnd.__dispatchCapturedEvent(evt)) {
-            var cap = DOM_getCaptureElement();
-            if (cap && cap.__listener) {
-                DOM_dispatchEvent(evt, cap, cap.__listener);
-                evt.stopPropagation();
-            }
-        }
-    };
-
-    $wnd.__dispatchCapturedEvent = function(evt) {
-        if (!DOM_previewEvent(evt)) {
-            evt.stopPropagation();
-            evt.preventDefault();
-            return false;
+    // Set up event dispatchers.
+    $wnd.__dispatchEvent = function() {
+        if ($wnd.event.returnValue == null) {
+            $wnd.event.returnValue = true;
+            if (!DOM_previewEvent($wnd.event))
+                return;
         }
 
-        return true;
-        };
-
-    $wnd.addEventListener(
-        'mouseout',
-        function(evt){
-            var cap = DOM_getCaptureElement();
-            if (cap) {
-                if (!evt.relatedTarget) {
-                    // When the mouse leaves the window during capture, release capture
-                    // and synthesize an 'onlosecapture' event.
-                    DOM_sCaptureElem = null;
-                    if (cap.__listener) {
-                        var lcEvent = $doc.createEvent('UIEvent');
-                        lcEvent.initUIEvent('losecapture', false, false, $wnd, 0);
-                        DOM_dispatchEvent(lcEvent, cap, cap.__listener);
-                    }
-                }
-            }
-        },
-        true
-    );
-
-
-    $wnd.addEventListener('click', $wnd.__dispatchCapturedMouseEvent, true);
-    $wnd.addEventListener('dblclick', $wnd.__dispatchCapturedMouseEvent, true);
-    $wnd.addEventListener('mousedown', $wnd.__dispatchCapturedMouseEvent, true);
-    $wnd.addEventListener('mouseup', $wnd.__dispatchCapturedMouseEvent, true);
-    $wnd.addEventListener('mousemove', $wnd.__dispatchCapturedMouseEvent, true);
-    $wnd.addEventListener('keydown', $wnd.__dispatchCapturedEvent, true);
-    $wnd.addEventListener('keyup', $wnd.__dispatchCapturedEvent, true);
-    $wnd.addEventListener('keypress', $wnd.__dispatchCapturedEvent, true);
-    
-    $wnd.__dispatchEvent = function(evt) {
-    
         var listener, curElem = this;
-        
-        while (curElem && !(listener = curElem.__listener)) {
-            curElem = curElem.parentNode;
-        }
-        if (curElem && curElem.nodeType != 1) {
-            curElem = null;
-        }
+        while (curElem && !(listener = curElem.__listener))
+            curElem = curElem.parentElement;
     
-        if (listener) {
-            DOM_dispatchEvent(evt, curElem, listener);
-        }
+        if (listener)
+            DOM_dispatchEvent($wnd.event, curElem, listener);
     };
+
+    $wnd.__dispatchDblClickEvent = function() {
+        var newEvent = $doc.createEventObject();
+        this.fireEvent('onclick', newEvent);
+        if (this.__eventBits & 2)
+            $wnd.__dispatchEvent.call(this);
+    };
+
+    $doc.body.onclick       =
+    $doc.body.onmousedown   =
+    $doc.body.onmouseup     =
+    $doc.body.onmousemove   =
+    $doc.body.onkeydown     =
+    $doc.body.onkeypress    =
+    $doc.body.onkeyup       =
+    $doc.body.onfocus       =
+    $doc.body.onblur        =
+    $doc.body.ondblclick    = $wnd.__dispatchEvent;
     
 }
 
@@ -1517,7 +1484,11 @@ function DOM_appendChild(parent, child) {
 
 function DOM_compare(elem1, elem2) {
 
-    return (elem1 == elem2);
+    if (!elem1 && !elem2)
+        return true;
+    else if (!elem1 || !elem2)
+        return false;
+    return (elem1.uniqueID == elem2.uniqueID);
     
 }
 
@@ -1590,10 +1561,7 @@ function DOM_createInputPassword() {
 
 function DOM_createInputRadio(group) {
 
-    var elem = $doc.createElement("INPUT");
-    elem.type = 'radio';
-    elem.name = group;
-    return elem;
+    return $doc.createElement("<INPUT type='RADIO' name='" + group + "'>");
     
 }
 
@@ -1740,16 +1708,17 @@ function DOM_eventGetShiftKey(evt) {
 }
 
 
-function DOM_eventGetTarget(event) {
+function DOM_eventGetTarget(evt) {
 
-    return event.target ? event.target : null;
+    var elem = evt.srcElement;
+    return elem ? elem : null;
     
 }
 
 
 function DOM_eventGetToElement(evt) {
 
-    return evt.relatedTarget ? evt.relatedTarget : null;
+    return evt.toElement ? evt.toElement : null;
     
 }
 
@@ -1792,7 +1761,9 @@ function DOM_eventGetTypeString(event) {
 
 
 function DOM_eventPreventDefault(evt) {
-    evt.preventDefault();
+
+    evt.returnValue = false;
+    
 }
 
 
@@ -1805,7 +1776,8 @@ function DOM_eventSetKeyCode(evt, key) {
 
 function DOM_eventToString(evt) {
 
-    return evt.toString();
+    if (evt.toString) return evt.toString();
+    return "[object Event]";
     
 }
 
@@ -1819,32 +1791,24 @@ function DOM_iframeGetSrc(elem) {
 
 function DOM_getAbsoluteLeft(elem) {
 
-    var left = 0;
-    while (elem) {
-        left += elem.offsetLeft - elem.scrollLeft;
-    
-        var parent = elem.offsetParent;
-        if (parent && (parent.tagName == 'BODY') && (elem.style.position == 'absolute'))
-            break;
-        elem = parent;
+    var scrollLeft = $doc.documentElement.scrollLeft;
+    if(scrollLeft == 0){
+        scrollLeft = $doc.body.scrollLeft
     }
-    return left + $doc.body.scrollLeft;
+    
+    return (elem.getBoundingClientRect().left + scrollLeft) - 2;
     
 }
 
 
 function DOM_getAbsoluteTop(elem) {
 
-    var top = 0;
-    while (elem) {
-        top += elem.offsetTop - elem.scrollTop;
-    
-        var parent = elem.offsetParent;
-        if (parent && (parent.tagName == 'BODY') && (elem.style.position == 'absolute'))
-            break;
-        elem = parent;
+    var scrollTop = $doc.documentElement.scrollTop;
+    if(scrollTop == 0){
+        scrollTop = $doc.body.scrollTop
     }
-    return top + $doc.body.scrollTop;
+    
+    return (elem.getBoundingClientRect().top +  scrollTop) - 2;
     
 }
 
@@ -1871,46 +1835,26 @@ function DOM_getCaptureElement() {
 
 function DOM_getChild(elem, index) {
 
-    var count = 0, child = elem.firstChild;
-    while (child) {
-      var next = child.nextSibling;
-      if (child.nodeType == 1) {
-        if (index == count)
-          return child;
-        ++count;
-      }
-      child = next;
-    }
-
-    return null;
+    var child = elem.children[index];
+    return child ? child : null;
     
 }
 
 
 function DOM_getChildCount(elem) {
 
-    var count = 0, child = elem.firstChild;
-    while (child) {
-      if (child.nodeType == 1)
-      ++count;
-      child = child.nextSibling;
-    }
-    return count;
+    return elem.children.length;
     
 }
 
 
-function DOM_getChildIndex(parent, toFind) {
+function DOM_getChildIndex(parent, child) {
 
-    var count = 0, child = parent.firstChild;
-    while (child) {
-        if (child == toFind)
-            return count;
-        if (child.nodeType == 1)
-            ++count;
-        child = child.nextSibling;
+    var count = parent.children.length;
+    for (var i = 0; i < count; ++i) {
+        if (child.uniqueID == parent.children[i].uniqueID)
+            return i;
     }
-
     return -1;
     
 }
@@ -1941,8 +1885,6 @@ function DOM_getEventsSunk(element) {
 function DOM_getFirstChild(elem) {
 
     var child = elem.firstChild;
-    while (child && child.nodeType != 1)
-      child = child.nextSibling;
     return child ? child : null;
     
 }
@@ -1956,20 +1898,10 @@ function DOM_getInnerHTML(element) {
 }
 
 
-function DOM_getInnerText(element) {
+function DOM_getInnerText(elem) {
 
-    // To mimic IE's 'innerText' property in the W3C DOM, we need to recursively
-    // concatenate all child text nodes (depth first).
-    var text = '', child = element.firstChild;
-    while (child) {
-      if (child.nodeType == 1){ // 1 == Element node
-        text += DOM_getInnerText(child);
-      } else if (child.nodeValue) {
-        text += child.nodeValue;
-      }
-      child = child.nextSibling;
-    }
-    return text;
+    var ret = elem.innerText;
+    return (ret == null) ? null : ret;
     
 }
 
@@ -1999,8 +1931,6 @@ function DOM_getIntStyleAttribute(elem, attr) {
 function DOM_getNextSibling(elem) {
 
     var sib = elem.nextSibling;
-    while (sib && sib.nodeType != 1)
-      sib = sib.nextSibling;
     return sib ? sib : null;
     
 }
@@ -2008,12 +1938,7 @@ function DOM_getNextSibling(elem) {
 
 function DOM_getParent(elem) {
 
-    var parent = elem.parentNode;
-    if(parent == null) {
-        return null;
-    }
-    if (parent.nodeType != 1)
-        parent = null;
+    var parent = elem.parentElement;
     return parent ? parent : null;
     
 }
@@ -2027,21 +1952,12 @@ function DOM_getStyleAttribute(elem, attr) {
 }
 
 
-function DOM_insertChild(parent, toAdd, index) {
+function DOM_insertChild(parent, child, index) {
 
-    var count = 0, child = parent.firstChild, before = null;
-    while (child) {
-      if (child.nodeType == 1) {
-        if (count == index) {
-          before = child;
-          break;
-        }
-        ++count;
-      }
-      child = child.nextSibling;
-    }
-
-    parent.insertBefore(toAdd, before);
+    if (index == parent.children.length)
+        parent.appendChild(child);
+    else
+        parent.insertBefore(child, parent.children[index]);
     
 }
 
@@ -2117,11 +2033,9 @@ function DOM_walkChildren(elem) {
 function DOM_isOrHasChild(parent, child) {
 
     while (child) {
-      if (parent == child)
-        return true;
-      child = child.parentNode;
-      if (child.nodeType != 1)
-        child = null;
+        if (parent.uniqueID == child.uniqueID)
+            return true;
+        child = child.parentElement;
     }
     return false;
     
@@ -2130,8 +2044,7 @@ function DOM_isOrHasChild(parent, child) {
 
 function DOM_releaseCapture(elem) {
 
-    if ((DOM_sCaptureElem != null) && DOM_compare(elem, DOM_sCaptureElem))
-        DOM_sCaptureElem = null;
+    elem.releaseCapture();
     
 }
 
@@ -2219,7 +2132,7 @@ function DOM_setBooleanAttribute(elem, attr, value) {
 
 function DOM_setCapture(elem) {
 
-    DOM_sCaptureElem = elem;
+    elem.setCapture();
     
 }
 
@@ -2243,12 +2156,9 @@ function DOM_setInnerHTML(element, html) {
 
 function DOM_setInnerText(elem, text) {
 
-    // Remove all children first.
-    while (elem.firstChild) {
-        elem.removeChild(elem.firstChild);
-    }
-    // Add a new text node.
-    elem.appendChild($doc.createTextNode(text));
+    if (!text)
+        text = '';
+    elem.innerText = text;
     
 }
 
@@ -2282,39 +2192,34 @@ function DOM_setStyleAttribute(element, name, value) {
 }
 
 
-function DOM_sinkEvents(element, bits) {
+function DOM_sinkEvents(elem, bits) {
 
-    element.__eventBits = bits;
-    
-    element.onclick    = (bits & 0x00001) ? $wnd.__dispatchEvent : null;
-    element.ondblclick  = (bits & 0x00002) ? $wnd.__dispatchEvent : null;
-    element.onmousedown   = (bits & 0x00004) ? $wnd.__dispatchEvent : null;
-    element.onmouseup    = (bits & 0x00008) ? $wnd.__dispatchEvent : null;
-    element.onmouseover   = (bits & 0x00010) ? $wnd.__dispatchEvent : null;
-    element.onmouseout  = (bits & 0x00020) ? $wnd.__dispatchEvent : null;
-    element.onmousemove   = (bits & 0x00040) ? $wnd.__dispatchEvent : null;
-    element.onkeydown    = (bits & 0x00080) ? $wnd.__dispatchEvent : null;
-    element.onkeypress  = (bits & 0x00100) ? $wnd.__dispatchEvent : null;
-    element.onkeyup    = (bits & 0x00200) ? $wnd.__dispatchEvent : null;
-    element.onchange      = (bits & 0x00400) ? $wnd.__dispatchEvent : null;
-    element.onfocus    = (bits & 0x00800) ? $wnd.__dispatchEvent : null;
-    element.onblur      = (bits & 0x01000) ? $wnd.__dispatchEvent : null;
-    element.onlosecapture = (bits & 0x02000) ? $wnd.__dispatchEvent : null;
-    element.onscroll      = (bits & 0x04000) ? $wnd.__dispatchEvent : null;
-    element.onload      = (bits & 0x08000) ? $wnd.__dispatchEvent : null;
-    element.onerror    = (bits & 0x10000) ? $wnd.__dispatchEvent : null;
+    elem.__eventBits = bits;
+
+    elem.onclick       = (bits & 0x00001) ? $wnd.__dispatchEvent : null;
+    elem.ondblclick    = (bits & 0x00002) ? $wnd.__dispatchDblClickEvent : null;
+    elem.onmousedown   = (bits & 0x00004) ? $wnd.__dispatchEvent : null;
+    elem.onmouseup     = (bits & 0x00008) ? $wnd.__dispatchEvent : null;
+    elem.onmouseover   = (bits & 0x00010) ? $wnd.__dispatchEvent : null;
+    elem.onmouseout    = (bits & 0x00020) ? $wnd.__dispatchEvent : null;
+    elem.onmousemove   = (bits & 0x00040) ? $wnd.__dispatchEvent : null;
+    elem.onkeydown     = (bits & 0x00080) ? $wnd.__dispatchEvent : null;
+    elem.onkeypress    = (bits & 0x00100) ? $wnd.__dispatchEvent : null;
+    elem.onkeyup       = (bits & 0x00200) ? $wnd.__dispatchEvent : null;
+    elem.onchange      = (bits & 0x00400) ? $wnd.__dispatchEvent : null;
+    elem.onfocus       = (bits & 0x00800) ? $wnd.__dispatchEvent : null;
+    elem.onblur        = (bits & 0x01000) ? $wnd.__dispatchEvent : null;
+    elem.onlosecapture = (bits & 0x02000) ? $wnd.__dispatchEvent : null;
+    elem.onscroll      = (bits & 0x04000) ? $wnd.__dispatchEvent : null;
+    elem.onload        = (bits & 0x08000) ? $wnd.__dispatchEvent : null;
+    elem.onerror       = (bits & 0x10000) ? $wnd.__dispatchEvent : null;
     
 }
 
 
 function DOM_toString(elem) {
 
-    var temp = elem.cloneNode(true);
-    var tempDiv = $doc.createElement("DIV");
-    tempDiv.appendChild(temp);
-    outer = tempDiv.innerHTML;
-    temp.innerHTML = "";
-    return outer;
+    return elem.outerHTML;
     
 }
 
@@ -2360,18 +2265,17 @@ function DOM_eventGetCurrentEvent() {
 }
 
 
-function DOM_insertListItem(select, item, value, index) {
-    var option = DOM_createElement('OPTION');
-    DOM_setInnerText(option, item);
-    if ((value != null)) {
-    DOM_setAttribute(option, 'value', value);
+function DOM_insertListItem(select, text, value, index) {
+
+    var newOption = document.createElement("Option");
+    if(index==-1) {
+        select.add(newOption);
+    } else {
+        select.add(newOption,index);
     }
-    if ((index == -1)) {
-    DOM_appendChild(select, option);
-    }
-    else {
-    DOM_insertChild(select, option, index);
-    }
+    newOption.text=text;
+    newOption.value=value;
+    
 }
 
 
@@ -2624,7 +2528,7 @@ function __Location_Location_initialize() {
     __Location_Location.prototype.__class__.__init__.unbound_method = true;
     __Location_Location.prototype.__init__.instance_method = true;
     __Location_Location.prototype.getHash = function() {
-    return this.location.hash;
+    return unescape(this.location.hash);
     };
     __Location_Location.prototype.__class__.getHash = function() {
         return __Location_Location.prototype.getHash.call.apply(__Location_Location.prototype.getHash, arguments);
@@ -2707,7 +2611,7 @@ function __Location_Location_initialize() {
     __Location_Location.prototype.__class__.getProtocol.unbound_method = true;
     __Location_Location.prototype.getProtocol.instance_method = true;
     __Location_Location.prototype.getSearch = function() {
-    return  ( '' + this.location.search ) ;
+    return unescape(this.location.search);
     };
     __Location_Location.prototype.__class__.getSearch = function() {
         return __Location_Location.prototype.getSearch.call.apply(__Location_Location.prototype.getSearch, arguments);
@@ -3338,31 +3242,40 @@ function History_init() {
     if (tokenElement)
         $wnd.__historyToken = tokenElement.value;
     else
-        historyFrame.src = 'history.html?' + encodeURIComponent($wnd.__historyToken);
+        historyFrame.src = 'history.html?' + $wnd.__historyToken;
 
     // Expose the '__onHistoryChanged' function, which will be called by
     // the history frame when it loads.
     $wnd.__onHistoryChanged = function(token) {
         // Change the URL and notify the application that its history frame
-        // is changing.
+        // is changing.  Note that setting location.hash does _not_ add a history
+        // frame on IE, so we don't have to do a 'location.replace()'.
         if (token != $wnd.__historyToken) {
             $wnd.__historyToken = token;
-
-            // TODO(jgw): fix the bookmark update, if possible.  The following code
-            // screws up the browser by (a) making it pretend that it's loading the
-            // page indefinitely, and (b) causing all text to disappear (!)
-            //        var base = $wnd.location.href;
-            //        var hashIdx = base.indexOf('#');
-            //        if (hashIdx != -1)
-            //          base = base.substring(0, hashIdx);
-            //        $wnd.location.replace(base + '#' + token);
-
+            $wnd.location.hash = encodeURIComponent(token);
             // TODO - move init back into History
             // this.onHistoryChanged(token);
             var h = new __History_History();
             h.onHistoryChanged(token);
         }
     };
+
+    // This is the URL check timer.  It detects when an unexpected change
+    // occurs in the document's URL (e.g. when the user enters one manually
+    // or selects a 'favorite', but only the #hash part changes).  When this
+    // occurs, we _must_ reload the page.  This is because IE has a really
+    // nasty bug that totally mangles its history stack and causes the location
+    // bar in the UI to stop working under these circumstances.
+    var urlChecker = function() {
+        var hash = $wnd.location.hash;
+        if (hash.length > 0) {
+            var token = decodeURIComponent(hash.substring(1));
+            if ($wnd.__historyToken && (token != $wnd.__historyToken))
+                $wnd.location.reload();
+        }
+        $wnd.setTimeout(urlChecker, 250);
+    };
+    urlChecker();
 
     return true;
     
@@ -8840,6 +8753,12 @@ __ui_PopupPanel.prototype.hide.parse_kwargs = function ( __kwargs, autoClosed ) 
     __ui_PopupPanel.prototype.__class__.onKeyUpPreview.unbound_method = true;
     __ui_PopupPanel.prototype.onKeyUpPreview.instance_method = true;
     __ui_PopupPanel.prototype.onHideImpl = function(popup) {
+
+        var frame = popup.__frame;
+        frame.parentElement.removeChild(frame);
+        popup.__frame = null;
+        frame.__popup = null;
+        
     };
     __ui_PopupPanel.prototype.__class__.onHideImpl = function() {
         return __ui_PopupPanel.prototype.onHideImpl.call.apply(__ui_PopupPanel.prototype.onHideImpl, arguments);
@@ -8847,6 +8766,20 @@ __ui_PopupPanel.prototype.hide.parse_kwargs = function ( __kwargs, autoClosed ) 
     __ui_PopupPanel.prototype.__class__.onHideImpl.unbound_method = true;
     __ui_PopupPanel.prototype.onHideImpl.instance_method = true;
     __ui_PopupPanel.prototype.onShowImpl = function(popup) {
+
+        var frame = $doc.createElement('iframe');
+        frame.scrolling = 'no';
+        frame.frameBorder = 0;
+        frame.style.position = 'absolute';
+        
+        popup.__frame = frame;
+        frame.__popup = popup;
+        frame.style.setExpression('left', 'this.__popup.offsetLeft');
+        frame.style.setExpression('top', 'this.__popup.offsetTop');
+        frame.style.setExpression('width', 'this.__popup.offsetWidth');
+        frame.style.setExpression('height', 'this.__popup.offsetHeight');
+        popup.parentElement.insertBefore(frame, popup);
+        
     };
     __ui_PopupPanel.prototype.__class__.onShowImpl = function() {
         return __ui_PopupPanel.prototype.onShowImpl.call.apply(__ui_PopupPanel.prototype.onShowImpl, arguments);
@@ -10947,9 +10880,13 @@ function __ui_TextBoxBase_initialize() {
     __ui_TextBoxBase.prototype.getCursorPos = function() {
 
         try {
-            var element = this.getElement()
-            return element.selectionStart;
-        } catch (e) {
+            var elem = this.getElement();
+            var tr = elem.document.selection.createRange();
+            if (tr.parentElement().uniqueID != elem.uniqueID)
+                return -1;
+            return -tr.move("character", -65535);
+        }
+        catch (e) {
             return 0;
         }
         
@@ -10980,10 +10917,14 @@ function __ui_TextBoxBase_initialize() {
     __ui_TextBoxBase.prototype.getSelectedText.instance_method = true;
     __ui_TextBoxBase.prototype.getSelectionLength = function() {
 
-        try{
-            var element = this.getElement()
-            return element.selectionEnd - element.selectionStart;
-        } catch (e) {
+        try {
+            var elem = this.getElement();
+            var tr = elem.document.selection.createRange();
+            if (tr.parentElement().uniqueID != elem.uniqueID)
+                return 0;
+            return tr.text.length;
+        }
+        catch (e) {
             return 0;
         }
         
@@ -11095,14 +11036,18 @@ function __ui_TextBoxBase_initialize() {
     __ui_TextBoxBase.prototype.__class__.setName.unbound_method = true;
     __ui_TextBoxBase.prototype.setName.instance_method = true;
     __ui_TextBoxBase.prototype.setSelectionRange = function(pos, length) {
-    if ((length < 0)) {
-    console.error( ( 'Length must be a positive integer. Length: ' + length ) );
-    }
-    if (((pos < 0)) || (( ( length + pos )  > pyjslib_len(this.getText())))) {
-    console.error( (  (  (  (  ( 'From Index: ' + pos )  + '  To Index: ' )  +  ( pos + length )  )  + '  Text Length: ' )  + pyjslib_len(this.getText()) ) );
-    }
-    var element = this.getElement();
-    element.setSelectionRange(pos,  ( pos + length ) );
+
+        try {
+            var elem = this.getElement();
+            var tr = elem.createTextRange();
+            tr.collapse(true);
+            tr.moveStart('character', pos);
+            tr.moveEnd('character', length);
+            tr.select();
+        }
+        catch (e) {
+        }
+        
     };
     __ui_TextBoxBase.prototype.__class__.setSelectionRange = function() {
         return __ui_TextBoxBase.prototype.setSelectionRange.call.apply(__ui_TextBoxBase.prototype.setSelectionRange, arguments);
@@ -11244,7 +11189,19 @@ function __ui_TextArea_initialize() {
     __ui_TextArea.prototype.__class__.getCharacterWidth.unbound_method = true;
     __ui_TextArea.prototype.getCharacterWidth.instance_method = true;
     __ui_TextArea.prototype.getCursorPos = function() {
-    return __ui_TextBoxBase.prototype.__class__.getCursorPos(this);
+
+        try {
+            var elem = this.getElement();
+            var tr = elem.document.selection.createRange();
+            var tr2 = tr.duplicate();
+            tr2.moveToElementText(elem);
+            tr.setEndPoint('EndToStart', tr2);
+            return tr.text.length;
+        }
+        catch (e) {
+            return 0;
+        }
+        
     };
     __ui_TextArea.prototype.__class__.getCursorPos = function() {
         return __ui_TextArea.prototype.getCursorPos.call.apply(__ui_TextArea.prototype.getCursorPos, arguments);
@@ -12797,13 +12754,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.__class__.__new__ = ui_Focus;
     __ui_Focus.prototype.blur = function(elem) {
 
-        // Attempts to blur elements from within an event callback will
-        // generally be unsuccessful, so we invoke blur() from outside of
-        // the callback.
-        $wnd.setTimeout(function() {
-                                       elem.blur();
-                        },
-                        0);
+        elem.blur();
         
     };
     __ui_Focus.prototype.__class__.blur = function() {
@@ -12813,30 +12764,9 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.blur.instance_method = true;
     __ui_Focus.prototype.createFocusable = function() {
 
-        var div = $doc.createElement('div');
-        var input = $doc.createElement('input');
-        input.type = 'text';
-        input.style.width = input.style.height = 0;
-        input.style.zIndex = -1;
-        input.style.position = 'absolute';
-
-        input.addEventListener(
-            'blur',
-            function(evt) { if (this.parentNode.onblur) this.parentNode.onblur(evt); },
-            false);
-
-        input.addEventListener(
-            'focus',
-            function(evt) { if (this.parentNode.onfocus) this.parentNode.onfocus(evt); },
-            false);
-
-        div.addEventListener(
-            'mousedown',
-            function(evt) { this.firstChild.focus(); },
-            false);
-        
-        div.appendChild(input);
-        return div;
+        var e = $doc.createElement("DIV");
+        e.tabIndex = 0;
+        return e;
         
     };
     __ui_Focus.prototype.__class__.createFocusable = function() {
@@ -12846,13 +12776,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.createFocusable.instance_method = true;
     __ui_Focus.prototype.focus = function(elem) {
 
-        // Attempts to focus elements from within an event callback will
-        // generally be unsuccessful, so we invoke focus() from outside of
-        // the callback.
-        $wnd.setTimeout(function() {
-                                       elem.focus();
-                        },
-                        0);
+        elem.focus();
         
     };
     __ui_Focus.prototype.__class__.focus = function() {
@@ -12862,7 +12786,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.focus.instance_method = true;
     __ui_Focus.prototype.getTabIndex = function(elem) {
 
-        return elem.firstChild.tabIndex;
+        return elem.tabIndex;
         
     };
     __ui_Focus.prototype.__class__.getTabIndex = function() {
@@ -12872,7 +12796,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.getTabIndex.instance_method = true;
     __ui_Focus.prototype.setAccessKey = function(elem, key) {
 
-        elem.firstChild.accessKey = key;
+        elem.accessKey = key;
         
     };
     __ui_Focus.prototype.__class__.setAccessKey = function() {
@@ -12882,7 +12806,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.setAccessKey.instance_method = true;
     __ui_Focus.prototype.setTabIndex = function(elem, index) {
 
-        elem.firstChild.tabIndex = index;
+        elem.tabIndex = index;
         
     };
     __ui_Focus.prototype.__class__.setTabIndex = function() {
@@ -13273,9 +13197,9 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     };
     __ui_FormPanel.prototype.__class__.getAction.unbound_method = true;
     __ui_FormPanel.prototype.getAction.instance_method = true;
-    __ui_FormPanel.prototype.getEncoding = function(form) {
+    __ui_FormPanel.prototype.getEncoding = function() {
 
-        return form.enctype;
+        return this.getElement().enctype;
         
     };
     __ui_FormPanel.prototype.__class__.getEncoding = function() {
@@ -13304,8 +13228,8 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
         try {
             if (!iframe.contentWindow.document)
                 return null;
-
-            return iframe.contentWindow.document.body.innerHTML;
+        
+            return iframe.contentWindow.document.body.innerText;
         } catch (e) {
             return null;
         }
@@ -13319,11 +13243,13 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     __ui_FormPanel.prototype.hookEvents = function(iframe, form, listener) {
 
         if (iframe) {
-            iframe.onload = function() {
+            iframe.onreadystatechange = function() {
                 if (!iframe.__formAction)
                     return;
-
-                listener.onFrameLoad();
+        
+                if (iframe.readyState == 'complete') {
+                    listener.onFrameLoad();
+                }
             };
         }
 
@@ -13404,9 +13330,11 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     };
     __ui_FormPanel.prototype.__class__.setAction.unbound_method = true;
     __ui_FormPanel.prototype.setAction.instance_method = true;
-    __ui_FormPanel.prototype.setEncoding = function(form, encoding) {
+    __ui_FormPanel.prototype.setEncoding = function(encodingType) {
 
-        form.enctype = encoding;
+        var form = this.getElement();
+        form.enctype = encodingType;
+        form.encoding = encodingType;
         
     };
     __ui_FormPanel.prototype.__class__.setEncoding = function() {
@@ -13491,7 +13419,7 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     __ui_FormPanel.prototype.unhookEvents = function(iframe, form) {
 
         if (iframe)
-            iframe.onload = null;
+            iframe.onreadystatechange = null;
         form.onsubmit = null;
         
     };
@@ -19501,6 +19429,12 @@ __ui_PopupPanel.prototype.hide.parse_kwargs = function ( __kwargs, autoClosed ) 
     __ui_PopupPanel.prototype.__class__.onKeyUpPreview.unbound_method = true;
     __ui_PopupPanel.prototype.onKeyUpPreview.instance_method = true;
     __ui_PopupPanel.prototype.onHideImpl = function(popup) {
+
+        var frame = popup.__frame;
+        frame.parentElement.removeChild(frame);
+        popup.__frame = null;
+        frame.__popup = null;
+        
     };
     __ui_PopupPanel.prototype.__class__.onHideImpl = function() {
         return __ui_PopupPanel.prototype.onHideImpl.call.apply(__ui_PopupPanel.prototype.onHideImpl, arguments);
@@ -19508,6 +19442,20 @@ __ui_PopupPanel.prototype.hide.parse_kwargs = function ( __kwargs, autoClosed ) 
     __ui_PopupPanel.prototype.__class__.onHideImpl.unbound_method = true;
     __ui_PopupPanel.prototype.onHideImpl.instance_method = true;
     __ui_PopupPanel.prototype.onShowImpl = function(popup) {
+
+        var frame = $doc.createElement('iframe');
+        frame.scrolling = 'no';
+        frame.frameBorder = 0;
+        frame.style.position = 'absolute';
+        
+        popup.__frame = frame;
+        frame.__popup = popup;
+        frame.style.setExpression('left', 'this.__popup.offsetLeft');
+        frame.style.setExpression('top', 'this.__popup.offsetTop');
+        frame.style.setExpression('width', 'this.__popup.offsetWidth');
+        frame.style.setExpression('height', 'this.__popup.offsetHeight');
+        popup.parentElement.insertBefore(frame, popup);
+        
     };
     __ui_PopupPanel.prototype.__class__.onShowImpl = function() {
         return __ui_PopupPanel.prototype.onShowImpl.call.apply(__ui_PopupPanel.prototype.onShowImpl, arguments);
@@ -21608,9 +21556,13 @@ function __ui_TextBoxBase_initialize() {
     __ui_TextBoxBase.prototype.getCursorPos = function() {
 
         try {
-            var element = this.getElement()
-            return element.selectionStart;
-        } catch (e) {
+            var elem = this.getElement();
+            var tr = elem.document.selection.createRange();
+            if (tr.parentElement().uniqueID != elem.uniqueID)
+                return -1;
+            return -tr.move("character", -65535);
+        }
+        catch (e) {
             return 0;
         }
         
@@ -21641,10 +21593,14 @@ function __ui_TextBoxBase_initialize() {
     __ui_TextBoxBase.prototype.getSelectedText.instance_method = true;
     __ui_TextBoxBase.prototype.getSelectionLength = function() {
 
-        try{
-            var element = this.getElement()
-            return element.selectionEnd - element.selectionStart;
-        } catch (e) {
+        try {
+            var elem = this.getElement();
+            var tr = elem.document.selection.createRange();
+            if (tr.parentElement().uniqueID != elem.uniqueID)
+                return 0;
+            return tr.text.length;
+        }
+        catch (e) {
             return 0;
         }
         
@@ -21756,14 +21712,18 @@ function __ui_TextBoxBase_initialize() {
     __ui_TextBoxBase.prototype.__class__.setName.unbound_method = true;
     __ui_TextBoxBase.prototype.setName.instance_method = true;
     __ui_TextBoxBase.prototype.setSelectionRange = function(pos, length) {
-    if ((length < 0)) {
-    console.error( ( 'Length must be a positive integer. Length: ' + length ) );
-    }
-    if (((pos < 0)) || (( ( length + pos )  > pyjslib_len(this.getText())))) {
-    console.error( (  (  (  (  ( 'From Index: ' + pos )  + '  To Index: ' )  +  ( pos + length )  )  + '  Text Length: ' )  + pyjslib_len(this.getText()) ) );
-    }
-    var element = this.getElement();
-    element.setSelectionRange(pos,  ( pos + length ) );
+
+        try {
+            var elem = this.getElement();
+            var tr = elem.createTextRange();
+            tr.collapse(true);
+            tr.moveStart('character', pos);
+            tr.moveEnd('character', length);
+            tr.select();
+        }
+        catch (e) {
+        }
+        
     };
     __ui_TextBoxBase.prototype.__class__.setSelectionRange = function() {
         return __ui_TextBoxBase.prototype.setSelectionRange.call.apply(__ui_TextBoxBase.prototype.setSelectionRange, arguments);
@@ -21905,7 +21865,19 @@ function __ui_TextArea_initialize() {
     __ui_TextArea.prototype.__class__.getCharacterWidth.unbound_method = true;
     __ui_TextArea.prototype.getCharacterWidth.instance_method = true;
     __ui_TextArea.prototype.getCursorPos = function() {
-    return __ui_TextBoxBase.prototype.__class__.getCursorPos(this);
+
+        try {
+            var elem = this.getElement();
+            var tr = elem.document.selection.createRange();
+            var tr2 = tr.duplicate();
+            tr2.moveToElementText(elem);
+            tr.setEndPoint('EndToStart', tr2);
+            return tr.text.length;
+        }
+        catch (e) {
+            return 0;
+        }
+        
     };
     __ui_TextArea.prototype.__class__.getCursorPos = function() {
         return __ui_TextArea.prototype.getCursorPos.call.apply(__ui_TextArea.prototype.getCursorPos, arguments);
@@ -23458,13 +23430,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.__class__.__new__ = ui_Focus;
     __ui_Focus.prototype.blur = function(elem) {
 
-        // Attempts to blur elements from within an event callback will
-        // generally be unsuccessful, so we invoke blur() from outside of
-        // the callback.
-        $wnd.setTimeout(function() {
-                                       elem.blur();
-                        },
-                        0);
+        elem.blur();
         
     };
     __ui_Focus.prototype.__class__.blur = function() {
@@ -23474,30 +23440,9 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.blur.instance_method = true;
     __ui_Focus.prototype.createFocusable = function() {
 
-        var div = $doc.createElement('div');
-        var input = $doc.createElement('input');
-        input.type = 'text';
-        input.style.width = input.style.height = 0;
-        input.style.zIndex = -1;
-        input.style.position = 'absolute';
-
-        input.addEventListener(
-            'blur',
-            function(evt) { if (this.parentNode.onblur) this.parentNode.onblur(evt); },
-            false);
-
-        input.addEventListener(
-            'focus',
-            function(evt) { if (this.parentNode.onfocus) this.parentNode.onfocus(evt); },
-            false);
-
-        div.addEventListener(
-            'mousedown',
-            function(evt) { this.firstChild.focus(); },
-            false);
-        
-        div.appendChild(input);
-        return div;
+        var e = $doc.createElement("DIV");
+        e.tabIndex = 0;
+        return e;
         
     };
     __ui_Focus.prototype.__class__.createFocusable = function() {
@@ -23507,13 +23452,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.createFocusable.instance_method = true;
     __ui_Focus.prototype.focus = function(elem) {
 
-        // Attempts to focus elements from within an event callback will
-        // generally be unsuccessful, so we invoke focus() from outside of
-        // the callback.
-        $wnd.setTimeout(function() {
-                                       elem.focus();
-                        },
-                        0);
+        elem.focus();
         
     };
     __ui_Focus.prototype.__class__.focus = function() {
@@ -23523,7 +23462,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.focus.instance_method = true;
     __ui_Focus.prototype.getTabIndex = function(elem) {
 
-        return elem.firstChild.tabIndex;
+        return elem.tabIndex;
         
     };
     __ui_Focus.prototype.__class__.getTabIndex = function() {
@@ -23533,7 +23472,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.getTabIndex.instance_method = true;
     __ui_Focus.prototype.setAccessKey = function(elem, key) {
 
-        elem.firstChild.accessKey = key;
+        elem.accessKey = key;
         
     };
     __ui_Focus.prototype.__class__.setAccessKey = function() {
@@ -23543,7 +23482,7 @@ function __ui_Focus_initialize() {
     __ui_Focus.prototype.setAccessKey.instance_method = true;
     __ui_Focus.prototype.setTabIndex = function(elem, index) {
 
-        elem.firstChild.tabIndex = index;
+        elem.tabIndex = index;
         
     };
     __ui_Focus.prototype.__class__.setTabIndex = function() {
@@ -23934,9 +23873,9 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     };
     __ui_FormPanel.prototype.__class__.getAction.unbound_method = true;
     __ui_FormPanel.prototype.getAction.instance_method = true;
-    __ui_FormPanel.prototype.getEncoding = function(form) {
+    __ui_FormPanel.prototype.getEncoding = function() {
 
-        return form.enctype;
+        return this.getElement().enctype;
         
     };
     __ui_FormPanel.prototype.__class__.getEncoding = function() {
@@ -23965,8 +23904,8 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
         try {
             if (!iframe.contentWindow.document)
                 return null;
-
-            return iframe.contentWindow.document.body.innerHTML;
+        
+            return iframe.contentWindow.document.body.innerText;
         } catch (e) {
             return null;
         }
@@ -23980,11 +23919,13 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     __ui_FormPanel.prototype.hookEvents = function(iframe, form, listener) {
 
         if (iframe) {
-            iframe.onload = function() {
+            iframe.onreadystatechange = function() {
                 if (!iframe.__formAction)
                     return;
-
-                listener.onFrameLoad();
+        
+                if (iframe.readyState == 'complete') {
+                    listener.onFrameLoad();
+                }
             };
         }
 
@@ -24065,9 +24006,11 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     };
     __ui_FormPanel.prototype.__class__.setAction.unbound_method = true;
     __ui_FormPanel.prototype.setAction.instance_method = true;
-    __ui_FormPanel.prototype.setEncoding = function(form, encoding) {
+    __ui_FormPanel.prototype.setEncoding = function(encodingType) {
 
-        form.enctype = encoding;
+        var form = this.getElement();
+        form.enctype = encodingType;
+        form.encoding = encodingType;
         
     };
     __ui_FormPanel.prototype.__class__.setEncoding = function() {
@@ -24152,7 +24095,7 @@ __ui_FormPanel.prototype.__init__.parse_kwargs = function ( __kwargs, target ) {
     __ui_FormPanel.prototype.unhookEvents = function(iframe, form) {
 
         if (iframe)
-            iframe.onload = null;
+            iframe.onreadystatechange = null;
         form.onsubmit = null;
         
     };
@@ -24761,7 +24704,7 @@ __HTTPRequest_HTTPRequest.prototype.asyncPost.parse_kwargs = function ( __kwargs
     __HTTPRequest_HTTPRequest.prototype.createXmlHTTPRequest.instance_method = true;
     __HTTPRequest_HTTPRequest.prototype.doCreateXmlHTTPRequest = function() {
 
-        return new XMLHttpRequest();
+        return new ActiveXObject("Msxml2.XMLHTTP");
         
     };
     __HTTPRequest_HTTPRequest.prototype.__class__.doCreateXmlHTTPRequest = function() {
@@ -25353,6 +25296,220 @@ __JSONService_JSONService_initialize();
 __JSONService_JSONProxy_initialize();
 __JSONService_JSONResponseTextHandler_initialize();
 __JSONService_JSONRequestInfo_initialize();
+
+//
+// BEGIN sprintf.js
+//
+
+// args is a pyjslib_List
+// str is a String
+function sprintf2(str, args)
+{
+   if(args && args.__class__ != "pyjslib_List")
+      args = new pyjslib_List([args]);
+   if (!args || pyjslib_len(args) < 1 || !RegExp)
+   {
+      return;
+   }
+   var re = /([^%]*)%('.|0|\x20)?(-)?(\d+)?(\.\d+)?(%|b|c|d|u|f|o|s|x|X)(.*)/;
+   var a = b = [], numSubstitutions = 0, numMatches = 0;
+   while (a = re.exec(str))
+   {
+      var leftpart = a[1], pPad = a[2], pJustify = a[3], pMinLength = a[4];
+      var pPrecision = a[5], pType = a[6], rightPart = a[7];
+      
+      //alert(a + '\n' + [a[0], leftpart, pPad, pJustify, pMinLength, pPrecision);
+
+      numMatches++;
+      if (pType == '%')
+      {
+         subst = '%';
+      }
+      else
+      {
+         if (numSubstitutions >= args.length)
+         {
+            alert('Error! Not enough function args (' + (args.length - 1) + ', excluding the string)\nfor the number of substitution parameters in string (' + numSubstitutions + ' so far).');
+         }
+         var param = args.__getitem__(numSubstitutions);
+         var pad = '';
+                if (pPad && pPad.substr(0,1) == "'") pad = leftpart.substr(1,1);
+           else if (pPad) pad = pPad;
+         var justifyRight = true;
+                if (pJustify && pJustify === "-") justifyRight = false;
+         var minLength = -1;
+                if (pMinLength) minLength = parseInt(pMinLength);
+         var precision = -1;
+                if (pPrecision && pType == 'f') precision = parseInt(pPrecision.substring(1));
+         var subst = param;
+                if (pType == 'b') subst = parseInt(param).toString(2);
+           else if (pType == 'c') subst = String.fromCharCode(parseInt(param));
+           else if (pType == 'd') subst = parseInt(param) ? parseInt(param) : 0;
+           else if (pType == 'u') subst = Math.abs(param);
+           else if (pType == 'f') subst = (precision > -1) ? Math.round(parseFloat(param) * Math.pow(10, precision)) / Math.pow(10, precision): parseFloat(param);
+           else if (pType == 'o') subst = parseInt(param).toString(8);
+           else if (pType == 's') subst = param;
+           else if (pType == 'x') subst = ('' + parseInt(param).toString(16)).toLowerCase();
+           else if (pType == 'X') subst = ('' + parseInt(param).toString(16)).toUpperCase();
+         numSubstitutions++;
+      }
+      str = leftpart + subst + rightPart;
+   }
+   return str;
+}
+
+/**
+*
+*  Javascript sprintf
+*  http://www.webtoolkit.info/
+*
+*
+**/
+
+// str is a String
+// args is a pyjslib_List or pyjslib_Tuple
+sprintfWrapper = {
+
+	init : function (str, args) {
+
+        if (args === undefined)
+        {
+            return null;
+        }
+        constructor = null;
+        if (!pyjslib_is_basetype(args))
+            constructor = pyjslib_get_pyjs_classtype(args);
+
+        if(constructor != "pyjslib_List" && constructor != "pyjslib_Tuple")
+        {
+            args = new pyjslib_List([args]);
+        }
+
+       if (pyjslib_len(args) < 1 || !RegExp)
+       {
+          return null;
+       }
+
+		var exp = new RegExp(/(%([%]|(\-)?(\+|\x20)?(0)?(\d+)?(\.(\d)?)?([bcdfosxX])))/g);
+		var matches = new Array();
+		var strings = new Array();
+		var convCount = 0;
+		var stringPosStart = 0;
+		var stringPosEnd = 0;
+		var matchPosEnd = 0;
+		var newString = '';
+		var match = null;
+
+		while (match = exp.exec(str)) {
+			if (match[9]) { convCount += 1; }
+
+			stringPosStart = matchPosEnd;
+			stringPosEnd = exp.lastIndex - match[0].length;
+			strings[strings.length] = str.substring(stringPosStart, stringPosEnd);
+         var param = args.__getitem__(convCount-1);
+
+			matchPosEnd = exp.lastIndex;
+			matches[matches.length] = {
+				match: match[0],
+				left: match[3] ? true : false,
+				sign: match[4] || '',
+				pad: match[5] || ' ',
+				min: match[6] || 0,
+				precision: match[8],
+				code: match[9] || '%',
+				negative: parseInt(param) < 0 ? true : false,
+				argument: String(param)
+			};
+		}
+		strings[strings.length] = str.substring(matchPosEnd);
+
+		if (matches.length == 0) { return str; }
+		if ((args.length - 1) < convCount) { return null; }
+
+		var code = null;
+		var match = null;
+		var i = null;
+
+		for (i=0; i<matches.length; i++) {
+
+			if (matches[i].code == '%') { substitution = '%' }
+			else if (matches[i].code == 'b') {
+				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(2));
+				substitution = sprintfWrapper.convert(matches[i], true);
+			}
+			else if (matches[i].code == 'c') {
+				matches[i].argument = String(String.fromCharCode(parseInt(Math.abs(parseInt(matches[i].argument)))));
+				substitution = sprintfWrapper.convert(matches[i], true);
+			}
+			else if (matches[i].code == 'd') {
+				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)));
+				substitution = sprintfWrapper.convert(matches[i]);
+			}
+			else if (matches[i].code == 'f') {
+				matches[i].argument = String(Math.abs(parseFloat(matches[i].argument)).toFixed(matches[i].precision ? matches[i].precision : 6));
+				substitution = sprintfWrapper.convert(matches[i]);
+			}
+			else if (matches[i].code == 'o') {
+				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(8));
+				substitution = sprintfWrapper.convert(matches[i]);
+			}
+			else if (matches[i].code == 's') {
+				matches[i].argument = String(matches[i].argument)
+				matches[i].argument = matches[i].argument.substring(0, matches[i].precision ? matches[i].precision : matches[i].argument.length)
+				substitution = sprintfWrapper.convert(matches[i], true);
+			}
+			else if (matches[i].code == 'x') {
+				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(16));
+				substitution = sprintfWrapper.convert(matches[i]);
+			}
+			else if (matches[i].code == 'X') {
+				matches[i].argument = String(Math.abs(parseInt(matches[i].argument)).toString(16));
+				substitution = sprintfWrapper.convert(matches[i]).toUpperCase();
+			}
+			else {
+				substitution = matches[i].match;
+			}
+
+			newString += strings[i];
+			newString += substitution;
+
+		}
+		newString += strings[i];
+
+		return newString;
+
+	},
+
+	convert : function(match, nosign){
+		if (nosign) {
+			match.sign = '';
+		} else {
+			match.sign = match.negative ? '-' : match.sign;
+		}
+		var l = match.min - match.argument.length + 1 - match.sign.length;
+		var pad = new Array(l < 0 ? 0 : l).join(match.pad);
+		if (!match.left) {
+			if (match.pad == "0" || nosign) {
+				return match.sign + pad + match.argument;
+			} else {
+				return pad + match.sign + match.argument;
+			}
+		} else {
+			if (match.pad == "0" || nosign) {
+				return match.sign + match.argument + pad.replace(/0/g, ' ');
+			} else {
+				return match.sign + match.argument + pad;
+			}
+		}
+	}
+}
+
+sprintf = sprintfWrapper.init;
+
+//
+// END sprintf.js
+//
+    var MEDIA_URL = 'http://localhost:8000';
 function __DataService() {
 }
 function DataService() {
@@ -25393,13 +25550,14 @@ function __Basic_initialize() {
     pyjs_extend(__Basic, __pyjslib_Object);
     __Basic.prototype.__class__.__new__ = Basic;
     __Basic.prototype.onModuleLoad = function() {
+    this.remote = DataService();
     this.menu_bar = Menu_Menu();
     this.ink = ui_Button('Ink', pyjslib_getattr(this, 'onInkClick'));
     this.flash = ui_Button('Flash', pyjslib_getattr(this, 'setFlash'));
     this.flash.isActive = false;
     this.flash.Flash = false;
     this.stopflash = ui_Button('Stop Flash', pyjslib_getattr(this, 'offTimer'));
-    this.banner = ui_Image('images/header_no_description.jpg');
+    this.banner = ui_Image('/pj/images/header_no_description.jpg');
     this.banner.setHeight('24px');
     this.banner.addMouseListener(Tooltip_TooltipListener('^--', 5000, 'MOUSE'));
     this.header = ui_DockPanel();
@@ -25474,6 +25632,50 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
+    __Basic.prototype.onInkClick = function() {
+    window.alert('Getting username');
+    var id = this.remote.get_username(this);
+    if ((id < 0)) {
+    console.error('Server Error or Invalid Response');
+    }
+    window.alert('Sent username request');
+    };
+    __Basic.prototype.__class__.onInkClick = function() {
+        return __Basic.prototype.onInkClick.call.apply(__Basic.prototype.onInkClick, arguments);
+    };
+    __Basic.prototype.__class__.onInkClick.unbound_method = true;
+    __Basic.prototype.onInkClick.instance_method = true;
+    __Basic.prototype.onRemoteResponse = function(response, request_info) {
+    window.alert('Received remote response');
+    console.info('response received');
+    if ((request_info.method == 'get_username')) {
+    console.info('HERE!');
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(sprintf('User: %s', tpl.__getitem__(1)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else {
+    console.error('none!');
+    }
+    };
+    __Basic.prototype.__class__.onRemoteResponse = function() {
+        return __Basic.prototype.onRemoteResponse.call.apply(__Basic.prototype.onRemoteResponse, arguments);
+    };
+    __Basic.prototype.__class__.onRemoteResponse.unbound_method = true;
+    __Basic.prototype.onRemoteResponse.instance_method = true;
     __Basic.prototype.onTimer = function() {
     if (this.Flash) {
     if (this.isActive) {

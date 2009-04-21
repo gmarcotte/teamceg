@@ -20,19 +20,16 @@ admin.autodiscover()
 # expect URLPATTERNS as a valid module-level name
 urlpatterns = defaults.patterns('',
     (r'^$', 'pear.projects.views.index'),
-    
     (r'^accounts/', defaults.include('pear.accounts.urls')),
-    
     (r'^projects/', defaults.include('pear.projects.urls')),
-    
     (r'^remote/', defaults.include('pear.remote.urls')),
-    
     (r'^admin/', defaults.include(admin.site.urls)),
+    
 )
 
 if settings.STATIC_SERVE:
   urlpatterns += defaults.patterns('',
       ((r'^(?P<path>(.*\.(jpg|swf|css|js|gif|png|JPG|'
-        'GIF|PNG|htm|ico|PDF|pdf)))$'), 
+        'GIF|PNG|htm|ico|PDF|pdf|html)))$'), 
        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
   )

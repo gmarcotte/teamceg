@@ -24654,6 +24654,680 @@ __Tooltip_TooltipListener.prototype.__init__.parse_kwargs = function ( __kwargs,
 }
 __Tooltip_TooltipListener_initialize();
 __Tooltip_Tooltip_initialize();
+function __HTTPRequest_HTTPRequest() {
+}
+function HTTPRequest_HTTPRequest() {
+    var instance = new __HTTPRequest_HTTPRequest();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __HTTPRequest_HTTPRequest_initialize() {
+    if(__HTTPRequest_HTTPRequest.__was_initialized__) return;
+    __HTTPRequest_HTTPRequest.__was_initialized__ = true;
+    pyjs_extend(__HTTPRequest_HTTPRequest, __pyjslib_Object);
+    __HTTPRequest_HTTPRequest.prototype.__class__.__new__ = HTTPRequest_HTTPRequest;
+    __HTTPRequest_HTTPRequest.prototype.asyncPost = function(user, pwd, url, postData, handler) {
+    if (typeof postData == 'undefined') postData=null;
+    if (typeof handler == 'undefined') handler=null;
+    if ((postData == null)) {
+    return this.asyncPostImpl(null, null, user, pwd, url);
+    }
+    return this.asyncPostImpl(user, pwd, url, postData, handler);
+    };
+__HTTPRequest_HTTPRequest.prototype.asyncPost.parse_kwargs = function ( __kwargs, user, pwd, url, postData, handler ) {
+    if (typeof postData == 'undefined')
+        postData=__kwargs.postData;
+    if (typeof handler == 'undefined')
+        handler=__kwargs.handler;
+    var __r = [user, pwd, url, postData, handler];
+    return __r;
+};
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncPost = function() {
+        return __HTTPRequest_HTTPRequest.prototype.asyncPost.call.apply(__HTTPRequest_HTTPRequest.prototype.asyncPost, arguments);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncPost.unbound_method = true;
+    __HTTPRequest_HTTPRequest.prototype.asyncPost.instance_method = true;
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncPost.parse_kwargs = __HTTPRequest_HTTPRequest.prototype.asyncPost.parse_kwargs;
+    __HTTPRequest_HTTPRequest.prototype.asyncGet = function(user, pwd, url, handler) {
+    if ((url == null)) {
+    return this.asyncGetImpl(null, null, user, pwd);
+    }
+    return this.asyncGetImpl(user, pwd, url, handler);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncGet = function() {
+        return __HTTPRequest_HTTPRequest.prototype.asyncGet.call.apply(__HTTPRequest_HTTPRequest.prototype.asyncGet, arguments);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncGet.unbound_method = true;
+    __HTTPRequest_HTTPRequest.prototype.asyncGet.instance_method = true;
+    __HTTPRequest_HTTPRequest.prototype.createXmlHTTPRequest = function() {
+    return this.doCreateXmlHTTPRequest();
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.createXmlHTTPRequest = function() {
+        return __HTTPRequest_HTTPRequest.prototype.createXmlHTTPRequest.call.apply(__HTTPRequest_HTTPRequest.prototype.createXmlHTTPRequest, arguments);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.createXmlHTTPRequest.unbound_method = true;
+    __HTTPRequest_HTTPRequest.prototype.createXmlHTTPRequest.instance_method = true;
+    __HTTPRequest_HTTPRequest.prototype.doCreateXmlHTTPRequest = function() {
+
+        return new XMLHttpRequest();
+        
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.doCreateXmlHTTPRequest = function() {
+        return __HTTPRequest_HTTPRequest.prototype.doCreateXmlHTTPRequest.call.apply(__HTTPRequest_HTTPRequest.prototype.doCreateXmlHTTPRequest, arguments);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.doCreateXmlHTTPRequest.unbound_method = true;
+    __HTTPRequest_HTTPRequest.prototype.doCreateXmlHTTPRequest.instance_method = true;
+    __HTTPRequest_HTTPRequest.prototype.asyncPostImpl = function(user, pwd, url, postData, handler) {
+
+        var xmlHttp = this.doCreateXmlHTTPRequest();
+        try {
+            xmlHttp.open("POST", url, true);
+            xmlHttp.setRequestHeader("Content-Type",
+                                           "application/x-www-form-urlencoded");
+            xmlHttp.setRequestHeader("Content-Length", postData.length);
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4) {
+                    delete xmlHttp.onreadystatechange;
+                    var localHandler = handler;
+                    var responseText = xmlHttp.responseText;
+                    var status = xmlHttp.status;
+                    handler = null;
+                    xmlHttp = null;
+                    if(status == 200) {
+                        localHandler.onCompletion(responseText);
+                    } else {
+                        localHandler.onError(responseText, status);
+                    }
+                }
+            };
+            xmlHttp.send(postData);
+            return true;
+        }
+        catch (e) {
+            delete xmlHttp.onreadystatechange;
+            var localHandler = handler;
+            handler = null;
+            xmlHttp = null;
+            localHandler.onError(String(e));
+            return false;
+        }
+        
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncPostImpl = function() {
+        return __HTTPRequest_HTTPRequest.prototype.asyncPostImpl.call.apply(__HTTPRequest_HTTPRequest.prototype.asyncPostImpl, arguments);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncPostImpl.unbound_method = true;
+    __HTTPRequest_HTTPRequest.prototype.asyncPostImpl.instance_method = true;
+    __HTTPRequest_HTTPRequest.prototype.asyncGetImpl = function(user, pwd, url, handler) {
+
+        var xmlHttp = this.doCreateXmlHTTPRequest();
+        try {
+            xmlHttp.open("GET", url, true);
+            xmlHttp.setRequestHeader("Content-Type", "text/plain; charset=utf-8");
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4) {
+                    delete xmlHttp.onreadystatechange;
+                    var localHandler = handler;
+                    var responseText = xmlHttp.responseText;
+                    var status = xmlHttp.status;
+                    handler = null;
+                    xmlHttp = null;
+                    if(status == 200) {
+                        localHandler.onCompletion(responseText);
+                    } else {
+                        localHandler.onError(responseText, status);
+                    }
+                }
+            };
+            xmlHttp.send('');
+            return true;
+        }
+        catch (e) {
+            delete xmlHttp.onreadystatechange;
+            var localHandler = handler;
+            handler = null;
+            xmlHttp = null;
+            localHandler.onError(String(e));
+            return false;
+        }
+        
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncGetImpl = function() {
+        return __HTTPRequest_HTTPRequest.prototype.asyncGetImpl.call.apply(__HTTPRequest_HTTPRequest.prototype.asyncGetImpl, arguments);
+    };
+    __HTTPRequest_HTTPRequest.prototype.__class__.asyncGetImpl.unbound_method = true;
+    __HTTPRequest_HTTPRequest.prototype.asyncGetImpl.instance_method = true;
+}
+__HTTPRequest_HTTPRequest_initialize();
+
+/*
+JSONEncode:
+    +---------------+-------------------+---------------+
+    | PYGWT         | Python            | JSON          |
+    +===============+===================+===============+
+    | pyjslib_Dict  | dict              | object        |
+    +---------------+-------------------+---------------+
+    | pyjslib_List  | list, tuple       | array         |
+    +---------------+-------------------+---------------+
+    | string        | str, unicode      | string        |
+    +---------------+-------------------+---------------+
+    | number        | int, long, float  | number        |
+    +---------------+-------------------+---------------+
+    | true          | True              | true          |
+    +---------------+-------------------+---------------+
+    | false         | False             | false         |
+    +---------------+-------------------+---------------+
+    | null          | None              | null          |
+    +---------------+-------------------+---------------+
+
+
+JSONDecode:
+    +---------------+-------------------+--------------+
+    | JSON          | Python            | PYGWT        |
+    +===============+===================+==============+
+    | object        | dict              | pyjslib_Dict |
+    +---------------+-------------------+--------------+
+    | array         | list              | pyjslib_List |
+    +---------------+-------------------+--------------+
+    | string        | unicode           | string       |
+    +---------------+-------------------+--------------+
+    | number (int)  | int, long         | number       |
+    +---------------+-------------------+--------------+
+    | number (real) | float             | number       |
+    +---------------+-------------------+--------------+
+    | true          | True              | true         |
+    +---------------+-------------------+--------------+
+    | false         | False             | false        |
+    +---------------+-------------------+--------------+
+    | null          | None              | null         |
+    +---------------+-------------------+--------------+
+*/
+
+function __JSONParser_JSONParser() {
+}
+function JSONParser_JSONParser() {
+    var instance = new __JSONParser_JSONParser();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __JSONParser_JSONParser_initialize() {
+    if(__JSONParser_JSONParser.__was_initialized__) return;
+    __JSONParser_JSONParser.__was_initialized__ = true;
+    pyjs_extend(__JSONParser_JSONParser, __pyjslib_Object);
+    __JSONParser_JSONParser.prototype.__class__.__new__ = JSONParser_JSONParser;
+    __JSONParser_JSONParser.prototype.decode = function(str) {
+    return this.jsObjectToPy(this.parseJSON(str));
+    };
+    __JSONParser_JSONParser.prototype.__class__.decode = function() {
+        return __JSONParser_JSONParser.prototype.decode.call.apply(__JSONParser_JSONParser.prototype.decode, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.decode.unbound_method = true;
+    __JSONParser_JSONParser.prototype.decode.instance_method = true;
+    __JSONParser_JSONParser.prototype.decodeAsObject = function(str) {
+    return this.jsObjectToPyObject(this.parseJSON(str));
+    };
+    __JSONParser_JSONParser.prototype.__class__.decodeAsObject = function() {
+        return __JSONParser_JSONParser.prototype.decodeAsObject.call.apply(__JSONParser_JSONParser.prototype.decodeAsObject, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.decodeAsObject.unbound_method = true;
+    __JSONParser_JSONParser.prototype.decodeAsObject.instance_method = true;
+    __JSONParser_JSONParser.prototype.encode = function(obj) {
+    return this.toJSONString(obj);
+    };
+    __JSONParser_JSONParser.prototype.__class__.encode = function() {
+        return __JSONParser_JSONParser.prototype.encode.call.apply(__JSONParser_JSONParser.prototype.encode, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.encode.unbound_method = true;
+    __JSONParser_JSONParser.prototype.encode.instance_method = true;
+    __JSONParser_JSONParser.prototype.jsObjectToPy = function(obj) {
+
+        if (pyjslib_isArray(obj)) {
+            for (var i in obj) obj[i] = this.jsObjectToPy(obj[i]);
+            obj=new pyjslib_List(obj);
+            }
+        else if (pyjslib_isObject(obj)) {
+            for (var i in obj) obj[i]=this.jsObjectToPy(obj[i]);
+            obj=new pyjslib_Dict(obj);
+            }
+        
+        return obj;
+        
+    };
+    __JSONParser_JSONParser.prototype.__class__.jsObjectToPy = function() {
+        return __JSONParser_JSONParser.prototype.jsObjectToPy.call.apply(__JSONParser_JSONParser.prototype.jsObjectToPy, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.jsObjectToPy.unbound_method = true;
+    __JSONParser_JSONParser.prototype.jsObjectToPy.instance_method = true;
+    __JSONParser_JSONParser.prototype.jsObjectToPyObject = function(obj) {
+
+        if (pyjslib_isArray(obj)) {
+            for (var i in obj) obj[i] = this.jsObjectToPyObject(obj[i]);
+            obj=new pyjslib_List(obj);
+            }
+        else if (pyjslib_isObject(obj)) {
+            if (obj["__jsonclass__"]) {
+                var class_name = obj["__jsonclass__"][0];
+                class_name = class_name.replace(".", "_");
+                
+                var new_obj = eval("new " + class_name + "()");
+                delete obj["__jsonclass__"];
+                for (var i in obj) new_obj[i] = this.jsObjectToPyObject(obj[i]);
+                obj = new_obj;
+                }
+            else {
+                for (var i in obj) obj[i]=this.jsObjectToPyObject(obj[i]);
+                obj=new pyjslib_Dict(obj);
+                }       
+            }
+        
+        return obj;
+        
+    };
+    __JSONParser_JSONParser.prototype.__class__.jsObjectToPyObject = function() {
+        return __JSONParser_JSONParser.prototype.jsObjectToPyObject.call.apply(__JSONParser_JSONParser.prototype.jsObjectToPyObject, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.jsObjectToPyObject.unbound_method = true;
+    __JSONParser_JSONParser.prototype.jsObjectToPyObject.instance_method = true;
+    __JSONParser_JSONParser.prototype.toJSONString = function(obj) {
+
+   var m = {
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        },
+        s = {
+            array: function (x) {
+                var a = ['['], b, f, i, l = x.length, v;
+                for (i = 0; i < l; i += 1) {
+                    v = x[i];
+                    f = s[typeof v];
+                    if (f) {
+                        v = f(v);
+                        if (typeof v == 'string') {
+                            if (b) {
+                                a[a.length] = ',';
+                            }
+                            a[a.length] = v;
+                            b = true;
+                        }
+                    }
+                }
+                a[a.length] = ']';
+                return a.join('');
+            },
+            'boolean': function (x) {
+                return String(x);
+            },
+            'undefined':function (x) {
+               return "null";
+            },
+            'null': function (x) {
+                return "null";
+            },
+            number: function (x) {
+                return isFinite(x) ? String(x) : 'null';
+            },
+            object: function (x) {
+                if (x) {
+                    if (x instanceof Array) {
+                        return s.array(x);
+                    }
+                    if (x instanceof __pyjslib_List) {
+                        return s.array(x.l);
+                    }
+                    if (x instanceof __pyjslib_Dict) {
+                        return s.object(x.d);
+                    }
+                    var a = ['{'], b, f, i, v;
+                    for (i in x) {
+                        v = x[i];
+                        f = s[typeof v];
+                        if (f) {
+                            v = f(v);
+                            if (typeof v == 'string') {
+                                if (b) {
+                                    a[a.length] = ',';
+                                }
+                                a.push(s.string(i), ':', v);
+                                b = true;
+                            }
+                        }
+                    }
+                    a[a.length] = '}';
+                    return a.join('');
+                }
+                return 'null';
+            },
+            string: function (x) {
+                if (/["\\\x00-\x1f]/.test(x)) {
+                    x = x.replace(/([\x00-\x1f\\"])/g, function(a, b) {
+                        var c = m[b];
+                        if (c) {
+                            return c;
+                        }
+                        c = b.charCodeAt();
+                        return '\\u00' +
+                            Math.floor(c / 16).toString(16) +
+                            (c % 16).toString(16);
+                    });
+                }
+                return '"' + x + '"';
+            }
+        };
+
+        f=s[typeof obj];
+        return f(obj);
+        
+    };
+    __JSONParser_JSONParser.prototype.__class__.toJSONString = function() {
+        return __JSONParser_JSONParser.prototype.toJSONString.call.apply(__JSONParser_JSONParser.prototype.toJSONString, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.toJSONString.unbound_method = true;
+    __JSONParser_JSONParser.prototype.toJSONString.instance_method = true;
+    __JSONParser_JSONParser.prototype.parseJSON = function(str) {
+
+        try {
+            return (/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(str)) &&
+                eval('(' + str + ')');
+        } catch (e) {
+            return false;
+        }
+        
+    };
+    __JSONParser_JSONParser.prototype.__class__.parseJSON = function() {
+        return __JSONParser_JSONParser.prototype.parseJSON.call.apply(__JSONParser_JSONParser.prototype.parseJSON, arguments);
+    };
+    __JSONParser_JSONParser.prototype.__class__.parseJSON.unbound_method = true;
+    __JSONParser_JSONParser.prototype.parseJSON.instance_method = true;
+}
+__JSONParser_JSONParser_initialize();
+function __JSONService_JSONService() {
+}
+function JSONService_JSONService(url, handler) {
+    if (typeof handler == 'undefined') handler=null;
+    var instance = new __JSONService_JSONService();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+JSONService_JSONService.parse_kwargs = function ( __kwargs, url, handler ) {
+    if (typeof handler == 'undefined')
+        handler=__kwargs.handler;
+    var __r = [url, handler];
+    return __r;
+};
+function __JSONService_JSONService_initialize() {
+    if(__JSONService_JSONService.__was_initialized__) return;
+    __JSONService_JSONService.__was_initialized__ = true;
+    pyjs_extend(__JSONService_JSONService, __pyjslib_Object);
+    __JSONService_JSONService.prototype.__class__.__new__ = JSONService_JSONService;
+    __JSONService_JSONService.prototype.__init__ = function(url, handler) {
+    if (typeof handler == 'undefined') handler=null;
+    this.parser = JSONParser_JSONParser();
+    this.url = url;
+    this.handler = handler;
+    };
+__JSONService_JSONService.prototype.__init__.parse_kwargs = function ( __kwargs, url, handler ) {
+    if (typeof handler == 'undefined')
+        handler=__kwargs.handler;
+    var __r = [url, handler];
+    return __r;
+};
+    __JSONService_JSONService.prototype.__class__.__init__ = function() {
+        return __JSONService_JSONService.prototype.__init__.call.apply(__JSONService_JSONService.prototype.__init__, arguments);
+    };
+    __JSONService_JSONService.prototype.__class__.__init__.unbound_method = true;
+    __JSONService_JSONService.prototype.__init__.instance_method = true;
+    __JSONService_JSONService.prototype.__class__.__init__.parse_kwargs = __JSONService_JSONService.prototype.__init__.parse_kwargs;
+    __JSONService_JSONService.prototype.callMethod = function(method, params, handler) {
+    if (typeof handler == 'undefined') handler=null;
+    if ((handler == null)) {
+    var handler = this.handler;
+    }
+    if ((handler == null)) {
+    return this.__sendNotify(method, params);
+    }
+    else {
+    return this.__sendRequest(method, params, handler);
+    }
+    };
+__JSONService_JSONService.prototype.callMethod.parse_kwargs = function ( __kwargs, method, params, handler ) {
+    if (typeof handler == 'undefined')
+        handler=__kwargs.handler;
+    var __r = [method, params, handler];
+    return __r;
+};
+    __JSONService_JSONService.prototype.__class__.callMethod = function() {
+        return __JSONService_JSONService.prototype.callMethod.call.apply(__JSONService_JSONService.prototype.callMethod, arguments);
+    };
+    __JSONService_JSONService.prototype.__class__.callMethod.unbound_method = true;
+    __JSONService_JSONService.prototype.callMethod.instance_method = true;
+    __JSONService_JSONService.prototype.__class__.callMethod.parse_kwargs = __JSONService_JSONService.prototype.callMethod.parse_kwargs;
+    __JSONService_JSONService.prototype.onCompletion = function() {
+    };
+    __JSONService_JSONService.prototype.__class__.onCompletion = function() {
+        return __JSONService_JSONService.prototype.onCompletion.call.apply(__JSONService_JSONService.prototype.onCompletion, arguments);
+    };
+    __JSONService_JSONService.prototype.__class__.onCompletion.unbound_method = true;
+    __JSONService_JSONService.prototype.onCompletion.instance_method = true;
+    __JSONService_JSONService.prototype.__sendNotify = function(method, params) {
+    var msg = new pyjslib_Dict([['id', null], ['method', method], ['params', params]]);
+    var msg_data = this.parser.encode(msg);
+    if (!(HTTPRequest_HTTPRequest().asyncPost(this.url, msg_data, this))) {
+    return -1;
+    }
+    return 1;
+    };
+    __JSONService_JSONService.prototype.__class__.__sendNotify = function() {
+        return __JSONService_JSONService.prototype.__sendNotify.call.apply(__JSONService_JSONService.prototype.__sendNotify, arguments);
+    };
+    __JSONService_JSONService.prototype.__class__.__sendNotify.unbound_method = true;
+    __JSONService_JSONService.prototype.__sendNotify.instance_method = true;
+    __JSONService_JSONService.prototype.__sendRequest = function(method, params, handler) {
+    var id = pygwt_getNextHashId();
+    var msg = new pyjslib_Dict([['id', id], ['method', method], ['params', params]]);
+    var msg_data = this.parser.encode(msg);
+    var request_info = JSONService_JSONRequestInfo(id, method, handler);
+    if (!(HTTPRequest_HTTPRequest().asyncPost(this.url, msg_data, JSONService_JSONResponseTextHandler(request_info)))) {
+    return -1;
+    }
+    return id;
+    };
+    __JSONService_JSONService.prototype.__class__.__sendRequest = function() {
+        return __JSONService_JSONService.prototype.__sendRequest.call.apply(__JSONService_JSONService.prototype.__sendRequest, arguments);
+    };
+    __JSONService_JSONService.prototype.__class__.__sendRequest.unbound_method = true;
+    __JSONService_JSONService.prototype.__sendRequest.instance_method = true;
+}
+function __JSONService_JSONRequestInfo() {
+}
+function JSONService_JSONRequestInfo(id, method, handler) {
+    var instance = new __JSONService_JSONRequestInfo();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __JSONService_JSONRequestInfo_initialize() {
+    if(__JSONService_JSONRequestInfo.__was_initialized__) return;
+    __JSONService_JSONRequestInfo.__was_initialized__ = true;
+    pyjs_extend(__JSONService_JSONRequestInfo, __pyjslib_Object);
+    __JSONService_JSONRequestInfo.prototype.__class__.__new__ = JSONService_JSONRequestInfo;
+    __JSONService_JSONRequestInfo.prototype.__init__ = function(id, method, handler) {
+    this.id = id;
+    this.method = method;
+    this.handler = handler;
+    };
+    __JSONService_JSONRequestInfo.prototype.__class__.__init__ = function() {
+        return __JSONService_JSONRequestInfo.prototype.__init__.call.apply(__JSONService_JSONRequestInfo.prototype.__init__, arguments);
+    };
+    __JSONService_JSONRequestInfo.prototype.__class__.__init__.unbound_method = true;
+    __JSONService_JSONRequestInfo.prototype.__init__.instance_method = true;
+}
+function __JSONService_JSONResponseTextHandler() {
+}
+function JSONService_JSONResponseTextHandler(request) {
+    var instance = new __JSONService_JSONResponseTextHandler();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __JSONService_JSONResponseTextHandler_initialize() {
+    if(__JSONService_JSONResponseTextHandler.__was_initialized__) return;
+    __JSONService_JSONResponseTextHandler.__was_initialized__ = true;
+    pyjs_extend(__JSONService_JSONResponseTextHandler, __pyjslib_Object);
+    __JSONService_JSONResponseTextHandler.prototype.__class__.__new__ = JSONService_JSONResponseTextHandler;
+    __JSONService_JSONResponseTextHandler.prototype.__init__ = function(request) {
+    this.request = request;
+    };
+    __JSONService_JSONResponseTextHandler.prototype.__class__.__init__ = function() {
+        return __JSONService_JSONResponseTextHandler.prototype.__init__.call.apply(__JSONService_JSONResponseTextHandler.prototype.__init__, arguments);
+    };
+    __JSONService_JSONResponseTextHandler.prototype.__class__.__init__.unbound_method = true;
+    __JSONService_JSONResponseTextHandler.prototype.__init__.instance_method = true;
+    __JSONService_JSONResponseTextHandler.prototype.onCompletion = function(json_str) {
+    var response = JSONParser_JSONParser().decodeAsObject(json_str);
+    if (!(response)) {
+    this.request.handler.onRemoteError(0, 'Server Error or Invalid Response', this.request);
+    }
+    else if (response.__getitem__('error')) {
+    var error = response.__getitem__('error');
+    this.request.handler.onRemoteError(error.__getitem__('code'), error.__getitem__('message'), this.request);
+    }
+    else {
+    this.request.handler.onRemoteResponse(response.__getitem__('result'), this.request);
+    }
+    };
+    __JSONService_JSONResponseTextHandler.prototype.__class__.onCompletion = function() {
+        return __JSONService_JSONResponseTextHandler.prototype.onCompletion.call.apply(__JSONService_JSONResponseTextHandler.prototype.onCompletion, arguments);
+    };
+    __JSONService_JSONResponseTextHandler.prototype.__class__.onCompletion.unbound_method = true;
+    __JSONService_JSONResponseTextHandler.prototype.onCompletion.instance_method = true;
+    __JSONService_JSONResponseTextHandler.prototype.onError = function(error_str, error_code) {
+    this.request.handler.onRemoteError(error_code, error_str, this.request);
+    };
+    __JSONService_JSONResponseTextHandler.prototype.__class__.onError = function() {
+        return __JSONService_JSONResponseTextHandler.prototype.onError.call.apply(__JSONService_JSONResponseTextHandler.prototype.onError, arguments);
+    };
+    __JSONService_JSONResponseTextHandler.prototype.__class__.onError.unbound_method = true;
+    __JSONService_JSONResponseTextHandler.prototype.onError.instance_method = true;
+}
+function __JSONService_JSONProxy() {
+}
+function JSONService_JSONProxy(url, methods) {
+    if (typeof methods == 'undefined') methods=null;
+    var instance = new __JSONService_JSONProxy();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+JSONService_JSONProxy.parse_kwargs = function ( __kwargs, url, methods ) {
+    if (typeof methods == 'undefined')
+        methods=__kwargs.methods;
+    var __r = [url, methods];
+    return __r;
+};
+function __JSONService_JSONProxy_initialize() {
+    if(__JSONService_JSONProxy.__was_initialized__) return;
+    __JSONService_JSONProxy.__was_initialized__ = true;
+    if(!__JSONService_JSONService.__was_initialized__)
+        __JSONService_JSONService_initialize();
+    pyjs_extend(__JSONService_JSONProxy, __JSONService_JSONService);
+    __JSONService_JSONProxy.prototype.__class__.__new__ = JSONService_JSONProxy;
+    __JSONService_JSONProxy.prototype.__init__ = function(url, methods) {
+    if (typeof methods == 'undefined') methods=null;
+    __JSONService_JSONService.prototype.__class__.__init__(this, url);
+    if (methods) {
+    this.__registerMethods(methods);
+    }
+    };
+__JSONService_JSONProxy.prototype.__init__.parse_kwargs = function ( __kwargs, url, methods ) {
+    if (typeof methods == 'undefined')
+        methods=__kwargs.methods;
+    var __r = [url, methods];
+    return __r;
+};
+    __JSONService_JSONProxy.prototype.__class__.__init__ = function() {
+        return __JSONService_JSONProxy.prototype.__init__.call.apply(__JSONService_JSONProxy.prototype.__init__, arguments);
+    };
+    __JSONService_JSONProxy.prototype.__class__.__init__.unbound_method = true;
+    __JSONService_JSONProxy.prototype.__init__.instance_method = true;
+    __JSONService_JSONProxy.prototype.__class__.__init__.parse_kwargs = __JSONService_JSONProxy.prototype.__init__.parse_kwargs;
+    __JSONService_JSONProxy.prototype.__createMethod = function(method) {
+
+        return function() {
+            var params = [];
+            for (var n=0; n<arguments.length; n++) { params.push(arguments[n]); }
+            if (params[params.length-1].onRemoteResponse) {
+                var handler=params.pop();
+                return this.__sendRequest(method, params, handler);
+            }
+            else {
+                return this.__sendNotify(method, params);
+            }
+        };
+        
+    };
+    __JSONService_JSONProxy.prototype.__class__.__createMethod = function() {
+        return __JSONService_JSONProxy.prototype.__createMethod.call.apply(__JSONService_JSONProxy.prototype.__createMethod, arguments);
+    };
+    __JSONService_JSONProxy.prototype.__class__.__createMethod.unbound_method = true;
+    __JSONService_JSONProxy.prototype.__createMethod.instance_method = true;
+    __JSONService_JSONProxy.prototype.__registerMethods = function(methods) {
+
+        methods=methods.l;
+        for (var i in methods) {
+            var method = methods[i];
+            this[method]=this.__createMethod(method);
+        }
+        
+    };
+    __JSONService_JSONProxy.prototype.__class__.__registerMethods = function() {
+        return __JSONService_JSONProxy.prototype.__registerMethods.call.apply(__JSONService_JSONProxy.prototype.__registerMethods, arguments);
+    };
+    __JSONService_JSONProxy.prototype.__class__.__registerMethods.unbound_method = true;
+    __JSONService_JSONProxy.prototype.__registerMethods.instance_method = true;
+}
+__JSONService_JSONService_initialize();
+__JSONService_JSONProxy_initialize();
+__JSONService_JSONResponseTextHandler_initialize();
+__JSONService_JSONRequestInfo_initialize();
+function __DataService() {
+}
+function DataService() {
+    var instance = new __DataService();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __DataService_initialize() {
+    if(__DataService.__was_initialized__) return;
+    __DataService.__was_initialized__ = true;
+    if(!__JSONService_JSONProxy.__was_initialized__)
+        __JSONService_JSONProxy_initialize();
+    pyjs_extend(__DataService, __JSONService_JSONProxy);
+    __DataService.prototype.__class__.__new__ = DataService;
+    __DataService.prototype.__init__ = function() {
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username']));
+    };
+    __DataService.prototype.__class__.__init__ = function() {
+        return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
+    };
+    __DataService.prototype.__class__.__init__.unbound_method = true;
+    __DataService.prototype.__init__.instance_method = true;
+}
 function __Basic() {
 }
 function Basic() {
@@ -24744,39 +25418,12 @@ function __Basic_initialize() {
     this.panel.setWidth('100%');
     this.panel.setHeight('100%');
     ui_RootPanel().add(this.panel);
-    ui_RootPanel().addMouseListener(Tooltip_TooltipListener('BLAHBLAHBLAH', 5000, 'MOUSE'));
     };
     __Basic.prototype.__class__.onModuleLoad = function() {
         return __Basic.prototype.onModuleLoad.call.apply(__Basic.prototype.onModuleLoad, arguments);
     };
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
-    __Basic.prototype.onInkClick = function() {
-    var high_check = ui_CheckBox('Highlighter');
-    var Ink_high = ui_FlowPanel();
-    __Ink_high.prototype.__class__.add(high_check);
-    var pen_check = ui_CheckBox('Pen');
-    var Ink_pen = ui_FlowPanel();
-    __Ink_pen.prototype.__class__.add(pen_check);
-    var Ink_contents = ui_VerticalPanel();
-    __Ink_contents.prototype.__class__.setSpacing(4);
-    __Ink_contents.prototype.__class__.add(Ink_high);
-    __Ink_contents.prototype.__class__.add(Ink_pen);
-    __Ink_contents.prototype.__class__.add(ui_Button('Close', pyjslib_getattr(this, 'onClose')));
-    __Ink_contents.prototype.__class__.setStyleName('Contents');
-    this._dialog = ui_DialogBox();
-    this._dialog.setHTML('<b>Ink Settings</b>');
-    this._dialog.setWidget(Ink_contents);
-    var left =  (  ( Window_getClientWidth() - 200 )  / 2 ) ;
-    var top =  (  ( Window_getClientHeight() - 100 )  / 2 ) ;
-    this._dialog.setPopupPosition(left, top);
-    this._dialog.show();
-    };
-    __Basic.prototype.__class__.onInkClick = function() {
-        return __Basic.prototype.onInkClick.call.apply(__Basic.prototype.onInkClick, arguments);
-    };
-    __Basic.prototype.__class__.onInkClick.unbound_method = true;
-    __Basic.prototype.onInkClick.instance_method = true;
     __Basic.prototype.onTimer = function() {
     if (this.Flash) {
     if (this.isActive) {
@@ -24827,6 +25474,7 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onClose.unbound_method = true;
     __Basic.prototype.onClose.instance_method = true;
 }
+__DataService_initialize();
 __Basic_initialize();
 
 
