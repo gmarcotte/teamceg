@@ -25409,19 +25409,22 @@ function __Basic_initialize() {
     __Basic.prototype.onModuleLoad = function() {
     this.remote = DataService();
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
+    this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
     this.flash.isActive = false;
     this.flash.Flash = false;
     this.banner = ui_Image('/pj/images/header_no_description.jpg');
-    this.banner.setHeight('24px');
+    this.banner.setHeight('20px');
     this.banner.addMouseListener(Tooltip_TooltipListener('^--', 5000, 'MOUSE'));
     this.header = ui_DockPanel();
     this.header.add(this.info, __ui_DockPanel.prototype.__class__.WEST);
+    this.header.add(this.mode, __ui_DockPanel.prototype.__class__.WEST);
     this.header.add(this.flash, __ui_DockPanel.prototype.__class__.WEST);
     this.header.add(this.banner, __ui_DockPanel.prototype.__class__.EAST);
     this.header.setCellWidth(this.info, '4%');
+    this.header.setCellWidth(this.mode, '4%');
     this.header.setCellWidth(this.flash, '9%');
-    this.header.setCellWidth(this.banner, '87%');
+    this.header.setCellWidth(this.banner, '83%');
     this.header.setWidth('100%');
     this.header.setBorderWidth(0);
     var editor = ui_HTMLPanel('<div id=\'myhelene\'></div> <script> sethelene(); </script> ');
@@ -25430,7 +25433,7 @@ function __Basic_initialize() {
     var vp = ui_VerticalPanel();
     vp.setBorderWidth(1);
     var console = ui_Label('Console');
-    var term = ui_Frame('http://127.0.0.1:8023/');
+    var term = ui_HTMLPanel(' <script> setterm(); </script> <div id=\'term\'></div>');
     term.setWidth('100%');
     term.setHeight('426px');
     var console = ui_SimplePanel();
@@ -25438,30 +25441,33 @@ function __Basic_initialize() {
     console.setWidth('100%');
     console.setHeight('100%');
     var text_area = ui_TextArea();
-    text_area.setHeight('215px');
-    text_area.setWidth('657px');
+    text_area.setHeight('150px');
+    text_area.setWidth('470px');
     var text_box = ui_TextBox();
-    text_box.setVisibleLength('85');
-    text_box.setMaxLength('45');
+    text_box.setVisibleLength('60');
+    text_box.setMaxLength('60');
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
     text_entry.add(text_box);
     text_entry.add(text_send);
-    var js_tester = ui_HTMLPanel(' my text in here. <script> myfunction(); </script> <div id=\'lame\'></div>');
+    text_entry.setWidth('500px');
+    var fake_chat = ui_VerticalPanel();
+    fake_chat.add(text_area);
+    fake_chat.add(text_entry);
     vp.add(console);
-    vp.add(js_tester);
+    vp.add(fake_chat);
     vp.setWidth('100%');
     vp.setHeight('100%');
     vp.setCellHeight(console, '50%');
-    vp.setCellHeight(js_tester, '50%');
+    vp.setCellHeight(fake_chat, '50%');
     var hp = ui_HorizontalPanel();
     hp.setBorderWidth(1);
     hp.setHorizontalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
     hp.setVerticalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_MIDDLE);
     hp.add(editor);
     hp.add(vp);
-    hp.setCellWidth(editor, '52.5%');
-    hp.setCellWidth(vp, '47.5%');
+    hp.setCellWidth(editor, '50%');
+    hp.setCellWidth(vp, '50%');
     hp.setCellVerticalAlignment(console, __ui_HasAlignment.prototype.__class__.ALIGN_TOP);
     hp.setWidth('100%');
     hp.setHeight('100%');
@@ -25483,19 +25489,50 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
+    __Basic.prototype.onModeClick = function() {
+    this.modebox = ui_DialogBox();
+    this.modebox.setText('Mode Settings');
+    var closeButton = ui_Button('Close', pyjslib_getattr(this.modebox, 'onModeClose'));
+    var modemsg = ui_HTML('You can change drivers or sync/discard changes, etc. here', true);
+    var modepanel = ui_DockPanel();
+    modepanel.setSpacing(4);
+    modepanel.add(closeButton, __ui_DockPanel.prototype.__class__.SOUTH);
+    modepanel.add(modemsg, __ui_DockPanel.prototype.__class__.NORTH);
+    modepanel.setCellHorizontalAlignment(closeButton, __ui_HasAlignment.prototype.__class__.ALIGN_RIGHT);
+    modepanel.setCellWidth(modemsg, '100%');
+    modepanel.setWidth('100%');
+    this.modebox.setWidget(modepanel);
+    var modeleft =  ( this.mode.getAbsoluteLeft() + 1 ) ;
+    var modetop =  ( this.mode.getAbsoluteTop() + 20 ) ;
+    this.modebox.setPopupPosition(modeleft, modetop);
+    this.modebox.show();
+    };
+    __Basic.prototype.__class__.onModeClick = function() {
+        return __Basic.prototype.onModeClick.call.apply(__Basic.prototype.onModeClick, arguments);
+    };
+    __Basic.prototype.__class__.onModeClick.unbound_method = true;
+    __Basic.prototype.onModeClick.instance_method = true;
+    __Basic.prototype.onModeClick = function(sender) {
+    this.modebox.hide();
+    };
+    __Basic.prototype.__class__.onModeClick = function() {
+        return __Basic.prototype.onModeClick.call.apply(__Basic.prototype.onModeClick, arguments);
+    };
+    __Basic.prototype.__class__.onModeClick.unbound_method = true;
+    __Basic.prototype.onModeClick.instance_method = true;
     __Basic.prototype.onInfoClick = function() {
     var id = this.remote.get_username(this);
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    var infocontents = ui_HTML(sprintf('Username: %s <br>Partner: %s', new pyjslib_Tuple([this.name.getText(), 'bwk ^^'])));
+    var infocontents = ui_HTML(sprintf('User: %s <br>Partner: %s', new pyjslib_Tuple([this.name.getText(), 'bwk'])));
     infocontents.addClickListener(pyjslib_getattr(this, 'onPopupClick'));
     this.popup = pyjs_kwargs_function_call(ui_PopupPanel, [{autoHide:true}]);
     this.popup.add(infocontents);
     this.popup.setStyleName('gwt-PopupPanel');
-    var left =  ( this.info.getAbsoluteLeft() + 1 ) ;
-    var top =  ( this.info.getAbsoluteTop() + 20 ) ;
-    this.popup.setPopupPosition(left, top);
+    var infoleft =  ( this.info.getAbsoluteLeft() + 1 ) ;
+    var infotop =  ( this.info.getAbsoluteTop() + 20 ) ;
+    this.popup.setPopupPosition(infoleft, infotop);
     this.popup.show();
     };
     __Basic.prototype.__class__.onInfoClick = function() {
@@ -25512,9 +25549,7 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onPopupClick.unbound_method = true;
     __Basic.prototype.onPopupClick.instance_method = true;
     __Basic.prototype.onRemoteResponse = function(response, request_info) {
-    console.info('response received');
     if ((request_info.method == 'get_username')) {
-    console.info('got the username!');
 
         var __tpl = response.__iter__();
         try {

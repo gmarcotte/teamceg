@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, Label, HasAlignment, VerticalPanel, FlowPanel, TextArea, TextBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image, PopupPanel
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window
@@ -15,27 +15,27 @@ class Basic:
     
     self.remote = DataService()
     
-    # the menu bar at the top
-    #self.menu_bar = Menu()
+    # building the menu bar
     # the info button
     self.info = Button("Info", getattr(self, "onInfoClick"))
+    self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.flash.isActive = False  # is it currently the on-flash color?
     self.flash.Flash = False
-    # the header (menu bar & title)
+    # the header
     self.banner = Image("/pj/images/header_no_description.jpg")
-    self.banner.setHeight("24px")
+    self.banner.setHeight("20px")
     self.banner.addMouseListener(TooltipListener("^--", 5000, "MOUSE"))
     # put them together
     self.header = DockPanel()
-    #self.header.add(self.menu_bar, DockPanel.WEST)
     self.header.add(self.info, DockPanel.WEST)
+    self.header.add(self.mode, DockPanel.WEST)
     self.header.add(self.flash, DockPanel.WEST)
     self.header.add(self.banner, DockPanel.EAST)
-    #self.header.setCellWidth(self.menu_bar, "11%")
     self.header.setCellWidth(self.info, "4%")
+    self.header.setCellWidth(self.mode, "4%")
     self.header.setCellWidth(self.flash, "9%")
-    self.header.setCellWidth(self.banner, "87%")
+    self.header.setCellWidth(self.banner, "83%")
     self.header.setWidth("100%")
     self.header.setBorderWidth(0)
     
@@ -57,28 +57,32 @@ class Basic:
     console.add(term)
     console.setWidth("100%")
     console.setHeight("100%")
-    # text chat
-    # use sth like "flash chat"? do you really want to write your own?..
+    # hacky little "text chat"
     text_area = TextArea()
-    text_area.setHeight("215px")
-    text_area.setWidth("657px")
+    text_area.setHeight("150px")
+    text_area.setWidth("470px")
     text_box = TextBox()
-    text_box.setVisibleLength("85")
-    text_box.setMaxLength("45")
+    text_box.setVisibleLength("60")
+    text_box.setMaxLength("60")
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(text_box)
     text_entry.add(text_send)
-    js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
+    text_entry.setWidth("500px")
+    fake_chat = VerticalPanel()
+    fake_chat.add(text_area)
+    fake_chat.add(text_entry)
+    #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
     #js_tester = SimplePanel()
     
     vp.add(console)
-    vp.add(js_tester)
+    vp.add(fake_chat)
+    #vp.add(js_tester)
     vp.setWidth("100%")
     vp.setHeight("100%")
     vp.setCellHeight(console, "50%")
-    vp.setCellHeight(js_tester, "50%")
-    #vp.setCellHeight(fake_chat, "50%")
+    #vp.setCellHeight(js_tester, "50%")
+    vp.setCellHeight(fake_chat, "50%")
     
     # putting the left and right sides together
     hp = HorizontalPanel()
@@ -87,8 +91,8 @@ class Basic:
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
     hp.add(editor)
     hp.add(vp)
-    hp.setCellWidth(editor, "52.5%")
-    hp.setCellWidth(vp, "47.5%")
+    hp.setCellWidth(editor, "50%")
+    hp.setCellWidth(vp, "50%")
     #hp.setCellVerticalAlignment(editor, HasAlignment.ALIGN_JUSTIFY)
     hp.setCellVerticalAlignment(console, HasAlignment.ALIGN_TOP)
     hp.setWidth("100%")
@@ -113,28 +117,47 @@ class Basic:
     RootPanel().add(self.panel)
     #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
     
+  def onModeClick(self):
+    self.modebox = DialogBox()
+    self.modebox.setText("Mode Settings")
+    closeButton = Button("Close", getattr(self.modebox, "onModeClose"))
+    modemsg = HTML("You can change drivers or sync/discard changes, etc. here", True)
+    modepanel = DockPanel()
+    modepanel.setSpacing(4)
+    modepanel.add(closeButton, DockPanel.SOUTH)
+    modepanel.add(modemsg, DockPanel.NORTH)
+    modepanel.setCellHorizontalAlignment(closeButton, HasAlignment.ALIGN_RIGHT)
+    modepanel.setCellWidth(modemsg, "100%")
+    modepanel.setWidth("100%")
+    self.modebox.setWidget(modepanel)
+    modeleft = self.mode.getAbsoluteLeft() + 1
+    modetop = self.mode.getAbsoluteTop() + 20
+    self.modebox.setPopupPosition(modeleft, modetop)
+    self.modebox.show()
+  def onModeClick(self, sender):
+    self.modebox.hide()
+    
   def onInfoClick(self):
     #window.alert('Getting username')
     id = self.remote.get_username(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
-    infocontents = HTML("Username: %s <br>Partner: %s" % (self.name.getText(), "bwk ^^"))
+    infocontents = HTML("User: %s <br>Partner: %s" % (self.name.getText(), "bwk"))
     infocontents.addClickListener(getattr(self, "onPopupClick"))
     self.popup = PopupPanel(autoHide = True)
     self.popup.add(infocontents)
     self.popup.setStyleName("gwt-PopupPanel")
-    left = self.info.getAbsoluteLeft() + 1
-    top = self.info.getAbsoluteTop() + 20
-    self.popup.setPopupPosition(left, top)
+    infoleft = self.info.getAbsoluteLeft() + 1
+    infotop = self.info.getAbsoluteTop() + 20
+    self.popup.setPopupPosition(infoleft, infotop)
     self.popup.show()
   def onPopupClick(self):
     self.popup.hide()
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
-    console.info("response received")
+    #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
     if request_info.method == 'get_username':
-      console.info("got the username!")
       for tpl in response:
         #window.alert("User: %s" % tpl[1])
         self.name = Label("%s" % tpl[1])

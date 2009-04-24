@@ -7,11 +7,6 @@
   padding: 3px;
 }
 
-.gwt-PopupPanel .popupContent {
-  /* the wrapper around the content */
-  background: #000000;
-  font-family: Tahoma;
-}
 
 
 .gwt-button {
