@@ -13743,156 +13743,6 @@ __ui_FormSubmitCompleteEvent_initialize();
 __ui_HTMLTable_initialize();
 __ui_AbsolutePanel_initialize();
 __ui_ClickDelegatePanel_initialize();
-function __Menu_Menu() {
-}
-function Menu_Menu() {
-    var instance = new __Menu_Menu();
-    if(instance.__init__) instance.__init__.apply(instance, arguments);
-    return instance;
-}
-
-
-function __Menu_Menu_initialize() {
-    if(__Menu_Menu.__was_initialized__) return;
-    __Menu_Menu.__was_initialized__ = true;
-    if(!__ui_MenuBar.__was_initialized__)
-        __ui_MenuBar_initialize();
-    pyjs_extend(__Menu_Menu, __ui_MenuBar);
-    __Menu_Menu.prototype.__class__.__new__ = Menu_Menu;
-    __Menu_Menu.prototype.__init__ = function() {
-    __ui_MenuBar.prototype.__class__.__init__(this);
-    var menu_info = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    menu_info.addItem('User: ellenkim, Partner: bwk', Menu_MenuCmd(this, 'onMenuInfoInfo'));
-    var menu_mode = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    var collab_menu = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    collab_menu.addItem('<b>User 1</b>', true, Menu_MenuCmd(this, 'onCollabUser1'));
-    collab_menu.addItem('User 2', true, Menu_MenuCmd(this, 'onCollabUser2'));
-    var indep_menu = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    indep_menu.addItem('Synchronize', true, Menu_MenuCmd(this, 'onIndepSync'));
-    indep_menu.addItem('Discard changes', true, Menu_MenuCmd(this, 'onIndepDisc'));
-    menu_mode.addItem('Collaborative mode &#187;', true, collab_menu);
-    menu_mode.addItem('Independent mode &#187;', true, indep_menu);
-    var menu_ink = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    menu_ink.addItem('Highlight', true, Menu_MenuCmd(this, 'onMenuInk'));
-    menu_ink.addItem('Pen', true, Menu_MenuCmd(this, 'onMenuInk'));
-    menu_ink.addItem('Clear marks', true, Menu_MenuCmd(this, 'onMenuInk'));
-    menu_ink.addItem('Show/hide mouse', true, Menu_MenuCmd(this, 'onMenuInk'));
-    var menu_audio = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    menu_audio.addItem('Mic controls', true, Menu_MenuCmd(this, 'onMenuAudioMic'));
-    menu_audio.addItem('Volume controls', true, Menu_MenuCmd(this, 'onMenuAudioVolume'));
-    var menu_files = pyjs_kwargs_function_call(ui_MenuBar, [{vertical:true}]);
-    menu_files.addItem('I\'ll need to look into whether I can put a tree here; but do we really want to make them click "files" before showing them the file tree?  Should it pop up in a dockable window or...?  Should we have a "miscellaneous" section on the screen where stuff like this goes?', true);
-    this.addItem(ui_MenuItem('Info', menu_info));
-    this.addItem(ui_MenuItem('Mode', menu_mode));
-    this.addItem(ui_MenuItem('Audio', menu_audio));
-    this.addItem(ui_MenuItem('Files', menu_files));
-    };
-    __Menu_Menu.prototype.__class__.__init__ = function() {
-        return __Menu_Menu.prototype.__init__.call.apply(__Menu_Menu.prototype.__init__, arguments);
-    };
-    __Menu_Menu.prototype.__class__.__init__.unbound_method = true;
-    __Menu_Menu.prototype.__init__.instance_method = true;
-    __Menu_Menu.prototype.onMenuInfoInfo = function() {
-    Window_alert('You want more info?  I don\'t have any more.');
-    };
-    __Menu_Menu.prototype.__class__.onMenuInfoInfo = function() {
-        return __Menu_Menu.prototype.onMenuInfoInfo.call.apply(__Menu_Menu.prototype.onMenuInfoInfo, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onMenuInfoInfo.unbound_method = true;
-    __Menu_Menu.prototype.onMenuInfoInfo.instance_method = true;
-    __Menu_Menu.prototype.onCollabUser1 = function() {
-    Window_alert('User 1 is already \'driving\'');
-    };
-    __Menu_Menu.prototype.__class__.onCollabUser1 = function() {
-        return __Menu_Menu.prototype.onCollabUser1.call.apply(__Menu_Menu.prototype.onCollabUser1, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onCollabUser1.unbound_method = true;
-    __Menu_Menu.prototype.onCollabUser1.instance_method = true;
-    __Menu_Menu.prototype.onCollabUser2 = function() {
-    Window_alert('So you want User 2 to drive?');
-    };
-    __Menu_Menu.prototype.__class__.onCollabUser2 = function() {
-        return __Menu_Menu.prototype.onCollabUser2.call.apply(__Menu_Menu.prototype.onCollabUser2, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onCollabUser2.unbound_method = true;
-    __Menu_Menu.prototype.onCollabUser2.instance_method = true;
-    __Menu_Menu.prototype.onIndepSync = function() {
-    Window_alert('You are submitting your changes to svn control');
-    };
-    __Menu_Menu.prototype.__class__.onIndepSync = function() {
-        return __Menu_Menu.prototype.onIndepSync.call.apply(__Menu_Menu.prototype.onIndepSync, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onIndepSync.unbound_method = true;
-    __Menu_Menu.prototype.onIndepSync.instance_method = true;
-    __Menu_Menu.prototype.onIndepDisc = function() {
-    Window_alert('You will lose all changes since last synchronize point');
-    };
-    __Menu_Menu.prototype.__class__.onIndepDisc = function() {
-        return __Menu_Menu.prototype.onIndepDisc.call.apply(__Menu_Menu.prototype.onIndepDisc, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onIndepDisc.unbound_method = true;
-    __Menu_Menu.prototype.onIndepDisc.instance_method = true;
-    __Menu_Menu.prototype.onMenuInk = function() {
-    var Ink_contents = ui_Frame('www.google.com/');
-    Window_alert(Ink_contents);
-    };
-    __Menu_Menu.prototype.__class__.onMenuInk = function() {
-        return __Menu_Menu.prototype.onMenuInk.call.apply(__Menu_Menu.prototype.onMenuInk, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onMenuInk.unbound_method = true;
-    __Menu_Menu.prototype.onMenuInk.instance_method = true;
-    __Menu_Menu.prototype.onMenuAudioMic = function() {
-    Window_alert('This should pop open a microphone controls window');
-    };
-    __Menu_Menu.prototype.__class__.onMenuAudioMic = function() {
-        return __Menu_Menu.prototype.onMenuAudioMic.call.apply(__Menu_Menu.prototype.onMenuAudioMic, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onMenuAudioMic.unbound_method = true;
-    __Menu_Menu.prototype.onMenuAudioMic.instance_method = true;
-    __Menu_Menu.prototype.onMenuAudioVolume = function() {
-    Window_alert('Let them change how loud the volume is from this app without making them turn down the entire system volume');
-    };
-    __Menu_Menu.prototype.__class__.onMenuAudioVolume = function() {
-        return __Menu_Menu.prototype.onMenuAudioVolume.call.apply(__Menu_Menu.prototype.onMenuAudioVolume, arguments);
-    };
-    __Menu_Menu.prototype.__class__.onMenuAudioVolume.unbound_method = true;
-    __Menu_Menu.prototype.onMenuAudioVolume.instance_method = true;
-}
-function __Menu_MenuCmd() {
-}
-function Menu_MenuCmd(object, handler) {
-    var instance = new __Menu_MenuCmd();
-    if(instance.__init__) instance.__init__.apply(instance, arguments);
-    return instance;
-}
-
-
-function __Menu_MenuCmd_initialize() {
-    if(__Menu_MenuCmd.__was_initialized__) return;
-    __Menu_MenuCmd.__was_initialized__ = true;
-    pyjs_extend(__Menu_MenuCmd, __pyjslib_Object);
-    __Menu_MenuCmd.prototype.__class__.__new__ = Menu_MenuCmd;
-    __Menu_MenuCmd.prototype.__init__ = function(object, handler) {
-    this._object = object;
-    this._handler = handler;
-    };
-    __Menu_MenuCmd.prototype.__class__.__init__ = function() {
-        return __Menu_MenuCmd.prototype.__init__.call.apply(__Menu_MenuCmd.prototype.__init__, arguments);
-    };
-    __Menu_MenuCmd.prototype.__class__.__init__.unbound_method = true;
-    __Menu_MenuCmd.prototype.__init__.instance_method = true;
-    __Menu_MenuCmd.prototype.execute = function() {
-    var handler = pyjslib_getattr(this._object, this._handler);
-    handler();
-    };
-    __Menu_MenuCmd.prototype.__class__.execute = function() {
-        return __Menu_MenuCmd.prototype.execute.call.apply(__Menu_MenuCmd.prototype.execute, arguments);
-    };
-    __Menu_MenuCmd.prototype.__class__.execute.unbound_method = true;
-    __Menu_MenuCmd.prototype.execute.instance_method = true;
-}
-__Menu_MenuCmd_initialize();
-__Menu_Menu_initialize();
     var Timer_timers = new pyjslib_List([]);
 function __Timer_Timer() {
 }
@@ -25551,26 +25401,20 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.__new__ = Basic;
     __Basic.prototype.onModuleLoad = function() {
     this.remote = DataService();
-    this.menu_bar = Menu_Menu();
-    this.ink = ui_Button('Ink', pyjslib_getattr(this, 'onInkClick'));
-    this.flash = ui_Button('Flash', pyjslib_getattr(this, 'setFlash'));
+    this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
+    this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
     this.flash.isActive = false;
     this.flash.Flash = false;
-    this.stopflash = ui_Button('Stop Flash', pyjslib_getattr(this, 'offTimer'));
     this.banner = ui_Image('/pj/images/header_no_description.jpg');
     this.banner.setHeight('24px');
     this.banner.addMouseListener(Tooltip_TooltipListener('^--', 5000, 'MOUSE'));
     this.header = ui_DockPanel();
-    this.header.add(this.menu_bar, __ui_DockPanel.prototype.__class__.WEST);
-    this.header.add(this.ink, __ui_DockPanel.prototype.__class__.WEST);
+    this.header.add(this.info, __ui_DockPanel.prototype.__class__.WEST);
     this.header.add(this.flash, __ui_DockPanel.prototype.__class__.WEST);
-    this.header.add(this.stopflash, __ui_DockPanel.prototype.__class__.WEST);
     this.header.add(this.banner, __ui_DockPanel.prototype.__class__.EAST);
-    this.header.setCellWidth(this.menu_bar, '11%');
-    this.header.setCellWidth(this.ink, '3%');
-    this.header.setCellWidth(this.flash, '3%');
-    this.header.setCellWidth(this.stopflash, '10%');
-    this.header.setCellWidth(this.banner, '73%');
+    this.header.setCellWidth(this.info, '4%');
+    this.header.setCellWidth(this.flash, '9%');
+    this.header.setCellWidth(this.banner, '87%');
     this.header.setWidth('100%');
     this.header.setBorderWidth(0);
     var editor = ui_HTMLPanel('<div id=\'myhelene\'></div> <script> sethelene(); </script> ');
@@ -25632,24 +25476,38 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
-    __Basic.prototype.onInkClick = function() {
-    window.alert('Getting username');
+    __Basic.prototype.onInfoClick = function() {
     var id = this.remote.get_username(this);
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    window.alert('Sent username request');
+    var infocontents = ui_HTML(sprintf('Username: %s <br>Partner: %s', new pyjslib_Tuple([this.name.getText(), 'bwk ^^'])));
+    infocontents.addClickListener(pyjslib_getattr(this, 'onPopupClick'));
+    this.popup = pyjs_kwargs_function_call(ui_PopupPanel, [{autoHide:true}]);
+    this.popup.add(infocontents);
+    this.popup.setStyleName('gwt-PopupPanel');
+    var left =  ( this.info.getAbsoluteLeft() + 1 ) ;
+    var top =  ( this.info.getAbsoluteTop() + 20 ) ;
+    this.popup.setPopupPosition(left, top);
+    this.popup.show();
     };
-    __Basic.prototype.__class__.onInkClick = function() {
-        return __Basic.prototype.onInkClick.call.apply(__Basic.prototype.onInkClick, arguments);
+    __Basic.prototype.__class__.onInfoClick = function() {
+        return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
     };
-    __Basic.prototype.__class__.onInkClick.unbound_method = true;
-    __Basic.prototype.onInkClick.instance_method = true;
+    __Basic.prototype.__class__.onInfoClick.unbound_method = true;
+    __Basic.prototype.onInfoClick.instance_method = true;
+    __Basic.prototype.onPopupClick = function() {
+    this.popup.hide();
+    };
+    __Basic.prototype.__class__.onPopupClick = function() {
+        return __Basic.prototype.onPopupClick.call.apply(__Basic.prototype.onPopupClick, arguments);
+    };
+    __Basic.prototype.__class__.onPopupClick.unbound_method = true;
+    __Basic.prototype.onPopupClick.instance_method = true;
     __Basic.prototype.onRemoteResponse = function(response, request_info) {
-    window.alert('Received remote response');
     console.info('response received');
     if ((request_info.method == 'get_username')) {
-    console.info('HERE!');
+    console.info('got the username!');
 
         var __tpl = response.__iter__();
         try {
@@ -25657,7 +25515,7 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    window.alert(sprintf('User: %s', tpl.__getitem__(1)));
+    this.name = ui_Label(sprintf('%s', tpl.__getitem__(1)));
 
             }
         } catch (e) {
@@ -25668,7 +25526,7 @@ function __Basic_initialize() {
         
     }
     else {
-    console.error('none!');
+    console.error('Error in onRemoteResponse');
     }
     };
     __Basic.prototype.__class__.onRemoteResponse = function() {
@@ -25697,20 +25555,18 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onTimer.unbound_method = true;
     __Basic.prototype.onTimer.instance_method = true;
-    __Basic.prototype.offTimer = function() {
-    this.Flash = false;
-    this.panel.setStyleName('WHITE');
-    return;
-    };
-    __Basic.prototype.__class__.offTimer = function() {
-        return __Basic.prototype.offTimer.call.apply(__Basic.prototype.offTimer, arguments);
-    };
-    __Basic.prototype.__class__.offTimer.unbound_method = true;
-    __Basic.prototype.offTimer.instance_method = true;
     __Basic.prototype.setFlash = function() {
+    if (!(this.Flash)) {
     this.Flash = true;
     this.onTimer();
+    this.flash.setText('Flash OFF');
     return;
+    }
+    else {
+    this.Flash = false;
+    this.panel.setStyleName('WHITE');
+    this.flash.setText('Flash ON');
+    }
     };
     __Basic.prototype.__class__.setFlash = function() {
         return __Basic.prototype.setFlash.call.apply(__Basic.prototype.setFlash, arguments);
