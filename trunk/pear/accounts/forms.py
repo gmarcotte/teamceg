@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib import auth
 from django.contrib.auth import models as auth_models
+from django.conf import settings
 
 from pear.accounts import models as accounts_models
 import pear.accounts.util
 from pear.core import emailer
-from pear.remote import localkeys
 
 
 class InviteUserForm(forms.Form):
@@ -62,15 +62,15 @@ class RegistrationForm(forms.Form):
     u.email = self.cleaned_data['email']
     u.username = username
     u.set_password(password)
+    u.save()
     
-    keypath = "/Users/christinailvento/Documents/JUNIOR/Cos333/Project/teamceg/keys/" + username
     # Create a profile for the new user
     p = pear.accounts.models.Profile(
         class_year = self.cleaned_data['class_year'],
         major = self.cleaned_data['major'],
-        private_key = keypath,
-        public_key = localkeys.create_keys(keypath)
+        user = u
     )
+    p.save()
     
     # Send an email to the user
     dict = {"email": u.email, 
@@ -79,13 +79,15 @@ class RegistrationForm(forms.Form):
             "fname": u.first_name, 
             "year": p.class_year, 
             "major": p.major}
-    emailer.render_and_send(u.email,
-                            'Thank you for registering with Pairgramming!',
-                            'emails/registration_confirm.txt', 
-                            dict)
-    u.save()
-    p.user = u
-    p.save()
+    try:
+      emailer.render_and_send(u.email,
+                              'Thank you for registering with Pairgramming!',
+                              'emails/registration_confirm.txt', dict)
+      return True
+    except:
+      p.delete()
+      u.delete()
+      return False
 
 
 class LoginForm(forms.Form):

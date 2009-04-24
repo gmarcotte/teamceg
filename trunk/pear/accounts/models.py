@@ -2,8 +2,15 @@
 #CCI: 3/27/09
 from django.db import models
 from django.contrib.auth import models as auth_models
+from django.conf import settings
 
 from pear.core import timestamp
+
+if settings.USE_PEXPECT:
+  import pexpect
+import os
+import sys
+
 
 class PearUser(auth_models.User):
   """This model is used to extend the functionality of the Django user model
@@ -16,38 +23,67 @@ class PearUser(auth_models.User):
   def __unicode__(self):
     return "%s: %s" % (self.email, self.get_full_name())
   
-  def get_profile(self):
-    return self.profile.get()
-  
   @property
   def created_at(self):
-    return self.get_profile().created_at
+    return self.profile.created_at
   
   @property
   def updated_at(self):
-    return self.get_profile().updated_at
+    return self.profile.updated_at
   
   @property
   def update_count(self):
-    return self.get_profile().update_count
+    return self.profile.update_count
   
   def save(self):
-    self.get_profile().save()
+    self.profile.save()
     super(PearUser, self).save()
+  
+  def delete(self):
+    """Deleting a server and the user's profile may have custom behavior
+    related to handling the keyfiles.  So we need to explicitly call their
+    delete functions as Django only does a MySQL delete for related objects.
+    """
+    for server in self.servers.all():
+      server.delete()
+    self.profile.delete()
+    super(PearUser, self).delete()
 
 
 class Profile(timestamp.TimestampedModel):
   major = models.CharField(max_length=30)
   class_year = models.CharField(max_length=30)
-  user = models.ForeignKey(auth_models.User, related_name='profile')
-  private_key = models.CharField(max_length=500, editable=False)
-  public_key = models.CharField(max_length=500, editable=False)
+  user = models.OneToOneField(auth_models.User, related_name='profile', primary_key=True)
   
-  def __unicode__(self):
-    return str(self.major) + str(self.class_year)
+  def delete(self):
+    if os.path.exists(self.get_private_file()):
+      os.remove(self.get_private_file())
+    if os.path.exists(self.get_public_file()):
+      os.remove(self.get_public_file())
+    super(Profile, self).delete()
   
-  def get_public_key(self):
-    return self.public_key
+  ######## RSA Key Methods ############
+  def get_private_file(self):
+    return "%s/%d" % (settings.RSA_KEY_DIR, self.pk)
+  
+  def get_public_file(self):
+    return "%s.pub" % self.get_private_file()
     
-  def get_private_key(self):
-    return self.private_key
+  def refresh_keys(self):
+    """Generate a new public/private key pair for this user"""
+    if settings.USE_PEXPECT:
+      local = pexpect.spawn('ssh-keygen -t dsa')
+      # all of the expects are what we actually see from the console.
+      # if these need to be changed, it will probably be minimal
+      local.expect('Generating public/private dsa key pair.')
+      # the filename for the key
+      local.expect(':')
+      local.sendline(self.get_private_file())
+      # makes sure that we over-write if already present
+      local.sendline('y')
+      # the passcode, this will be blank
+      local.expect(':')
+      local.sendline('')
+      # passcode confirmation, also blank
+      local.expect(':')
+      local.sendline('')

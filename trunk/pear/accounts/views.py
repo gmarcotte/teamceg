@@ -24,9 +24,9 @@ def register(request):
     form = pear.accounts.forms.RegistrationForm(request.POST)
      
     if form.is_valid():
-      new_user = form.save()
-      return http.HttpResponseRedirect('/')
-  
+      if form.save():
+        return http.HttpResponseRedirect('/')
+      
   else:
     form = pear.accounts.forms.RegistrationForm()
    

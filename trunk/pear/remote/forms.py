@@ -14,33 +14,17 @@ class ServerAddForm(forms.Form):
       
   password = forms.CharField(
       'Password',
+      required=False,
+      help_text=("We never store your password in any way. Read more about our "
+                 "password policy below"),
       widget = forms.PasswordInput(attrs={'size': '20'}))
   
   def save(self, u):
     new_serv = pear.remote.models.SSHConnection(
-               server = self.cleaned_data['server'],
-               user_name = self.cleaned_data['user_name'],
-               user = u)
+        server = self.cleaned_data['server'],
+        user_name = self.cleaned_data['user_name'],
+        num_active = 0,
+        has_valid_keys = False,
+        user = u)
+    new_serv.has_valid_keys = new_serv.set_remote_keys(self.cleaned_data['password'])
     new_serv.save()
-  
-    
-class ToyForm(forms.Form):
-  server_name = forms.CharField(
-      'Server Name (ie hats.princeton.edu)',
-      widget = forms.TextInput(attrs={'size': '40'}))
-  user_name = forms.CharField(
-      'Username on server',
-      widget = forms.TextInput(attrs={'size': '20'}))
-  command = forms.CharField(
-      'First command to execute',
-      widget = forms.TextInput(attrs={'size': '100'}))
-  command2 = forms.CharField(
-      'Second command to execute',
-      widget = forms.TextInput(attrs={'size': '100'}))
-  command3 = forms.CharField(
-      'Third command to execute',
-      widget = forms.TextInput(attrs={'size': '100'}))
-  
-  def __init__(self, user, *args, **kwargs):
-    self.user = user
-    super(ToyForm, self).__init__(*args, **kwargs)

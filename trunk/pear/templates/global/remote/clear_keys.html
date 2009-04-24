@@ -1,0 +1,16 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<h2> Clear RSA Keys </h2>
+You are about to clear the RSA keys for {{ server.user_name }}@{{ server.server }}.
+You will not be able to log in to this connection until you refresh the keys
+and reenter your password.
+<p>
+
+<form action="" method="POST">
+Are you SURE you want to clear the keys?
+<input type="submit" name="confirm" value="Clear the Keys!" />
+<input type="submit" name="cancel" value="Cancel" />
+</form>
+
+{% endblock %}

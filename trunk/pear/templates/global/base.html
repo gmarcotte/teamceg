@@ -16,6 +16,7 @@
 
 
 {% if form %}
+  <link rel="stylesheet" href="{{ MEDIA_URL }}/css/forms.css" media="screen" />
   {{ form|print_form_css }}
 {% endif %}
 {% block css_style %}

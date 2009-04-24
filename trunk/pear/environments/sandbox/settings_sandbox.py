@@ -41,8 +41,9 @@ EMAIL_PORT = 0
 # Initialization Options
 ALLOW_INITIALIZE_SCRIPT = True
 
-# Use pexpect
+# SSH Configuration options
 USE_PEXPECT = False
+RSA_KEY_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../keys'))
 
 # Version info
 PEAR_VERSION = 'Sandbox'

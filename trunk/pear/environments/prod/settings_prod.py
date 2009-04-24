@@ -21,8 +21,7 @@ SERVER_HOSTNAME = 'http://teamceg.princeton.edu'
 # Media configuration
 STATIC_SERVE = True
 ADMIN_MEDIA_PREFIX = '/admin_media'
-MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), 
-                                          '../media/'))
+MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../media/'))
 MEDIA_URL = 'http://teamceg.princeton.edu'
 
 
@@ -38,8 +37,9 @@ EMAIL_SENDER = 'pairgramming@gmail.com'
 EMAIL_PASSWORD = ''
 EMAIL_PORT = 587
 
-# Remote SSH Config
+# SSH Configuration options
 USE_PEXPECT = True
+RSA_KEY_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../keys'))
 
 # Version info
 PEAR_VERSION = 'Pre-Release'
