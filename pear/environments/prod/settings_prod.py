@@ -32,7 +32,7 @@ TEMPLATE_DIRS = (
 
 # E-Mail Configuration
 ENABLE_EMAIL = True
-EMAIL_SERVER = 'smtp.google.com'
+EMAIL_SERVER = 'smtp.gmail.com'
 EMAIL_SENDER = 'pairgramming@gmail.com'
 EMAIL_PASSWORD = ''
 EMAIL_PORT = 587
