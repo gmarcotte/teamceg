@@ -12,18 +12,25 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
         <script type="text/javascript" src="sarissa.js"></script>
         <script type="text/javascript" src="sarissa_dhtml.js"></script>
         <script type="text/javascript" src="ajaxterm.js"></script>
+        <script type="text/javascript" scr="dummyterm.js"></script>
         <script>
         function myfunction() {
         }
         </script>
         <script>
         function setterm() {
-          term=ajaxterm.Terminal("term",80,25);
+          window.onload=function() {
+          window.terminal=ajaxterm.Terminal("term",80,25);
+          //window.dummy=dummyterm.Terminal("test",80,25);
+        }
+        </script>
+        <script>
+        function setotherterminal(body) {
+          dummyterm.setdummytext(window.dummy, body);
         }
         </script>
         <script>
         function sethelene() {
-          //alert("Calling my function.");
           myhelene.innerHTML="<textarea name='myhelene' id='myhelene' class='helene' style='border: 2px; width: 600px; height: 600px; color: black; font-size: 14px;' wrap='off'></textarea>";
           helene.init();
         }
