@@ -8,13 +8,17 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
         <link rel='stylesheet' href='Basic.css'>
         <title>Pairgramming</title>
         <script src="helene.js"></script>
+        <link rel="stylesheet" type="text/css" href="ajaxterm.css"/>
+        <script type="text/javascript" src="sarissa.js"></script>
+        <script type="text/javascript" src="sarissa_dhtml.js"></script>
+        <script type="text/javascript" src="ajaxterm.js"></script>
         <script>
         function myfunction() {
-        //alert("myfunction being called.");
-          var term=document.getElementById("term");
-         // term.innerHTML="<p>JUNK</p>";
-         // lame.innerHTML="<p>LAME</p>";
-         // term=ajaxterm.Terminal("term",80,25); // doesn't work yet
+        }
+        </script>
+        <script>
+        function setterm() {
+          term=ajaxterm.Terminal("term",80,25);
         }
         </script>
         <script>
@@ -29,7 +33,6 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
     </head>
     <body bgcolor="white">
         <script language="javascript" src="pygwt.js"></script>
-        <div id="term"></div>
     </body>
 </html>
 
