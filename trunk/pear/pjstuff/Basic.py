@@ -1,8 +1,7 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, Label, HasAlignment, VerticalPanel, FlowPanel, TextArea, TextBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, Label, HasAlignment, VerticalPanel, FlowPanel, TextArea, TextBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image, PopupPanel
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window
-from Menu import Menu, MenuCmd, onMenuInfoInfo
 from pyjamas.JSONService import JSONProxy
 
 MEDIA_URL = 'http://localhost:8000'
@@ -17,29 +16,26 @@ class Basic:
     self.remote = DataService()
     
     # the menu bar at the top
-    self.menu_bar = Menu()
-    # the ink button
-    self.ink = Button("Ink", getattr(self, "onInkClick"))
-    self.flash = Button("Flash", getattr(self, "setFlash"))
+    #self.menu_bar = Menu()
+    # the info button
+    self.info = Button("Info", getattr(self, "onInfoClick"))
+    self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.flash.isActive = False  # is it currently the on-flash color?
     self.flash.Flash = False
-    self.stopflash = Button("Stop Flash", getattr(self, "offTimer"))
     # the header (menu bar & title)
     self.banner = Image("/pj/images/header_no_description.jpg")
     self.banner.setHeight("24px")
     self.banner.addMouseListener(TooltipListener("^--", 5000, "MOUSE"))
     # put them together
     self.header = DockPanel()
-    self.header.add(self.menu_bar, DockPanel.WEST)
-    self.header.add(self.ink, DockPanel.WEST)
+    #self.header.add(self.menu_bar, DockPanel.WEST)
+    self.header.add(self.info, DockPanel.WEST)
     self.header.add(self.flash, DockPanel.WEST)
-    self.header.add(self.stopflash, DockPanel.WEST)
     self.header.add(self.banner, DockPanel.EAST)
-    self.header.setCellWidth(self.menu_bar, "11%")
-    self.header.setCellWidth(self.ink, "3%")
-    self.header.setCellWidth(self.flash, "3%")
-    self.header.setCellWidth(self.stopflash, "10%")
-    self.header.setCellWidth(self.banner, "73%")
+    #self.header.setCellWidth(self.menu_bar, "11%")
+    self.header.setCellWidth(self.info, "4%")
+    self.header.setCellWidth(self.flash, "9%")
+    self.header.setCellWidth(self.banner, "87%")
     self.header.setWidth("100%")
     self.header.setBorderWidth(0)
     
@@ -117,22 +113,33 @@ class Basic:
     RootPanel().add(self.panel)
     #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
     
-  def onInkClick(self):
-    window.alert('Getting username')
+  def onInfoClick(self):
+    #window.alert('Getting username')
     id = self.remote.get_username(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
-    window.alert('Sent username request')  
-      
+    #window.alert('Sent username request') 
+    infocontents = HTML("Username: %s <br>Partner: %s" % (self.name.getText(), "bwk ^^"))
+    infocontents.addClickListener(getattr(self, "onPopupClick"))
+    self.popup = PopupPanel(autoHide = True)
+    self.popup.add(infocontents)
+    self.popup.setStyleName("gwt-PopupPanel")
+    left = self.info.getAbsoluteLeft() + 1
+    top = self.info.getAbsoluteTop() + 20
+    self.popup.setPopupPosition(left, top)
+    self.popup.show()
+  def onPopupClick(self):
+    self.popup.hide()
   def onRemoteResponse(self, response, request_info):
-    window.alert('Received remote response')
+    #window.alert('Received remote response')
     console.info("response received")
     if request_info.method == 'get_username':
-      console.info("HERE!")
+      console.info("got the username!")
       for tpl in response:
-        window.alert("User: %s" % tpl[1])
+        #window.alert("User: %s" % tpl[1])
+        self.name = Label("%s" % tpl[1])
     else:
-      console.error("none!")
+      console.error("Error in onRemoteResponse")
     
   def onTimer(self):
     if self.Flash:
@@ -153,17 +160,17 @@ class Basic:
         return
     #else:  # if not self.Flash:
       #Timer(1000, getattr(self, "offTimer"))
-  def offTimer(self):
-    self.Flash = False
-    self.panel.setStyleName("WHITE")
-    #vp.setStyleName("WHITE")
-    #Window.alert("stopped the flashing")
-    return
   def setFlash(self):
-    self.Flash = True
-    self.onTimer()
-    #Window.alert("turned on flashing")
-    return
+    if not self.Flash:
+      self.Flash = True
+      self.onTimer()
+      self.flash.setText("Flash OFF")
+      #Window.alert("turned on flashing")
+      return
+    else:  # if self.Flash:
+      self.Flash = False
+      self.panel.setStyleName("WHITE")
+      self.flash.setText("Flash ON")
     
   def onClose(self):
     self._dialog.hide()
