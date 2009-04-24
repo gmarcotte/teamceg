@@ -3,6 +3,24 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Thu, April 24 =
+== Group Meeting ==
+ # Fixed more Helene bugs
+ # Wrote console listener
+ # Got username into Info popup (yay Django+Pyjamas)
+ # Finished SSH stuff, but haven't been able to test it yet (doesn't work in Windows)
+
+== For Tomorrow == 
+ * Test SSH stuff
+ * Work out sessions stuff!
+ * Intelligently launch sessions from Django
+
+= Wed, April 23 = 
+== Group Meeting ==
+ # Got console running on web server
+ # Flash condensed to 1 button
+ # More bug fixing in Helene/console
+
 = Mon, April 20 =
 == Group Meeting ==
  # Did the first integration of pyjamas and django
