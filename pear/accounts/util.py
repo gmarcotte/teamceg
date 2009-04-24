@@ -1,5 +1,14 @@
+"""Account-related helper functions"""
+
+__author__ = ['Christina Ilvento (cilvento@princeton.edu)']
+
 from django.core import exceptions
 from django.contrib.auth import models as auth_models
+from django.conf import settings
+
+if settings.USE_PEXPECT:
+  import pexpect
+import sys
 
 
 def make_username_from_email(email):

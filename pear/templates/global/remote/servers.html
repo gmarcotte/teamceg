@@ -4,15 +4,17 @@
 
 <table id="server-list">
 <tr>
-	<th>Server</th>
-	<th>Login As</th>
+	<th>Connection</th>
+	<th>Valid Keys</th>
 	<th>Actions</th>
 </tr>
 {% for server in server_list %}
 <tr>
-	<td>{{ server.server }}</td>
-	<td>{{ server.user_name }}</td>
-	<td>Edit | Refresh Keys | Delete</td>
+	<td>{{ server.user_name }}@{{ server.server }}</td>
+	<td>{{ server.has_valid_keys|yesno:"Yes, No" }}</td>
+	<td><a href="{{ server.get_refresh_url }}">Refresh Keys</a> | 
+		<a href="{{ server.get_clear_url }}">Clear Keys</a> |
+	    <a href="{{ server.get_delete_url }}">Delete</a></td>
 </tr>
 {% empty %}
 <tr>

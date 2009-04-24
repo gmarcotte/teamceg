@@ -1,0 +1,15 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<p>
+You are about to re-install RSA keys for {{ server.user_name }}@{{ server.server }}.
+Please enter your password for this server below.  We do not save or store
+your password in any fashion during this process.  For more information about
+how we use your password, please read our Password Policy.
+</p>
+<br>
+<form action="" method="POST">
+Password: <input name="password" type="password" />
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
