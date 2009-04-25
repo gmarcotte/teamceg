@@ -16,7 +16,6 @@ class Basic:
     self.remote = DataService()
     
     # building the menu bar
-    # the info button
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
@@ -53,7 +52,7 @@ class Basic:
     vp.setBorderWidth(1)
     # the console
     console = Label("Console")
-    term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div>")#Frame("http://127.0.0.1:8023/")
+    term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
     term.setWidth("100%")
     term.setHeight("426px")
     console = SimplePanel()
