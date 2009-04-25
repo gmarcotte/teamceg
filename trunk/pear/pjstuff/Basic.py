@@ -113,8 +113,8 @@ class Basic:
     self.panel.setCellWidth(hp, "100%")
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.header, "100%")
-    self.panel.setWidth("1024px")
-    self.panel.setHeight("100%")
+    self.panel.setWidth("1002px")
+    self.panel.setHeight("655px")
     
     # visible mouse cursor stuff.. EK
     RootPanel().add(self.panel)
