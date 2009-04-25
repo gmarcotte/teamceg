@@ -25434,7 +25434,7 @@ function __DataService_initialize() {
     pyjs_extend(__DataService, __JSONService_JSONProxy);
     __DataService.prototype.__class__.__new__ = DataService;
     __DataService.prototype.__init__ = function() {
-    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username']));
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo']));
     };
     __DataService.prototype.__class__.__init__ = function() {
         return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
@@ -25493,19 +25493,19 @@ function __Basic_initialize() {
     console.add(term);
     console.setWidth('100%');
     console.setHeight('100%');
-    var text_area = ui_TextArea();
-    text_area.setHeight('150px');
-    text_area.setWidth('470px');
-    var text_box = ui_TextBox();
-    text_box.setVisibleLength('60');
-    text_box.setMaxLength('60');
+    this.text_area = ui_TextArea();
+    this.text_area.setHeight('150px');
+    this.text_area.setWidth('470px');
+    this.text_box = ui_TextBox();
+    this.text_box.setVisibleLength('60');
+    this.text_box.setMaxLength('60');
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
-    text_entry.add(text_box);
+    text_entry.add(this.text_box);
     text_entry.add(text_send);
     text_entry.setWidth('500px');
     var fake_chat = ui_VerticalPanel();
-    fake_chat.add(text_area);
+    fake_chat.add(this.text_area);
     fake_chat.add(text_entry);
     vp.add(console);
     vp.add(fake_chat);
@@ -25547,7 +25547,7 @@ function __Basic_initialize() {
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    var infocontents = ui_HTML(sprintf('User: %s <br>Partner: %s', new pyjslib_Tuple([this.name.getText(), 'bwk'])));
+    var infocontents = ui_HTML(sprintf('User: %s, &nbsp Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
     infocontents.addClickListener(pyjslib_getattr(this, 'onPopupClick'));
     this.popup = pyjs_kwargs_function_call(ui_PopupPanel, [{autoHide:true}]);
     this.popup.add(infocontents);
@@ -25572,6 +25572,7 @@ function __Basic_initialize() {
     __Basic.prototype.onPopupClick.instance_method = true;
     __Basic.prototype.onRemoteResponse = function(response, request_info) {
     if ((request_info.method == 'get_username')) {
+    if ((pyjslib_len(response.__getitem__(3)) < 1)) {
 
         var __tpl = response.__iter__();
         try {
@@ -25579,7 +25580,50 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    this.name = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    this.driver = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    this.passenger = ui_Label('None');
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else {
+    window.alert('There is a passenger');
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    this.driver = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    this.passenger = ui_Label(sprintf('%s', tpl.__getitem__(3)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    }
+    else if ((request_info.method == 'get_meetinginfo')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(sprintf('Returned: %s', tpl.__getitem__(1)));
+    this.driver = ui_Label(sprintf('%s', tpl.__getitem__(2)));
+    this.project = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    this.passenger = ui_Label(sprintf('%s', tpl.__getitem__(3)));
 
             }
         } catch (e) {
@@ -25598,6 +25642,14 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onRemoteResponse.unbound_method = true;
     __Basic.prototype.onRemoteResponse.instance_method = true;
+    __Basic.prototype.onRemoteError = function(response, request_info) {
+    window.alert('ERROR');
+    };
+    __Basic.prototype.__class__.onRemoteError = function() {
+        return __Basic.prototype.onRemoteError.call.apply(__Basic.prototype.onRemoteError, arguments);
+    };
+    __Basic.prototype.__class__.onRemoteError.unbound_method = true;
+    __Basic.prototype.onRemoteError.instance_method = true;
     __Basic.prototype.onModeClick = function() {
     this.modebox = ui_DialogBox();
     this.modebox.setText('Mode Settings');
@@ -25707,6 +25759,16 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onClose.unbound_method = true;
     __Basic.prototype.onClose.instance_method = true;
+    __Basic.prototype.onTextSend = function() {
+    var new_chat_text = ui_Label(sprintf('%s', this.text_box.getText()));
+    this.text_area.setText( (  ( this.text_area.getText() + '\n' )  + new_chat_text.getText() ) );
+    this.text_box.setText('');
+    };
+    __Basic.prototype.__class__.onTextSend = function() {
+        return __Basic.prototype.onTextSend.call.apply(__Basic.prototype.onTextSend, arguments);
+    };
+    __Basic.prototype.__class__.onTextSend.unbound_method = true;
+    __Basic.prototype.onTextSend.instance_method = true;
 }
 __DataService_initialize();
 __Basic_initialize();
