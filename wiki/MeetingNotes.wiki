@@ -3,6 +3,11 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Sat, April 26 =
+== CE Meeting ==
+ # Progress on Meetings model (formerly Sessions, but Django already has Sessions..)
+ # Started integration of Meetings info with UI
+
 = Fri, April 25 =
 == Group Meeting ==
  # Added basic Audio and Mode boxes to menu
