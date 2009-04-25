@@ -116,7 +116,10 @@ def create_root_user():
       'department' : 'ELE!'}
   frm = forms.RegistrationForm(data)
   if frm.is_valid():
-    frm.save()
+    if (frm.save()==False):
+      raise Exception, "Registration form did not save."
+  else:
+    raise Exception, "Did not save root user."
     
         
 
