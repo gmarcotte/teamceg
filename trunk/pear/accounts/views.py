@@ -18,14 +18,14 @@ MAX_STAFF_AJAX_SEARCH_RESULTS = 10
 
 def register(request):
   """Allows a new user to register an account.
-     Following successful registration, redirects to home page.   
+     Following successful registration, redirects to successful registration page.   
   """
   if request.method == 'POST':
     form = pear.accounts.forms.RegistrationForm(request.POST)
      
     if form.is_valid():
       if form.save():
-        return http.HttpResponseRedirect('/')
+        return http.HttpResponseRedirect('/accounts/registered/')
       
   else:
     form = pear.accounts.forms.RegistrationForm()
