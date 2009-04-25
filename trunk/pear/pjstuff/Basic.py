@@ -19,6 +19,7 @@ class Basic:
     # the info button
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
+    self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.flash.isActive = False  # is it currently the on-flash color?
     self.flash.Flash = False
@@ -30,12 +31,14 @@ class Basic:
     self.header = DockPanel()
     self.header.add(self.info, DockPanel.WEST)
     self.header.add(self.mode, DockPanel.WEST)
+    self.header.add(self.audio, DockPanel.WEST)
     self.header.add(self.flash, DockPanel.WEST)
     self.header.add(self.banner, DockPanel.EAST)
     self.header.setCellWidth(self.info, "4%")
     self.header.setCellWidth(self.mode, "4%")
+    self.header.setCellWidth(self.audio, "5%")
     self.header.setCellWidth(self.flash, "9%")
-    self.header.setCellWidth(self.banner, "83%")
+    self.header.setCellWidth(self.banner, "78%")
     self.header.setWidth("100%")
     self.header.setBorderWidth(0)
     
@@ -110,32 +113,12 @@ class Basic:
     self.panel.setCellWidth(hp, "100%")
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.header, "100%")
-    self.panel.setWidth("100%")
+    self.panel.setWidth("1024px")
     self.panel.setHeight("100%")
     
     # visible mouse cursor stuff.. EK
     RootPanel().add(self.panel)
     #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
-    
-  def onModeClick(self):
-    self.modebox = DialogBox()
-    self.modebox.setText("Mode Settings")
-    closeButton = Button("Close", getattr(self.modebox, "onModeClose"))
-    modemsg = HTML("You can change drivers or sync/discard changes, etc. here", True)
-    modepanel = DockPanel()
-    modepanel.setSpacing(4)
-    modepanel.add(closeButton, DockPanel.SOUTH)
-    modepanel.add(modemsg, DockPanel.NORTH)
-    modepanel.setCellHorizontalAlignment(closeButton, HasAlignment.ALIGN_RIGHT)
-    modepanel.setCellWidth(modemsg, "100%")
-    modepanel.setWidth("100%")
-    self.modebox.setWidget(modepanel)
-    modeleft = self.mode.getAbsoluteLeft() + 1
-    modetop = self.mode.getAbsoluteTop() + 20
-    self.modebox.setPopupPosition(modeleft, modetop)
-    self.modebox.show()
-  def onModeClick(self, sender):
-    self.modebox.hide()
     
   def onInfoClick(self):
     #window.alert('Getting username')
@@ -162,8 +145,49 @@ class Basic:
         #window.alert("User: %s" % tpl[1])
         self.name = Label("%s" % tpl[1])
     else:
-      console.error("Error in onRemoteResponse")
+      console.error("Error in onRemoteResponse function in Basic.py")
     
+  def onModeClick(self):
+    self.modebox = DialogBox()
+    self.modebox.setText("Mode Settings")
+    closeMode = Button("Done", getattr(self, "onModeClose"))
+    modemsg = HTML("You can change drivers or sync/discard changes, etc. here", True)
+    modepanel = DockPanel()
+    modepanel.setSpacing(4)
+    modepanel.add(closeMode, DockPanel.SOUTH)
+    modepanel.add(modemsg, DockPanel.NORTH)
+    modepanel.setCellHorizontalAlignment(closeMode, HasAlignment.ALIGN_RIGHT)
+    modepanel.setCellWidth(modemsg, "100%")
+    modepanel.setWidth("100%")
+    self.modebox.setWidget(modepanel)
+    modeleft = self.mode.getAbsoluteLeft() + 1
+    modetop = self.mode.getAbsoluteTop() + 20
+    self.modebox.setPopupPosition(modeleft, modetop)
+    self.modebox.show()
+  def onModeClose(self, sender):
+    self.modebox.hide()
+    #window.alert("close mode box")
+    
+  def onAudioClick(self):
+    self.audiobox = DialogBox()
+    self.audiobox.setText("Audio Settings")
+    closeAudio = Button("Done", getattr(self, "onAudioClose"))
+    audiocontents = HTML("Insert HTML for skype call buttons, etc. here<br><a href='skype:yay1happy?call'><img src='http://mystatus.skype.com/smallclassic/yay1happy'></a>", True)
+    audiopanel = DockPanel()
+    audiopanel.setSpacing(4)
+    audiopanel.add(closeAudio, DockPanel.SOUTH)
+    audiopanel.add(audiocontents, DockPanel.NORTH)
+    audiopanel.setCellHorizontalAlignment(closeAudio, HasAlignment.ALIGN_RIGHT)
+    audiopanel.setCellWidth(audiocontents, "100%")
+    audiopanel.setWidth("100%")
+    self.audiobox.setWidget(audiopanel)
+    audioleft = self.audio.getAbsoluteLeft() + 1
+    audiotop = self.audio.getAbsoluteTop() + 20
+    self.audiobox.setPopupPosition(audioleft, audiotop)
+    self.audiobox.show()
+  def onAudioClose(self, sender):
+    self.audiobox.hide()
+        
   def onTimer(self):
     if self.Flash:
       #Window.alert("should be flashing..")
