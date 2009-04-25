@@ -7,7 +7,9 @@ Running record of notes from our team meetings.
 == Group Meeting ==
  # Added basic Audio and Mode boxes to menu
  # Added post-registration welcome page
- # YAY??
+ # Added delete account e-mail contents
+ # Worked on SSH on our server
+ # Worked on Sessions
 
 = Thu, April 24 =
 == Group Meeting ==
