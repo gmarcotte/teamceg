@@ -32,11 +32,21 @@ def launch_project(request, project_id):
   if request.method == 'POST':
     for meeting in currentmeetings:
       # if it is the correct project
-      if meeting.project_id == project_id:
+      projid = meeting.project_id
+      if str(projid) == str(project_id):
         meeting.passenger = request.user
         meeting.save()
+        return http.HttpResponseRedirect('/pj/Basic.html')
+    meeting = Meeting()
+    meeting.driver = request.user
+    meeting.passenger = None
+    meeting.project = pear.projects.models.Project.objects.get(pk=project_id)
+    # set some other things
+    meeting.flash = False
+    console = ''
+    editor = ''
+    meeting.save()
     return http.HttpResponseRedirect('/pj/Basic.html')
-  
   # If no session with this project, make it, and display that the user will be the driver.
   #currentmeetings = Meeting.objects.all()
   projid = 0
@@ -48,37 +58,10 @@ def launch_project(request, project_id):
            'global/projects/launch_project.html', 
             {'page_title': 'Launch Project', 'driver': driver.email, 'passenger': request.user.email, 'data':str(project_id)}, 
             context_instance=template.RequestContext(request))
-  # we dropped all the way through, so make the new session!
-  #meeting = Meeting()
-  #meeting.driver = request.user
-  #meeting.passenger = None
-  #meeting.project = pear.projects.models.Project.objects.get(pk=project_id)
-  # set some other things
-  #meeting.flash = False
-  #console = ''
-  #editor = ''
-  #meeting.save()
   return shortcuts.render_to_response(
            'global/projects/launch_project.html', 
-            {'page_title': 'Launch Project', 'driver': 'None', 'passenger': 'None', 'data':str(project_id)}, 
+            {'page_title': 'Launch Project', 'driver': request.user.email, 'passenger': 'None', 'data':str(project_id)}, 
             context_instance=template.RequestContext(request))
-  # Otherwise, display that the user will be the passenger. 
-  
-  #if request.method == 'POST':
-  #  form = pear.projects.forms.LaunchForm(request.POST)
-  #  if form.is_valid():
-  #    project = pear.projects.models.Project.objects.get(pk=project_id)
-  #    partner = None
-  #    #for person in project.programmers.all():
-  #    form.save(request.user, project, partner)
-  #    return http.HttpResponseRedirect('/pj/Basic.html')
-  #else:
-  #  form = pear.projects.forms.LaunchForm()
-  #  return shortcuts.render_to_response(
-  #         'global/projects/launch_project.html', 
-  #          {'page_title': 'Launch Project', 'form': form,}, 
-  #          context_instance=template.RequestContext(request))
-
 
 @auth_decorators.login_required
 def create_project(request):
