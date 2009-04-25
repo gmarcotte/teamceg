@@ -88,7 +88,7 @@ class RegistrationForm(forms.Form):
       p.delete()
       u.delete()
       return False
-
+      
 
 class LoginForm(forms.Form):
   email = forms.EmailField(

@@ -33,8 +33,8 @@ TEMPLATE_DIRS = (
 
 # E-Mail Configuration
 ENABLE_EMAIL = False
+EMAIL_SERVER = ''
 EMAIL_SENDER = ''
-EMAIL_USER = ''
 EMAIL_PASSWORD = ''
 EMAIL_PORT = 0
 

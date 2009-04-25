@@ -8,7 +8,7 @@ MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo",])
 
 class Basic:
   def onModuleLoad(self):
@@ -121,7 +121,8 @@ class Basic:
     
   def onInfoClick(self):
     #window.alert('Getting username')
-    id = self.remote.get_username(self)
+    #id = self.remote.get_username(self)
+    id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
@@ -141,11 +142,20 @@ class Basic:
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
     if request_info.method == 'get_username':
       for tpl in response:
-        #window.alert("User: %s" % tpl[1])
+        window.alert("User: %s" % tpl[1])
         self.name = Label("%s" % tpl[1])
+    if request_info.method == 'get_meetinginfo':
+      for tpl in response:
+        window.alert("Returned: %s" % tpl[1])
+        self.driver = Label("%s" % tpl[2])
+        self.project = Label("%s" % tpl[1])
+        self.passenger = Label("%s" % tpl[3]) # sometimes will be blank
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
-    
+  
+  def onRemoteError(self, response, request_info):
+    window.alert("ERROR")
+      
   def onModeClick(self):
     self.modebox = DialogBox()
     self.modebox.setText("Mode Settings")

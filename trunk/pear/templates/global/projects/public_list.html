@@ -29,7 +29,7 @@
   </td>
  <td>
  {% if request.user in project.programmers.all %}
-  Launch | 
+  <a href = "{{ project.launch_url }}">Launch</a> | 
   <a href="{{ project.edit_url }}">Edit</a> |
   <a href="{{ project.leave_url }}">Leave</a>
   {% if project.programmers.all|length == 1 %}
