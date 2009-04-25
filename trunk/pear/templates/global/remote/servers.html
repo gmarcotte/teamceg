@@ -12,8 +12,10 @@
 <tr>
 	<td>{{ server.user_name }}@{{ server.server }}</td>
 	<td>{{ server.has_valid_keys|yesno:"Yes, No" }}</td>
-	<td><a href="{{ server.get_refresh_url }}">Refresh Keys</a> | 
+	<td><a href="{{ server.get_refresh_url }}">Refresh Keys</a> |
+		{% if server.has_valid_keys %} 
 		<a href="{{ server.get_clear_url }}">Clear Keys</a> |
+		{% endif %}
 	    <a href="{{ server.get_delete_url }}">Delete</a></td>
 </tr>
 {% empty %}
