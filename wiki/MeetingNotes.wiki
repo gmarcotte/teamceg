@@ -4,7 +4,7 @@
 Running record of notes from our team meetings. 
 
 = Sat, April 26 =
-== CE Meeting ==
+== CEG Meeting ==
  # Progress on Meetings model (formerly Sessions, but Django already has Sessions..); can launch a Meeting, & partner can launch and be added as Passenger
  # Started integration of Meetings info with UI (Driver, Passenger)
  # One-person basic chat implemented
