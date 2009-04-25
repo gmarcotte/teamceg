@@ -35,7 +35,7 @@ def get_meetinginfo(request):
       r.append(('project', project.name))
       r.append(('driver', driver.email))
       if meeting.passenger_id > 0:
-        passenger = PearUser.objects.get(pk=meeting.driver_id)
+        passenger = PearUser.objects.get(pk=meeting.passenger_id)
         r.append(('passenger', passenger.email))
       
     return r
