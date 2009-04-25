@@ -60,31 +60,33 @@ class Basic:
     console.setWidth("100%")
     console.setHeight("100%")
     # hacky little "text chat"
-    text_area = TextArea()
-    text_area.setHeight("150px")
-    text_area.setWidth("470px")
-    text_box = TextBox()
-    text_box.setVisibleLength("60")
-    text_box.setMaxLength("60")
+    self.text_area = TextArea()
+    self.text_area.setHeight("150px")
+    self.text_area.setWidth("470px")
+    self.text_box = TextBox()
+    self.text_box.setVisibleLength("60")
+    self.text_box.setMaxLength("60")
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
-    text_entry.add(text_box)
+    text_entry.add(self.text_box)
     text_entry.add(text_send)
     text_entry.setWidth("500px")
     fake_chat = VerticalPanel()
-    fake_chat.add(text_area)
+    fake_chat.add(self.text_area)
     fake_chat.add(text_entry)
     #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
     #js_tester = SimplePanel()
     
     vp.add(console)
     vp.add(fake_chat)
+    #vp.add(chat_form)
     #vp.add(js_tester)
     vp.setWidth("100%")
     vp.setHeight("100%")
     vp.setCellHeight(console, "50%")
     #vp.setCellHeight(js_tester, "50%")
     vp.setCellHeight(fake_chat, "50%")
+    #vp.setCellHeight(chat_form, "50%")
     
     # putting the left and right sides together
     hp = HorizontalPanel()
@@ -121,12 +123,12 @@ class Basic:
     
   def onInfoClick(self):
     #window.alert('Getting username')
-    #id = self.remote.get_username(self)
-    id = self.remote.get_meetinginfo(self)
+    id = self.remote.get_username(self)
+    #id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
-    infocontents = HTML("User: %s <br>Partner: %s" % (self.name.getText(), "bwk"))
+    infocontents = HTML("User: %s, &nbsp Partner: %s" % (self.driver.getText(), self.passenger.getText()))
     infocontents.addClickListener(getattr(self, "onPopupClick"))
     self.popup = PopupPanel(autoHide = True)
     self.popup.add(infocontents)
@@ -141,10 +143,18 @@ class Basic:
     #window.alert('Received remote response')
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
     if request_info.method == 'get_username':
-      for tpl in response:
-        window.alert("User: %s" % tpl[1])
-        self.name = Label("%s" % tpl[1])
-    if request_info.method == 'get_meetinginfo':
+      if len(response[3]) < 1:  # if there is no passenger
+        #window.alert("No passenger")
+        for tpl in response:
+          self.driver = Label("%s" % tpl[1])
+          self.passenger = Label("None")
+          #window.alert("%s" % tpl[3])
+      else:  # if len(response[3]) > 0:  # if there is a passenger
+        window.alert("There is a passenger")
+        for tpl in response:
+          self.driver = Label("%s" % tpl[1])
+          self.passenger = Label("%s" % tpl[3])
+    elif request_info.method == 'get_meetinginfo':
       for tpl in response:
         window.alert("Returned: %s" % tpl[1])
         self.driver = Label("%s" % tpl[2])
@@ -231,3 +241,9 @@ class Basic:
   def onClose(self):
     self._dialog.hide()
     
+  def onTextSend(self):
+    #window.alert("onTextSend called")
+    new_chat_text = Label("%s" % self.text_box.getText())
+    #window.alert("%s" % new_chat_text.getText())
+    self.text_area.setText(self.text_area.getText() + "\n" + new_chat_text.getText())
+    self.text_box.setText("")
