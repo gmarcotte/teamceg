@@ -8,6 +8,8 @@ from django.contrib.auth import decorators as auth_decorators
 from django.core import paginator
 
 import pear.projects.models
+from pear.meetings.models import Meeting
+from pear.accounts.models import PearUser
 import pear.projects.forms
 from pear.core import util as pear_util
 
@@ -25,20 +27,57 @@ def index(request):
 # this will also need to be changed to decide what to do if there is already a session
 def launch_project(request, project_id):
   """Launch the Pyjamas app for a given project"""
+  currentmeetings = Meeting.objects.all()
+  
   if request.method == 'POST':
-    form = pear.projects.forms.LaunchForm(request.POST)
-    if form.is_valid():
-      project = pear.projects.models.Project.objects.get(pk=project_id)
-      partner = None
-      #for person in project.programmers.all():
-      form.save(request.user, project, partner)
-      return http.HttpResponseRedirect('/pj/Basic.html')
-  else:
-    form = pear.projects.forms.LaunchForm()
-    return shortcuts.render_to_response(
+    for meeting in currentmeetings:
+      # if it is the correct project
+      if meeting.project_id == project_id:
+        meeting.passenger = request.user
+        meeting.save()
+    return http.HttpResponseRedirect('/pj/Basic.html')
+  
+  # If no session with this project, make it, and display that the user will be the driver.
+  #currentmeetings = Meeting.objects.all()
+  projid = 0
+  for meeting in currentmeetings:
+    projid = meeting.project_id
+    if str(projid) == str(project_id):
+      driver = PearUser.objects.get(pk=meeting.driver_id)
+      return shortcuts.render_to_response(
            'global/projects/launch_project.html', 
-            {'page_title': 'Launch Project', 'form': form,}, 
+            {'page_title': 'Launch Project', 'driver': driver.email, 'passenger': request.user.email, 'data':str(project_id)}, 
             context_instance=template.RequestContext(request))
+  # we dropped all the way through, so make the new session!
+  #meeting = Meeting()
+  #meeting.driver = request.user
+  #meeting.passenger = None
+  #meeting.project = pear.projects.models.Project.objects.get(pk=project_id)
+  # set some other things
+  #meeting.flash = False
+  #console = ''
+  #editor = ''
+  #meeting.save()
+  return shortcuts.render_to_response(
+           'global/projects/launch_project.html', 
+            {'page_title': 'Launch Project', 'driver': 'None', 'passenger': 'None', 'data':str(project_id)}, 
+            context_instance=template.RequestContext(request))
+  # Otherwise, display that the user will be the passenger. 
+  
+  #if request.method == 'POST':
+  #  form = pear.projects.forms.LaunchForm(request.POST)
+  #  if form.is_valid():
+  #    project = pear.projects.models.Project.objects.get(pk=project_id)
+  #    partner = None
+  #    #for person in project.programmers.all():
+  #    form.save(request.user, project, partner)
+  #    return http.HttpResponseRedirect('/pj/Basic.html')
+  #else:
+  #  form = pear.projects.forms.LaunchForm()
+  #  return shortcuts.render_to_response(
+  #         'global/projects/launch_project.html', 
+  #          {'page_title': 'Launch Project', 'form': form,}, 
+  #          context_instance=template.RequestContext(request))
 
 
 @auth_decorators.login_required
