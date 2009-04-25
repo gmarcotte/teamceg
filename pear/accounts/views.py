@@ -34,7 +34,11 @@ def register(request):
       'global/accounts/register.html',
       {'form': form,},
       context_instance=template.RequestContext(request))
-  
+
+
+def registered(request):
+  return shortcuts.render_to_response('global/accounts/registered.html')
+
 
 def login(request):
   """Login using email account."""
