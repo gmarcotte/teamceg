@@ -3,6 +3,12 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Fri, April 25 =
+== Group Meeting ==
+ # Added basic Audio and Mode boxes to menu
+ # Added post-registration welcome page
+ # YAY??
+
 = Thu, April 24 =
 == Group Meeting ==
  # Fixed more Helene bugs
