@@ -6,6 +6,7 @@ from pear.core import emailer
 from pear.core.forms import fields as pear_fields
 import pear.accounts.models
 import pear.projects.models
+import pear.meetings.models
 
 
 class NewProjectForm(forms.Form):
@@ -48,6 +49,22 @@ class NewProjectForm(forms.Form):
     
     pr.programmers = self.cleaned_data['partners']
     pr.programmers.add(user)
+
+# This will be removed later, or made more graceful
+class LaunchForm(forms.Form):
+  # maybe try this instead later? forms.ModelChoiceField()
+  name = forms.CharField('Project Name', required=False) # change this to a foreign key field
+  
+  def save(self, user, project, passenger):
+    meet = pear.meetings.models.Meeting()
+    meet.driver = user
+    meet.passenger = passenger
+    meet.project = project
+    # set some other things
+    meet.flash = False
+    console = ''
+    editor = ''
+    meet.save()
 
 class EditProjectForm(forms.Form):
   name = forms.CharField('Project Name', required=True)

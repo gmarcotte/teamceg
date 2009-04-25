@@ -88,6 +88,9 @@ class Project(timestamp.TimestampedModel):
   def edit_url(self):
     return '/projects/%s/edit/' % self.id
   
+  def launch_url(self):
+    return '/projects/%s/launch/' % self.id
+  
   def join_url(self):
     return '/projects/%s/join/' % self.id
   
@@ -99,7 +102,6 @@ class Project(timestamp.TimestampedModel):
   
   def resurrect_url(self):
     return '/projects/%s/resurrect/' % self.id
-  
-  
+
   
   

@@ -24,7 +24,7 @@
   {% endfor %}
   </td>
   <td>
-  Launch | 
+  <a href="{{project.launch_url}}?next=/projects/my_projects/">Launch</a> | 
   <a href="{{ project.edit_url }}?next=/projects/my_projects/">Edit</a> |
   <a href="{{ project.leave_url }}?next=/projects/my_projects/">Leave</a>
   {% if project.programmers.all|length == 1 %}

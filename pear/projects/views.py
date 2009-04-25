@@ -22,11 +22,23 @@ def index(request):
       {'page_title': 'Welcome'},
       context_instance=template.RequestContext(request))
 
-
+# this will also need to be changed to decide what to do if there is already a session
 def launch_project(request, project_id):
   """Launch the Pyjamas app for a given project"""
-  return shortcuts.render_to_response(
-      'Basic.html', {}, context_instance=template.RequestContext(request))
+  if request.method == 'POST':
+    form = pear.projects.forms.LaunchForm(request.POST)
+    if form.is_valid():
+      project = pear.projects.models.Project.objects.get(pk=project_id)
+      partner = None
+      #for person in project.programmers.all():
+      form.save(request.user, project, partner)
+      return http.HttpResponseRedirect('/pj/Basic.html')
+  else:
+    form = pear.projects.forms.LaunchForm()
+    return shortcuts.render_to_response(
+           'global/projects/launch_project.html', 
+            {'page_title': 'Launch Project', 'form': form,}, 
+            context_instance=template.RequestContext(request))
 
 
 @auth_decorators.login_required

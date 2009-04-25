@@ -50,11 +50,12 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.humanize',
-    'django.contrib.sessions',
+    'django.contrib.sessions', #this might be killing the other session code?
     'django.contrib.sites',
     'pear.accounts',
     'pear.projects',
     'pear.remote',
+    'pear.meetings',
     
     # This one must be last
     'pear.core.templatetags',

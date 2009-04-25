@@ -25475,9 +25475,9 @@ function __Basic_initialize() {
     this.header.add(this.info, __ui_DockPanel.prototype.__class__.WEST);
     this.header.add(this.flash, __ui_DockPanel.prototype.__class__.WEST);
     this.header.add(this.banner, __ui_DockPanel.prototype.__class__.EAST);
-    this.header.setCellWidth(this.info, '6%');
+    this.header.setCellWidth(this.info, '4%');
     this.header.setCellWidth(this.flash, '9%');
-    this.header.setCellWidth(this.banner, '85%');
+    this.header.setCellWidth(this.banner, '87%');
     this.header.setWidth('100%');
     this.header.setBorderWidth(0);
     var editor = ui_HTMLPanel('<div id=\'myhelene\'></div> <script> sethelene(); </script> ');
@@ -25486,7 +25486,7 @@ function __Basic_initialize() {
     var vp = ui_VerticalPanel();
     vp.setBorderWidth(1);
     var console = ui_Label('Console');
-    var term = ui_Frame('http://127.0.0.1:8023/');
+    var term = ui_HTMLPanel(' <script> setterm(); </script> <div id=\'term\'></div>');
     term.setWidth('100%');
     term.setHeight('426px');
     var console = ui_SimplePanel();
@@ -25540,19 +25540,19 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
     __Basic.prototype.onInfoClick = function() {
-    var name = 'name';
-    var infocontents = ui_HTML('Username: ');
-    infocontents.addClickListener(pyjslib_getattr(this, 'onPopupClick'));
-    this.popup = pyjs_kwargs_function_call(ui_PopupPanel, [{autoHide:true}]);
-    this.popup.add(infocontents);
-    var left =  ( this.info.getAbsoluteLeft() + 3 ) ;
-    var top =  ( this.info.getAbsoluteTop() + 35 ) ;
-    this.popup.setPopupPosition(left, top);
-    this.popup.show();
     var id = this.remote.get_username(this);
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
+    var infocontents = ui_HTML(sprintf('Username: %s <br>Partner: %s', new pyjslib_Tuple([this.name.getText(), 'bwk ^^'])));
+    infocontents.addClickListener(pyjslib_getattr(this, 'onPopupClick'));
+    this.popup = pyjs_kwargs_function_call(ui_PopupPanel, [{autoHide:true}]);
+    this.popup.add(infocontents);
+    this.popup.setStyleName('gwt-PopupPanel');
+    var left =  ( this.info.getAbsoluteLeft() + 1 ) ;
+    var top =  ( this.info.getAbsoluteTop() + 20 ) ;
+    this.popup.setPopupPosition(left, top);
+    this.popup.show();
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25579,6 +25579,7 @@ function __Basic_initialize() {
                 
         
     window.alert(sprintf('User: %s', tpl.__getitem__(1)));
+    this.name = ui_Label(sprintf('%s', tpl.__getitem__(1)));
 
             }
         } catch (e) {
@@ -25589,7 +25590,7 @@ function __Basic_initialize() {
         
     }
     else {
-    console.error('none!');
+    console.error('Error in onRemoteResponse');
     }
     };
     __Basic.prototype.__class__.onRemoteResponse = function() {
