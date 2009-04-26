@@ -25462,24 +25462,21 @@ function __Basic_initialize() {
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
     this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
+    this.menu_body = ui_SimplePanel();
+    this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'30px\'>');
+    this.menu_body.setWidget(this.menu_contents);
     this.flash.isActive = false;
     this.flash.Flash = false;
     this.banner = ui_Image('/pj/images/header_no_description.jpg');
     this.banner.setHeight('20px');
     this.banner.addMouseListener(Tooltip_TooltipListener('^--', 5000, 'MOUSE'));
-    this.header = ui_DockPanel();
-    this.header.add(this.info, __ui_DockPanel.prototype.__class__.WEST);
-    this.header.add(this.mode, __ui_DockPanel.prototype.__class__.WEST);
-    this.header.add(this.audio, __ui_DockPanel.prototype.__class__.WEST);
-    this.header.add(this.flash, __ui_DockPanel.prototype.__class__.WEST);
-    this.header.add(this.banner, __ui_DockPanel.prototype.__class__.EAST);
-    this.header.setCellWidth(this.info, '4%');
-    this.header.setCellWidth(this.mode, '4%');
-    this.header.setCellWidth(this.audio, '5%');
-    this.header.setCellWidth(this.flash, '9%');
-    this.header.setCellWidth(this.banner, '78%');
-    this.header.setWidth('100%');
-    this.header.setBorderWidth(0);
+    this.head = ui_HorizontalPanel();
+    this.head.add(this.info);
+    this.head.add(this.mode);
+    this.head.add(this.audio);
+    this.head.add(this.flash);
+    this.head.add(ui_Label('|'));
+    this.head.add(this.menu_body);
     var editor = ui_HTMLPanel('<div id=\'myhelene\'></div> <script> sethelene(); </script> ');
     editor.setWidth('100%');
     editor.setHeight('100%');
@@ -25527,12 +25524,12 @@ function __Basic_initialize() {
     this.footer = ui_Label('A TeamCEG production');
     this.footer.setStyleName('footer');
     this.panel = ui_DockPanel();
-    this.panel.add(this.header, __ui_DockPanel.prototype.__class__.NORTH);
+    this.panel.add(this.head, __ui_DockPanel.prototype.__class__.NORTH);
     this.panel.add(hp, __ui_DockPanel.prototype.__class__.CENTER);
     this.panel.add(this.footer, __ui_DockPanel.prototype.__class__.SOUTH);
     this.panel.setCellWidth(hp, '100%');
     this.panel.setCellHeight(hp, '100%');
-    this.panel.setCellWidth(this.header, '100%');
+    this.panel.setCellWidth(this.head, '100%');
     this.panel.setWidth('1002px');
     this.panel.setHeight('655px');
     ui_RootPanel().add(this.panel);
@@ -25547,29 +25544,13 @@ function __Basic_initialize() {
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    var infocontents = ui_HTML(sprintf('User: %s, &nbsp Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
-    infocontents.addClickListener(pyjslib_getattr(this, 'onPopupClick'));
-    this.popup = pyjs_kwargs_function_call(ui_PopupPanel, [{autoHide:true}]);
-    this.popup.add(infocontents);
-    this.popup.setStyleName('gwt-PopupPanel');
-    var infoleft =  ( this.info.getAbsoluteLeft() + 1 ) ;
-    var infotop =  ( this.info.getAbsoluteTop() + 20 ) ;
-    this.popup.setPopupPosition(infoleft, infotop);
-    this.popup.show();
+    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, &nbsp Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
     };
     __Basic.prototype.__class__.onInfoClick.unbound_method = true;
     __Basic.prototype.onInfoClick.instance_method = true;
-    __Basic.prototype.onPopupClick = function() {
-    this.popup.hide();
-    };
-    __Basic.prototype.__class__.onPopupClick = function() {
-        return __Basic.prototype.onPopupClick.call.apply(__Basic.prototype.onPopupClick, arguments);
-    };
-    __Basic.prototype.__class__.onPopupClick.unbound_method = true;
-    __Basic.prototype.onPopupClick.instance_method = true;
     __Basic.prototype.onRemoteResponse = function(response, request_info) {
     if ((request_info.method == 'get_username')) {
     if ((pyjslib_len(response.__getitem__(3)) < 1)) {
@@ -25651,67 +25632,42 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onRemoteError.unbound_method = true;
     __Basic.prototype.onRemoteError.instance_method = true;
     __Basic.prototype.onModeClick = function() {
-    this.modebox = ui_DialogBox();
-    this.modebox.setText('Mode Settings');
-    var closeMode = ui_Button('Done', pyjslib_getattr(this, 'onModeClose'));
-    var modemsg = ui_HTML('You can change drivers or sync/discard changes, etc. here', true);
-    var modepanel = ui_DockPanel();
-    modepanel.setSpacing(4);
-    modepanel.add(closeMode, __ui_DockPanel.prototype.__class__.SOUTH);
-    modepanel.add(modemsg, __ui_DockPanel.prototype.__class__.NORTH);
-    modepanel.setCellHorizontalAlignment(closeMode, __ui_HasAlignment.prototype.__class__.ALIGN_RIGHT);
-    modepanel.setCellWidth(modemsg, '100%');
-    modepanel.setWidth('100%');
-    this.modebox.setWidget(modepanel);
-    var modeleft =  ( this.mode.getAbsoluteLeft() + 1 ) ;
-    var modetop =  ( this.mode.getAbsoluteTop() + 20 ) ;
-    this.modebox.setPopupPosition(modeleft, modetop);
-    this.modebox.show();
+    var modepanel = ui_HorizontalPanel();
+    modepanel.add(ui_Button('Switch Drivers', pyjslib_getattr(this, 'onSwitchDriversClick')));
+    this.menu_body.setWidget(modepanel);
     };
     __Basic.prototype.__class__.onModeClick = function() {
         return __Basic.prototype.onModeClick.call.apply(__Basic.prototype.onModeClick, arguments);
     };
     __Basic.prototype.__class__.onModeClick.unbound_method = true;
     __Basic.prototype.onModeClick.instance_method = true;
-    __Basic.prototype.onModeClose = function(sender) {
-    this.modebox.hide();
+    __Basic.prototype.onSwitchDriversClick = function() {
+    window.alert('You are trying to switch drivers');
     };
-    __Basic.prototype.__class__.onModeClose = function() {
-        return __Basic.prototype.onModeClose.call.apply(__Basic.prototype.onModeClose, arguments);
+    __Basic.prototype.__class__.onSwitchDriversClick = function() {
+        return __Basic.prototype.onSwitchDriversClick.call.apply(__Basic.prototype.onSwitchDriversClick, arguments);
     };
-    __Basic.prototype.__class__.onModeClose.unbound_method = true;
-    __Basic.prototype.onModeClose.instance_method = true;
+    __Basic.prototype.__class__.onSwitchDriversClick.unbound_method = true;
+    __Basic.prototype.onSwitchDriversClick.instance_method = true;
     __Basic.prototype.onAudioClick = function() {
-    this.audiobox = ui_DialogBox();
-    this.audiobox.setText('Audio Settings');
-    var closeAudio = ui_Button('Done', pyjslib_getattr(this, 'onAudioClose'));
-    var audiocontents = ui_HTML('Insert HTML for skype call buttons, etc. here<br><a href=\'skype:yay1happy?call\'><img src=\'http://mystatus.skype.com/smallclassic/yay1happy\'></a>', true);
-    var audiopanel = ui_DockPanel();
-    audiopanel.setSpacing(4);
-    audiopanel.add(closeAudio, __ui_DockPanel.prototype.__class__.SOUTH);
-    audiopanel.add(audiocontents, __ui_DockPanel.prototype.__class__.NORTH);
-    audiopanel.setCellHorizontalAlignment(closeAudio, __ui_HasAlignment.prototype.__class__.ALIGN_RIGHT);
-    audiopanel.setCellWidth(audiocontents, '100%');
-    audiopanel.setWidth('100%');
-    this.audiobox.setWidget(audiopanel);
-    var audioleft =  ( this.audio.getAbsoluteLeft() + 1 ) ;
-    var audiotop =  ( this.audio.getAbsoluteTop() + 20 ) ;
-    this.audiobox.setPopupPosition(audioleft, audiotop);
-    this.audiobox.show();
+    var audiopanel = ui_HorizontalPanel();
+    var audiobutton = ui_Button('Skype Call', pyjslib_getattr(this, 'onSkypeClick'));
+    audiopanel.add(audiobutton);
+    this.menu_body.setWidget(audiopanel);
     };
     __Basic.prototype.__class__.onAudioClick = function() {
         return __Basic.prototype.onAudioClick.call.apply(__Basic.prototype.onAudioClick, arguments);
     };
     __Basic.prototype.__class__.onAudioClick.unbound_method = true;
     __Basic.prototype.onAudioClick.instance_method = true;
-    __Basic.prototype.onAudioClose = function(sender) {
-    this.audiobox.hide();
+    __Basic.prototype.onSkypeClick = function() {
+    window.alert('you are trying to make a skype call');
     };
-    __Basic.prototype.__class__.onAudioClose = function() {
-        return __Basic.prototype.onAudioClose.call.apply(__Basic.prototype.onAudioClose, arguments);
+    __Basic.prototype.__class__.onSkypeClick = function() {
+        return __Basic.prototype.onSkypeClick.call.apply(__Basic.prototype.onSkypeClick, arguments);
     };
-    __Basic.prototype.__class__.onAudioClose.unbound_method = true;
-    __Basic.prototype.onAudioClose.instance_method = true;
+    __Basic.prototype.__class__.onSkypeClick.unbound_method = true;
+    __Basic.prototype.onSkypeClick.instance_method = true;
     __Basic.prototype.onTimer = function() {
     if (this.Flash) {
     if (this.isActive) {
