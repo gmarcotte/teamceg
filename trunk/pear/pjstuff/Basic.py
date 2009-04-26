@@ -143,10 +143,19 @@ class Basic:
           self.passenger = Label("%s" % tpl[3])
     elif request_info.method == 'get_meetinginfo':
       for tpl in response:
-        window.alert("Returned: %s" % tpl[1])
+        #window.alert("Returned: %s" % tpl[1])
         self.driver = Label("%s" % tpl[2])
         self.project = Label("%s" % tpl[1])
         self.passenger = Label("%s" % tpl[3]) # sometimes will be blank
+    elif request_info.method == 'send_chatmessage':
+      #pass
+      for tpl in response:
+        self.text_area.setText(self.text_area.getText() + "\n" + str(tpl[1]))
+        #window.alert("Returned: %s" % tpl[1])
+    elif request_info.method == 'receive_chatmessage':
+      for tpl in response:
+        #window.alert("Returned: %s" % tpl[1])
+        self.text_area.setText(self.text_area.getText() + "\n" + str(tpl[1]))
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
@@ -191,8 +200,7 @@ class Basic:
         Timer(500, self)
         #Window.alert("STARTED FLASH")
         return
-    #else:  # if not self.Flash:
-      #Timer(1000, getattr(self, "offTimer"))
+    self.remote.receive_chatmessage(self)
   def setFlash(self):
     if not self.Flash:
       self.Flash = True
@@ -209,8 +217,10 @@ class Basic:
     self._dialog.hide()
     
   def onTextSend(self):
-    #window.alert("onTextSend called")
+    self.remote.receive_chatmessage(self)
     new_chat_text = Label("%s" % self.text_box.getText())
-    #window.alert("%s" % new_chat_text.getText())
-    self.text_area.setText(self.text_area.getText() + "\n" + new_chat_text.getText())
+    # wait until we get the response
+    #self.text_area.setText(self.text_area.getText() + "\n" + new_chat_text.getText())
+    self.remote.send_chatmessage(new_chat_text.getText(),self)
     self.text_box.setText("")
+    
