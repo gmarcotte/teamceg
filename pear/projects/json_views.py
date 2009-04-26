@@ -13,6 +13,8 @@ def get_username(request):
   else:
     return [('username', 'Anonymous')]
 
+# sends a chat message, and returns any latent messages to display, including
+# the message just sent
 @network.jsonremote(service)
 def send_chatmessage(request,message):
   if request.user.is_authenticated():
@@ -49,7 +51,24 @@ def send_chatmessage(request,message):
       meeting.unsent_messages = []
     meeting.unsent_messages.add(msg)
     meeting.save()
-    r.append(('success','Message sent!'))
+    
+    # now look and see if there are any latent messages
+    if meeting.unsent_messages == None:
+      r.append(('success',message))
+      return r
+    
+    msgs = meeting.unsent_messages.all()
+
+    # find the unsent messages for this user
+    for msg in msgs:
+      if str(msg.receiver_id) == str(request.user.id):
+        r.append(('msg',msg.message))
+        # delete the message from unsent and put it in sent
+        meeting.sent_messages.add(msg)
+        meeting.unsent_messages.remove(msg)
+    #return r
+    
+    r.append(('success',message))
     return r
 
 @network.jsonremote(service)
