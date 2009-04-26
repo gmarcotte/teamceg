@@ -1,8 +1,10 @@
 from django.pimentech import network
 from pear.meetings.models import Meeting
+from pear.meetings.models import ChatMessage
 from pear.projects.models import Project
 from pear.accounts.models import PearUser
 service = network.JSONRPCService()
+
 
 @network.jsonremote(service)
 def get_username(request):
@@ -10,6 +12,81 @@ def get_username(request):
     return [('username', request.user.email)]
   else:
     return [('username', 'Anonymous')]
+
+@network.jsonremote(service)
+def send_chatmessage(request,message):
+  if request.user.is_authenticated():
+    r = []
+
+    # get the meeting
+    meeting = None
+    meetings = Meeting.objects.all()#pear.meetings.models.Meeting.objects.get(driver_id=request.user.id)
+
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
+    if meeting == None:
+      r.append('Error','ERROR: could not find active meeting')
+      return r
+
+    # make the message
+    msg = ChatMessage()
+
+    msg.sender = request.user
+    
+    if meeting.driver_id == request.user.id:
+      msg.receiver = PearUser.objects.get(pk=meeting.passenger_id)
+    else:
+      msg.receiver = PearUser.objects.get(pk=meeting.driver_id)
+    
+    msg.message = message
+    msg.save()
+    # add this message to the queue in the database
+    if meeting.unsent_messages == None:
+      meeting.unsent_messages = []
+    meeting.unsent_messages.add(msg)
+    meeting.save()
+    r.append(('success','Message sent!'))
+    return r
+
+@network.jsonremote(service)
+def receive_chatmessage(request):
+  if request.user.is_authenticated():
+    r = []
+
+    # get the meeting
+    meeting = None
+    meetings = Meeting.objects.all()
+
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
+    if meeting == None:
+      r.append('Error','ERROR: could not find active meeting')
+      return r
+
+    
+    if meeting.unsent_messages == None:
+      r.append(('alert','No Messages'))
+      return r
+    
+    msgs = meeting.unsent_messages.all()
+
+    # find the unsent messages for this user
+    for msg in msgs:
+      if str(msg.receiver_id) == str(request.user.id):
+        r.append(('msg',msg.message))
+        # delete the message from unsent and put it in sent
+        meeting.sent_messages.add(msg)
+        meeting.unsent_messages.remove(msg)
+    return r
+
 
 @network.jsonremote(service)
 def get_meetinginfo(request):

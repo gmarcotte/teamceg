@@ -43,8 +43,8 @@ def launch_project(request, project_id):
     meeting.project = pear.projects.models.Project.objects.get(pk=project_id)
     # set some other things
     meeting.flash = False
-    console = ''
-    editor = ''
+    meeting.console = ''
+    meeting.editor = ''
     meeting.save()
     return http.HttpResponseRedirect('/pj/Basic.html')
   # If no session with this project, make it, and display that the user will be the driver.

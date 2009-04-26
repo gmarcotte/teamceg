@@ -15,13 +15,13 @@ import pear.accounts.models
 import pear.projects.models
 
 
-#class ChatMessage(timestamp.TimestampedModel):
-#  # actual message
-#  message = models.TextField()
-#  # to-user
-#  receiver = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_received')
-#  # from-user
-#  #sender = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_sent')
+class ChatMessage(timestamp.TimestampedModel):
+  # actual message
+  message = models.TextField()
+  # to-user
+  receiver = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_received')
+  # from-user
+  sender = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_sent')
 
 class Meeting(timestamp.TimestampedModel):
   # Driver
@@ -35,8 +35,8 @@ class Meeting(timestamp.TimestampedModel):
   # Editor state -- Note that we might need to change this to deal with maliciously long documents
   editor = models.TextField()
   # Chat state (queue of messages for each user and all messages)
-  #unsent_messages = models.ManyToManyField(ChatMessage), related_name='unsent')
-  #sent_messages = models.ManyToManyField(ChatMessage, related_name='sent')
+  unsent_messages = models.ManyToManyField(ChatMessage, related_name='unsent', null=True)
+  sent_messages = models.ManyToManyField(ChatMessage, related_name='sent', null=True)
   # Ping/Flash state
   flash = models.BooleanField()
 
