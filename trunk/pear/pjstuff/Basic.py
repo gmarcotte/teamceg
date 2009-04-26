@@ -20,6 +20,9 @@ class Basic:
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
+    self.menu_body = SimplePanel()
+    self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='30px'>")
+    self.menu_body.setWidget(self.menu_contents)
     self.flash.isActive = False  # is it currently the on-flash color?
     self.flash.Flash = False
     # the header
@@ -27,19 +30,13 @@ class Basic:
     self.banner.setHeight("20px")
     self.banner.addMouseListener(TooltipListener("^--", 5000, "MOUSE"))
     # put them together
-    self.header = DockPanel()
-    self.header.add(self.info, DockPanel.WEST)
-    self.header.add(self.mode, DockPanel.WEST)
-    self.header.add(self.audio, DockPanel.WEST)
-    self.header.add(self.flash, DockPanel.WEST)
-    self.header.add(self.banner, DockPanel.EAST)
-    self.header.setCellWidth(self.info, "4%")
-    self.header.setCellWidth(self.mode, "4%")
-    self.header.setCellWidth(self.audio, "5%")
-    self.header.setCellWidth(self.flash, "9%")
-    self.header.setCellWidth(self.banner, "78%")
-    self.header.setWidth("100%")
-    self.header.setBorderWidth(0)
+    self.head = HorizontalPanel()
+    self.head.add(self.info)
+    self.head.add(self.mode)
+    self.head.add(self.audio)
+    self.head.add(self.flash)
+    self.head.add(Label("|"))
+    self.head.add(self.menu_body)
     
     # the left side
     # editor
@@ -113,12 +110,12 @@ class Basic:
     
     # putting it all together
     self.panel = DockPanel()
-    self.panel.add(self.header, DockPanel.NORTH)
+    self.panel.add(self.head, DockPanel.NORTH)
     self.panel.add(hp, DockPanel.CENTER)
     self.panel.add(self.footer, DockPanel.SOUTH)
     self.panel.setCellWidth(hp, "100%")
     self.panel.setCellHeight(hp, "100%")
-    self.panel.setCellWidth(self.header, "100%")
+    self.panel.setCellWidth(self.head, "100%")
     self.panel.setWidth("1002px")
     self.panel.setHeight("655px")
     
@@ -139,17 +136,8 @@ class Basic:
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
-    infocontents = HTML("User: %s, &nbsp Partner: %s" % (self.driver.getText(), self.passenger.getText()))
-    infocontents.addClickListener(getattr(self, "onPopupClick"))
-    self.popup = PopupPanel(autoHide = True)
-    self.popup.add(infocontents)
-    self.popup.setStyleName("gwt-PopupPanel")
-    infoleft = self.info.getAbsoluteLeft() + 1
-    infotop = self.info.getAbsoluteTop() + 20
-    self.popup.setPopupPosition(infoleft, infotop)
-    self.popup.show()
-  def onPopupClick(self):
-    self.popup.hide()
+    self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
+
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
@@ -184,46 +172,22 @@ class Basic:
     window.alert("ERROR")
       
   def onModeClick(self):
-    self.modebox = DialogBox()
-    self.modebox.setText("Mode Settings")
-    closeMode = Button("Done", getattr(self, "onModeClose"))
-    modemsg = HTML("You can change drivers or sync/discard changes, etc. here", True)
-    modepanel = DockPanel()
-    modepanel.setSpacing(4)
-    modepanel.add(closeMode, DockPanel.SOUTH)
-    modepanel.add(modemsg, DockPanel.NORTH)
-    modepanel.setCellHorizontalAlignment(closeMode, HasAlignment.ALIGN_RIGHT)
-    modepanel.setCellWidth(modemsg, "100%")
-    modepanel.setWidth("100%")
-    self.modebox.setWidget(modepanel)
-    modeleft = self.mode.getAbsoluteLeft() + 1
-    modetop = self.mode.getAbsoluteTop() + 20
-    self.modebox.setPopupPosition(modeleft, modetop)
-    self.modebox.show()
-  def onModeClose(self, sender):
-    self.modebox.hide()
-    #window.alert("close mode box")
+    modepanel = HorizontalPanel()
+    modepanel.add(Button("Switch Drivers", getattr(self, "onSwitchDriversClick")))
+    self.menu_body.setWidget(modepanel)
+    
+  def onSwitchDriversClick(self):
+    window.alert("You are trying to switch drivers")
     
   def onAudioClick(self):
-    self.audiobox = DialogBox()
-    self.audiobox.setText("Audio Settings")
-    closeAudio = Button("Done", getattr(self, "onAudioClose"))
-    audiocontents = HTML("Insert HTML for skype call buttons, etc. here<br><a href='skype:yay1happy?call'><img src='http://mystatus.skype.com/smallclassic/yay1happy'></a>", True)
-    audiopanel = DockPanel()
-    audiopanel.setSpacing(4)
-    audiopanel.add(closeAudio, DockPanel.SOUTH)
-    audiopanel.add(audiocontents, DockPanel.NORTH)
-    audiopanel.setCellHorizontalAlignment(closeAudio, HasAlignment.ALIGN_RIGHT)
-    audiopanel.setCellWidth(audiocontents, "100%")
-    audiopanel.setWidth("100%")
-    self.audiobox.setWidget(audiopanel)
-    audioleft = self.audio.getAbsoluteLeft() + 1
-    audiotop = self.audio.getAbsoluteTop() + 20
-    self.audiobox.setPopupPosition(audioleft, audiotop)
-    self.audiobox.show()
-  def onAudioClose(self, sender):
-    self.audiobox.hide()
-        
+    audiopanel = HorizontalPanel()
+    audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
+    audiopanel.add(audiobutton)
+    #audiopanel.add(HTML("<a href='callto://YourUserNameHere'>Skype call</a>"))
+    self.menu_body.setWidget(audiopanel)
+  def onSkypeClick(self):
+    window.alert("you are trying to make a skype call")
+    
   def onTimer(self):
     if self.Flash:
       #Window.alert("should be flashing..")
