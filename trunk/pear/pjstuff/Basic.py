@@ -57,7 +57,7 @@ class Basic:
     console.setWidth("100%")
     console.setHeight("100%")
     # hacky little "text chat"
-    self.text_area = TextArea()
+    self.text_area = TextArea() ## Let's try changing this to an HTML panel
     self.text_area.setHeight("150px")
     self.text_area.setWidth("470px")
     self.text_box = TextBox()
@@ -69,6 +69,7 @@ class Basic:
     text_entry.add(text_send)
     text_entry.setWidth("500px")
     fake_chat = VerticalPanel()
+    #fake_chat.add(self.chat_transcript)
     fake_chat.add(self.text_area)
     fake_chat.add(text_entry)
     #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
