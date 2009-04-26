@@ -8,7 +8,7 @@ MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo", "send_chatmessage","receive_chatmessage",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage",])
 
 class Basic:
   def onModuleLoad(self):
@@ -57,24 +57,19 @@ class Basic:
     console.setWidth("100%")
     console.setHeight("100%")
     # hacky little "text chat"
-
-    msg_line = TextArea()
-    msg_line.setHeight("150px")
-    msg_line.setWidth("470px")
-    text_box = TextBox()
-    text_box.setVisibleLength("60")
-    text_box.setMaxLength("60")
-
+    self.text_area = TextArea()
+    self.text_area.setHeight("150px")
+    self.text_area.setWidth("470px")
+    self.text_box = TextBox()
+    self.text_box.setVisibleLength("60")
+    self.text_box.setMaxLength("60")
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
     text_entry.add(text_send)
-    #text_entry.add(msg_line)
     text_entry.setWidth("500px")
     fake_chat = VerticalPanel()
-
-    fake_chat.add(msg_line)
-
+    fake_chat.add(self.text_area)
     fake_chat.add(text_entry)
     #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
     #js_tester = SimplePanel()
@@ -122,13 +117,7 @@ class Basic:
     # visible mouse cursor stuff.. EK
     RootPanel().add(self.panel)
     #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
-  
-  
-  def onTextSend(self):
-    # get the text 
-    self.remote.send_chatmessage("My message", self)
-    self.remote.receive_chatmessage(self)
-        
+    
   def onInfoClick(self):
     #window.alert('Getting username')
     id = self.remote.get_username(self)
@@ -137,7 +126,6 @@ class Basic:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
     self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
-
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
@@ -159,12 +147,6 @@ class Basic:
         self.driver = Label("%s" % tpl[2])
         self.project = Label("%s" % tpl[1])
         self.passenger = Label("%s" % tpl[3]) # sometimes will be blank
-    if request_info.method == 'send_chatmessage':
-      for tpl in response:
-        window.alert("Returned: %s" % tpl[1])
-    if request_info.method == 'send_chatmessage':
-      for tpl in response:
-        window.alert("Returned: %s" % tpl[1])
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
@@ -178,6 +160,7 @@ class Basic:
     
   def onSwitchDriversClick(self):
     window.alert("You are trying to switch drivers")
+
     
   def onAudioClick(self):
     audiopanel = HorizontalPanel()
@@ -188,6 +171,9 @@ class Basic:
   def onSkypeClick(self):
     window.alert("you are trying to make a skype call")
     
+  def onAudioClose(self, sender):
+    self.audiobox.hide()
+        
   def onTimer(self):
     if self.Flash:
       #Window.alert("should be flashing..")
