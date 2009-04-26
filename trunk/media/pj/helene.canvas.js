@@ -32,6 +32,8 @@ helene.canvas = function() {
 		this.style.height = this.canvasHeight+'px';
 
 		// add the input line
+    // Don't add the input line in the listener... CCI TODO
+    
 		this.input = helene.util.createElement('editorInput'); //new helene.input(this);
 		this.input.init(editor);
 		this.appendChild(this.input);

@@ -59,7 +59,7 @@ helene.editor = function(source) {
   // CCI FIXED 4-16-09
   // main problem was in setting the cursor position.
 	this.doBackspace=function() {
-		var line = this.canvas.input.value;
+    var line = this.canvas.input.value;
 		var pos = this.cursor.getRealPos();
 		if (pos.character>1) {
 			line = line.substr(0, pos.character-2) + line.substr(pos.character-1);
@@ -79,8 +79,9 @@ helene.editor = function(source) {
 			// now set the cursor again, so its moved back from the end of the input
       var offset = this.canvas.input.value.length - line.length + 1;
 			this.cursor.setPos(pos.line-1, offset);
-		}			
+		}		
 	}
+  
 	this.doDelete=function() {
 		var line = this.canvas.input.value;
 		var pos = this.cursor.getRealPos();
@@ -89,10 +90,15 @@ helene.editor = function(source) {
 			line = line.substr(0, pos.character-1) + line.substr(pos.character);
 			this.canvas.input.value=line;
 			this.cursor.setPos(pos.line, pos.column);
-		} else if (pos.line<this.canvas.content.length) {
+		} 
+    // fixed undefined over line break bug
+    // CCI 4-23-09
+    else if (pos.line<this.canvas.content.length) {
 			// delete removes linebreak
-			var nextLine=this.canvas.content.getLine(pos.line+1);
-			this.canvas.input.value+=nextLine.source;
+      this.cursor.setPos(pos.line+1, 0);
+			nextLine=this.canvas.input.value;
+      this.cursor.setPos(pos.line,pos.column)
+			this.canvas.input.value+=nextLine;
 			this.canvas.content.removeLine(pos.line+1);
 			this.cursor.setPos(pos.line, pos.column);				
 		}

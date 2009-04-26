@@ -29,6 +29,22 @@ helene.content = function() {
 		this.length = sourceArray.length;
 		this.editor.canvas.input.reset();
 	}
+  // added CCI 4-17-09
+  this.listen = function(sourceText) {
+    this.setContent(sourceText);
+    // will also need to set selection to indicate 
+    // the current line that is being edited
+    // and the areas that are highlighted
+    this.editor.canvas.input.hide();
+  }
+  
+  // added CCI 4-17-09
+  this.speak = function() {
+    var content = this.getContent();
+    this.editor.canvas.input.focus();
+    return content;
+  }
+  
 	this.clearContent = function() {
 		for (var i = this.childNodes.length-1; i>=0; i--) {
 			this.removeChild(this.childNodes[i]);
@@ -80,6 +96,7 @@ helene.content = function() {
 		this.appendChild(listItem);
 		var letterWidth = spanLocator.offsetWidth;
 		this.removeChild(listItem);
+    //alert("Letter Width: " + letterWidth);
 		return letterWidth;
 	}
 }
