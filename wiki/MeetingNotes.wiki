@@ -3,6 +3,11 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Sun, April 27 =
+== Individual ==
+ # Chat is in HTML
+ # Fixed more Pyjamas/UI bugs
+
 = Sat, April 26 =
 == Individual ==
  # Chat implemented -- clunky but works
