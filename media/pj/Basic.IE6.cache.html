@@ -25377,7 +25377,7 @@ function __DataService_initialize() {
     pyjs_extend(__DataService, __JSONService_JSONProxy);
     __DataService.prototype.__class__.__new__ = DataService;
     __DataService.prototype.__init__ = function() {
-    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo']));
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage']));
     };
     __DataService.prototype.__class__.__init__ = function() {
         return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
@@ -25406,13 +25406,10 @@ function __Basic_initialize() {
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
     this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
     this.menu_body = ui_SimplePanel();
-    this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'30px\'>');
+    this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'20px\'>');
     this.menu_body.setWidget(this.menu_contents);
     this.flash.isActive = false;
     this.flash.Flash = false;
-    this.banner = ui_Image('/pj/images/header_no_description.jpg');
-    this.banner.setHeight('20px');
-    this.banner.addMouseListener(Tooltip_TooltipListener('^--', 5000, 'MOUSE'));
     this.head = ui_HorizontalPanel();
     this.head.add(this.info);
     this.head.add(this.mode);
@@ -25433,9 +25430,12 @@ function __Basic_initialize() {
     console.add(term);
     console.setWidth('100%');
     console.setHeight('100%');
-    this.text_area = ui_TextArea();
+    this.text_area = ui_SimplePanel();
+    this.text_area.setStyleName('text-area');
+    this.text = ui_HTML('Ellen: KILL KILL <font color=\'red\'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..');
+    this.text_area.setWidget(this.text);
     this.text_area.setHeight('150px');
-    this.text_area.setWidth('470px');
+    this.text_area.setWidth('100%');
     this.text_box = ui_TextBox();
     this.text_box.setVisibleLength('60');
     this.text_box.setMaxLength('60');
@@ -25443,7 +25443,7 @@ function __Basic_initialize() {
     var text_entry = ui_HorizontalPanel();
     text_entry.add(this.text_box);
     text_entry.add(text_send);
-    text_entry.setWidth('500px');
+    text_entry.setWidth('400px');
     var fake_chat = ui_VerticalPanel();
     fake_chat.add(this.text_area);
     fake_chat.add(text_entry);
@@ -25473,8 +25473,8 @@ function __Basic_initialize() {
     this.panel.setCellWidth(hp, '100%');
     this.panel.setCellHeight(hp, '100%');
     this.panel.setCellWidth(this.head, '100%');
-    this.panel.setWidth('1002px');
-    this.panel.setHeight('655px');
+    this.panel.setWidth('999px');
+    this.panel.setHeight('350px');
     ui_RootPanel().add(this.panel);
     };
     __Basic.prototype.__class__.onModuleLoad = function() {
@@ -25487,7 +25487,9 @@ function __Basic_initialize() {
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, &nbsp Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
+    this.driver = ui_Label('Unset');
+    this.passenger = ui_Label('Unset');
+    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25504,8 +25506,8 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    this.driver = ui_Label(sprintf('%s', tpl.__getitem__(1)));
-    this.passenger = ui_Label('None');
+    this.driver.setText(sprintf('%s', tpl.__getitem__(1)));
+    this.passenger.setText('None');
 
             }
         } catch (e) {
@@ -25514,9 +25516,9 @@ function __Basic_initialize() {
             }
         }
         
+    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     }
     else {
-    window.alert('There is a passenger');
 
         var __tpl = response.__iter__();
         try {
@@ -25524,8 +25526,8 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    this.driver = ui_Label(sprintf('%s', tpl.__getitem__(1)));
-    this.passenger = ui_Label(sprintf('%s', tpl.__getitem__(3)));
+    this.driver.setText(sprintf('%s', tpl.__getitem__(1)));
+    this.passenger.setText(sprintf('%s', tpl.__getitem__(3)));
 
             }
         } catch (e) {
@@ -25534,6 +25536,7 @@ function __Basic_initialize() {
             }
         }
         
+    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     }
     }
     else if ((request_info.method == 'get_meetinginfo')) {
@@ -25544,10 +25547,45 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    window.alert(sprintf('Returned: %s', tpl.__getitem__(1)));
     this.driver = ui_Label(sprintf('%s', tpl.__getitem__(2)));
     this.project = ui_Label(sprintf('%s', tpl.__getitem__(1)));
     this.passenger = ui_Label(sprintf('%s', tpl.__getitem__(3)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'send_chatmessage')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'receive_chatmessage')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
 
             }
         } catch (e) {
@@ -25611,6 +25649,14 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onSkypeClick.unbound_method = true;
     __Basic.prototype.onSkypeClick.instance_method = true;
+    __Basic.prototype.onAudioClose = function(sender) {
+    this.audiobox.hide();
+    };
+    __Basic.prototype.__class__.onAudioClose = function() {
+        return __Basic.prototype.onAudioClose.call.apply(__Basic.prototype.onAudioClose, arguments);
+    };
+    __Basic.prototype.__class__.onAudioClose.unbound_method = true;
+    __Basic.prototype.onAudioClose.instance_method = true;
     __Basic.prototype.onTimer = function() {
     if (this.Flash) {
     if (this.isActive) {
@@ -25626,6 +25672,7 @@ function __Basic_initialize() {
     return;
     }
     }
+    this.remote.receive_chatmessage(this);
     };
     __Basic.prototype.__class__.onTimer = function() {
         return __Basic.prototype.onTimer.call.apply(__Basic.prototype.onTimer, arguments);
@@ -25659,8 +25706,9 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onClose.unbound_method = true;
     __Basic.prototype.onClose.instance_method = true;
     __Basic.prototype.onTextSend = function() {
+    this.remote.receive_chatmessage(this);
     var new_chat_text = ui_Label(sprintf('%s', this.text_box.getText()));
-    this.text_area.setText( (  ( this.text_area.getText() + '\n' )  + new_chat_text.getText() ) );
+    this.remote.send_chatmessage(new_chat_text.getText(), this);
     this.text_box.setText('');
     };
     __Basic.prototype.__class__.onTextSend = function() {

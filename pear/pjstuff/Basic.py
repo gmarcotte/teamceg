@@ -21,14 +21,10 @@ class Basic:
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.menu_body = SimplePanel()
-    self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='30px'>")
+    self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
     self.flash.isActive = False  # is it currently the on-flash color?
     self.flash.Flash = False
-    # the header
-    self.banner = Image("/pj/images/header_no_description.jpg")
-    self.banner.setHeight("20px")
-    self.banner.addMouseListener(TooltipListener("^--", 5000, "MOUSE"))
     # put them together
     self.head = HorizontalPanel()
     self.head.add(self.info)
@@ -56,10 +52,14 @@ class Basic:
     console.add(term)
     console.setWidth("100%")
     console.setHeight("100%")
-    # hacky little "text chat"
-    self.text_area = TextArea() ## Let's try changing this to an HTML panel
+    # not so hacky -- indeed, pretty decent little "text chat"
+    #self.text_area = TextArea() ## Let's try changing this to an HTML panel
+    self.text_area = SimplePanel()
+    self.text_area.setStyleName("text-area")
+    self.text = HTML("Ellen: KILL KILL <font color='red'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..")
+    self.text_area.setWidget(self.text)
     self.text_area.setHeight("150px")
-    self.text_area.setWidth("470px")
+    self.text_area.setWidth("100%")
     self.text_box = TextBox()
     self.text_box.setVisibleLength("60")
     self.text_box.setMaxLength("60")
@@ -67,7 +67,7 @@ class Basic:
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
     text_entry.add(text_send)
-    text_entry.setWidth("500px")
+    text_entry.setWidth("400px")
     fake_chat = VerticalPanel()
     #fake_chat.add(self.chat_transcript)
     fake_chat.add(self.text_area)
@@ -77,14 +77,12 @@ class Basic:
     
     vp.add(console)
     vp.add(fake_chat)
-    #vp.add(chat_form)
     #vp.add(js_tester)
     vp.setWidth("100%")
     vp.setHeight("100%")
     vp.setCellHeight(console, "50%")
     #vp.setCellHeight(js_tester, "50%")
     vp.setCellHeight(fake_chat, "50%")
-    #vp.setCellHeight(chat_form, "50%")
     
     # putting the left and right sides together
     hp = HorizontalPanel()
@@ -112,12 +110,10 @@ class Basic:
     self.panel.setCellWidth(hp, "100%")
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
-    self.panel.setWidth("1002px")
-    self.panel.setHeight("655px")
+    self.panel.setWidth("999px")
+    self.panel.setHeight("350px")
     
-    # visible mouse cursor stuff.. EK
     RootPanel().add(self.panel)
-    #RootPanel().addMouseListener(TooltipListener("BLAHBLAHBLAH", 5000, "MOUSE"))
     
   def onInfoClick(self):
     #window.alert('Getting username')
@@ -126,22 +122,28 @@ class Basic:
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
+    self.driver = Label("Unset")
+    self.passenger = Label("Unset")
     self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
     if request_info.method == 'get_username':
-      if len(response[3]) < 1:  # if there is no passenger
+      if (len(response[3]) < 1):  # if there is no passenger
         #window.alert("No passenger")
+        #window.alert("%s" % self.driver.getText())
         for tpl in response:
-          self.driver = Label("%s" % tpl[1])
-          self.passenger = Label("None")
+          self.driver.setText("%s" % tpl[1])
+          self.passenger.setText("None")
+        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
           #window.alert("%s" % tpl[3])
+        #window.alert("%s" % self.driver.getText())
       else:  # if len(response[3]) > 0:  # if there is a passenger
-        window.alert("There is a passenger")
+        #window.alert("There is a passenger")
         for tpl in response:
-          self.driver = Label("%s" % tpl[1])
-          self.passenger = Label("%s" % tpl[3])
+          self.driver.setText("%s" % tpl[1])
+          self.passenger.setText("%s" % tpl[3])
+        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))          
     elif request_info.method == 'get_meetinginfo':
       for tpl in response:
         #window.alert("Returned: %s" % tpl[1])
@@ -151,12 +153,14 @@ class Basic:
     elif request_info.method == 'send_chatmessage':
       #pass
       for tpl in response:
-        self.text_area.setText(self.text_area.getText() + "\n" + str(tpl[1]))
+        self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
+        self.text_area.setWidget(self.text)  # not sure if you need this, try without, remove if unnecessary, but i can't test it right now
         #window.alert("Returned: %s" % tpl[1])
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
         #window.alert("Returned: %s" % tpl[1])
-        self.text_area.setText(self.text_area.getText() + "\n" + str(tpl[1]))
+        self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
+        self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
