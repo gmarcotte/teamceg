@@ -165,7 +165,7 @@ helene.input = function() {
 			}
 			input.hide(); //input.style.visibility = 'hidden';
 			var newPos = editor.canvas.content.getLine(lineNo).offsetTop;
-			input.style.top = (newPos-2)+'px'; // FIXED CCI 4-15-09
+			input.style.top = (newPos-1)+'px'; // FIXED CCI 4-15-09
 			input.value = editor.canvas.content.getLine(lineNo).getContent();
 			if (newPos<editor.canvas.scrollTop) {
 				editor.canvas.scrollTop = newPos;

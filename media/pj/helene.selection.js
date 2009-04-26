@@ -26,20 +26,21 @@ helene.selection = function(editor) {
 
 		var editor = this.editor;
 		
+    // This is a total hack -- wtf were they thinking? needs to be fixed!
 		function hlAddSelectLine(line, start, end) {
       // CCI TODO fix the weird offset error
 			var tl = {
-				x:line.offsetLeft+((start-1)*editor.canvas.letterWidth),
+				x:line.offsetLeft+((start)*editor.canvas.letterWidth),
 				y:line.offsetTop
 			}
 			var br = {
-				x:line.offsetLeft+((end+1)*editor.canvas.letterWidth),
+				x:line.offsetLeft+((end)*editor.canvas.letterWidth),
 				y:line.offsetTop+line.offsetHeight
 			}
 			var line = document.createElement('DIV');
 			line.style.position = 'absolute';
 			line.className='hlSelection';
-			line.style.top = tl.y+'px';
+			line.style.top = (tl.y)+'px'; // CCI fixed
 			line.style.left = tl.x+'px';
 			line.style.height = (br.y - tl.y)+'px';
 			line.style.width = (br.x - tl.x)+'px';
@@ -61,7 +62,7 @@ helene.selection = function(editor) {
 			selection.style.position='absolute';
 			selection.style.height='100%';
 			selection.style.width='100%';
-			selection.style.top='-2px';
+			selection.style.top='-1px';
 			selection.style.left='0px';
 			this.editor.canvas.appendChild(selection);
 			this.editor.canvas.selection = selection;
@@ -215,6 +216,20 @@ helene.selection = function(editor) {
 		}
 	}
 
+  
+  // added CCI 4-17-09
+  // sets the listen select to the specified area.
+  this.listenSelect=function(startline, startcol, endline, endcol) {
+    var pos = this.editor.canvas.input.getPos();
+    var start = pos;
+    var end = pos;
+    start.column = startcol;
+    start.line = startline;
+    end.column = endcol;
+    end.line = endline;
+    this.select(start,end);
+  }
+  
 	this.moveEnd=function(end) {
 	}
 
@@ -243,29 +258,71 @@ helene.selection = function(editor) {
 		}
 	}
 
+  // CCI
+  this.doHighlight=function() {
+    if (this.start) {
+        //alert("ending selection")
+        this.end = this.editor.canvas.input.getPos();
+        this.select(this.start, this.end);
+    }
+    else {
+      //alert("starting selection")
+      this.start = this.editor.canvas.input.getPos();
+    }
+  }
+  this.clearHighlight=function(){
+    
+    
+  }
+  this.startSelect=function() {
+    //alert("starting selection")
+    this.start = this.editor.canvas.input.getPos();
+  }
+  this.endSelect=function() {
+    //alert("ending selection")
+    if (this.start){
+      this.end = this.editor.canvas.input.getPos();
+      this.select(this.start, this.end);
+    }
+    
+  }
+  
+  this.line=function() {
+    alert("here")
+    this.editor.cursor.down();
+    var pos = this.editor.canvas.input.getPos();
+    var s = pos;
+    s.column = 0;
+    var e = pos;
+    e.column = 10;
+    this.select(s, e);
+  }
+  // let's just make this highlight a whole line instead...CCI 4-17-09
 	this.up=function() {
-		var prePos=this.editor.canvas.input.getPos();
+		this.editor.cursor.down();
+    var prePos=this.editor.canvas.input.getPos();
 		this.editor.cursor.up();
 		var postPos=this.editor.canvas.input.getPos();
+    // select the whole line
+    // so position for selection needs to be the (line, 0)->(line, end)
+    this.select(prePos, postPos);
 		// check if there is a selection, if not: start one
-		if (!this.start) {
-//			alert('start '+prePos.column+' - '+postPos.column);
+		/*if (!this.start) {
 			this.select(prePos, postPos);
 		} else {
 			// if cursor is at the start of the selection, enlarge selection
 			// if cursor is at the end of the selection, shrink selection
 			if (this.start.compare(prePos)==0) {
 				//grow
-//				alert('grow '+postPos.column+' - '+this.end.column);
 				this.select(postPos, this.end);
 			} else {
 				// shrink
-//				alert('shrink '+this.start.column+' - '+postPos.column);
 				this.select(this.start, postPos);
 			}
-		}
+		}*/
 	}
 
+  
 	this.left=function() {
 		var prePos=this.editor.canvas.input.getPos();
 		this.editor.cursor.left();

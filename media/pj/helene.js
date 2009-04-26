@@ -264,17 +264,17 @@ var helene={
 	}
 }
 
-helene.load('/pj/helene.util.js');
-helene.load('/pj/helene.position.js');
-helene.load('/pj/helene.keyboard.js');
-helene.load('/pj/helene.mouse.js');
-helene.load('/pj/helene.editor.js');
-helene.load('/pj/helene.canvas.js');
-helene.load('/pj/helene.input.js');
-helene.load('/pj/helene.content.js');
-helene.load('/pj/helene.line.js');
-helene.load('/pj/helene.cursor.js');
-helene.load('/pj/helene.selection.js');
+helene.load('helene.util.js');
+helene.load('helene.position.js');
+helene.load('helene.keyboard.js');
+helene.load('helene.mouse.js');
+helene.load('helene.editor.js');
+helene.load('helene.canvas.js');
+helene.load('helene.input.js');
+helene.load('helene.content.js');
+helene.load('helene.line.js');
+helene.load('helene.cursor.js');
+helene.load('helene.selection.js');
 
 helene.event.attach(window, 'load', helene.init);
 helene.event.attach(window, 'unload', helene.event.clean);
