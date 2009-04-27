@@ -140,7 +140,10 @@ def get_meetinginfo(request):
       
     return r
     # if meeting, return info
-    
+  else:
+    r = []
+    r.append(('Error','No meeting'))
+    return r
     
 @network.jsonremote(service)
 def receive_flash(request):
@@ -197,7 +200,50 @@ def send_flash(request, state):
         
     return r
     
+
+@network.jsonremote(service)
+def send_editor(request, state):
+  if request.user.is_authenticated():
+    r = []
+    meeting = None
+    # get the meeting associated with this user
+    meetings = Meeting.objects.all()#pear.meetings.models.Meeting.objects.get(driver_id=request.user.id)
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
     
+    if (meeting == None):
+      r.append(('error', 'ERROR: no active meeting!'))
+      return r
+  
+  ### FILL IN HERE ###
+        
+    return r
+
+@network.jsonremote(service)
+def receive_editor(request, state):
+  if request.user.is_authenticated():
+    r = []
+    meeting = None
+    # get the meeting associated with this user
+    meetings = Meeting.objects.all()#pear.meetings.models.Meeting.objects.get(driver_id=request.user.id)
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
+    
+    if (meeting == None):
+      r.append(('error', 'ERROR: no active meeting!'))
+      return r
+  
+  ### FILL IN HERE ###
+        
+    return r    
     
 @network.jsonremote(service)
 def user_quit(request):

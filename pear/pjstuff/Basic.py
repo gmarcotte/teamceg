@@ -8,7 +8,7 @@ MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","user_quit",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit",])
 
 class Basic:
   def onModuleLoad(self):
@@ -16,7 +16,7 @@ class Basic:
     self.remote = DataService()
     
     # Figure out session info -- am i driver or passenger, etc.
-    #self.remote.get_meetinginfo(self)
+    self.remote.get_meetinginfo(self)
     
     # start the timer for updates from server
     self.onTimer()
@@ -127,13 +127,13 @@ class Basic:
     
   def onInfoClick(self):
     #window.alert('Getting username')
-    id = self.remote.get_username(self)
-    #id = self.remote.get_meetinginfo(self)
+    #id = self.remote.get_username(self)
+    id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
-    self.driver = Label("Unset")
-    self.passenger = Label("Unset")
+    #self.driver = Label("Unset")
+    #self.passenger = Label("Unset")
     #self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
@@ -155,27 +155,25 @@ class Basic:
           self.passenger.setText("%s" % tpl[3])
         self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))          
     elif request_info.method == 'get_meetinginfo':
+      list = []
       for tpl in response:
-        #window.alert("Returned: %s" % tpl[1])
-        self.driver = Label("%s" % tpl[2])
-        self.project = Label("%s" % tpl[1])
-        self.passenger = Label("%s" % tpl[3]) # sometimes will be blank
+        list.append("%s" % tpl[1])
+      self.driver = Label("%s" % list[2])
+      self.project = Label("%s" % list[1])
+      self.passenger = Label("%s" % list[3]) # sometimes will be blank
     elif request_info.method == 'send_chatmessage':
       #pass
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)  # not sure if you need this, try without, remove if unnecessary, but i can't test it right now
         self.text_area.setScrollPosition(999999)
-        #window.alert("Returned: %s" % tpl[1])
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
-        #window.alert("Returned: %s" % tpl[1])
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'send_flash':
       self.Flash = self.Flash
-      #window.alert("Sent flash")
     elif request_info.method == 'receive_flash':
       for tpl in response:
         if str(tpl[1]) == "off":
