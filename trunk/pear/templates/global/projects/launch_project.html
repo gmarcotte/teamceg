@@ -1,0 +1,16 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+
+<p>Launch your project</p>
+
+<p>
+Driver: {{ driver }} <br>
+Passenger: {{ passenger }} <br>
+Data: {{ data }}
+<p>
+<form action="" method="POST">
+<input type="submit" value="go" name="go">
+</form>
+</p>
+{% endblock %}
