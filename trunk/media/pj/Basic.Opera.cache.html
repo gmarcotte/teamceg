@@ -25391,7 +25391,7 @@ function __DataService_initialize() {
     pyjs_extend(__DataService, __JSONService_JSONProxy);
     __DataService.prototype.__class__.__new__ = DataService;
     __DataService.prototype.__init__ = function() {
-    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage']));
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash']));
     };
     __DataService.prototype.__class__.__init__ = function() {
         return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
@@ -25453,6 +25453,7 @@ function __Basic_initialize() {
     this.text_box = ui_TextBox();
     this.text_box.setVisibleLength('60');
     this.text_box.setMaxLength('60');
+    this.text_box.addKeyboardListener(this);
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
     text_entry.add(this.text_box);
@@ -25613,6 +25614,36 @@ function __Basic_initialize() {
         }
         
     }
+    else if ((request_info.method == 'send_flash')) {
+    this.Flash = this.Flash;
+    }
+    else if ((request_info.method == 'receive_flash')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    if ((pyjslib_str(tpl.__getitem__(1)) == 'off')) {
+    if (this.Flash) {
+    this.flashOff();
+    }
+    }
+    else {
+    if (!(this.Flash)) {
+    this.flashOn();
+    }
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
     else {
     console.error('Error in onRemoteResponse function in Basic.py');
     }
@@ -25677,17 +25708,18 @@ function __Basic_initialize() {
     __Basic.prototype.onAudioClose.instance_method = true;
     __Basic.prototype.onTimer = function() {
     this.remote.receive_chatmessage(this);
+    this.remote.receive_flash(this);
     if (this.Flash) {
     if (this.isActive) {
     this.panel.setStyleName('NORMAL');
     this.isActive = false;
-    Timer_Timer(500, this);
+    Timer_Timer(1000, this);
     return;
     }
     else {
     this.panel.setStyleName('FLASH');
     this.isActive = true;
-    Timer_Timer(500, this);
+    Timer_Timer(1000, this);
     return;
     }
     }
@@ -25701,17 +25733,35 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onTimer.unbound_method = true;
     __Basic.prototype.onTimer.instance_method = true;
-    __Basic.prototype.setFlash = function() {
-    if (!(this.Flash)) {
+    __Basic.prototype.flashOn = function() {
     this.Flash = true;
     this.onTimer();
     this.flash.setText('Flash OFF');
-    return;
-    }
-    else {
+    };
+    __Basic.prototype.__class__.flashOn = function() {
+        return __Basic.prototype.flashOn.call.apply(__Basic.prototype.flashOn, arguments);
+    };
+    __Basic.prototype.__class__.flashOn.unbound_method = true;
+    __Basic.prototype.flashOn.instance_method = true;
+    __Basic.prototype.flashOff = function() {
     this.Flash = false;
     this.panel.setStyleName('WHITE');
     this.flash.setText('Flash ON');
+    };
+    __Basic.prototype.__class__.flashOff = function() {
+        return __Basic.prototype.flashOff.call.apply(__Basic.prototype.flashOff, arguments);
+    };
+    __Basic.prototype.__class__.flashOff.unbound_method = true;
+    __Basic.prototype.flashOff.instance_method = true;
+    __Basic.prototype.setFlash = function() {
+    if (!(this.Flash)) {
+    this.flashOn();
+    this.remote.send_flash('on', this);
+    return;
+    }
+    else {
+    this.flashOff();
+    this.remote.send_flash('off', this);
     this.onTimer();
     }
     };
@@ -25739,6 +25789,34 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onTextSend.unbound_method = true;
     __Basic.prototype.onTextSend.instance_method = true;
+    __Basic.prototype.onKeyUp = function(sender, keyCode, modifers) {
+    };
+    __Basic.prototype.__class__.onKeyUp = function() {
+        return __Basic.prototype.onKeyUp.call.apply(__Basic.prototype.onKeyUp, arguments);
+    };
+    __Basic.prototype.__class__.onKeyUp.unbound_method = true;
+    __Basic.prototype.onKeyUp.instance_method = true;
+    __Basic.prototype.onKeyDown = function(sender, keyCode, modifiers) {
+    };
+    __Basic.prototype.__class__.onKeyDown = function() {
+        return __Basic.prototype.onKeyDown.call.apply(__Basic.prototype.onKeyDown, arguments);
+    };
+    __Basic.prototype.__class__.onKeyDown.unbound_method = true;
+    __Basic.prototype.onKeyDown.instance_method = true;
+    __Basic.prototype.onKeyPress = function(sender, keyCode, modifiers) {
+    if (((keyCode == __ui_KeyboardListener.prototype.__class__.KEY_ENTER)) && ((sender == this.text_box))) {
+    window.alert('you clicked enter');
+    this.remote.receive_chatmessage(this);
+    var new_chat_text = ui_Label(sprintf('%s', this.text_box.getText()));
+    this.remote.send_chatmessage(new_chat_text.getText(), this);
+    this.text_box.setText('');
+    }
+    };
+    __Basic.prototype.__class__.onKeyPress = function() {
+        return __Basic.prototype.onKeyPress.call.apply(__Basic.prototype.onKeyPress, arguments);
+    };
+    __Basic.prototype.__class__.onKeyPress.unbound_method = true;
+    __Basic.prototype.onKeyPress.instance_method = true;
 }
 __DataService_initialize();
 __Basic_initialize();

@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window
@@ -69,6 +69,7 @@ class Basic:
     self.text_box = TextBox()
     self.text_box.setVisibleLength("60")
     self.text_box.setMaxLength("60")
+    self.text_box.addKeyboardListener(self)
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
@@ -208,9 +209,6 @@ class Basic:
   def onAudioClose(self, sender):
     self.audiobox.hide()
   
-  
-        
-  
   def onTimer(self):
     # do server update stuff here
     self.remote.receive_chatmessage(self)
@@ -267,3 +265,14 @@ class Basic:
     self.remote.send_chatmessage(new_chat_text.getText(),self)
     self.text_box.setText("")
     
+  def onKeyUp(self, sender, keyCode, modifers):
+    pass
+  def onKeyDown(self, sender, keyCode, modifiers):
+    pass
+  def onKeyPress(self, sender, keyCode, modifiers):
+    if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
+      #window.alert("you clicked enter")
+      self.remote.receive_chatmessage(self)
+      new_chat_text = Label("%s" % self.text_box.getText())
+      self.remote.send_chatmessage(new_chat_text.getText(), self)
+      self.text_box.setText("")
