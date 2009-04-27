@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, Image
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window
@@ -57,16 +57,15 @@ class Basic:
     term.setHeight("426px")
     console = SimplePanel()
     console.add(term)
-    console.setWidth("100%")
+    console.setWidth("400px")
     console.setHeight("100%")
     # not so hacky -- indeed, pretty decent little "text chat"
     #self.text_area = TextArea() ## Let's try changing this to an HTML panel
-    self.text_area = SimplePanel()
+    self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
-    self.text = HTML("Ellen: KILL KILL <font color='red'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..")
+    self.text = HTML("Ellen: KILL KILL <font color='red'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..<br>mmm a pear sounds delicious right now..<br>Yes, I quite would like one also!<br>This line is just filler.<br>Like they do in Bombay? <br>Yes, quite. <br> I want something sweet.. wahh<br> whine whine whine..")
     self.text_area.setWidget(self.text)
-    self.text_area.setHeight("150px")
-    self.text_area.setWidth("100%")
+    self.text_area.setSize("400px", "150px")
     self.text_box = TextBox()
     self.text_box.setVisibleLength("60")
     self.text_box.setMaxLength("60")
@@ -78,6 +77,7 @@ class Basic:
     fake_chat = VerticalPanel()
     #fake_chat.add(self.chat_transcript)
     fake_chat.add(self.text_area)
+    self.text_area.setScrollPosition(999999)
     fake_chat.add(text_entry)
     #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
     #js_tester = SimplePanel()
@@ -131,7 +131,7 @@ class Basic:
     #window.alert('Sent username request') 
     self.driver = Label("Unset")
     self.passenger = Label("Unset")
-    self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
+    #self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
@@ -162,12 +162,14 @@ class Basic:
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)  # not sure if you need this, try without, remove if unnecessary, but i can't test it right now
+        self.text_area.setScrollPosition(999999)
         #window.alert("Returned: %s" % tpl[1])
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
         #window.alert("Returned: %s" % tpl[1])
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now
+        self.text_area.setScrollPosition(999999)
     elif request_info.method == 'send_flash':
       self.Flash = self.Flash
       #window.alert("Sent flash")

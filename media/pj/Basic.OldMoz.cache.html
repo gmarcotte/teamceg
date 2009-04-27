@@ -25464,6 +25464,7 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.__new__ = Basic;
     __Basic.prototype.onModuleLoad = function() {
     this.remote = DataService();
+    this.onTimer();
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
@@ -25491,14 +25492,13 @@ function __Basic_initialize() {
     term.setHeight('426px');
     var console = ui_SimplePanel();
     console.add(term);
-    console.setWidth('100%');
+    console.setWidth('400px');
     console.setHeight('100%');
-    this.text_area = ui_SimplePanel();
+    this.text_area = ui_ScrollPanel();
     this.text_area.setStyleName('text-area');
-    this.text = ui_HTML('Ellen: KILL KILL <font color=\'red\'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..');
+    this.text = ui_HTML('Ellen: KILL KILL <font color=\'red\'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..<br>mmm a pear sounds delicious right now..<br>Yes, I quite would like one also!<br>This line is just filler.<br>Like they do in Bombay? <br>Yes, quite. <br> I want something sweet.. wahh<br> whine whine whine..');
     this.text_area.setWidget(this.text);
-    this.text_area.setHeight('150px');
-    this.text_area.setWidth('100%');
+    this.text_area.setSize('400px', '150px');
     this.text_box = ui_TextBox();
     this.text_box.setVisibleLength('60');
     this.text_box.setMaxLength('60');
@@ -25509,6 +25509,7 @@ function __Basic_initialize() {
     text_entry.setWidth('400px');
     var fake_chat = ui_VerticalPanel();
     fake_chat.add(this.text_area);
+    this.text_area.setScrollPosition(999999);
     fake_chat.add(text_entry);
     vp.add(console);
     vp.add(fake_chat);
@@ -25552,7 +25553,6 @@ function __Basic_initialize() {
     }
     this.driver = ui_Label('Unset');
     this.passenger = ui_Label('Unset');
-    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25632,6 +25632,7 @@ function __Basic_initialize() {
         
     this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
     this.text_area.setWidget(this.text);
+    this.text_area.setScrollPosition(999999);
 
             }
         } catch (e) {
@@ -25651,6 +25652,7 @@ function __Basic_initialize() {
         
     this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
     this.text_area.setWidget(this.text);
+    this.text_area.setScrollPosition(999999);
 
             }
         } catch (e) {
@@ -25723,6 +25725,7 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onAudioClose.unbound_method = true;
     __Basic.prototype.onAudioClose.instance_method = true;
     __Basic.prototype.onTimer = function() {
+    this.remote.receive_chatmessage(this);
     if (this.Flash) {
     if (this.isActive) {
     this.panel.setStyleName('NORMAL');
@@ -25730,14 +25733,17 @@ function __Basic_initialize() {
     Timer_Timer(500, this);
     return;
     }
-    if (!(this.isActive)) {
+    else {
     this.panel.setStyleName('FLASH');
     this.isActive = true;
     Timer_Timer(500, this);
     return;
     }
     }
-    this.remote.receive_chatmessage(this);
+    else {
+    Timer_Timer(1000, this);
+    return;
+    }
     };
     __Basic.prototype.__class__.onTimer = function() {
         return __Basic.prototype.onTimer.call.apply(__Basic.prototype.onTimer, arguments);
@@ -25755,6 +25761,7 @@ function __Basic_initialize() {
     this.Flash = false;
     this.panel.setStyleName('WHITE');
     this.flash.setText('Flash ON');
+    this.onTimer();
     }
     };
     __Basic.prototype.__class__.setFlash = function() {
