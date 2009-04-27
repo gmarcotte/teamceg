@@ -19,7 +19,7 @@ class ChatMessage(timestamp.TimestampedModel):
   # actual message
   message = models.TextField()
   # to-user
-  receiver = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_received')
+  receiver = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_received', null=True)
   # from-user
   sender = models.ForeignKey(pear.accounts.models.PearUser, related_name='messages_sent')
 

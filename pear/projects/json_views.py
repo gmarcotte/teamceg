@@ -40,7 +40,11 @@ def send_chatmessage(request,message):
     msg.sender = request.user
     
     if meeting.driver_id == request.user.id:
-      msg.receiver = PearUser.objects.get(pk=meeting.passenger_id)
+      # if no passenger, receiver == null
+      if meeting.passenger_id > 0:
+        msg.receiver = PearUser.objects.get(pk=meeting.passenger_id)
+      else:
+        msg.receiver = None
     else:
       msg.receiver = PearUser.objects.get(pk=meeting.driver_id)
     
