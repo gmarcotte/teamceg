@@ -8,7 +8,7 @@ MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","user_quit",])
 
 class Basic:
   def onModuleLoad(self):
@@ -27,6 +27,7 @@ class Basic:
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
+    self.quit = Button("Quit", getattr(self, "quit_pyjs"))
     self.menu_body = SimplePanel()
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
@@ -38,6 +39,7 @@ class Basic:
     self.head.add(self.mode)
     self.head.add(self.audio)
     self.head.add(self.flash)
+    self.head.add(self.quit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
     
@@ -182,6 +184,9 @@ class Basic:
         else:
           if not self.Flash:
             self.flashOn()
+    elif request_info.method == 'user_quit':
+      for tpl in response:
+        window.alert("%s" %tpl[1])
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
@@ -253,7 +258,12 @@ class Basic:
       self.flashOff()
       self.remote.send_flash("off",self)
       self.onTimer()
+  
+  def quit_pyjs(self):
+    self.remote.user_quit(self)
+    window.alert("Quitting")
     
+      
   def onClose(self):
     self._dialog.hide()
     
