@@ -196,3 +196,48 @@ def send_flash(request, state):
       r.append(('flash','off'))
         
     return r
+    
+    
+    
+@network.jsonremote(service)
+def user_quit(request):
+  if request.user.is_authenticated():
+    r = []
+    meeting = None
+    # get the meeting associated with this user
+    meetings = Meeting.objects.all()#pear.meetings.models.Meeting.objects.get(driver_id=request.user.id)
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
+    
+    if (meeting == None):
+      r.append(('error', 'ERROR: no active meeting!'))
+      return r
+    
+    # if the user is the driver, make the passenger the driver
+    if str(request.user.id) == str(meeting.driver_id):
+      
+      if meeting.passenger_id > 0:
+        # make the passenger the driver
+        meeting.driver_id = meeting.passenger_id
+        meeting.passenger = None
+        meeting.save()
+        r.append(('notice','there was a passenger, and we switched drivers'))
+      else:
+        # if no passenger, clear the relevant info from the meeting
+        meeting.project_id = 0
+        meeting.passenger = None
+        # note that driver cannot be none...
+        meeting.driver_id = 0
+        meeting.save()
+    
+    # if the user is the passenger, just delete them
+    else:
+      meeting.passenger = None
+      meeting.save()
+      r.append(('notice','there was a passenger, and we deleted them'))
+        
+    return r
