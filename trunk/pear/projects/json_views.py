@@ -136,3 +136,59 @@ def get_meetinginfo(request):
       
     return r
     # if meeting, return info
+    
+    
+@network.jsonremote(service)
+def receive_flash(request):
+  if request.user.is_authenticated():
+    r = []
+    meeting = None
+    # get the meeting associated with this user
+    meetings = Meeting.objects.all()#pear.meetings.models.Meeting.objects.get(driver_id=request.user.id)
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
+    
+    if (meeting == None):
+      r.append(('error', 'ERROR: no active meeting!'))
+      return r
+    
+    if meeting.flash == True:
+      r.append(('flash','on'))
+    else:
+      r.append(('flash','off'))
+    
+    return r
+    
+    
+@network.jsonremote(service)
+def send_flash(request, state):
+  if request.user.is_authenticated():
+    r = []
+    meeting = None
+    # get the meeting associated with this user
+    meetings = Meeting.objects.all()#pear.meetings.models.Meeting.objects.get(driver_id=request.user.id)
+    for meet in meetings:
+      # Check to see if it is the right meeting
+      if request.user.id == meet.driver_id:
+        meeting = meet
+      if request.user.id == meet.passenger_id:
+        meeting = meet
+    
+    if (meeting == None):
+      r.append(('error', 'ERROR: no active meeting!'))
+      return r
+    
+    if str(state) == 'on':
+      meeting.flash = True
+      meeting.save()
+      r.append(('flash','on'))
+    else:
+      meeting.flash = False
+      meeting.save()
+      r.append(('flash','off'))
+        
+    return r
