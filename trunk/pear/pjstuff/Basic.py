@@ -15,6 +15,13 @@ class Basic:
     
     self.remote = DataService()
     
+    # Figure out session info -- am i driver or passenger, etc.
+    #self.remote.get_meetinginfo(self)
+    
+    # start the timer for updates from server
+    self.onTimer()
+    
+    
     # building the menu bar
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
@@ -187,26 +194,31 @@ class Basic:
     
   def onAudioClose(self, sender):
     self.audiobox.hide()
+  
+  
         
+  
   def onTimer(self):
+    # do server update stuff here
+    self.remote.receive_chatmessage(self)
     if self.Flash:
-      #Window.alert("should be flashing..")
       if self.isActive:
         self.panel.setStyleName("NORMAL")
-        #vp.setStyleName("NORMAL")
         self.isActive = False
         Timer(500, self)
-        #Window.alert("STOPPED FLASH")
         return
-      if not self.isActive:
+      else:  # if not self.isActive:
         self.panel.setStyleName("FLASH")
-        #vp.setStyleName("FLASH")
         self.isActive = True
         Timer(500, self)
-        #Window.alert("STARTED FLASH")
         return
-    self.remote.receive_chatmessage(self)
+    else:
+      Timer(1000, self)
+      return
+    
+        
   def setFlash(self):
+    # switch flash state message
     if not self.Flash:
       self.Flash = True
       self.onTimer()
@@ -217,6 +229,7 @@ class Basic:
       self.Flash = False
       self.panel.setStyleName("WHITE")
       self.flash.setText("Flash ON")
+      self.onTimer()
     
   def onClose(self):
     self._dialog.hide()
