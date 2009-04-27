@@ -8,7 +8,7 @@ MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash",])
 
 class Basic:
   def onModuleLoad(self):
@@ -168,6 +168,17 @@ class Basic:
         #window.alert("Returned: %s" % tpl[1])
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now
+    elif request_info.method == 'send_flash':
+      self.Flash = self.Flash
+      #window.alert("Sent flash")
+    elif request_info.method == 'receive_flash':
+      for tpl in response:
+        if str(tpl[1]) == "off":
+          if self.Flash:
+            self.flashOff()
+        else:
+          if not self.Flash:
+            self.flashOn()
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
@@ -201,34 +212,46 @@ class Basic:
   def onTimer(self):
     # do server update stuff here
     self.remote.receive_chatmessage(self)
+    self.remote.receive_flash(self)
+    
+    # do flash stuff here
     if self.Flash:
       if self.isActive:
         self.panel.setStyleName("NORMAL")
         self.isActive = False
-        Timer(500, self)
+        Timer(1000, self)
         return
       else:  # if not self.isActive:
         self.panel.setStyleName("FLASH")
         self.isActive = True
-        Timer(500, self)
+        Timer(1000, self)
         return
     else:
       Timer(1000, self)
       return
     
-        
+  def flashOn(self):
+    self.Flash = True
+    self.onTimer()
+    self.flash.setText("Flash OFF")
+  
+  def flashOff(self):
+    self.Flash = False
+    self.panel.setStyleName("WHITE")
+    self.flash.setText("Flash ON")
+              
   def setFlash(self):
+    #alert("setting flash")
     # switch flash state message
     if not self.Flash:
-      self.Flash = True
-      self.onTimer()
-      self.flash.setText("Flash OFF")
-      #Window.alert("turned on flashing")
+      # turning flash on, tell our partner
+      self.flashOn()
+      self.remote.send_flash("on",self)
       return
     else:  # if self.Flash:
-      self.Flash = False
-      self.panel.setStyleName("WHITE")
-      self.flash.setText("Flash ON")
+      # turning flash off, tell our partner
+      self.flashOff()
+      self.remote.send_flash("off",self)
       self.onTimer()
     
   def onClose(self):
