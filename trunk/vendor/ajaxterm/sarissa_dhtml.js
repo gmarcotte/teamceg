@@ -65,37 +65,53 @@ Sarissa.updateContentFromURI = function(sFromUrl, oTargetElement, xsltproc) {
  *                  DOM node before updating the target element with it
  */
 Sarissa.updateContentFromNode = function(oNode, oTargetElement, xsltproc) {
+  //alert("HERE in sarissa")
     try {
+        //alert("trying")
         oTargetElement.style.cursor = "wait";
+        //alert("got this far")
         Sarissa.clearChildNodes(oTargetElement);
+        //alert("cleared the child nodes")
         // check for parsing errors
         var ownerDoc = oNode.nodeType == Node.DOCUMENT_NODE?oNode:oNode.ownerDocument;
         if(ownerDoc.parseError && ownerDoc.parseError != 0) {
+          //alert("no error")
             var pre = document.createElement("pre");
+          alert(document.createTextNode(Sarissa.getParseErrorText));
             pre.appendChild(document.createTextNode(Sarissa.getParseErrorText(ownerDoc)));
             oTargetElement.appendChild(pre);
         }
         else {
             // transform if appropriate
             if(xsltproc) {
+              //alert("xsltproc")
                 oNode = xsltproc.transformToDocument(oNode);
             };
             // be smart, maybe the user wants to display the source instead
             if(oTargetElement.tagName.toLowerCase == "textarea" || oTargetElement.tagName.toLowerCase == "input") {
+              //alert("display source?")
+                alert(oTargetElement.value)
                 oTargetElement.value = Sarissa.serialize(oNode);
             }
             else {
+              //alert("paranoid")
                 // ok that was not smart; it was paranoid. Keep up the good work by trying to use DOM instead of innerHTML
                 if(oNode.nodeType == Node.DOCUMENT_NODE || oNode.ownerDocument.documentElement == oNode) {
+                  //alert("serializing")
+                  //alert(oNode.nodeType==Node.DOCUMENT_NODE)
+                  //alert(oNode.ownerDocument.documentElement==oNode)
                     oTargetElement.innerHTML = Sarissa.serialize(oNode);
                 }
                 else{
+                  //alert("importing node")
                     oTargetElement.appendChild(oTargetElement.ownerDocument.importNode(oNode, true));
                 };
             };  
         };
     }
     catch(e) {
+        alert("exception: ")
+      alert(e)
         throw e;
     }
     finally{

@@ -112,18 +112,20 @@ ajaxterm.Terminal_ctor=function(id,width,height) {
 			}
 			r.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 			r.onreadystatechange = function () {
-//				debug("xhr:"+((new Date).getTime())+" state:"+r.readyState+" status:"+r.status+" statusText:"+r.statusText);
 				if (r.readyState==4) {
 					if(r.status==200) {
 						window.clearTimeout(error_timeout);
 						de=r.responseXML.documentElement;
-						if(de.tagName=="pre") {
+						//alert(de)
+            if(de.tagName=="pre") {
 							if(ie) {
 								Sarissa.updateContentFromNode(de, dterm);
-							} else {
+							} 
+              else {
 								Sarissa.updateContentFromNode(de, dterm);
-//								old=div.firstChild;
-//								div.replaceChild(de,old);
+                // CCI TODO: send to Django!
+                // this is a complete hack...
+                setotherterminal(de);
 							}
 							rmax=100;
 						} else {
@@ -280,8 +282,8 @@ ajaxterm.Terminal_ctor=function(id,width,height) {
 			opt_color.attachEvent("onclick", do_color);
 			opt_paste.attachEvent("onclick", do_paste);
 		}
-		document.onkeypress=keypress;
-		document.onkeydown=keydown;
+		this.onkeypress=keypress;
+		this.onkeydown=keydown;
 		timeout=window.setTimeout(update,100);
 	}
 	init();
