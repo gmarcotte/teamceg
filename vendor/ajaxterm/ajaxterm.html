@@ -7,13 +7,31 @@
 	<script type="text/javascript" src="sarissa.js"></script>
 	<script type="text/javascript" src="sarissa_dhtml.js"></script>
 	<script type="text/javascript" src="ajaxterm.js"></script>
-	<script type="text/javascript">
-	window.onload=function() {
-		t=ajaxterm.Terminal("term",80,25);
+  <script type="text/javascript" src="dummyterm.js"></script>
+  <script type="text/javascript">
+    window.onload=function() {
+		window.terminal=ajaxterm.Terminal("term",80,25);
+    window.dummy=dummyterm.Terminal("test",80,25);
 	};
 	</script>
+  <script>
+  function setotherterminal(body) {
+    dummyterm.setdummytext(window.dummy, body);
+  }
+  
+  </script>
 </head>
 <body>
-<div id="term"></div>
+<table border="1">
+<tr>
+<td>User1's Terminal</td>
+<td>User2's Terminal</td>
+</tr>
+<tr>
+<td><div id="term"></div></td>
+<td><div id="test"></div></td>
+</tr>
+</table> 
+
 </body>
 </html>
