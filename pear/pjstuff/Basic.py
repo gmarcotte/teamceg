@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Widget
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
@@ -82,9 +82,7 @@ class Basic:
     #fake_chat.add(self.chat_transcript)
     fake_chat.add(self.text_area)
     self.text_area.setScrollPosition(999999)
-    self.fTextBox = TextBox()
-    fake_chat.add(self.createTextThing(self.fTextBox))
-    ##fake_chat.add(text_entry)
+    fake_chat.add(text_entry)
     #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
     #js_tester = SimplePanel()
     
@@ -307,55 +305,3 @@ class Basic:
     window.alert("We hope you had a productive session, come back soon! :)")
     self.location = Window.getLocation()
     self.location.setHref("http://teamceg.princeton.edu/")
-    
-    
-    
-  # these functions taken directly from pyjs.org kitchen sink example
-  def onShow(self):
-      pass
-
-  def createTextThing(self, textBox):
-      p = HorizontalPanel()
-      p.setSpacing(4)
-
-      p.add(textBox)
-
-      echo = HTML()
-      select_all = Button("select all")
-      p.add(select_all)
-      p.add(echo)
-      
-      listener=TextBoxListener(self, textBox, echo, select_all)
-      select_all.addClickListener(listener)
-      textBox.addKeyboardListener(listener)
-      textBox.addClickListener(listener)
-
-      return p
-
-  def updateText(self, text, echo):
-      echo.setHTML("Text: " + text.getText() + "<br>" + "Selection: " + text.getCursorPos() + ", " + text.getSelectionLength())
-
-
-class TextBoxListener:
-    def __init__(self, parent, textBox, echo, select_all):
-        self.textBox=textBox
-        self.echo=echo
-        self.parent=parent
-        self.select_all=select_all
-        
-    def onClick(self, sender):
-        if sender == self.select_all:
-            self.textBox.selectAll()
-            self.textBox.setFocus(True)
-
-        self.parent.updateText(self.textBox, self.echo)
-
-    def onKeyUp(self, sender, keyCode, modifiers):
-        self.parent.updateText(self.textBox, self.echo)
-
-    def onKeyDown(self, sender, keyCode, modifiers):
-        pass
-    
-    def onKeyPress(self, sender, keyCode, modifiers):
-        pass
-    # end function taken directly from pyjs.org
