@@ -1,14 +1,14 @@
 from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
-from pyjamas import Window
+from pyjamas import Window, History, DOM
 from pyjamas.JSONService import JSONProxy
 
 MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit",])
 
 class Basic:
   def onModuleLoad(self):
@@ -21,14 +21,13 @@ class Basic:
     # start the timer for updates from server
     self.onTimer()
     
-    
     # building the menu bar
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.quit = Button("Quit", getattr(self, "quit_pyjs"))
-    self.testquit = Button("Test quit..", getattr(self, "testquit"))
+    self.ellen = Button("Give Ellen some Peace!!!", getattr(self, "onEllenPeace"))
     self.menu_body = SimplePanel()
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
@@ -40,8 +39,8 @@ class Basic:
     self.head.add(self.mode)
     self.head.add(self.audio)
     self.head.add(self.flash)
+    self.head.add(self.ellen)
     self.head.add(self.quit)
-    self.head.add(self.testquit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
     
@@ -129,24 +128,19 @@ class Basic:
     
     RootPanel().add(self.panel)
     
+  def onEllenPeace(self):  # pyjamas hates the function name "testquit" -- Don't Use It!
+    self.location = Window.getLocation()
+    self.location.setHref("http://127.0.0.1:8000/")
+    
   def onInfoClick(self):
     id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
+    window.alert("User = %s" % self.driver.getText())
     self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
+
   def onRemoteResponse(self, response, request_info):
-    if request_info.method == 'get_username':
-      if (len(response[3]) < 1):  # if there is no passenger
-        for tpl in response:
-          self.driver.setText("%s" % tpl[1])
-          self.passenger.setText("None")
-        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
-      else: 
-        for tpl in response:
-          self.driver.setText("%s" % tpl[1])
-          self.passenger.setText("%s" % tpl[3])
-        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))          
-    elif request_info.method == 'get_meetinginfo':
+    if request_info.method == 'get_meetinginfo':
       self.list = []
       for tpl in response:
         self.list.append("%s" % tpl[1])
@@ -162,9 +156,8 @@ class Basic:
       self.passenger = Label("%s" % self.list[4]) # sometimes will be blank
       self.passengername = Label("%s" % self.list[5]) # sometimes will be blank
       if len(self.list[4]) < 1:
-        self.passenger.setText("No Passenger")  # so passenger is not undefined,
-        self.passengername.setText("No Passenger")
-        
+        self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
+        self.passengername.setText("No Partner logged in")
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
@@ -267,6 +260,8 @@ class Basic:
   def quit_pyjs(self):
     self.remote.user_quit(self)
     window.alert("We hope you had a productive session, come back soon! :)")
+    #self.location = Window.getLocation()
+    #self.location.setHref("http://127.0.0.1:8000/")
       
   def onClose(self):
     self._dialog.hide()
@@ -301,7 +296,3 @@ class Basic:
         msg = self.passengername.getText() + ": " + self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
-      
-  def testquit(self):
-    window.close()
-    #pass
