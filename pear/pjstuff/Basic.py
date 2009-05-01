@@ -76,9 +76,6 @@ class Basic:
     self.text_box.setVisibleLength("53")
     self.text_box.setMaxLength("600")
     self.text_box.addKeyboardListener(self)
-    id = self.remote.get_username(self)
-    if id < 0:
-      console.error("Server Error or Invalid Response")
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
@@ -127,8 +124,8 @@ class Basic:
     self.panel.setCellWidth(hp, "100%")
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
-    self.panel.setWidth("999px")
-    self.panel.setHeight("500px")
+    self.panel.setWidth("1000px")  # out of 1024
+    self.panel.setHeight("700px")  # out of 768
     
     RootPanel().add(self.panel)
     
@@ -164,19 +161,19 @@ class Basic:
       self.drivername = Label("%s" % self.list[3])
       self.passenger = Label("%s" % self.list[4]) # sometimes will be blank
       self.passengername = Label("%s" % self.list[5]) # sometimes will be blank
-      # so passenger is not undefined,
-      window.alert("Is Driver: %s, Project: %s, Driver: %s, DriverName: %s, Passenger: %s, PassengerName: %s" % (self.isdriver, self.project.getText(), self.driver.getText(), self.drivername.getText(), self.passenger.getText(), self.passengername.getText()))
-      if len(self.list[2]) < 1:
-        self.list[2] = "None"
+      if len(self.list[4]) < 1:
+        self.passenger.setText("No Passenger")  # so passenger is not undefined,
+        self.passengername.setText("No Passenger")
+        
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
-        self.text_area.setWidget(self.text)  # not sure if you need this, try without, remove if unnecessary, but i can't test it right now; in any case, it doesn't hurt to set it again
+        self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
-        self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now; in any case, it doesn't hurt to set it again
+        self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'send_flash':
       self.Flash = self.Flash
@@ -280,7 +277,10 @@ class Basic:
       console.error("Server Error or Invalid Response")
     self.remote.receive_chatmessage(self)
     # wait until we get the response
-    msg = self.driver.getText() + ": " + self.text_box.getText()
+    if self.isdriver:
+        msg = self.drivername.getText() + ": " + self.text_box.getText()
+    else:  # if not self.isdriver:
+      msg = self.passengername.getText() + ": " + self.text_box.getText()
     self.remote.send_chatmessage(msg, self)
     self.text_box.setText("")
     
@@ -295,7 +295,10 @@ class Basic:
         console.error("Server Error or Invalid Response")
       #window.alert("you clicked enter")
       self.remote.receive_chatmessage(self)
-      msg = self.driver.getText() + ": " + self.text_box.getText()
+      if self.isdriver:
+        msg = self.drivername.getText() + ": " + self.text_box.getText()
+      else:  # if not self.isdriver:
+        msg = self.passengername.getText() + ": " + self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
       
