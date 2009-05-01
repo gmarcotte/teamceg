@@ -25423,7 +25423,7 @@ function __Basic_initialize() {
     this.head.add(this.testquit);
     this.head.add(ui_Label('|'));
     this.head.add(this.menu_body);
-    var editor = ui_HTMLPanel('<div id=\'editarea\'></div>');
+    var editor = ui_HTMLPanel('<textarea id=\'editarea\' style=\'height: 610px; width: 100%;\' name=\'test_1\'></textarea><script>SetUpEditArea();</script>');
     editor.setWidth('100%');
     editor.setHeight('100%');
     var vp = ui_VerticalPanel();
@@ -25447,10 +25447,6 @@ function __Basic_initialize() {
     this.text_box.setVisibleLength('53');
     this.text_box.setMaxLength('600');
     this.text_box.addKeyboardListener(this);
-    var id = this.remote.get_username(this);
-    if ((id < 0)) {
-    console.error('Server Error or Invalid Response');
-    }
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
     text_entry.add(this.text_box);
@@ -25486,8 +25482,8 @@ function __Basic_initialize() {
     this.panel.setCellWidth(hp, '100%');
     this.panel.setCellHeight(hp, '100%');
     this.panel.setCellWidth(this.head, '100%');
-    this.panel.setWidth('999px');
-    this.panel.setHeight('500px');
+    this.panel.setWidth('1000px');
+    this.panel.setHeight('700px');
     ui_RootPanel().add(this.panel);
     };
     __Basic.prototype.__class__.onModuleLoad = function() {
@@ -25500,7 +25496,7 @@ function __Basic_initialize() {
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.list.__getitem__(1), this.list.__getitem__(2)]))));
+    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25568,11 +25564,20 @@ function __Basic_initialize() {
             }
         }
         
-    this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
+    if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
+    this.isdriver = true;
+    }
+    else {
+    this.isdriver = false;
+    }
     this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
-    this.passenger = ui_Label(sprintf('%s', this.list.__getitem__(3)));
-    if ((pyjslib_len(this.list.__getitem__(2)) < 1)) {
-    this.list.__setitem__(2, 'None');
+    this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
+    this.drivername = ui_Label(sprintf('%s', this.list.__getitem__(3)));
+    this.passenger = ui_Label(sprintf('%s', this.list.__getitem__(4)));
+    this.passengername = ui_Label(sprintf('%s', this.list.__getitem__(5)));
+    if ((pyjslib_len(this.list.__getitem__(4)) < 1)) {
+    this.passenger.setText('No Passenger');
+    this.passengername.setText('No Passenger');
     }
     }
     else if ((request_info.method == 'send_chatmessage')) {
@@ -25814,7 +25819,12 @@ function __Basic_initialize() {
     console.error('Server Error or Invalid Response');
     }
     this.remote.receive_chatmessage(this);
-    var msg =  (  ( this.driver.getText() + ': ' )  + this.text_box.getText() ) ;
+    if (this.isdriver) {
+    var msg =  (  ( this.drivername.getText() + ': ' )  + this.text_box.getText() ) ;
+    }
+    else {
+    var msg =  (  ( this.passengername.getText() + ': ' )  + this.text_box.getText() ) ;
+    }
     this.remote.send_chatmessage(msg, this);
     this.text_box.setText('');
     };
@@ -25844,7 +25854,12 @@ function __Basic_initialize() {
     console.error('Server Error or Invalid Response');
     }
     this.remote.receive_chatmessage(this);
-    var msg =  (  ( this.driver.getText() + ': ' )  + this.text_box.getText() ) ;
+    if (this.isdriver) {
+    var msg =  (  ( this.drivername.getText() + ': ' )  + this.text_box.getText() ) ;
+    }
+    else {
+    var msg =  (  ( this.passengername.getText() + ': ' )  + this.text_box.getText() ) ;
+    }
     this.remote.send_chatmessage(msg, this);
     this.text_box.setText('');
     }
