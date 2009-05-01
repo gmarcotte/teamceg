@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window
@@ -28,6 +28,7 @@ class Basic:
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.quit = Button("Quit", getattr(self, "quit_pyjs"))
+    self.testquit = Button("Test quit..", getattr(self, "testquit"))
     self.menu_body = SimplePanel()
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
@@ -40,6 +41,7 @@ class Basic:
     self.head.add(self.audio)
     self.head.add(self.flash)
     self.head.add(self.quit)
+    self.head.add(self.testquit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
     
@@ -61,17 +63,22 @@ class Basic:
     console.add(term)
     console.setWidth("400px")
     console.setHeight("100%")
-    # not so hacky -- indeed, pretty decent little "text chat"
+    # not so hacky -- indeed, pretty decent little text chat
     #self.text_area = TextArea() ## Let's try changing this to an HTML panel
+    self.driver = Label("Unset")
+    self.passenger = Label("Unset")
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
-    self.text = HTML("Ellen: KILL KILL <font color='red'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..<br>mmm a pear sounds delicious right now..<br>Yes, I quite would like one also!<br>This line is just filler.<br>Like they do in Bombay? <br>Yes, quite. <br> I want something sweet.. wahh<br> whine whine whine..")
+    self.text = HTML("")
     self.text_area.setWidget(self.text)
     self.text_area.setSize("400px", "150px")
     self.text_box = TextBox()
     self.text_box.setVisibleLength("60")
     self.text_box.setMaxLength("60")
     self.text_box.addKeyboardListener(self)
+    id = self.remote.get_username(self)
+    if id < 0:
+      console.error("Server Error or Invalid Response")
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
@@ -121,7 +128,7 @@ class Basic:
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
     self.panel.setWidth("999px")
-    self.panel.setHeight("350px")
+    self.panel.setHeight("500px")
     
     RootPanel().add(self.panel)
     
@@ -132,9 +139,7 @@ class Basic:
     if id < 0:
       console.error("Server Error or Invalid Response")
     #window.alert('Sent username request') 
-    #self.driver = Label("Unset")
-    #self.passenger = Label("Unset")
-    #self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
+    self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.list[1], self.list[2])))
   def onRemoteResponse(self, response, request_info):
     #window.alert('Received remote response')
     #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
@@ -155,22 +160,24 @@ class Basic:
           self.passenger.setText("%s" % tpl[3])
         self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))          
     elif request_info.method == 'get_meetinginfo':
-      list = []
+      self.list = []
       for tpl in response:
-        list.append("%s" % tpl[1])
-      self.driver = Label("%s" % list[2])
-      self.project = Label("%s" % list[1])
-      self.passenger = Label("%s" % list[3]) # sometimes will be blank
+        self.list.append("%s" % tpl[1])
+      self.driver = Label("%s" % self.list[2])
+      self.project = Label("%s" % self.list[1])
+      self.passenger = Label("%s" % self.list[3]) # sometimes will be blank
+      # so passenger is not undefined,
+      if len(self.list[2]) < 1:
+        self.list[2] = "None"
     elif request_info.method == 'send_chatmessage':
-      #pass
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
-        self.text_area.setWidget(self.text)  # not sure if you need this, try without, remove if unnecessary, but i can't test it right now
+        self.text_area.setWidget(self.text)  # not sure if you need this, try without, remove if unnecessary, but i can't test it right now; in any case, it doesn't hurt to set it again
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
-        self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now
+        self.text_area.setWidget(self.text)  # again, not sure if you need this, try without, remove if unnecessary, but i can't test it right now; in any case, it doesn't hurt to set it again
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'send_flash':
       self.Flash = self.Flash
@@ -189,20 +196,24 @@ class Basic:
       console.error("Error in onRemoteResponse function in Basic.py")
   
   def onRemoteError(self, response, request_info):
-    window.alert("ERROR")
+    #window.alert("ERROR")
+    pass
       
   def onModeClick(self):
     modepanel = HorizontalPanel()
-    modepanel.add(Button("Switch Drivers", getattr(self, "onSwitchDriversClick")))
+    modebutt = Button("Switch Drivers", getattr(self, "onSwitchDriversClick"))
+    modebutt.setStyleName("supp-button")
+    modepanel.add(modebutt)
     self.menu_body.setWidget(modepanel)
     
   def onSwitchDriversClick(self):
     window.alert("You are trying to switch drivers")
-
+    
     
   def onAudioClick(self):
     audiopanel = HorizontalPanel()
     audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
+    audiobutton.setStyleName("supp-button")
     audiopanel.add(audiobutton)
     #audiopanel.add(HTML("<a href='callto://YourUserNameHere'>Skype call</a>"))
     self.menu_body.setWidget(audiopanel)
@@ -259,18 +270,19 @@ class Basic:
   
   def quit_pyjs(self):
     self.remote.user_quit(self)
-    window.alert("Quitting")
-    
+    window.alert("We hope you had a productive session, come back soon! :)")
       
   def onClose(self):
     self._dialog.hide()
     
   def onTextSend(self):
+    id = self.remote.get_username(self)
+    if id < 0:
+      console.error("Server Error or Invalid Response")
     self.remote.receive_chatmessage(self)
-    new_chat_text = Label("%s" % self.text_box.getText())
     # wait until we get the response
-    #self.text_area.setText(self.text_area.getText() + "\n" + new_chat_text.getText())
-    self.remote.send_chatmessage(new_chat_text.getText(),self)
+    msg = self.driver.getText() + ": " + self.text_box.getText()
+    self.remote.send_chatmessage(msg, self)
     self.text_box.setText("")
     
   def onKeyUp(self, sender, keyCode, modifers):
@@ -279,8 +291,15 @@ class Basic:
     pass
   def onKeyPress(self, sender, keyCode, modifiers):
     if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
+      id = self.remote.get_username(self)
+      if id < 0:
+        console.error("Server Error or Invalid Response")
       #window.alert("you clicked enter")
       self.remote.receive_chatmessage(self)
-      new_chat_text = Label("%s" % self.text_box.getText())
-      self.remote.send_chatmessage(new_chat_text.getText(), self)
+      msg = self.driver.getText() + ": " + self.text_box.getText()
+      self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
+      
+  def testquit(self):
+    window.close()
+    #pass

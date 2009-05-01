@@ -1,3 +1,14 @@
+.supp-button {
+  background: #ffdd88;
+  color: #000000;
+  font-size: 13px;
+  border: 1px solid #ffffff;
+  border-style: rounded;
+  font-family: Tahoma;
+}
+
+
+
 .text-area {
   border: 1px solid #000000;
   background-image: url(/pj/images/large_pear.jpg);
