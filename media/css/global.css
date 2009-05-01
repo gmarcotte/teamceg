@@ -9,6 +9,10 @@ body {
   font-family: "Palatino Linotype", Times, serif;
 }
 
+a img {
+	border: none;
+}
+
 #outer {
 	width: 80%;
 	margin: 0px auto;	
