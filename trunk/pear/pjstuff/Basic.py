@@ -8,7 +8,7 @@ MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit",])
 
 class Basic:
   def onModuleLoad(self):
@@ -122,7 +122,7 @@ class Basic:
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
     self.panel.setWidth("1000px")  # out of 1024
-    self.panel.setHeight("700px")  # out of 768
+    self.panel.setHeight("650px")  # out of 768
     
     RootPanel().add(self.panel)
     
@@ -134,11 +134,26 @@ class Basic:
     id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
-    window.alert("User = %s" % self.driver.getText())
     self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
 
   def onRemoteResponse(self, response, request_info):
-    if request_info.method == 'get_meetinginfo':
+    if request_info.method == 'get_username':
+      if (len(response[3]) < 1):  # if there is no passenger
+        #window.alert("No passenger")
+        #window.alert("%s" % self.driver.getText())
+        for tpl in response:
+          self.driver.setText("%s" % tpl[1])
+          self.passenger.setText("None")
+        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
+          #window.alert("%s" % tpl[3])
+        #window.alert("%s" % self.driver.getText())
+      else:  # if len(response[3]) > 0:  # if there is a passenger
+        #window.alert("There is a passenger")
+        for tpl in response:
+          self.driver.setText("%s" % tpl[1])
+          self.passenger.setText("%s" % tpl[3])
+        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))          
+    elif request_info.method == 'get_meetinginfo':
       self.list = []
       for tpl in response:
         self.list.append("%s" % tpl[1])
@@ -289,7 +304,7 @@ class Basic:
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
       
-  def quit_pyjs(self):
+  def onQuitClick(self):
     #self.remote.user_quit(self)
     window.alert("We hope you had a productive session, come back soon! :)")
     self.location = Window.getLocation()
