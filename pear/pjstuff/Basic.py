@@ -47,7 +47,7 @@ class Basic:
     
     # the left side
     # editor
-    editor = HTMLPanel("<div id='editarea'></div>")#"<div id='myhelene'></div> <script> sethelene(); </script> ")
+    editor = HTMLPanel("<textarea id='editarea' style='height: 610px; width: 100%;' name='test_1'></textarea><script>SetUpEditArea();</script>")
     editor.setWidth("100%")
     editor.setHeight("100%")
     
@@ -133,28 +133,18 @@ class Basic:
     RootPanel().add(self.panel)
     
   def onInfoClick(self):
-    #window.alert('Getting username')
-    #id = self.remote.get_username(self)
     id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
-    #window.alert('Sent username request') 
-    self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.list[1], self.list[2])))
+    self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
   def onRemoteResponse(self, response, request_info):
-    #window.alert('Received remote response')
-    #console.info("response received")  # DO NOT USE THESE; FIREFOX DOESN'T LIKE IT
     if request_info.method == 'get_username':
       if (len(response[3]) < 1):  # if there is no passenger
-        #window.alert("No passenger")
-        #window.alert("%s" % self.driver.getText())
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("None")
         self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
-          #window.alert("%s" % tpl[3])
-        #window.alert("%s" % self.driver.getText())
-      else:  # if len(response[3]) > 0:  # if there is a passenger
-        #window.alert("There is a passenger")
+      else: 
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("%s" % tpl[3])
@@ -163,10 +153,19 @@ class Basic:
       self.list = []
       for tpl in response:
         self.list.append("%s" % tpl[1])
-      self.driver = Label("%s" % self.list[2])
+      
+      # set the local vars
+      if (str(self.list[0]) == 'true'):
+        self.isdriver = True
+      else:
+        self.isdriver = False
       self.project = Label("%s" % self.list[1])
-      self.passenger = Label("%s" % self.list[3]) # sometimes will be blank
+      self.driver = Label("%s" % self.list[2])
+      self.drivername = Label("%s" % self.list[3])
+      self.passenger = Label("%s" % self.list[4]) # sometimes will be blank
+      self.passengername = Label("%s" % self.list[5]) # sometimes will be blank
       # so passenger is not undefined,
+      window.alert("Is Driver: %s, Project: %s, Driver: %s, DriverName: %s, Passenger: %s, PassengerName: %s" % (self.isdriver, self.project.getText(), self.driver.getText(), self.drivername.getText(), self.passenger.getText(), self.passengername.getText()))
       if len(self.list[2]) < 1:
         self.list[2] = "None"
     elif request_info.method == 'send_chatmessage':

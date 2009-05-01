@@ -131,12 +131,17 @@ def get_meetinginfo(request):
     else:
       project = Project.objects.get(pk=meeting.project_id)
       driver = PearUser.objects.get(pk=meeting.driver_id)
-      
+      if (str(driver.id) == str(request.user.id)):
+        r.append(('isdriver', 'true'))
+      else:
+        r.append(('isdriver', 'false'))
       r.append(('project', project.name))
       r.append(('driver', driver.email))
+      r.append(('driver', driver.first_name))
       if meeting.passenger_id > 0:
         passenger = PearUser.objects.get(pk=meeting.passenger_id)
         r.append(('passenger', passenger.email))
+        r.append(('passenger', passenger.first_name))
       
     return r
     # if meeting, return info
