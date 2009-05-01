@@ -24,10 +24,13 @@ ADMIN_MEDIA_PREFIX = '/admin_media'
 MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../media/'))
 MEDIA_URL = 'http://teamceg.princeton.edu'
 
+AJAXTERM_URL = 'http://teamceg.princeton.edu/ajaxterm/'
+
 
 # Django configuration
 TEMPLATE_DIRS = (
-    os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))
+    os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates')),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '../media/pj/')),
 )
 
 # E-Mail Configuration

@@ -50,7 +50,14 @@ def launch_project(request, project_id):
       meeting.console = ''
       meeting.editor = ''
     meeting.save()
-    return http.HttpResponseRedirect('/pj/Basic.html')
+    return shortcuts.render_to_response(
+        'Basic.html',
+        {'page_title': 'Project Workspace',
+         'project': project,
+         'meeting': meeting,
+         'server_host': request.POST['server'],
+         'server_logon': request.POST['logon']},
+        context_instance=template.RequestContext(request))
   
   # Display a summary of the project session status before launching
   if meetings:
@@ -58,7 +65,7 @@ def launch_project(request, project_id):
     passenger = request.user
   else:
     driver = request.user
-    passenter = None
+    passenger = None
   return shortcuts.render_to_response(
       'global/projects/launch_project.html', 
       {'page_title': 'Launch Project', 
