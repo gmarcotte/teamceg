@@ -25,10 +25,13 @@ MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                           '../media/'))
 MEDIA_URL = 'http://localhost:8000'
 
+AJAXTERM_URL = 'http://localhost:8022/'
+
 
 # Django configuration
 TEMPLATE_DIRS = (
-    os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates'))
+    os.path.abspath(os.path.join(os.path.dirname(__file__), 'templates')),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '../media/pj')),
 )
 
 # E-Mail Configuration

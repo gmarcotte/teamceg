@@ -10,7 +10,9 @@ Passenger: {% if passenger %}{{ passenger.email }}{% else %}None{% endif %}<br>
 Project #: {{ project.id }}
 <p>
 <form action="" method="POST">
-<input type="submit" value="go" name="go">
+SSH Server: <input type="text" name="server" /><br />
+SSH Username: <input type="text" name="logon" /><br />
+<input type="submit" value="go" name="go" />
 </form>
 </p>
 {% endblock %}

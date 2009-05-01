@@ -4,7 +4,6 @@ from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
 from pyjamas.JSONService import JSONProxy
 
-MEDIA_URL = 'http://localhost:8000'
 
 class DataService(JSONProxy):
   def __init__(self):

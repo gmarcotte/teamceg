@@ -8,4 +8,5 @@ def settings_vars(request):
       'HTML_TITLE_BASE': settings.HTML_TITLE_BASE,
       'PEAR_VERSION': settings.PEAR_VERSION,
       'SERVER_HOSTNAME': settings.SERVER_HOSTNAME,
+      'AJAXTERM_URL': settings.AJAXTERM_URL,
   }
