@@ -33,7 +33,7 @@ def launch_project(request, project_id):
   except exceptions.ObjectDoesNotExist:
     return http.HttpResponseRedirect(redirect_to)
   
-  meetings = Meeting.objects.filter(project_id=project_id)
+  meetings = Meeting.objects.filter(project=project_id)
   
   # User has specified to actually launch
   if request.method == 'POST':
