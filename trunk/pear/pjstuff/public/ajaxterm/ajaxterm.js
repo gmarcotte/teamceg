@@ -1,10 +1,10 @@
 ajaxterm={};
-ajaxterm.Terminal_ctor=function(id,width,height) {
+ajaxterm.Terminal_ctor=function(id,width,height,ssh) {
 	var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
 	var sid=""+Math.round(Math.random()*1000000000);
-	var query0="s="+sid+"&w="+width+"&h="+height;
+	var query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh;
 	var query1=query0+"&c=1&k=";
 	var buf="";
 	var timeout;
@@ -286,7 +286,7 @@ ajaxterm.Terminal_ctor=function(id,width,height) {
 	}
 	init();
 }
-ajaxterm.Terminal=function(id,width,height) {
-	return new this.Terminal_ctor(id,width,height);
+ajaxterm.Terminal=function(id,width,height,ssh) {
+	return new this.Terminal_ctor(id,width,height,ssh);
 }
 

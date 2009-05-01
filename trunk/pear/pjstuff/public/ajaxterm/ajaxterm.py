@@ -367,9 +367,8 @@ class SynchronizedMethod:
 		return r
 
 class Multiplex:
-	def __init__(self,cmd=None):
+	def __init__(self):
 		signal.signal(signal.SIGCHLD, signal.SIG_IGN)
-		self.cmd=cmd
 		self.proc={}
 		self.lock=threading.RLock()
 		self.thread=threading.Thread(target=self.loop)
@@ -379,7 +378,7 @@ class Multiplex:
 			orig=getattr(self,name)
 			setattr(self,name,SynchronizedMethod(self.lock,orig))
 		self.thread.start()
-	def create(self,w=80,h=25):
+	def create(self,w=80,h=25,ssh='localhost'):
 		pid,fd=pty.fork()
 		if pid==0:
 			try:
@@ -391,21 +390,16 @@ class Multiplex:
 					os.close(i)
 				except OSError:
 					pass
-			if self.cmd:
-				cmd=['/bin/sh','-c',self.cmd]
-			elif os.getuid()==0:
-				cmd=['/bin/login']
+			sys.stdout.write("Login: ")
+			login=sys.stdin.readline().strip()
+			if re.match('^[0-9A-Za-z-_. ]+$',login):
+				cmd=['ssh']
+				cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
+				cmd+=['-oNoHostAuthenticationForLocalhost=yes']
+				cmd+=['-oLogLevel=FATAL']
+				cmd+=['-F/dev/null','-l',login,ssh]
 			else:
-				sys.stdout.write("Login: ")
-				login=sys.stdin.readline().strip()
-				if re.match('^[0-9A-Za-z-_. ]+$',login):
-					cmd=['ssh']
-					cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
-					cmd+=['-oNoHostAuthenticationForLocalhost=yes']
-					cmd+=['-oLogLevel=FATAL']
-					cmd+=['-F/dev/null','-l',login,'localhost']
-				else:
-					os._exit(0)
+				os._exit(0)
 			env={}
 			env["COLUMNS"]=str(w)
 			env["LINES"]=str(h)
@@ -475,7 +469,7 @@ class Multiplex:
 				pass
 
 class AjaxTerm:
-	def __init__(self,cmd=None,index_file='ajaxterm.html'):
+	def __init__(self,index_file='ajaxterm.html'):
 		self.files={}
 		for i in ['css','html','js']:
 			for j in glob.glob('*.%s'%i):
@@ -483,7 +477,7 @@ class AjaxTerm:
 		self.files['index']=file(index_file).read()
 		self.mime = mimetypes.types_map.copy()
 		self.mime['.html']= 'text/html; charset=UTF-8'
-		self.multi = Multiplex(cmd)
+		self.multi = Multiplex()
 		self.session = {}
 	def __call__(self, environ, start_response):
 		req = qweb.QWebRequest(environ, start_response,session=None)
@@ -493,12 +487,15 @@ class AjaxTerm:
 			c=req.REQUEST["c"]
 			w=req.REQUEST.int("w")
 			h=req.REQUEST.int("h")
+			ssh=req.REQUEST["ssh"]
 			if s in self.session:
 				term=self.session[s]
 			else:
 				if not (w>2 and w<256 and h>2 and h<100):
 					w,h=80,25
-				term=self.session[s]=self.multi.create(w,h)
+				if not ssh:
+					ssh = 'localhost'
+				term=self.session[s]=self.multi.create(w,h,ssh)
 			if k:
 				self.multi.proc_write(term,k)
 			time.sleep(0.002)
@@ -524,7 +521,6 @@ class AjaxTerm:
 def main():
 	parser = optparse.OptionParser()
 	parser.add_option("-p", "--port", dest="port", default="8022", help="Set the TCP port (default: 8022)")
-	parser.add_option("-c", "--command", dest="cmd", default=None,help="set the command (default: /bin/login or ssh localhost)")
 	parser.add_option("-l", "--log", action="store_true", dest="log",default=0,help="log requests to stderr (default: quiet mode)")
 	parser.add_option("-d", "--daemon", action="store_true", dest="daemon", default=0, help="run as daemon in the background")
 	parser.add_option("-P", "--pidfile",dest="pidfile",default="/var/run/ajaxterm.pid",help="set the pidfile (default: /var/run/ajaxterm.pid)")
@@ -555,7 +551,7 @@ def main():
 			sys.exit(0)
 	else:
 		print 'AjaxTerm at http://localhost:%s/' % o.port
-	at=AjaxTerm(o.cmd,o.index_file)
+	at=AjaxTerm(o.index_file)
 #	f=lambda:os.system('firefox http://localhost:%s/&'%o.port)
 #	qweb.qweb_wsgi_autorun(at,ip='localhost',port=int(o.port),threaded=0,log=o.log,callback_ready=None)
 	try:
