@@ -26,8 +26,7 @@ class Basic:
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
-    self.quit = Button("Quit", getattr(self, "quit_pyjs"))
-    self.ellen = Button("Give Ellen some Peace!!!", getattr(self, "onEllenPeace"))
+    self.quit = Button("Quit", getattr(self, "onQuitClick"))
     self.menu_body = SimplePanel()
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
@@ -39,7 +38,6 @@ class Basic:
     self.head.add(self.mode)
     self.head.add(self.audio)
     self.head.add(self.flash)
-    self.head.add(self.ellen)
     self.head.add(self.quit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
@@ -256,12 +254,6 @@ class Basic:
       self.flashOff()
       self.remote.send_flash("off",self)
       self.onTimer()
-  
-  def quit_pyjs(self):
-    self.remote.user_quit(self)
-    window.alert("We hope you had a productive session, come back soon! :)")
-    #self.location = Window.getLocation()
-    #self.location.setHref("http://127.0.0.1:8000/")
       
   def onClose(self):
     self._dialog.hide()
@@ -296,3 +288,9 @@ class Basic:
         msg = self.passengername.getText() + ": " + self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
+      
+  def quit_pyjs(self):
+    #self.remote.user_quit(self)
+    window.alert("We hope you had a productive session, come back soon! :)")
+    self.location = Window.getLocation()
+    self.location.setHref("http://127.0.0.1:8000/")
