@@ -378,7 +378,7 @@ class Multiplex:
 			orig=getattr(self,name)
 			setattr(self,name,SynchronizedMethod(self.lock,orig))
 		self.thread.start()
-	def create(self,w=80,h=25,ssh='localhost'):
+	def create(self,w=80,h=25,ssh='localhost',login=''):
 		pid,fd=pty.fork()
 		if pid==0:
 			try:
@@ -390,9 +390,11 @@ class Multiplex:
 					os.close(i)
 				except OSError:
 					pass
-			sys.stdout.write("Login: ")
-			login=sys.stdin.readline().strip()
+			if not login:
+				sys.stdout.write("Login for %s: " % ssh)
+				login=sys.stdin.readline().strip()
 			if re.match('^[0-9A-Za-z-_. ]+$',login):
+				sys.stdout.write("Initiating SSH connection for %s@%s\n" % (ssh, login))
 				cmd=['ssh']
 				cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
 				cmd+=['-oNoHostAuthenticationForLocalhost=yes']
@@ -488,6 +490,7 @@ class AjaxTerm:
 			w=req.REQUEST.int("w")
 			h=req.REQUEST.int("h")
 			ssh=req.REQUEST["ssh"]
+			user=req.REQUEST["user"]
 			if s in self.session:
 				term=self.session[s]
 			else:
@@ -495,7 +498,9 @@ class AjaxTerm:
 					w,h=80,25
 				if not ssh:
 					ssh = 'localhost'
-				term=self.session[s]=self.multi.create(w,h,ssh)
+				if not user:
+					user = ''
+				term=self.session[s]=self.multi.create(w,h,ssh,user)
 			if k:
 				self.multi.proc_write(term,k)
 			time.sleep(0.002)
