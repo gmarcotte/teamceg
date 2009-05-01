@@ -25510,7 +25510,8 @@ function __Basic_initialize() {
     var fake_chat = ui_VerticalPanel();
     fake_chat.add(this.text_area);
     this.text_area.setScrollPosition(999999);
-    fake_chat.add(text_entry);
+    this.fTextBox = ui_TextBox();
+    fake_chat.add(this.createTextThing(this.fTextBox));
     vp.add(console);
     vp.add(fake_chat);
     vp.setWidth('100%');
@@ -25645,6 +25646,7 @@ function __Basic_initialize() {
         
     this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
     this.text_area.setWidget(this.text);
+    this.text_area.setScrollPosition(999999);
 
             }
         } catch (e) {
@@ -25664,6 +25666,7 @@ function __Basic_initialize() {
         
     this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
     this.text_area.setWidget(this.text);
+    this.text_area.setScrollPosition(999999);
 
             }
         } catch (e) {
@@ -25923,8 +25926,103 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onQuitClick.unbound_method = true;
     __Basic.prototype.onQuitClick.instance_method = true;
+    __Basic.prototype.onShow = function() {
+    };
+    __Basic.prototype.__class__.onShow = function() {
+        return __Basic.prototype.onShow.call.apply(__Basic.prototype.onShow, arguments);
+    };
+    __Basic.prototype.__class__.onShow.unbound_method = true;
+    __Basic.prototype.onShow.instance_method = true;
+    __Basic.prototype.createTextThing = function(textBox) {
+    var p = ui_HorizontalPanel();
+    p.setSpacing(4);
+    p.add(textBox);
+    var echo = ui_HTML();
+    var select_all = ui_Button('select all');
+    p.add(select_all);
+    p.add(echo);
+    var listener = TextBoxListener(this, textBox, echo, select_all);
+    select_all.addClickListener(listener);
+    textBox.addKeyboardListener(listener);
+    textBox.addClickListener(listener);
+    return p;
+    };
+    __Basic.prototype.__class__.createTextThing = function() {
+        return __Basic.prototype.createTextThing.call.apply(__Basic.prototype.createTextThing, arguments);
+    };
+    __Basic.prototype.__class__.createTextThing.unbound_method = true;
+    __Basic.prototype.createTextThing.instance_method = true;
+    __Basic.prototype.updateText = function(text, echo) {
+    echo.setHTML( (  (  (  (  (  ( 'Text: ' + text.getText() )  + '<br>' )  + 'Selection: ' )  + text.getCursorPos() )  + ', ' )  + text.getSelectionLength() ) );
+    };
+    __Basic.prototype.__class__.updateText = function() {
+        return __Basic.prototype.updateText.call.apply(__Basic.prototype.updateText, arguments);
+    };
+    __Basic.prototype.__class__.updateText.unbound_method = true;
+    __Basic.prototype.updateText.instance_method = true;
+}
+function __TextBoxListener() {
+}
+function TextBoxListener(parent, textBox, echo, select_all) {
+    var instance = new __TextBoxListener();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __TextBoxListener_initialize() {
+    if(__TextBoxListener.__was_initialized__) return;
+    __TextBoxListener.__was_initialized__ = true;
+    pyjs_extend(__TextBoxListener, __pyjslib_Object);
+    __TextBoxListener.prototype.__class__.__new__ = TextBoxListener;
+    __TextBoxListener.prototype.__init__ = function(parent, textBox, echo, select_all) {
+    this.textBox = textBox;
+    this.echo = echo;
+    this.parent = parent;
+    this.select_all = select_all;
+    };
+    __TextBoxListener.prototype.__class__.__init__ = function() {
+        return __TextBoxListener.prototype.__init__.call.apply(__TextBoxListener.prototype.__init__, arguments);
+    };
+    __TextBoxListener.prototype.__class__.__init__.unbound_method = true;
+    __TextBoxListener.prototype.__init__.instance_method = true;
+    __TextBoxListener.prototype.onClick = function(sender) {
+    if ((sender == this.select_all)) {
+    this.textBox.selectAll();
+    this.textBox.setFocus(true);
+    }
+    this.parent.updateText(this.textBox, this.echo);
+    };
+    __TextBoxListener.prototype.__class__.onClick = function() {
+        return __TextBoxListener.prototype.onClick.call.apply(__TextBoxListener.prototype.onClick, arguments);
+    };
+    __TextBoxListener.prototype.__class__.onClick.unbound_method = true;
+    __TextBoxListener.prototype.onClick.instance_method = true;
+    __TextBoxListener.prototype.onKeyUp = function(sender, keyCode, modifiers) {
+    this.parent.updateText(this.textBox, this.echo);
+    };
+    __TextBoxListener.prototype.__class__.onKeyUp = function() {
+        return __TextBoxListener.prototype.onKeyUp.call.apply(__TextBoxListener.prototype.onKeyUp, arguments);
+    };
+    __TextBoxListener.prototype.__class__.onKeyUp.unbound_method = true;
+    __TextBoxListener.prototype.onKeyUp.instance_method = true;
+    __TextBoxListener.prototype.onKeyDown = function(sender, keyCode, modifiers) {
+    };
+    __TextBoxListener.prototype.__class__.onKeyDown = function() {
+        return __TextBoxListener.prototype.onKeyDown.call.apply(__TextBoxListener.prototype.onKeyDown, arguments);
+    };
+    __TextBoxListener.prototype.__class__.onKeyDown.unbound_method = true;
+    __TextBoxListener.prototype.onKeyDown.instance_method = true;
+    __TextBoxListener.prototype.onKeyPress = function(sender, keyCode, modifiers) {
+    };
+    __TextBoxListener.prototype.__class__.onKeyPress = function() {
+        return __TextBoxListener.prototype.onKeyPress.call.apply(__TextBoxListener.prototype.onKeyPress, arguments);
+    };
+    __TextBoxListener.prototype.__class__.onKeyPress.unbound_method = true;
+    __TextBoxListener.prototype.onKeyPress.instance_method = true;
 }
 __DataService_initialize();
+__TextBoxListener_initialize();
 __Basic_initialize();
 
 
