@@ -25465,6 +25465,7 @@ function __Basic_initialize() {
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
     this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
     this.quit = ui_Button('Quit', pyjslib_getattr(this, 'quit_pyjs'));
+    this.testquit = ui_Button('Test quit..', pyjslib_getattr(this, 'testquit'));
     this.menu_body = ui_SimplePanel();
     this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'20px\'>');
     this.menu_body.setWidget(this.menu_contents);
@@ -25476,6 +25477,7 @@ function __Basic_initialize() {
     this.head.add(this.audio);
     this.head.add(this.flash);
     this.head.add(this.quit);
+    this.head.add(this.testquit);
     this.head.add(ui_Label('|'));
     this.head.add(this.menu_body);
     var editor = ui_HTMLPanel('<div id=\'editarea\'></div>');
@@ -25491,15 +25493,21 @@ function __Basic_initialize() {
     console.add(term);
     console.setWidth('400px');
     console.setHeight('100%');
+    this.driver = ui_Label('Unset');
+    this.passenger = ui_Label('Unset');
     this.text_area = ui_ScrollPanel();
     this.text_area.setStyleName('text-area');
-    this.text = ui_HTML('Ellen: KILL KILL <font color=\'red\'>MURDER</font> KILL<br>Ellen: YES KILL MURDER <b>KILL</b><br>Ellen: no, caps lock is not on..<br>mmm a pear sounds delicious right now..<br>Yes, I quite would like one also!<br>This line is just filler.<br>Like they do in Bombay? <br>Yes, quite. <br> I want something sweet.. wahh<br> whine whine whine..');
+    this.text = ui_HTML('');
     this.text_area.setWidget(this.text);
     this.text_area.setSize('400px', '150px');
     this.text_box = ui_TextBox();
     this.text_box.setVisibleLength('60');
     this.text_box.setMaxLength('60');
     this.text_box.addKeyboardListener(this);
+    var id = this.remote.get_username(this);
+    if ((id < 0)) {
+    console.error('Server Error or Invalid Response');
+    }
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
     text_entry.add(this.text_box);
@@ -25536,7 +25544,7 @@ function __Basic_initialize() {
     this.panel.setCellHeight(hp, '100%');
     this.panel.setCellWidth(this.head, '100%');
     this.panel.setWidth('999px');
-    this.panel.setHeight('350px');
+    this.panel.setHeight('500px');
     ui_RootPanel().add(this.panel);
     };
     __Basic.prototype.__class__.onModuleLoad = function() {
@@ -25549,6 +25557,7 @@ function __Basic_initialize() {
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
+    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.list.__getitem__(1), this.list.__getitem__(2)]))));
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25599,7 +25608,7 @@ function __Basic_initialize() {
     }
     }
     else if ((request_info.method == 'get_meetinginfo')) {
-    var list = new pyjslib_List([]);
+    this.list = new pyjslib_List([]);
 
         var __tpl = response.__iter__();
         try {
@@ -25607,7 +25616,7 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    list.append(sprintf('%s', tpl.__getitem__(1)));
+    this.list.append(sprintf('%s', tpl.__getitem__(1)));
 
             }
         } catch (e) {
@@ -25616,9 +25625,12 @@ function __Basic_initialize() {
             }
         }
         
-    this.driver = ui_Label(sprintf('%s', list.__getitem__(2)));
-    this.project = ui_Label(sprintf('%s', list.__getitem__(1)));
-    this.passenger = ui_Label(sprintf('%s', list.__getitem__(3)));
+    this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
+    this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
+    this.passenger = ui_Label(sprintf('%s', this.list.__getitem__(3)));
+    if ((pyjslib_len(this.list.__getitem__(2)) < 1)) {
+    this.list.__setitem__(2, 'None');
+    }
     }
     else if ((request_info.method == 'send_chatmessage')) {
 
@@ -25718,7 +25730,6 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onRemoteResponse.unbound_method = true;
     __Basic.prototype.onRemoteResponse.instance_method = true;
     __Basic.prototype.onRemoteError = function(response, request_info) {
-    window.alert('ERROR');
     };
     __Basic.prototype.__class__.onRemoteError = function() {
         return __Basic.prototype.onRemoteError.call.apply(__Basic.prototype.onRemoteError, arguments);
@@ -25727,7 +25738,9 @@ function __Basic_initialize() {
     __Basic.prototype.onRemoteError.instance_method = true;
     __Basic.prototype.onModeClick = function() {
     var modepanel = ui_HorizontalPanel();
-    modepanel.add(ui_Button('Switch Drivers', pyjslib_getattr(this, 'onSwitchDriversClick')));
+    var modebutt = ui_Button('Switch Drivers', pyjslib_getattr(this, 'onSwitchDriversClick'));
+    modebutt.setStyleName('supp-button');
+    modepanel.add(modebutt);
     this.menu_body.setWidget(modepanel);
     };
     __Basic.prototype.__class__.onModeClick = function() {
@@ -25746,6 +25759,7 @@ function __Basic_initialize() {
     __Basic.prototype.onAudioClick = function() {
     var audiopanel = ui_HorizontalPanel();
     var audiobutton = ui_Button('Skype Call', pyjslib_getattr(this, 'onSkypeClick'));
+    audiobutton.setStyleName('supp-button');
     audiopanel.add(audiobutton);
     this.menu_body.setWidget(audiopanel);
     };
@@ -25836,7 +25850,7 @@ function __Basic_initialize() {
     __Basic.prototype.setFlash.instance_method = true;
     __Basic.prototype.quit_pyjs = function() {
     this.remote.user_quit(this);
-    window.alert('Quitting');
+    window.alert('We hope you had a productive session, come back soon! :)');
     };
     __Basic.prototype.__class__.quit_pyjs = function() {
         return __Basic.prototype.quit_pyjs.call.apply(__Basic.prototype.quit_pyjs, arguments);
@@ -25852,9 +25866,13 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onClose.unbound_method = true;
     __Basic.prototype.onClose.instance_method = true;
     __Basic.prototype.onTextSend = function() {
+    var id = this.remote.get_username(this);
+    if ((id < 0)) {
+    console.error('Server Error or Invalid Response');
+    }
     this.remote.receive_chatmessage(this);
-    var new_chat_text = ui_Label(sprintf('%s', this.text_box.getText()));
-    this.remote.send_chatmessage(new_chat_text.getText(), this);
+    var msg =  (  ( this.driver.getText() + ': ' )  + this.text_box.getText() ) ;
+    this.remote.send_chatmessage(msg, this);
     this.text_box.setText('');
     };
     __Basic.prototype.__class__.onTextSend = function() {
@@ -25878,9 +25896,13 @@ function __Basic_initialize() {
     __Basic.prototype.onKeyDown.instance_method = true;
     __Basic.prototype.onKeyPress = function(sender, keyCode, modifiers) {
     if (((keyCode == __ui_KeyboardListener.prototype.__class__.KEY_ENTER)) && ((sender == this.text_box))) {
+    var id = this.remote.get_username(this);
+    if ((id < 0)) {
+    console.error('Server Error or Invalid Response');
+    }
     this.remote.receive_chatmessage(this);
-    var new_chat_text = ui_Label(sprintf('%s', this.text_box.getText()));
-    this.remote.send_chatmessage(new_chat_text.getText(), this);
+    var msg =  (  ( this.driver.getText() + ': ' )  + this.text_box.getText() ) ;
+    this.remote.send_chatmessage(msg, this);
     this.text_box.setText('');
     }
     };
@@ -25889,6 +25911,14 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onKeyPress.unbound_method = true;
     __Basic.prototype.onKeyPress.instance_method = true;
+    __Basic.prototype.testquit = function() {
+    window.close();
+    };
+    __Basic.prototype.__class__.testquit = function() {
+        return __Basic.prototype.testquit.call.apply(__Basic.prototype.testquit, arguments);
+    };
+    __Basic.prototype.__class__.testquit.unbound_method = true;
+    __Basic.prototype.testquit.instance_method = true;
 }
 __DataService_initialize();
 __Basic_initialize();
