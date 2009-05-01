@@ -25454,12 +25454,12 @@ function __Basic_initialize() {
     this.passenger = ui_Label('Unset');
     this.text_area = ui_ScrollPanel();
     this.text_area.setStyleName('text-area');
-    this.text = ui_HTML('');
+    this.text = ui_HTML('(There is a 600 character limit on messages)');
     this.text_area.setWidget(this.text);
     this.text_area.setSize('400px', '150px');
     this.text_box = ui_TextBox();
-    this.text_box.setVisibleLength('60');
-    this.text_box.setMaxLength('60');
+    this.text_box.setVisibleLength('53');
+    this.text_box.setMaxLength('600');
     this.text_box.addKeyboardListener(this);
     var id = this.remote.get_username(this);
     if ((id < 0)) {
@@ -25469,7 +25469,7 @@ function __Basic_initialize() {
     var text_entry = ui_HorizontalPanel();
     text_entry.add(this.text_box);
     text_entry.add(text_send);
-    text_entry.setWidth('400px');
+    text_entry.setWidth('340px');
     var fake_chat = ui_VerticalPanel();
     fake_chat.add(this.text_area);
     this.text_area.setScrollPosition(999999);
