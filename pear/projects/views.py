@@ -24,44 +24,49 @@ def index(request):
       {'page_title': 'Welcome'},
       context_instance=template.RequestContext(request))
 
-# this will also need to be changed to decide what to do if there is already a session
+
 def launch_project(request, project_id):
   """Launch the Pyjamas app for a given project"""
-  currentmeetings = Meeting.objects.all()
+  redirect_to = request.GET.get('next', '/my_projects/')
+  try:
+    project = pear.projects.models.Project.objects.get(pk=project_id)
+  except exceptions.ObjectDoesNotExist:
+    return http.HttpResponseRedirect(redirect_to)
   
+  meetings = Meeting.objects.filter(project_id=project_id)
+  
+  # User has specified to actually launch
   if request.method == 'POST':
-    for meeting in currentmeetings:
-      # if it is the correct project
-      projid = meeting.project_id
-      if str(projid) == str(project_id):
-        meeting.passenger = request.user
-        meeting.save()
-        return http.HttpResponseRedirect('/pj/Basic.html')
-    meeting = Meeting()
-    meeting.driver = request.user
-    meeting.passenger = None
-    meeting.project = pear.projects.models.Project.objects.get(pk=project_id)
-    # set some other things
-    meeting.flash = False
-    meeting.console = ''
-    meeting.editor = ''
+    if meetings:
+      meeting = meetings[0]
+      meeting.passenger = request.user
+    else:
+      meeting = Meeting()
+      meeting.driver = request.user
+      meeting.passenger = None
+      meeting.project = project
+      # set some other things
+      meeting.flash = False
+      meeting.console = ''
+      meeting.editor = ''
     meeting.save()
     return http.HttpResponseRedirect('/pj/Basic.html')
-  # If no session with this project, make it, and display that the user will be the driver.
-  #currentmeetings = Meeting.objects.all()
-  projid = 0
-  for meeting in currentmeetings:
-    projid = meeting.project_id
-    if str(projid) == str(project_id):
-      driver = PearUser.objects.get(pk=meeting.driver_id)
-      return shortcuts.render_to_response(
-           'global/projects/launch_project.html', 
-            {'page_title': 'Launch Project', 'driver': driver.email, 'passenger': request.user.email, 'data':str(project_id)}, 
-            context_instance=template.RequestContext(request))
+  
+  # Display a summary of the project session status before launching
+  if meetings:
+    driver = meetings[0].driver
+    passenger = request.user
+  else:
+    driver = request.user
+    passenter = None
   return shortcuts.render_to_response(
-           'global/projects/launch_project.html', 
-            {'page_title': 'Launch Project', 'driver': request.user.email, 'passenger': 'None', 'data':str(project_id)}, 
-            context_instance=template.RequestContext(request))
+      'global/projects/launch_project.html', 
+      {'page_title': 'Launch Project', 
+       'driver': driver, 
+       'passenger': passenger, 
+       'project': project},
+      context_instance=template.RequestContext(request))
+
 
 @auth_decorators.login_required
 def create_project(request):

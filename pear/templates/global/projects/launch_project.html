@@ -5,9 +5,9 @@
 <p>Launch your project</p>
 
 <p>
-Driver: {{ driver }} <br>
-Passenger: {{ passenger }} <br>
-Data: {{ data }}
+Driver: {% if driver %}{{ driver.email }}{% else %}None{% endif %}<br>
+Passenger: {% if passenger %}{{ passenger.email }}{% else %}None{% endif %}<br>
+Project #: {{ project.id }}
 <p>
 <form action="" method="POST">
 <input type="submit" value="go" name="go">
