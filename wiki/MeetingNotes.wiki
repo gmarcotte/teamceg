@@ -3,6 +3,10 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Fri, May 1 =
+== Individual ==
+ # Pyjamas Quit button takes us back to django homepage
+
 = Thu, April 30 =
 == Group Meeting ==
  # Made more progress on UI bugs/changes
