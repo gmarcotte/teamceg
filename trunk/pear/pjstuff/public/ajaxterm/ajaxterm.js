@@ -1,5 +1,5 @@
 ajaxterm={};
-ajaxterm.Terminal_ctor=function(id,width,height,ssh,user) {
+ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url) {
 	var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
@@ -103,12 +103,12 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user) {
 			}
 			var query=query1+send;
 			if(opt_get.className=='on') {
-				r.open("GET","u?"+query,true);
+				r.open("GET",update_url+"u?"+query,true);
 				if(ie) {
 					r.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");
 				}
 			} else {
-				r.open("POST","u",true);
+				r.open("POST",update_url+"u",true);
 			}
 			r.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
 			r.onreadystatechange = function () {
@@ -286,7 +286,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user) {
 	}
 	init();
 }
-ajaxterm.Terminal=function(id,width,height,ssh,user) {
-	return new this.Terminal_ctor(id,width,height,ssh,user);
+ajaxterm.Terminal=function(id,width,height,ssh,user,update_url) {
+	return new this.Terminal_ctor(id,width,height,ssh,user,update_url);
 }
 
