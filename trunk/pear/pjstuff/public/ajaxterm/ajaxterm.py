@@ -394,7 +394,7 @@ class Multiplex:
 				sys.stdout.write("Login for %s: " % ssh)
 				login=sys.stdin.readline().strip()
 			if re.match('^[0-9A-Za-z-_. ]+$',login):
-				sys.stdout.write("Initiating SSH connection for %s@%s\n" % (ssh, login))
+				sys.stdout.write("Initiating SSH connection for %s@%s\n" % (login, ssh))
 				cmd=['ssh']
 				cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
 				cmd+=['-oNoHostAuthenticationForLocalhost=yes']
