@@ -286,7 +286,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user) {
 	}
 	init();
 }
-ajaxterm.Terminal=function(id,width,height,ssh) {
-	return new this.Terminal_ctor(id,width,height,ssh);
+ajaxterm.Terminal=function(id,width,height,ssh,user) {
+	return new this.Terminal_ctor(id,width,height,ssh,user);
 }
 
