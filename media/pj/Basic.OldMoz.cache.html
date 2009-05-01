@@ -25552,15 +25552,6 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
-    __Basic.prototype.onEllenPeace = function() {
-    this.location = Window_getLocation();
-    this.location.setHref('http://127.0.0.1:8000/');
-    };
-    __Basic.prototype.__class__.onEllenPeace = function() {
-        return __Basic.prototype.onEllenPeace.call.apply(__Basic.prototype.onEllenPeace, arguments);
-    };
-    __Basic.prototype.__class__.onEllenPeace.unbound_method = true;
-    __Basic.prototype.onEllenPeace.instance_method = true;
     __Basic.prototype.onInfoClick = function() {
     var id = this.remote.get_meetinginfo(this);
     if ((id < 0)) {
@@ -25660,7 +25651,6 @@ function __Basic_initialize() {
         
     this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
     this.text_area.setWidget(this.text);
-    this.text_area.setScrollPosition(999999);
 
             }
         } catch (e) {
@@ -25680,7 +25670,6 @@ function __Basic_initialize() {
         
     this.text.setHTML( (  ( this.text.getHTML() + '<br>' )  + pyjslib_str(tpl.__getitem__(1)) ) );
     this.text_area.setWidget(this.text);
-    this.text_area.setScrollPosition(999999);
 
             }
         } catch (e) {
@@ -25933,7 +25922,7 @@ function __Basic_initialize() {
     __Basic.prototype.onQuitClick = function() {
     window.alert('We hope you had a productive session, come back soon! :)');
     this.location = Window_getLocation();
-    this.location.setHref('http://127.0.0.1:8000/');
+    this.location.setHref('http://teamceg.princeton.edu/');
     };
     __Basic.prototype.__class__.onQuitClick = function() {
         return __Basic.prototype.onQuitClick.call.apply(__Basic.prototype.onQuitClick, arguments);

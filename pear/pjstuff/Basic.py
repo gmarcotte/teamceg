@@ -126,10 +126,6 @@ class Basic:
     
     RootPanel().add(self.panel)
     
-  def onEllenPeace(self):  # pyjamas hates the function name "testquit" -- Don't Use It!
-    self.location = Window.getLocation()
-    self.location.setHref("http://127.0.0.1:8000/")
-    
   def onInfoClick(self):
     id = self.remote.get_meetinginfo(self)
     if id < 0:
@@ -175,12 +171,12 @@ class Basic:
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)
-        self.text_area.setScrollPosition(999999)
+        #self.text_area.setScrollPosition(999999)
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)
-        self.text_area.setScrollPosition(999999)
+        #self.text_area.setScrollPosition(999999)
     elif request_info.method == 'send_flash':
       self.Flash = self.Flash
     elif request_info.method == 'receive_flash':
@@ -308,4 +304,4 @@ class Basic:
     #self.remote.user_quit(self)
     window.alert("We hope you had a productive session, come back soon! :)")
     self.location = Window.getLocation()
-    self.location.setHref("http://127.0.0.1:8000/")
+    self.location.setHref("http://teamceg.princeton.edu/")
