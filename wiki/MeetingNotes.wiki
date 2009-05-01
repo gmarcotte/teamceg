@@ -3,6 +3,13 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Thu, April 30 =
+== Group Meeting ==
+ # Made more progress on UI bugs/changes
+ # Pushed text chat to the server
+ # Got the new editor integrated, but will have to do significant work to write the python wrapper so that we can interact with it through pyjamas/django
+ # Worked on getting ajaxterm going. 
+
 = Sun, April 27 =
 == Individual ==
  # Chat is in HTML
