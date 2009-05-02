@@ -96,6 +96,12 @@ def ask_input_question(question, default=''):
     if not answer:
       answer = default
     return answer
+  
+
+def clear_user_keys():
+  for file in os.listdir(settings.RSA_KEY_DIR):
+    if os.path.isfile(file):
+      os.remove(file)
 
 
 def create_root_user():
@@ -195,6 +201,9 @@ def main(argv=None):
     
     sys.stdout.write("CREATE DATABASE %s CHARACTER SET utf8 \n" % settings.DATABASE_NAME)
     cursor.execute("CREATE DATABASE %s CHARACTER SET utf8" % settings.DATABASE_NAME)
+    
+    sys.stdout.write("Deleting RSA keys \n")
+    clear_user_keys()
     
     # Execute "python manage.py syncdb"
     os.chdir(root_path)

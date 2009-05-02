@@ -68,6 +68,10 @@ class Profile(timestamp.TimestampedModel):
   
   def get_public_file(self):
     return "%s.pub" % self.get_private_file()
+  
+  def has_keys(self):
+    return (os.path.exists(self.get_private_file()) and
+            os.path.exists(self.get_public_file()))
     
   def refresh_keys(self):
     """Generate a new public/private key pair for this user"""
