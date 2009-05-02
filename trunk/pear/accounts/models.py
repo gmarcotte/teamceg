@@ -76,18 +76,7 @@ class Profile(timestamp.TimestampedModel):
   def refresh_keys(self):
     """Generate a new public/private key pair for this user"""
     if settings.USE_PEXPECT:
-      local = pexpect.spawn('ssh-keygen -t dsa')
-      # all of the expects are what we actually see from the console.
-      # if these need to be changed, it will probably be minimal
-      local.expect('Generating public/private dsa key pair.')
-      # the filename for the key
-      local.expect(':')
-      local.sendline(self.get_private_file())
-      # makes sure that we over-write if already present
-      local.sendline('y')
-      # the passcode, this will be blank
-      local.expect(':')
-      local.sendline('')
-      # passcode confirmation, also blank
-      local.expect(':')
-      local.sendline('')
+      cmd = "rm %s %s" % (self.get_private_file(), self.get_public_file())
+      os.system(cmd)
+      cmd = "ssh-keygen -q -t dsa -f %s -N ''" % self.get_private_file()
+      os.system(cmd)
