@@ -72,6 +72,8 @@ class RegistrationForm(forms.Form):
     )
     p.save()
     
+    p.refresh_keys()
+    
     # Send an email to the user
     dict = {"email": u.email, 
             "password": password, 
