@@ -4,6 +4,10 @@
 Running record of notes from our team meetings. 
 
 = Fri, May 1 =
+== CEG Meeting ==
+ # 
+ # Some more UI changes/fixes
+
 == Individual ==
  # Pyjamas Quit button takes us back to django homepage
 
