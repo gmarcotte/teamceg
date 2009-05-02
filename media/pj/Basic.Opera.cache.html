@@ -25415,18 +25415,18 @@ function __Basic_initialize() {
     __Basic.prototype.onModuleLoad = function() {
     this.remote = DataService();
     this.remote.get_meetinginfo(this);
-    this.onTimer();
+    this.active_menu = ui_Label('');
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
-    this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
+    this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'toggleFlash'));
     this.quit = ui_Button('Quit', pyjslib_getattr(this, 'onQuitClick'));
     this.menu_body = ui_SimplePanel();
     this.menu_body.setWidth('600px');
     this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'20px\'>');
     this.menu_body.setWidget(this.menu_contents);
-    this.flash.isActive = false;
-    this.flash.Flash = false;
+    this.active_flash = ui_Label('Off');
+    this.color = ui_Label('white');
     this.head = ui_HorizontalPanel();
     this.head.add(ui_Label('|'));
     this.head.add(this.info);
@@ -25499,6 +25499,7 @@ function __Basic_initialize() {
     this.panel.setWidth('1000px');
     this.panel.setHeight('650px');
     ui_RootPanel().add(this.panel);
+    this.onTimer();
     };
     __Basic.prototype.__class__.onModuleLoad = function() {
         return __Basic.prototype.onModuleLoad.call.apply(__Basic.prototype.onModuleLoad, arguments);
@@ -25506,6 +25507,12 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
     __Basic.prototype.onInfoClick = function() {
+    if ((this.active_menu.getText() == 'Info')) {
+    this.active_menu.setText('');
+    this.menu_body.setWidget(ui_Label(''));
+    }
+    else {
+    this.active_menu.setText('Info');
     var id = this.remote.get_meetinginfo(this);
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
@@ -25513,6 +25520,7 @@ function __Basic_initialize() {
     var infomsg = ui_Label(sprintf('Driver: %s, Passenger: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
     infomsg.setStyleName('not-button');
     this.menu_body.setWidget(infomsg);
+    }
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25699,11 +25707,18 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onRemoteError.unbound_method = true;
     __Basic.prototype.onRemoteError.instance_method = true;
     __Basic.prototype.onModeClick = function() {
+    if ((this.active_menu.getText() == 'Mode')) {
+    this.active_menu.setText('');
+    this.menu_body.setWidget(ui_Label(''));
+    }
+    else {
+    this.active_menu.setText('Mode');
     var modepanel = ui_HorizontalPanel();
     var modebutt = ui_Button('Switch Drivers', pyjslib_getattr(this, 'onSwitchDriversClick'));
     modebutt.setStyleName('supp-button');
     modepanel.add(modebutt);
     this.menu_body.setWidget(modepanel);
+    }
     };
     __Basic.prototype.__class__.onModeClick = function() {
         return __Basic.prototype.onModeClick.call.apply(__Basic.prototype.onModeClick, arguments);
@@ -25719,11 +25734,18 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onSwitchDriversClick.unbound_method = true;
     __Basic.prototype.onSwitchDriversClick.instance_method = true;
     __Basic.prototype.onAudioClick = function() {
+    if ((this.active_menu.getText() == 'Audio')) {
+    this.active_menu.setText('');
+    this.menu_body.setWidget(ui_Label(''));
+    }
+    else {
+    this.active_menu.setText('Audio');
     var audiopanel = ui_HorizontalPanel();
     var audiobutton = ui_Button('Skype Call', pyjslib_getattr(this, 'onSkypeClick'));
     audiobutton.setStyleName('supp-button');
     audiopanel.add(audiobutton);
     this.menu_body.setWidget(audiopanel);
+    }
     };
     __Basic.prototype.__class__.onAudioClick = function() {
         return __Basic.prototype.onAudioClick.call.apply(__Basic.prototype.onAudioClick, arguments);
@@ -25738,86 +25760,45 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onSkypeClick.unbound_method = true;
     __Basic.prototype.onSkypeClick.instance_method = true;
-    __Basic.prototype.onAudioClose = function(sender) {
-    this.audiobox.hide();
-    };
-    __Basic.prototype.__class__.onAudioClose = function() {
-        return __Basic.prototype.onAudioClose.call.apply(__Basic.prototype.onAudioClose, arguments);
-    };
-    __Basic.prototype.__class__.onAudioClose.unbound_method = true;
-    __Basic.prototype.onAudioClose.instance_method = true;
     __Basic.prototype.onTimer = function() {
     this.remote.receive_chatmessage(this);
     this.remote.receive_flash(this);
-    if (this.Flash) {
-    if (this.isActive) {
-    this.panel.setStyleName('NORMAL');
-    this.isActive = false;
-    Timer_Timer(1000, this);
-    return;
+    if ((this.active_flash.getText() == 'Flashing')) {
+    if ((this.color.getText() == 'pink')) {
+    this.color.setText('green');
+    this.panel.setStyleName('green');
     }
     else {
-    this.panel.setStyleName('FLASH');
-    this.isActive = true;
-    Timer_Timer(1000, this);
-    return;
+    this.color.setText('pink');
+    this.panel.setStyleName('pink');
     }
     }
     else {
-    Timer_Timer(1000, this);
-    return;
+    this.color.setText('white');
+    this.panel.setStyleName('white');
     }
+    Timer_Timer(250, this);
     };
     __Basic.prototype.__class__.onTimer = function() {
         return __Basic.prototype.onTimer.call.apply(__Basic.prototype.onTimer, arguments);
     };
     __Basic.prototype.__class__.onTimer.unbound_method = true;
     __Basic.prototype.onTimer.instance_method = true;
-    __Basic.prototype.flashOn = function() {
-    this.Flash = true;
-    this.onTimer();
-    this.flash.setText('Flash OFF');
-    };
-    __Basic.prototype.__class__.flashOn = function() {
-        return __Basic.prototype.flashOn.call.apply(__Basic.prototype.flashOn, arguments);
-    };
-    __Basic.prototype.__class__.flashOn.unbound_method = true;
-    __Basic.prototype.flashOn.instance_method = true;
-    __Basic.prototype.flashOff = function() {
-    this.Flash = false;
-    this.panel.setStyleName('WHITE');
-    this.flash.setText('Flash ON');
-    };
-    __Basic.prototype.__class__.flashOff = function() {
-        return __Basic.prototype.flashOff.call.apply(__Basic.prototype.flashOff, arguments);
-    };
-    __Basic.prototype.__class__.flashOff.unbound_method = true;
-    __Basic.prototype.flashOff.instance_method = true;
-    __Basic.prototype.setFlash = function() {
-    if (!(this.Flash)) {
-    this.flashOn();
-    this.remote.send_flash('on', this);
-    return;
+    __Basic.prototype.toggleFlash = function() {
+    if ((this.active_flash.getText() == 'Flashing')) {
+    this.active_flash.setText('Off');
+    this.flash.setText('Start Flash');
     }
     else {
-    this.flashOff();
-    this.remote.send_flash('off', this);
-    this.onTimer();
+    this.active_flash.setText('Flashing');
+    this.flash.setText('Stop Flash');
     }
     };
-    __Basic.prototype.__class__.setFlash = function() {
-        return __Basic.prototype.setFlash.call.apply(__Basic.prototype.setFlash, arguments);
+    __Basic.prototype.__class__.toggleFlash = function() {
+        return __Basic.prototype.toggleFlash.call.apply(__Basic.prototype.toggleFlash, arguments);
     };
-    __Basic.prototype.__class__.setFlash.unbound_method = true;
-    __Basic.prototype.setFlash.instance_method = true;
-    __Basic.prototype.onClose = function() {
-    this._dialog.hide();
-    };
-    __Basic.prototype.__class__.onClose = function() {
-        return __Basic.prototype.onClose.call.apply(__Basic.prototype.onClose, arguments);
-    };
-    __Basic.prototype.__class__.onClose.unbound_method = true;
-    __Basic.prototype.onClose.instance_method = true;
+    __Basic.prototype.__class__.toggleFlash.unbound_method = true;
+    __Basic.prototype.toggleFlash.instance_method = true;
     __Basic.prototype.onTextSend = function() {
     var id = this.remote.get_username(this);
     if ((id < 0)) {

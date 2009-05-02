@@ -17,21 +17,19 @@ class Basic:
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
     
-    # start the timer for updates from server
-    self.onTimer()
-    
     # building the menu bar
+    self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
-    self.flash = Button("Flash ON", getattr(self, "setFlash"))
+    self.flash = Button("Flash ON", getattr(self, "toggleFlash"))
     self.quit = Button("Quit", getattr(self, "onQuitClick"))
     self.menu_body = SimplePanel()
     self.menu_body.setWidth("600px")
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
-    self.flash.isActive = False  # is it currently the on-flash color?
-    self.flash.Flash = False
+    self.active_flash = Label("Off")
+    self.color = Label("white")
     # put them together
     self.head = HorizontalPanel()
     self.head.add(Label("|"))
@@ -127,13 +125,21 @@ class Basic:
     
     RootPanel().add(self.panel)
     
+    # start the timer for updates from server
+    self.onTimer()
+    
   def onInfoClick(self):
-    id = self.remote.get_meetinginfo(self)
-    if id < 0:
-      console.error("Server Error or Invalid Response")
-    infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
-    infomsg.setStyleName("not-button")
-    self.menu_body.setWidget(infomsg)
+    if self.active_menu.getText() == "Info":
+      self.active_menu.setText("")
+      self.menu_body.setWidget(Label(""))
+    else:
+      self.active_menu.setText("Info")
+      id = self.remote.get_meetinginfo(self)
+      if id < 0:
+        console.error("Server Error or Invalid Response")
+      infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
+      infomsg.setStyleName("not-button")
+      self.menu_body.setWidget(infomsg)
 
   def onRemoteResponse(self, response, request_info):
     if request_info.method == 'get_username':
@@ -193,28 +199,35 @@ class Basic:
     pass
       
   def onModeClick(self):
-    modepanel = HorizontalPanel()
-    modebutt = Button("Switch Drivers", getattr(self, "onSwitchDriversClick"))
-    modebutt.setStyleName("supp-button")
-    modepanel.add(modebutt)
-    self.menu_body.setWidget(modepanel)
+    if self.active_menu.getText() == "Mode":
+      self.active_menu.setText("")
+      self.menu_body.setWidget(Label(""))
+    else:
+      self.active_menu.setText("Mode")
+      modepanel = HorizontalPanel()
+      modebutt = Button("Switch Drivers", getattr(self, "onSwitchDriversClick"))
+      modebutt.setStyleName("supp-button")
+      modepanel.add(modebutt)
+      self.menu_body.setWidget(modepanel)
     
   def onSwitchDriversClick(self):
     window.alert("You are trying to switch drivers")
     
     
   def onAudioClick(self):
-    audiopanel = HorizontalPanel()
-    audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
-    audiobutton.setStyleName("supp-button")
-    audiopanel.add(audiobutton)
-    #audiopanel.add(HTML("<a href='callto://YourUserNameHere'>Skype call</a>"))
-    self.menu_body.setWidget(audiopanel)
+    if self.active_menu.getText() == "Audio":
+      self.active_menu.setText("")
+      self.menu_body.setWidget(Label(""))
+    else:
+      self.active_menu.setText("Audio")
+      audiopanel = HorizontalPanel()
+      audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
+      audiobutton.setStyleName("supp-button")
+      audiopanel.add(audiobutton)
+      #audiopanel.add(HTML("<a href='callto://YourUserNameHere'>Skype call</a>"))
+      self.menu_body.setWidget(audiopanel)
   def onSkypeClick(self):
     window.alert("you are trying to make a skype call")
-    
-  def onAudioClose(self, sender):
-    self.audiobox.hide()
   
   def onTimer(self):
     # do server update stuff here
@@ -222,47 +235,26 @@ class Basic:
     self.remote.receive_flash(self)
     
     # do flash stuff here
-    if self.Flash:
-      if self.isActive:
-        self.panel.setStyleName("NORMAL")
-        self.isActive = False
-        Timer(1000, self)
-        return
-      else:  # if not self.isActive:
-        self.panel.setStyleName("FLASH")
-        self.isActive = True
-        Timer(1000, self)
-        return
+    if self.active_flash.getText() == "Flashing":
+      if self.color.getText() == "pink":
+        self.color.setText("green")
+        self.panel.setStyleName("green")
+      else:
+        self.color.setText("pink")
+        self.panel.setStyleName("pink")
     else:
-      Timer(1000, self)
-      return
+      self.color.setText("white")
+      self.panel.setStyleName("white")
     
-  def flashOn(self):
-    self.Flash = True
-    self.onTimer()
-    self.flash.setText("Flash OFF")
-  
-  def flashOff(self):
-    self.Flash = False
-    self.panel.setStyleName("WHITE")
-    self.flash.setText("Flash ON")
-              
-  def setFlash(self):
-    #alert("setting flash")
-    # switch flash state message
-    if not self.Flash:
-      # turning flash on, tell our partner
-      self.flashOn()
-      self.remote.send_flash("on",self)
-      return
-    else:  # if self.Flash:
-      # turning flash off, tell our partner
-      self.flashOff()
-      self.remote.send_flash("off",self)
-      self.onTimer()
-      
-  def onClose(self):
-    self._dialog.hide()
+    Timer(500, self)
+    
+  def toggleFlash(self):
+    if self.active_flash.getText() == "Flashing":
+      self.active_flash.setText("Off")
+      self.flash.setText("Start Flash")
+    else:
+      self.active_flash.setText("Flashing")
+      self.flash.setText("Stop Flash")
     
   def onTextSend(self):
     id = self.remote.get_username(self)
@@ -317,5 +309,6 @@ class Basic:
     self.quit_box.hide()
   def onQuitConfirm(self):
     self.quit_box.hide()
+    ##save everything for them
     self.location = Window.getLocation()
     self.location.setHref("http://teamceg.princeton.edu/")
