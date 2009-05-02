@@ -25366,7 +25366,6 @@ sprintf = sprintfWrapper.init;
 //
 // END sprintf.js
 //
-    var MEDIA_URL = 'http://localhost:8000';
 function __DataService() {
 }
 function DataService() {
@@ -25416,11 +25415,13 @@ function __Basic_initialize() {
     this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'setFlash'));
     this.quit = ui_Button('Quit', pyjslib_getattr(this, 'onQuitClick'));
     this.menu_body = ui_SimplePanel();
+    this.menu_body.setWidth('600px');
     this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'20px\'>');
     this.menu_body.setWidget(this.menu_contents);
     this.flash.isActive = false;
     this.flash.Flash = false;
     this.head = ui_HorizontalPanel();
+    this.head.add(ui_Label('|'));
     this.head.add(this.info);
     this.head.add(this.mode);
     this.head.add(this.audio);
@@ -25428,12 +25429,12 @@ function __Basic_initialize() {
     this.head.add(this.quit);
     this.head.add(ui_Label('|'));
     this.head.add(this.menu_body);
+    this.head.add(this.menu_contents);
     var editor = ui_HTMLPanel('<textarea id=\'editarea\' style=\'height: 610px; width: 100%;\' name=\'test_1\'></textarea><script>SetUpEditArea();</script>');
     editor.setWidth('100%');
     editor.setHeight('100%');
     var vp = ui_VerticalPanel();
     vp.setBorderWidth(1);
-    var console = ui_Label('Console');
     var term = ui_HTMLPanel(' <script> setterm(); </script> <div id=\'term\'></div>');
     term.setWidth('100%');
     term.setHeight('426px');
@@ -25447,9 +25448,9 @@ function __Basic_initialize() {
     this.text_area.setStyleName('text-area');
     this.text = ui_HTML('(There is a 600 character limit on messages)');
     this.text_area.setWidget(this.text);
-    this.text_area.setSize('400px', '150px');
+    this.text_area.setSize('487px', '151px');
     this.text_box = ui_TextBox();
-    this.text_box.setVisibleLength('53');
+    this.text_box.setVisibleLength('68');
     this.text_box.setMaxLength('600');
     this.text_box.addKeyboardListener(this);
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
@@ -25457,16 +25458,17 @@ function __Basic_initialize() {
     text_entry.add(this.text_box);
     text_entry.add(text_send);
     text_entry.setWidth('340px');
-    var fake_chat = ui_VerticalPanel();
-    fake_chat.add(this.text_area);
+    var real_chat = ui_VerticalPanel();
+    real_chat.add(this.text_area);
     this.text_area.setScrollPosition(999999);
-    fake_chat.add(text_entry);
+    real_chat.add(text_entry);
+    real_chat.setStyleName('whitebg');
     vp.add(console);
-    vp.add(fake_chat);
+    vp.add(real_chat);
     vp.setWidth('100%');
     vp.setHeight('100%');
     vp.setCellHeight(console, '50%');
-    vp.setCellHeight(fake_chat, '50%');
+    vp.setCellHeight(real_chat, '50%');
     var hp = ui_HorizontalPanel();
     hp.setBorderWidth(1);
     hp.setHorizontalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
@@ -25501,7 +25503,9 @@ function __Basic_initialize() {
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
-    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
+    var infomsg = ui_Label(sprintf('Driver: %s, Passenger: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
+    infomsg.setStyleName('not-button');
+    this.menu_body.setWidget(infomsg);
     };
     __Basic.prototype.__class__.onInfoClick = function() {
         return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
@@ -25528,7 +25532,6 @@ function __Basic_initialize() {
             }
         }
         
-    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     }
     else {
 
@@ -25548,7 +25551,6 @@ function __Basic_initialize() {
             }
         }
         
-    this.menu_body.setWidget(ui_HTML(sprintf('User: %s, Partner: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()]))));
     }
     }
     else if ((request_info.method == 'get_meetinginfo')) {
@@ -25866,15 +25868,46 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onKeyPress.unbound_method = true;
     __Basic.prototype.onKeyPress.instance_method = true;
     __Basic.prototype.onQuitClick = function() {
-    window.alert('We hope you had a productive session, come back soon! :)');
-    this.location = Window_getLocation();
-    this.location.setHref('http://teamceg.princeton.edu/');
+    var quitvp = ui_VerticalPanel();
+    quitvp.setSpacing(4);
+    quitvp.add(ui_HTML('We hope you had a productive session, come back soon!'));
+    var quithp = ui_HorizontalPanel();
+    quithp.setSpacing(7);
+    quithp.add(ui_Button('Wait, don\'t quit yet!', pyjslib_getattr(this, 'onQuitCancel')));
+    quithp.add(ui_Button('Save and quit', pyjslib_getattr(this, 'onQuitConfirm')));
+    quitvp.add(quithp);
+    quitvp.setCellHorizontalAlignment(quithp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.quit_box = ui_DialogBox();
+    this.quit_box.setHTML('Quit Confirmation');
+    this.quit_box.setWidget(quitvp);
+    var left = 350;
+    var top = 200;
+    this.quit_box.setPopupPosition(left, top);
+    this.quit_box.show();
     };
     __Basic.prototype.__class__.onQuitClick = function() {
         return __Basic.prototype.onQuitClick.call.apply(__Basic.prototype.onQuitClick, arguments);
     };
     __Basic.prototype.__class__.onQuitClick.unbound_method = true;
     __Basic.prototype.onQuitClick.instance_method = true;
+    __Basic.prototype.onQuitCancel = function() {
+    this.quit_box.hide();
+    };
+    __Basic.prototype.__class__.onQuitCancel = function() {
+        return __Basic.prototype.onQuitCancel.call.apply(__Basic.prototype.onQuitCancel, arguments);
+    };
+    __Basic.prototype.__class__.onQuitCancel.unbound_method = true;
+    __Basic.prototype.onQuitCancel.instance_method = true;
+    __Basic.prototype.onQuitConfirm = function() {
+    this.quit_box.hide();
+    this.location = Window_getLocation();
+    this.location.setHref('http://teamceg.princeton.edu/');
+    };
+    __Basic.prototype.__class__.onQuitConfirm = function() {
+        return __Basic.prototype.onQuitConfirm.call.apply(__Basic.prototype.onQuitConfirm, arguments);
+    };
+    __Basic.prototype.__class__.onQuitConfirm.unbound_method = true;
+    __Basic.prototype.onQuitConfirm.instance_method = true;
 }
 __DataService_initialize();
 __Basic_initialize();

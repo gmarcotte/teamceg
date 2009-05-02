@@ -1,3 +1,9 @@
+
+.whitebg {
+  bacground: #ffffff;
+}
+
+
 .supp-button {
   background: #ffdd88;
   color: #000000;
@@ -6,12 +12,21 @@
   border-style: rounded;
   font-family: Tahoma;
 }
+.not-button {
+  background: ffffff;
+  color: #000000;
+  font-size: 13px;
+  border: 1px solid #ffdd88;
+  font-family: Tahoma;
+  padding: 1px;
+}
 
 
 
 .text-area {
   border: 1px solid #000000;
-  background-image: url(/pj/images/large_pear_watermark.jpg);
+  background-image: url(/pj/images/logo_small.jpg);
+  background-position: 50% 50%;
   background-repeat: repeat;
 }
 
@@ -78,6 +93,7 @@
 .gwt-DialogBox {
       border: 2px outset;
       background-color: white;
+      cursor: default;
     }
 .gwt-DialogBox .Caption {
       font-family: Tahoma, Helvetica, Arial;
@@ -89,7 +105,8 @@
       font-size: smaller;
     }
 .gwt-DialogBox .Contents {
-        padding: 10px;
+      padding: 10px;
+      background-color: #ffffff;
     }
 
 /* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
