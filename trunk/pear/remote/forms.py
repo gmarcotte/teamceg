@@ -1,6 +1,5 @@
 from django import forms
 
-from pear.remote import localkeys
 import pear.remote.models
 
 
