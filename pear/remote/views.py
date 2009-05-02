@@ -4,8 +4,6 @@ from django.contrib.auth import decorators as auth_decorators
 from django import template
 from django import http
 
-from pear.remote import localkeys
-from pear.remote import sshmanager
 import pear.remote.forms
 import pear.remote.models
 
