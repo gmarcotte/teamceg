@@ -52,21 +52,21 @@
 }
 
 
-.FLASH{
+.pink{
       background-color: #ffffff;
-      border: 3px solid #33ee44;
+      border: 3px solid #ff00cc;
       border-style: outset;
       cursor: default;
 }
-.NORMAL{
+.green{
       background-color: #ffffff;
-      border: 3px solid #ff00bb;
+      border: 3px solid #00ff00;
       border-style: inset;
       cursor: default;
 }
-.WHITE{
+.white{
       background-color: #ffffff;
-      border: 0px solid #ff00bb;
+      border: 3px solid #ffffff;
       cursor: default;
 }
 .MOUSE{
