@@ -27,12 +27,14 @@ class Basic:
     self.flash = Button("Flash ON", getattr(self, "setFlash"))
     self.quit = Button("Quit", getattr(self, "onQuitClick"))
     self.menu_body = SimplePanel()
+    self.menu_body.setWidth("600px")
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
     self.flash.isActive = False  # is it currently the on-flash color?
     self.flash.Flash = False
     # put them together
     self.head = HorizontalPanel()
+    self.head.add(Label("|"))
     self.head.add(self.info)
     self.head.add(self.mode)
     self.head.add(self.audio)
@@ -40,6 +42,7 @@ class Basic:
     self.head.add(self.quit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
+    self.head.add(self.menu_contents)
     
     # the left side
     # editor
@@ -51,7 +54,6 @@ class Basic:
     vp = VerticalPanel()
     vp.setBorderWidth(1)
     # the console
-    console = Label("Console")
     term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
     term.setWidth("100%")
     term.setHeight("426px")
@@ -60,16 +62,15 @@ class Basic:
     console.setWidth("400px")
     console.setHeight("100%")
     # not so hacky -- indeed, pretty decent little text chat
-    #self.text_area = TextArea() ## Let's try changing this to an HTML panel
     self.driver = Label("Unset")
     self.passenger = Label("Unset")
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
     self.text = HTML("(There is a 600 character limit on messages)")
     self.text_area.setWidget(self.text)
-    self.text_area.setSize("400px", "150px")
+    self.text_area.setSize("487px", "151px")
     self.text_box = TextBox()
-    self.text_box.setVisibleLength("53")
+    self.text_box.setVisibleLength("68")
     self.text_box.setMaxLength("600")
     self.text_box.addKeyboardListener(self)
     text_send = Button("Send", getattr(self, "onTextSend"))
@@ -77,22 +78,23 @@ class Basic:
     text_entry.add(self.text_box)
     text_entry.add(text_send)
     text_entry.setWidth("340px")
-    fake_chat = VerticalPanel()
-    #fake_chat.add(self.chat_transcript)
-    fake_chat.add(self.text_area)
+    real_chat = VerticalPanel()
+    #real_chat.add(self.chat_transcript)
+    real_chat.add(self.text_area)
     self.text_area.setScrollPosition(999999)
-    fake_chat.add(text_entry)
+    real_chat.add(text_entry)
+    real_chat.setStyleName("whitebg")
     #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
     #js_tester = SimplePanel()
     
     vp.add(console)
-    vp.add(fake_chat)
+    vp.add(real_chat)
     #vp.add(js_tester)
     vp.setWidth("100%")
     vp.setHeight("100%")
     vp.setCellHeight(console, "50%")
     #vp.setCellHeight(js_tester, "50%")
-    vp.setCellHeight(fake_chat, "50%")
+    vp.setCellHeight(real_chat, "50%")
     
     # putting the left and right sides together
     hp = HorizontalPanel()
@@ -129,30 +131,24 @@ class Basic:
     id = self.remote.get_meetinginfo(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
-    self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
+    infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
+    infomsg.setStyleName("not-button")
+    self.menu_body.setWidget(infomsg)
 
   def onRemoteResponse(self, response, request_info):
     if request_info.method == 'get_username':
       if (len(response[3]) < 1):  # if there is no passenger
-        #window.alert("No passenger")
-        #window.alert("%s" % self.driver.getText())
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("None")
-        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))
-          #window.alert("%s" % tpl[3])
-        #window.alert("%s" % self.driver.getText())
       else:  # if len(response[3]) > 0:  # if there is a passenger
-        #window.alert("There is a passenger")
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("%s" % tpl[3])
-        self.menu_body.setWidget(HTML("User: %s, Partner: %s" % (self.driver.getText(), self.passenger.getText())))          
     elif request_info.method == 'get_meetinginfo':
       self.list = []
       for tpl in response:
         self.list.append("%s" % tpl[1])
-      
       # set the local vars
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
@@ -301,6 +297,25 @@ class Basic:
       
   def onQuitClick(self):
     #self.remote.user_quit(self)
-    window.alert("We hope you had a productive session, come back soon! :)")
+    quitvp = VerticalPanel()
+    quitvp.setSpacing(4)
+    quitvp.add(HTML("We hope you had a productive session, come back soon!"))
+    quithp = HorizontalPanel()
+    quithp.setSpacing(7)
+    quithp.add(Button("Wait, don't quit yet!", getattr(self, "onQuitCancel")))
+    quithp.add(Button("Save and quit", getattr(self, "onQuitConfirm")))
+    quitvp.add(quithp)
+    quitvp.setCellHorizontalAlignment(quithp, HasAlignment.ALIGN_CENTER)
+    self.quit_box = DialogBox()
+    self.quit_box.setHTML("Quit Confirmation")
+    self.quit_box.setWidget(quitvp)
+    left = 350
+    top = 200
+    self.quit_box.setPopupPosition(left, top)
+    self.quit_box.show()
+  def onQuitCancel(self):
+    self.quit_box.hide()
+  def onQuitConfirm(self):
+    self.quit_box.hide()
     self.location = Window.getLocation()
     self.location.setHref("http://teamceg.princeton.edu/")
