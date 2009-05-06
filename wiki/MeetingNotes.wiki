@@ -3,9 +3,15 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Tue, May 5 =
+== Individual ==
+ # Started demo presentation
+ # Worked on editor
+ # (anything else you guys worked on Tues)
+
 = Fri, May 1 =
 == CEG Meeting ==
- # (Lots of stuff, I'm sure, but I'm not sure what you guys worked on.. please update)
+ # (I'm not sure what you guys worked on.. please update)
  # Some more UI changes/fixes
 
 == Individual ==
