@@ -6,6 +6,7 @@ Running record of notes from our team meetings.
 = Tue, May 5 =
 == Individual ==
  # Started demo presentation
+ # Update timeline to present
  # Worked on editor
  # (anything else you guys worked on Tues)
 
