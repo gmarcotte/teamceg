@@ -1,8 +1,10 @@
 from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink
 from pyjamas.Timer import Timer
+from pyjamas import DOM
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
 from pyjamas.JSONService import JSONProxy
+
 
 
 class DataService(JSONProxy):
@@ -44,9 +46,52 @@ class Basic:
     
     # the left side
     # editor
-    editor = HTMLPanel("<textarea id='editarea' style='height: 610px; width: 100%;' name='test_1'></textarea><script>SetUpEditArea();</script>")
-    editor.setWidth("100%")
-    editor.setHeight("100%")
+      # The editorID is the id of the actual editor text area
+    # the functionID is the id of the setupeditarea and set_listener/set_editable() functions
+    # the synchID is the id of the interval command for setting synchEditors/synchListeners based on 
+    #     whether driver or passenger.
+    ### For now let's try hard-coding these
+    self.editorID = "MYeditorID"#HTMLPanel.createUniqueId()
+    self.editorHTMLID = "MYeditorHTMLID"#HTMLPanel.createUniqueId()
+    self.functionID = "MYfunctionID"#HTMLPanel.createUniqueId()
+    self.synchID = "MYsynchID"#HTMLPanel.createUniqueId()
+    #self.editor = HTMLPanel("<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;' name='test_1'>asdf</textarea><script>SetUpEditArea('" + self.editorID + "');</script><div id='" + self.functionID + "'></div>")
+    
+    # This is where we store the stuff going back and forth from the editor in driver mode.
+    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); setInterval('toggle()', 5000);</script>")
+    self.editorHTML = HTML("The contents of the editor.")
+    self.editorHTML.setID(self.editorHTMLID)
+    
+    # this gets the contents of the editor into the div area so we can send it
+    self.driversynch = """<script>setInterval('syncheditor()', 1);
+    // might need to change the interval to an onkeypress sort of a deal...
+    function syncheditor() { 
+    var ed = document.getElementById('MYeditorID'); 
+    var listener = document.getElementById('MYeditorHTMLID');  
+    listener.innerHTML = "<div style=\\"white-space: normal;\\" class=\\"gwt-HTML\\">" + ed.value + "</div>";
+    }</script>"""
+    
+    self.passengersynch = """<script>setInterval('synchlisten()', 100);
+    function synchlisten() { 
+    //alert("here!");
+    var listener = document.getElementById('MYeditorHTMLID');  
+    listen('MYeditorID', listener.innerHTML);
+    }</script>"""
+    
+    initialcontent = """<script> </script> """
+    
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editorTextArea = TextArea()
+    self.editorTextArea.setID(self.editorID)
+    self.editor.add(self.editorTextArea, self.editorID)
+    self.editor.add(self.functionHTML, self.functionID)
+    self.editor.add(self.editorHTML, self.editorHTMLID)
+    
+    self.editor.add(HTML(initialcontent), self.synchID)
+    self.editor.setWidth("100%")
+    self.editor.setHeight("100%")
+    
+    
     
     # the right side
     vp = VerticalPanel()
@@ -61,7 +106,7 @@ class Basic:
     console.setHeight("100%")
     # not so hacky -- indeed, pretty decent little text chat
     self.driver = Label("Unset")
-    self.passenger = Label("Unset")
+    self.passenger = Label("Unset") # this isn't right? Does it override our call to getsessioninfo?
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
     self.text = HTML("(There is a 600 character limit on messages)")
@@ -82,16 +127,12 @@ class Basic:
     self.text_area.setScrollPosition(999999)
     real_chat.add(text_entry)
     real_chat.setStyleName("whitebg")
-    #js_tester = HTMLPanel(" my text in here. <script> myfunction(); </script> <div id='lame'></div>")
-    #js_tester = SimplePanel()
     
     vp.add(console)
     vp.add(real_chat)
-    #vp.add(js_tester)
     vp.setWidth("100%")
     vp.setHeight("100%")
     vp.setCellHeight(console, "50%")
-    #vp.setCellHeight(js_tester, "50%")
     vp.setCellHeight(real_chat, "50%")
     
     # putting the left and right sides together
@@ -99,11 +140,11 @@ class Basic:
     hp.setBorderWidth(1)
     hp.setHorizontalAlignment(HasAlignment.ALIGN_CENTER)
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
-    hp.add(editor)
+    hp.add(self.editor)
     hp.add(vp)
-    hp.setCellWidth(editor, "50%")
+    hp.setCellWidth(self.editor, "50%")
     hp.setCellWidth(vp, "50%")
-    #hp.setCellVerticalAlignment(editor, HasAlignment.ALIGN_JUSTIFY)
+    #hp.setCellVerticalAlignment(self.editor, HasAlignment.ALIGN_JUSTIFY)
     hp.setCellVerticalAlignment(console, HasAlignment.ALIGN_TOP)
     hp.setWidth("100%")
     hp.setHeight("100%")
@@ -127,7 +168,8 @@ class Basic:
     
     # start the timer for updates from server
     self.onTimer()
-    
+
+      
   def onInfoClick(self):
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
@@ -158,8 +200,10 @@ class Basic:
       # set the local vars
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
+        self.editor.add(HTML(self.driversynch), self.synchID)
       else:
         self.isdriver = False
+        self.editor.add(HTML(self.passengersynch), self.synchID)
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
@@ -188,6 +232,14 @@ class Basic:
         else:
           if not self.Flash:
             self.flashOn()
+    elif request_info.method == 'send_editor':
+      pass
+    elif request_info.method == 'receive_editor':
+      # set the text in the little box guy
+      for tpl in response:
+        #window.alert("%s" %tpl[1])
+        DOM.setInnerText(DOM.getElementById(self.editorHTMLID), tpl[1])
+        
     elif request_info.method == 'user_quit':
       for tpl in response:
         window.alert("%s" %tpl[1])
@@ -195,8 +247,9 @@ class Basic:
       console.error("Error in onRemoteResponse function in Basic.py")
   
   def onRemoteError(self, response, request_info):
-    #window.alert("ERROR")
-    pass
+    window.alert("ERROR")
+    alert(response)
+    alert(str(response))
       
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
@@ -234,6 +287,13 @@ class Basic:
     self.remote.receive_chatmessage(self)
     self.remote.receive_flash(self)
     
+    if self.isdriver == True:
+      content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
+      if len(content) > 0:
+        self.remote.send_editor(content, self)
+    else:
+      self.remote.receive_editor(self)
+    
     # do flash stuff here
     if self.active_flash.getText() == "Flashing":
       if self.color.getText() == "pink":
@@ -246,7 +306,7 @@ class Basic:
       self.color.setText("white")
       self.panel.setStyleName("white")
     
-    Timer(500, self)
+    Timer(10000, self)
     
   def toggleFlash(self):
     if self.active_flash.getText() == "Flashing":
