@@ -236,7 +236,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 		return false;
 	}
 	function keydown(ev) {
-    alert("in monkey ajaxterm.js")
+    //alert("in monkey ajaxterm.js")
 		if (!ev) var ev=window.event;
     // safari hack for dealing with non-printing keys
     // that are handled as modifiers
