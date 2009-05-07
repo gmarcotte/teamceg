@@ -75,9 +75,14 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
   
   // sets the content of the editor and makes it un-editable
   function listen(id, content) {
-    //alert("listen(id, content)");
     editAreaLoader.setValue(id, content);
     editAreaLoader.execCommand(id, 'set_editable', false);
+  }
+  
+  
+  function speak(EID, LID) {
+    var content = editAreaLoader.getValue(EID);
+    document.getElementById(LID)
   }
 
   </script>
