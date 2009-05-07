@@ -9,10 +9,20 @@ Driver: {% if driver %}{{ driver.email }}{% else %}None{% endif %}<br>
 Passenger: {% if passenger %}{{ passenger.email }}{% else %}None{% endif %}<br>
 Project #: {{ project.id }}
 <p>
+
+{% for ssh in available_servers %}
+{% if forloop.first %}
 <form action="" method="POST">
-SSH Server: <input type="text" name="server" /><br />
-SSH Username: <input type="text" name="logon" /><br />
-<input type="submit" value="go" name="go" />
+SSH Connection:
+<select name="server">
+{% endif %} 
+<option value="{{ ssh.id }}">{{ ssh }}</option>
+{% if forloop.last %}
+<br /><input type="submit" value="go" name="go" />
 </form>
-</p>
+{% endif %}
+{% empty %}
+<p>You have not configured any SSH Connections yet. <br />  
+You must set up a connection before you can start working on Pairgramming.</p>
+{% endfor %}
 {% endblock %}

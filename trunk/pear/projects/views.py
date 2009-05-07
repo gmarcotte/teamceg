@@ -11,6 +11,7 @@ import pear.projects.models
 from pear.meetings.models import Meeting
 from pear.accounts.models import PearUser
 import pear.projects.forms
+import pear.remote.models
 from pear.core import util as pear_util
 
 
@@ -37,29 +38,36 @@ def launch_project(request, project_id):
   
   # User has specified to actually launch
   if request.method == 'POST':
-    if meetings:
-      meeting = meetings[0]
-      meeting.passenger = request.user
+    ssh_id = request.POST.get('server', 0)
+    try:
+      ssh = request.user.servers.get(pk=ssh_id, has_valid_keys=True)
+    except exceptions.ObjectDoesNotExist:
+      pass
     else:
-      meeting = Meeting()
-      meeting.driver = request.user
-      meeting.passenger = None
-      meeting.project = project
-      # set some other things
-      meeting.flash = False
-      meeting.console = ''
-      meeting.editor = ''
-    meeting.save()
-    return shortcuts.render_to_response(
-        'Basic.html',
-        {'page_title': 'Project Workspace',
-         'project': project,
-         'meeting': meeting,
-         'server_host': request.POST['server'],
-         'server_logon': request.POST['logon']},
-        context_instance=template.RequestContext(request))
+      if meetings:
+        meeting = meetings[0]
+        meeting.passenger = request.user
+      else:
+        meeting = Meeting()
+        meeting.driver = request.user
+        meeting.passenger = None
+        meeting.project = project
+        # set some other things
+        meeting.flash = False
+        meeting.console = ''
+        meeting.editor = ''
+      meeting.save()
+      return shortcuts.render_to_response(
+          'Basic.html',
+          {'page_title': 'Project Workspace',
+           'project': project,
+           'meeting': meeting,
+           'server_host': ssh.server,
+           'server_logon': ssh.user_name},
+          context_instance=template.RequestContext(request))
   
   # Display a summary of the project session status before launching
+  available_servers = request.user.servers.filter(has_valid_keys=True)
   if meetings:
     driver = meetings[0].driver
     passenger = request.user
@@ -71,7 +79,8 @@ def launch_project(request, project_id):
       {'page_title': 'Launch Project', 
        'driver': driver, 
        'passenger': passenger, 
-       'project': project},
+       'project': project,
+       'available_servers': available_servers,},
       context_instance=template.RequestContext(request))
 
 
