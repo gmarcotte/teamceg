@@ -1,3 +1,17 @@
+.gwt-Tree {
+/* the tree itself */
+  font-family: Tahoma;
+}
+.gwt-Tree .gwt-TreeItem {
+/* a tree item */
+  font-size: 12px;
+}
+.gwt-Tree .gwt-TreeItem-selected {
+/* a selected tree item */
+}
+
+
+
 
 .whitebg {
   bacground: #ffffff;
@@ -109,24 +123,7 @@
       background-color: #ffffff;
     }
 
-/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
-.gwt-MenuBar {
-      background-color: #ffffff;
-      border: 0px solid #ffffff;
-      cursor: default;
-}
-.gwt-MenuBar .gwt-MenuItem {
-      font-family: Tahoma, Helvetica, Arial;
-      padding: 1px 4px 1px 4px;
-      font-size: smaller;
-      cursor: default;
-}
-.gwt-MenuBar .gwt-MenuItem-selected {
-      font-family: Tahoma, Helvetica, Arial;
-      /*text-decoration: underline;*/
-      background-color: #99cc66;
-      /* #ccff99 */
-}
+
 
 /* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
 .gwt-TabPanel {
