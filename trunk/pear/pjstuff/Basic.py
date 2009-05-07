@@ -1,6 +1,5 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem
 from pyjamas.Timer import Timer
-from pyjamas import DOM
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
 from pyjamas.JSONService import JSONProxy
@@ -22,12 +21,14 @@ class Basic:
     # building the menu bar
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
+    self.file_test = ["1Top level", "2Second level", "2Also second level", "1Top level again", "2New second level", "3Oh my, a 3rd level", "4A fourth level??", "5Zomg a fifth level?", "3Another third level", "3Yet another 3rd level", "2Hi, I'm 2nd level"]
+    self.files = Button("Files", getattr(self, "onFilesClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
-    self.flash = Button("Flash ON", getattr(self, "toggleFlash"))
+    self.flash = Button("Start Flash", getattr(self, "toggleFlash"))
     self.quit = Button("Quit", getattr(self, "onQuitClick"))
     self.menu_body = SimplePanel()
-    self.menu_body.setWidth("600px")
+    self.menu_body.setWidth("500px")
     self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
     self.menu_body.setWidget(self.menu_contents)
     self.active_flash = Label("Off")
@@ -36,6 +37,7 @@ class Basic:
     self.head = HorizontalPanel()
     self.head.add(Label("|"))
     self.head.add(self.info)
+    self.head.add(self.files)
     self.head.add(self.mode)
     self.head.add(self.audio)
     self.head.add(self.flash)
@@ -180,19 +182,6 @@ class Basic:
     self.onTimer()
 
       
-  def onInfoClick(self):
-    if self.active_menu.getText() == "Info":
-      self.active_menu.setText("")
-      self.menu_body.setWidget(Label(""))
-    else:
-      self.active_menu.setText("Info")
-      id = self.remote.get_meetinginfo(self)
-      if id < 0:
-        console.error("Server Error or Invalid Response")
-      infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
-      infomsg.setStyleName("not-button")
-      self.menu_body.setWidget(infomsg)
-
   def onRemoteResponse(self, response, request_info):
     if request_info.method == 'get_username':
       if (len(response[3]) < 1):  # if there is no passenger
@@ -261,6 +250,76 @@ class Basic:
     alert(response)
     alert(str(response))
       
+  def onInfoClick(self):
+    if self.active_menu.getText() == "Info":
+      self.active_menu.setText("")
+      self.menu_body.setWidget(Label(""))
+    else:
+      self.active_menu.setText("Info")
+      id = self.remote.get_meetinginfo(self)
+      if id < 0:
+        console.error("Server Error or Invalid Response")
+      infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
+      infomsg.setStyleName("not-button")
+      self.menu_body.setWidget(infomsg)
+
+  def onFilesClick(self):
+    filetree = Tree()
+    filetree.addTreeListener(self)
+    i = 0
+    while (i < len(self.file_test)) and (self.file_test[i][0] == "1"):
+      s1 = self.createTreeItem(str(self.file_test[i][1:]))
+      i = i + 1
+      while (i < len(self.file_test)) and (self.file_test[i][0] == "2"):
+        s2 = self.createTreeItem(str(self.file_test[i][1:]), value="monkey")
+        s1.addItem(s2)
+        s1.setState(True, fireEvents=False)
+        i = i + 1
+        while (i < len(self.file_test)) and (self.file_test[i][0] == "3"):
+          s3 = self.createTreeItem(str(self.file_test[i][1:]), value="butt")
+          s2.addItem(s3)
+          s2.setState(False, fireEvents=False)
+          i = i + 1
+          while (i < len(self.file_test)) and (self.file_test[i][0] == "4"):
+            s4 = self.createTreeItem(str(self.file_test[i][1:]), value="Peace")
+            s3.addItem(s4)
+            s3.setState(False, fireEvents=False)
+            i = i + 1
+            while (i < len(self.file_test)) and (self.file_test[i][0] == "5"):
+              s5 = self.createTreeItem(str(self.file_test[i][1:]), value="Pie..")
+              s4.addItem(s5)
+              s4.setState(False, fireEvents=False)
+              i = i + 1
+        filetree.addItem(s1)
+      
+    filepanel = VerticalPanel()
+    filepanel.setSpacing()
+    filepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    filepanel.add(filetree)
+    filebutt = Button("Close", getattr(self, "onFileCloseClick"))
+    filepanel.add(filebutt)
+    filepanel.setCellHorizontalAlignment(filebutt, HasAlignment.ALIGN_CENTER)
+    filepanel.setWidth("400px")
+    self.file_box = DialogBox()
+    self.file_box.setHTML("File Navigation")
+    self.file_box.setWidget(filepanel)
+    self.file_box.setPopupPosition(350, 200)
+    self.file_box.show()
+  def createTreeItem(self, label, value=None):
+    item = TreeItem(label)
+    DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
+    if value != None:
+      item.setUserObject(value)
+    return item
+  def onTreeItemSelected(self, item):
+    value = item.getUserObject()
+    window.alert("You clicked on " + value)
+    #self.file_box.hide()
+  def onTreeItemStateChanged(self, item):
+    pass  # "We ignore this." but why again?
+  def onFileCloseClick(self):
+    self.file_box.hide()
+      
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
       self.active_menu.setText("")
@@ -275,7 +334,7 @@ class Basic:
     
   def onSwitchDriversClick(self):
     window.alert("You are trying to switch drivers")
-    
+    ##
     
   def onAudioClick(self):
     if self.active_menu.getText() == "Audio":
@@ -372,7 +431,7 @@ class Basic:
     self.quit_box.setWidget(quitvp)
     left = 350
     top = 200
-    self.quit_box.setPopupPosition(left, top)
+    self.quit_box.setPopupPosition(350, 200)  # (left, top)
     self.quit_box.show()
   def onQuitCancel(self):
     self.quit_box.hide()

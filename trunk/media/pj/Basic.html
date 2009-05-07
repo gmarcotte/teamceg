@@ -20,7 +20,7 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
         </script>
         <script>
         function setterm() {
-          term=ajaxterm.Terminal("term",60,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}');
+          term=ajaxterm.Terminal("term",80,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}');
         }
         </script>
 
@@ -55,7 +55,7 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
     window.editorid = editorid;
     window.listenerid = listenerid;
     window.editor = document.getElementById(editorid);
-    window.listener = document.getElementById(listenerid);
+    window.listener = document.getElementById(listenerid); // this may be wrong, now...
   }
   
   function toggle() {
@@ -75,9 +75,14 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
   
   // sets the content of the editor and makes it un-editable
   function listen(id, content) {
-    //alert("listen(id, content)");
     editAreaLoader.setValue(id, content);
     editAreaLoader.execCommand(id, 'set_editable', false);
+  }
+  
+  
+  function speak(EID, LID) {
+    var content = editAreaLoader.getValue(EID);
+    document.getElementById(LID)
   }
 
   </script>

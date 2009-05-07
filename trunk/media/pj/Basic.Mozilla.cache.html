@@ -25410,12 +25410,14 @@ function __Basic_initialize() {
     this.remote.get_meetinginfo(this);
     this.active_menu = ui_Label('');
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
+    this.file_test = new pyjslib_List(['1Top level', '2Second level', '2Also second level', '1Top level again', '2New second level', '3Oh my, a 3rd level', '4A fourth level??', '5Zomg a fifth level?', '3Another third level', '3Yet another 3rd level', '2Hi, I\'m 2nd level']);
+    this.files = ui_Button('Files', pyjslib_getattr(this, 'onFilesClick'));
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
-    this.flash = ui_Button('Flash ON', pyjslib_getattr(this, 'toggleFlash'));
+    this.flash = ui_Button('Start Flash', pyjslib_getattr(this, 'toggleFlash'));
     this.quit = ui_Button('Quit', pyjslib_getattr(this, 'onQuitClick'));
     this.menu_body = ui_SimplePanel();
-    this.menu_body.setWidth('600px');
+    this.menu_body.setWidth('500px');
     this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'20px\'>');
     this.menu_body.setWidget(this.menu_contents);
     this.active_flash = ui_Label('Off');
@@ -25423,6 +25425,7 @@ function __Basic_initialize() {
     this.head = ui_HorizontalPanel();
     this.head.add(ui_Label('|'));
     this.head.add(this.info);
+    this.head.add(this.files);
     this.head.add(this.mode);
     this.head.add(this.audio);
     this.head.add(this.flash);
@@ -25430,9 +25433,27 @@ function __Basic_initialize() {
     this.head.add(ui_Label('|'));
     this.head.add(this.menu_body);
     this.head.add(this.menu_contents);
-    var editor = ui_HTMLPanel('<textarea id=\'editarea\' style=\'height: 610px; width: 100%;\' name=\'test_1\'></textarea><script>SetUpEditArea();</script>');
-    editor.setWidth('100%');
-    editor.setHeight('100%');
+    this.editorID = 'MYeditorID';
+    this.editorHTMLID = 'MYeditorHTMLID';
+    this.functionID = 'MYfunctionID';
+    this.synchID = 'MYsynchID';
+    this.chatID = 'MYchatID';
+    this.functionHTML = ui_HTML( (  (  (  ( '<script>SetUpEditArea(\'' + this.editorID )  + '\',\'' )  + this.listenID )  + '\'); /*setInterval(\'toggle()\', 5000);*/</script>' ) );
+    this.editorHTML = ui_HTML('The contents of the editor.');
+    this.editorHTML.setVisible(false);
+    this.editorHTML.setID(this.editorHTMLID);
+    this.driversynch = '<script>setInterval(\'syncheditor()\', 1000);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    //var ed = document.getElementById(\'MYeditorID\'); \n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    //alert(ED);\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '<script>setInterval(\'synchlisten()\', 10000);\n    function synchlisten() { \n    // also need to do something here to get the focus back on whatever it was\n    // before we messed around with it...\n    var currentfocus = document.activeElement;\n    alert(currentfocus.id)\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus()\n    }</script>';
+    var initialcontent = '<script> </script> ';
+    this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
+    this.editorTextArea = ui_TextArea();
+    this.editorTextArea.setID(this.editorID);
+    this.editor.add(this.editorTextArea, this.editorID);
+    this.editor.add(this.functionHTML, this.functionID);
+    this.editor.add(this.editorHTML, this.editorHTMLID);
+    this.editor.add(ui_HTML(initialcontent), this.synchID);
+    this.editor.setWidth('100%');
+    this.editor.setHeight('100%');
     var vp = ui_VerticalPanel();
     vp.setBorderWidth(1);
     var term = ui_HTMLPanel(' <script> setterm(); </script> <div id=\'term\'></div>');
@@ -25452,6 +25473,7 @@ function __Basic_initialize() {
     this.text_box = ui_TextBox();
     this.text_box.setVisibleLength('68');
     this.text_box.setMaxLength('600');
+    this.text_box.setID(this.chatID);
     this.text_box.addKeyboardListener(this);
     var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
@@ -25473,9 +25495,9 @@ function __Basic_initialize() {
     hp.setBorderWidth(1);
     hp.setHorizontalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
     hp.setVerticalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_MIDDLE);
-    hp.add(editor);
+    hp.add(this.editor);
     hp.add(vp);
-    hp.setCellWidth(editor, '50%');
+    hp.setCellWidth(this.editor, '50%');
     hp.setCellWidth(vp, '50%');
     hp.setCellVerticalAlignment(console, __ui_HasAlignment.prototype.__class__.ALIGN_TOP);
     hp.setWidth('100%');
@@ -25499,27 +25521,6 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onModuleLoad.unbound_method = true;
     __Basic.prototype.onModuleLoad.instance_method = true;
-    __Basic.prototype.onInfoClick = function() {
-    if ((this.active_menu.getText() == 'Info')) {
-    this.active_menu.setText('');
-    this.menu_body.setWidget(ui_Label(''));
-    }
-    else {
-    this.active_menu.setText('Info');
-    var id = this.remote.get_meetinginfo(this);
-    if ((id < 0)) {
-    console.error('Server Error or Invalid Response');
-    }
-    var infomsg = ui_Label(sprintf('Driver: %s, Passenger: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
-    infomsg.setStyleName('not-button');
-    this.menu_body.setWidget(infomsg);
-    }
-    };
-    __Basic.prototype.__class__.onInfoClick = function() {
-        return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
-    };
-    __Basic.prototype.__class__.onInfoClick.unbound_method = true;
-    __Basic.prototype.onInfoClick.instance_method = true;
     __Basic.prototype.onRemoteResponse = function(response, request_info) {
     if ((request_info.method == 'get_username')) {
     if ((pyjslib_len(response.__getitem__(3)) < 1)) {
@@ -25581,9 +25582,11 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
     this.isdriver = true;
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     }
     else {
     this.isdriver = false;
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
     this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
     this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
@@ -25665,6 +25668,27 @@ function __Basic_initialize() {
         }
         
     }
+    else if ((request_info.method == 'send_editor')) {
+    }
+    else if ((request_info.method == 'receive_editor')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    DOM_setInnerText(DOM_getElementById(this.editorHTMLID), tpl.__getitem__(1));
+    this.editorHTML.setVisible(false);
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
     else if ((request_info.method == 'user_quit')) {
 
         var __tpl = response.__iter__();
@@ -25693,12 +25717,133 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onRemoteResponse.unbound_method = true;
     __Basic.prototype.onRemoteResponse.instance_method = true;
     __Basic.prototype.onRemoteError = function(response, request_info) {
+    window.alert('ERROR');
+    alert(response);
+    alert(pyjslib_str(response));
     };
     __Basic.prototype.__class__.onRemoteError = function() {
         return __Basic.prototype.onRemoteError.call.apply(__Basic.prototype.onRemoteError, arguments);
     };
     __Basic.prototype.__class__.onRemoteError.unbound_method = true;
     __Basic.prototype.onRemoteError.instance_method = true;
+    __Basic.prototype.onInfoClick = function() {
+    if ((this.active_menu.getText() == 'Info')) {
+    this.active_menu.setText('');
+    this.menu_body.setWidget(ui_Label(''));
+    }
+    else {
+    this.active_menu.setText('Info');
+    var id = this.remote.get_meetinginfo(this);
+    if ((id < 0)) {
+    console.error('Server Error or Invalid Response');
+    }
+    var infomsg = ui_Label(sprintf('Driver: %s, Passenger: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
+    infomsg.setStyleName('not-button');
+    this.menu_body.setWidget(infomsg);
+    }
+    };
+    __Basic.prototype.__class__.onInfoClick = function() {
+        return __Basic.prototype.onInfoClick.call.apply(__Basic.prototype.onInfoClick, arguments);
+    };
+    __Basic.prototype.__class__.onInfoClick.unbound_method = true;
+    __Basic.prototype.onInfoClick.instance_method = true;
+    __Basic.prototype.onFilesClick = function() {
+    var filetree = ui_Tree();
+    filetree.addTreeListener(this);
+    var i = 0;
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '1'))) {
+    var s1 = this.createTreeItem(pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null)));
+    var i =  ( i + 1 ) ;
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '2'))) {
+    var s2 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'monkey'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    s1.addItem(s2);
+    pyjs_kwargs_method_call(s1, 'setState', [{fireEvents:false}, true]);
+    var i =  ( i + 1 ) ;
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '3'))) {
+    var s3 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'butt'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    s2.addItem(s3);
+    pyjs_kwargs_method_call(s2, 'setState', [{fireEvents:false}, false]);
+    var i =  ( i + 1 ) ;
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '4'))) {
+    var s4 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'Peace'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    s3.addItem(s4);
+    pyjs_kwargs_method_call(s3, 'setState', [{fireEvents:false}, false]);
+    var i =  ( i + 1 ) ;
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '5'))) {
+    var s5 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'Pie..'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    s4.addItem(s5);
+    pyjs_kwargs_method_call(s4, 'setState', [{fireEvents:false}, false]);
+    var i =  ( i + 1 ) ;
+    }
+    }
+    }
+    filetree.addItem(s1);
+    }
+    }
+    var filepanel = ui_VerticalPanel();
+    filepanel.setSpacing();
+    filepanel.setCellHorizontalAlignment(filetree, __ui_HasAlignment.prototype.__class__.ALIGN_LEFT);
+    filepanel.add(filetree);
+    var filebutt = ui_Button('Close', pyjslib_getattr(this, 'onFileCloseClick'));
+    filepanel.add(filebutt);
+    filepanel.setCellHorizontalAlignment(filebutt, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    filepanel.setWidth('400px');
+    this.file_box = ui_DialogBox();
+    this.file_box.setHTML('File Navigation');
+    this.file_box.setWidget(filepanel);
+    this.file_box.setPopupPosition(350, 200);
+    this.file_box.show();
+    };
+    __Basic.prototype.__class__.onFilesClick = function() {
+        return __Basic.prototype.onFilesClick.call.apply(__Basic.prototype.onFilesClick, arguments);
+    };
+    __Basic.prototype.__class__.onFilesClick.unbound_method = true;
+    __Basic.prototype.onFilesClick.instance_method = true;
+    __Basic.prototype.createTreeItem = function(label, value) {
+    if (typeof value == 'undefined') value=null;
+    var item = ui_TreeItem(label);
+    DOM_setStyleAttribute(item.getElement(), 'cursor', 'pointer');
+    if ((value != null)) {
+    item.setUserObject(value);
+    }
+    return item;
+    };
+__Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, value ) {
+    if (typeof value == 'undefined')
+        value=__kwargs.value;
+    var __r = [label, value];
+    return __r;
+};
+    __Basic.prototype.__class__.createTreeItem = function() {
+        return __Basic.prototype.createTreeItem.call.apply(__Basic.prototype.createTreeItem, arguments);
+    };
+    __Basic.prototype.__class__.createTreeItem.unbound_method = true;
+    __Basic.prototype.createTreeItem.instance_method = true;
+    __Basic.prototype.__class__.createTreeItem.parse_kwargs = __Basic.prototype.createTreeItem.parse_kwargs;
+    __Basic.prototype.onTreeItemSelected = function(item) {
+    var value = item.getUserObject();
+    window.alert( ( 'You clicked on ' + value ) );
+    };
+    __Basic.prototype.__class__.onTreeItemSelected = function() {
+        return __Basic.prototype.onTreeItemSelected.call.apply(__Basic.prototype.onTreeItemSelected, arguments);
+    };
+    __Basic.prototype.__class__.onTreeItemSelected.unbound_method = true;
+    __Basic.prototype.onTreeItemSelected.instance_method = true;
+    __Basic.prototype.onTreeItemStateChanged = function(item) {
+    };
+    __Basic.prototype.__class__.onTreeItemStateChanged = function() {
+        return __Basic.prototype.onTreeItemStateChanged.call.apply(__Basic.prototype.onTreeItemStateChanged, arguments);
+    };
+    __Basic.prototype.__class__.onTreeItemStateChanged.unbound_method = true;
+    __Basic.prototype.onTreeItemStateChanged.instance_method = true;
+    __Basic.prototype.onFileCloseClick = function() {
+    this.file_box.hide();
+    };
+    __Basic.prototype.__class__.onFileCloseClick = function() {
+        return __Basic.prototype.onFileCloseClick.call.apply(__Basic.prototype.onFileCloseClick, arguments);
+    };
+    __Basic.prototype.__class__.onFileCloseClick.unbound_method = true;
+    __Basic.prototype.onFileCloseClick.instance_method = true;
     __Basic.prototype.onModeClick = function() {
     if ((this.active_menu.getText() == 'Mode')) {
     this.active_menu.setText('');
@@ -25756,6 +25901,15 @@ function __Basic_initialize() {
     __Basic.prototype.onTimer = function() {
     this.remote.receive_chatmessage(this);
     this.remote.receive_flash(this);
+    if ((this.isdriver == true)) {
+    var content = DOM_getInnerText(DOM_getElementById(this.editorHTMLID));
+    if ((pyjslib_len(content) > 0)) {
+    this.remote.send_editor(content, this);
+    }
+    }
+    else {
+    this.remote.receive_editor(this);
+    }
     if ((this.active_flash.getText() == 'Flashing')) {
     if ((this.color.getText() == 'pink')) {
     this.color.setText('green');
@@ -25770,7 +25924,7 @@ function __Basic_initialize() {
     this.color.setText('white');
     this.panel.setStyleName('white');
     }
-    Timer_Timer(500, this);
+    Timer_Timer(10000, this);
     };
     __Basic.prototype.__class__.onTimer = function() {
         return __Basic.prototype.onTimer.call.apply(__Basic.prototype.onTimer, arguments);
@@ -25863,7 +26017,7 @@ function __Basic_initialize() {
     this.quit_box.setWidget(quitvp);
     var left = 350;
     var top = 200;
-    this.quit_box.setPopupPosition(left, top);
+    this.quit_box.setPopupPosition(350, 200);
     this.quit_box.show();
     };
     __Basic.prototype.__class__.onQuitClick = function() {
