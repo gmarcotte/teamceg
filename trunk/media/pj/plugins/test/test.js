@@ -59,6 +59,7 @@ var EditArea_test= {
 	 * @type boolean	 
 	 */
 	,onkeydown: function(e){
+    alert("in test.js")
 		var str= String.fromCharCode(e.keyCode);
 		// desactivate the "f" character
 		if(str.toLowerCase()=="f"){
