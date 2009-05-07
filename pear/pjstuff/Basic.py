@@ -59,24 +59,32 @@ class Basic:
     #self.editor = HTMLPanel("<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;' name='test_1'>asdf</textarea><script>SetUpEditArea('" + self.editorID + "');</script><div id='" + self.functionID + "'></div>")
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
-    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); setInterval('toggle()', 5000);</script>")
+    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); /*setInterval('toggle()', 5000);*/</script>")
     self.editorHTML = HTML("The contents of the editor.")
     self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
     
     # this gets the contents of the editor into the div area so we can send it
-    self.driversynch = """<script>setInterval('syncheditor()', 1);
+    self.driversynch = """<script>setInterval('syncheditor()', 1000);
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    var ed = document.getElementById('MYeditorID'); 
+    //var ed = document.getElementById('MYeditorID'); 
+    var content = editAreaLoader.getValue('MYeditorID');
+    //alert(ED);
     var listener = document.getElementById('MYeditorHTMLID');
-    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ ed.value + "</div>";
+    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
     }</script>"""
     
-    self.passengersynch = """<script>setInterval('synchlisten()', 100);
+    self.passengersynch = """<script>setInterval('synchlisten()', 1000);
     function synchlisten() { 
-    var listener = document.getElementById('MYeditorHTMLID');  
-    listen('MYeditorID', listener.innerHTML);
+    // also need to do something here to get the focus back on whatever it was
+    // before we messed around with it...
+    
+    //var listener = document.getElementById('MYeditorHTMLID');  
+    //listen('MYeditorID', listener.innerHTML);
+    var content = document.getElementById('MYeditorHTMLID').innerHTML;
+    editAreaLoader.setValue('MYeditorID', content);
+    editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
     }</script>"""
     
     initialcontent = """<script> </script> """
@@ -340,11 +348,10 @@ class Basic:
       id = self.remote.get_username(self)
       if id < 0:
         console.error("Server Error or Invalid Response")
-      #window.alert("you clicked enter")
       self.remote.receive_chatmessage(self)
       if self.isdriver:
         msg = self.drivername.getText() + ": " + self.text_box.getText()
-      else:  # if not self.isdriver:
+      else: 
         msg = self.passengername.getText() + ": " + self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
