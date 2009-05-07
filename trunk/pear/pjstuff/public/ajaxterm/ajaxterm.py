@@ -10,6 +10,8 @@ sys.path[0:0]=glob.glob('../../python')
 
 import qweb
 
+RSA_KEY_DIR = os.path.abspath(os.path.join(__file__), '../../../../keys')
+
 class Terminal:
 	def __init__(self,width=80,height=24):
 		self.width=width
@@ -378,7 +380,7 @@ class Multiplex:
 			orig=getattr(self,name)
 			setattr(self,name,SynchronizedMethod(self.lock,orig))
 		self.thread.start()
-	def create(self,w=80,h=25,ssh='localhost',login=''):
+	def create(self,w=80,h=25,ssh='localhost',login='',key_file=''):
 		pid,fd=pty.fork()
 		if pid==0:
 			try:
@@ -399,6 +401,7 @@ class Multiplex:
 				cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
 				cmd+=['-oNoHostAuthenticationForLocalhost=yes']
 				cmd+=['-oLogLevel=FATAL']
+				cmd+=['-i %s' % key_file]
 				cmd+=['-F/dev/null','-l',login,ssh]
 			else:
 				os._exit(0)
@@ -491,6 +494,7 @@ class AjaxTerm:
 			h=req.REQUEST.int("h")
 			ssh=req.REQUEST["ssh"]
 			user=req.REQUEST["user"]
+			key=req.REQUEST["key"]
 			if s in self.session:
 				term=self.session[s]
 			else:
@@ -500,7 +504,11 @@ class AjaxTerm:
 					ssh = 'localhost'
 				if not user:
 					user = ''
-				term=self.session[s]=self.multi.create(w,h,ssh,user)
+				if not key:
+					key = ''
+				else:
+					key = "%s/%s" % (RSA_KEY_DIR, key)
+				term=self.session[s]=self.multi.create(w,h,ssh,user,key)
 			if k:
 				self.multi.proc_write(term,k)
 			time.sleep(0.002)
@@ -567,4 +575,3 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
