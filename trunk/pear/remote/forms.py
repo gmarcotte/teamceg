@@ -10,6 +10,10 @@ class ServerAddForm(forms.Form):
   user_name = forms.CharField(
       'Username on server',
       widget = forms.TextInput(attrs={'size': '20'}))
+  base_dir = forms.CharField(
+      'Base Directory',
+      help_text = "The top-level directory for storing all Pairgramming projects.",
+      widget=forms.TextInput(attrs={'size': '20'}))
       
   password = forms.CharField(
       'Password',
