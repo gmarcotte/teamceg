@@ -31,7 +31,7 @@ def send_chatmessage(request,message):
       if request.user.id == meet.passenger_id:
         meeting = meet
     if meeting == None:
-      r.append('Error','ERROR: could not find active meeting')
+      r.append(('Error','ERROR: could not find active meeting'))
       return r
 
     # make the message
@@ -91,7 +91,7 @@ def receive_chatmessage(request):
       if request.user.id == meet.passenger_id:
         meeting = meet
     if meeting == None:
-      r.append('Error','ERROR: could not find active meeting')
+      r.append(('Error','ERROR: could not find active meeting'))
       return r
 
     
@@ -205,9 +205,8 @@ def send_flash(request, state):
         
     return r
     
-
 @network.jsonremote(service)
-def send_editor(request, state):
+def send_editor(request, content):
   if request.user.is_authenticated():
     r = []
     meeting = None
@@ -223,13 +222,16 @@ def send_editor(request, state):
     if (meeting == None):
       r.append(('error', 'ERROR: no active meeting!'))
       return r
-  
-  ### FILL IN HERE ###
-        
-    return r
+    
+    # if the user is the driver, make the passenger the driver
+    if str(request.user.id) == str(meeting.driver_id):
+      meeting.editor = content
+      meeting.save()
+      r.append(('seteditor','it worked'))
+      return r
 
 @network.jsonremote(service)
-def receive_editor(request, state):
+def receive_editor(request):
   if request.user.is_authenticated():
     r = []
     meeting = None
@@ -245,10 +247,11 @@ def receive_editor(request, state):
     if (meeting == None):
       r.append(('error', 'ERROR: no active meeting!'))
       return r
-  
-  ### FILL IN HERE ###
-        
-    return r    
+    
+    # if the user is the driver, make the passenger the driver
+    if str(request.user.id) != str(meeting.driver_id):
+      r.append(('content', meeting.editor))
+      return r
     
 @network.jsonremote(service)
 def user_quit(request):
@@ -292,3 +295,5 @@ def user_quit(request):
       r.append(('notice','there was a passenger, and we deleted them'))
         
     return r
+    
+  
