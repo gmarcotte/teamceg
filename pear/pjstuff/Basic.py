@@ -75,7 +75,7 @@ class Basic:
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
     }</script>"""
     
-    self.passengersynch = """<script>setInterval('synchlisten()', 1000);
+    self.passengersynch = """<script>setInterval('synchlisten()', 10000);
     function synchlisten() { 
     // also need to do something here to get the focus back on whatever it was
     // before we messed around with it...
