@@ -21,7 +21,7 @@ class SSHConnection(timestamp.TimestampedModel):
   user = models.ForeignKey(pear.accounts.models.PearUser, related_name='servers')
   num_active = models.IntegerField()
   has_valid_keys = models.BooleanField()
-  base_dir = models.CharField(max_length=100)
+  base_dir = models.CharField(max_length=100, blank=True)
   
   active_servers = AvailableSSHManager()
   
@@ -150,3 +150,15 @@ class SSHConnection(timestamp.TimestampedModel):
       ssh.expect(':')
       ssh.sendline(password)
       ssh.close()
+          
+    # See if setting worked
+    session = self.connect()
+    if session:
+      self.has_valid_keys = True
+      self.save()
+      self.close(session)
+      return False
+    else:
+      self.has_valid_keys = False
+      self.save()
+      return True
