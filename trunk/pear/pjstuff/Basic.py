@@ -79,12 +79,12 @@ class Basic:
     function synchlisten() { 
     // also need to do something here to get the focus back on whatever it was
     // before we messed around with it...
-    
-    //var listener = document.getElementById('MYeditorHTMLID');  
-    //listen('MYeditorID', listener.innerHTML);
+    var currentfocus = document.activeElement;
+    alert(currentfocus.id)
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
+    currentfocus.focus()
     }</script>"""
     
     initialcontent = """<script> </script> """
