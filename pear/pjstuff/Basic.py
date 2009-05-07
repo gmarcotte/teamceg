@@ -51,10 +51,11 @@ class Basic:
     # the synchID is the id of the interval command for setting synchEditors/synchListeners based on 
     #     whether driver or passenger.
     ### For now let's try hard-coding these
-    self.editorID = "MYeditorID"#HTMLPanel.createUniqueId()
-    self.editorHTMLID = "MYeditorHTMLID"#HTMLPanel.createUniqueId()
-    self.functionID = "MYfunctionID"#HTMLPanel.createUniqueId()
-    self.synchID = "MYsynchID"#HTMLPanel.createUniqueId()
+    self.editorID = "MYeditorID"
+    self.editorHTMLID = "MYeditorHTMLID"
+    self.functionID = "MYfunctionID"
+    self.synchID = "MYsynchID"
+    self.chatID = "MYchatID"
     #self.editor = HTMLPanel("<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;' name='test_1'>asdf</textarea><script>SetUpEditArea('" + self.editorID + "');</script><div id='" + self.functionID + "'></div>")
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
@@ -115,6 +116,7 @@ class Basic:
     self.text_box = TextBox()
     self.text_box.setVisibleLength("68")
     self.text_box.setMaxLength("600")
+    self.text_box.setID(self.chatID)
     self.text_box.addKeyboardListener(self)
     text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()

@@ -154,14 +154,14 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 			timeout=window.setTimeout(update,1);
 		}
 	}
-  // CCI 4/9/09 Safari screws these up because we're using keypress
-  // we will need to add a safari special case!
+
 	function keypress(ev) {
-		if (!ev) var ev=window.event;
-//		s="kp keyCode="+ev.keyCode+" which="+ev.which+" shiftKey="+ev.shiftKey+" ctrlKey="+ev.ctrlKey+" altKey="+ev.altKey;
-//		debug(s);
-//		return false;
-//		else { if (!ev.ctrlKey || ev.keyCode==17) { return; }
+    // this is necessary to make sure that we don't steal from chat
+    var focusElement = document.activeElement;
+    if (focusElement.id == "MYchatID") {
+      return true;
+    }
+    if (!ev) var ev=window.event;
 		var kc;
 		var k="";
 		if (ev.keyCode)
@@ -236,7 +236,12 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 		return false;
 	}
 	function keydown(ev) {
-    alert("in monkey ajaxterm.js")
+    // handle when this tries to steal from chat
+    var focusElement = document.activeElement;
+    if (focusElement.id == "MYchatID") {
+      return true;
+    }
+    // need to deal with non-ajaxterm calls... maybe here?
 		if (!ev) var ev=window.event;
     // safari hack for dealing with non-printing keys
     // that are handled as modifiers
@@ -281,11 +286,11 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 			opt_color.attachEvent("onclick", do_color);
 			opt_paste.attachEvent("onclick", do_paste);
 		}
-		document.getElementById(id).onkeypress=keypress; // this may fix the issue of focus stealing, not sure yet.
-		document.getElementById(id).onkeydown=keydown;
-    id.onkeypress=keypress; // this may fix the issue of focus stealing, not sure yet.
-		id.onkeydown=keydown;
-		timeout=window.setTimeout(update,100);
+		//document.getElementById(id).onkeypress=keypress; // this  doesn't steal, but it doesn't capture anything either
+		//document.getElementById(id).onkeydown=keydown;
+		this.onkeypress=keypress; //this still has the error where it steals focus from the chat
+    this.onkeydown=keydown;
+    timeout=window.setTimeout(update,100);
 	}
 	init();
 }
