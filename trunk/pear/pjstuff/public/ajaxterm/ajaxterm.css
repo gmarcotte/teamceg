@@ -3,6 +3,7 @@ pre.stat {
 	padding: 4px;
 	display: block;
 	font-family: monospace;
+  font-size: 12px;
 	white-space: pre;
 	background-color: black;
 	border-top: 1px solid black;
@@ -28,6 +29,7 @@ pre.term {
 	padding: 4px;
 	display: block;
 	font-family: monospace;
+  font-size: 12px;
 	white-space: pre;
 	background-color: black;
 	border-top: 1px solid white;
