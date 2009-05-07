@@ -3,6 +3,7 @@ var EA_keys = {8:"Retour arriere",9:"Tabulation",12:"Milieu (pave numerique)",13
 
 
 function keyDown(e){
+  alert("in keyboard.js")
 	if(!e){	// if IE
 		e=event;
 	}

@@ -60,8 +60,8 @@ var EditArea_charmap= {
 	 * @return true - pass to next handler in chain, false - stop chain execution
 	 * @type boolean	 
 	 */
-	,onkeydown: function(e){
-		
+	,this.onkeydown: function(e){
+		alert("in charmap.js")
 	}
 	
 	/**

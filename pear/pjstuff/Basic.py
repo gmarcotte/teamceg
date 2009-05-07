@@ -60,6 +60,7 @@ class Basic:
     # This is where we store the stuff going back and forth from the editor in driver mode.
     self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); setInterval('toggle()', 5000);</script>")
     self.editorHTML = HTML("The contents of the editor.")
+    self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
     
     # this gets the contents of the editor into the div area so we can send it
@@ -67,13 +68,12 @@ class Basic:
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
     var ed = document.getElementById('MYeditorID'); 
-    var listener = document.getElementById('MYeditorHTMLID');  
-    listener.innerHTML = "<div style=\\"white-space: normal;\\" class=\\"gwt-HTML\\">" + ed.value + "</div>";
+    var listener = document.getElementById('MYeditorHTMLID');
+    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ ed.value + "</div>";
     }</script>"""
     
     self.passengersynch = """<script>setInterval('synchlisten()', 100);
     function synchlisten() { 
-    //alert("here!");
     var listener = document.getElementById('MYeditorHTMLID');  
     listen('MYeditorID', listener.innerHTML);
     }</script>"""
@@ -235,10 +235,10 @@ class Basic:
     elif request_info.method == 'send_editor':
       pass
     elif request_info.method == 'receive_editor':
-      # set the text in the little box guy
+      # check to see if maybe there is an error here because of empty string?
       for tpl in response:
-        #window.alert("%s" %tpl[1])
         DOM.setInnerText(DOM.getElementById(self.editorHTMLID), tpl[1])
+        self.editorHTML.setVisible(False)
         
     elif request_info.method == 'user_quit':
       for tpl in response:

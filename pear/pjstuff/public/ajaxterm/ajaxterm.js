@@ -236,6 +236,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 		return false;
 	}
 	function keydown(ev) {
+    alert("in monkey ajaxterm.js")
 		if (!ev) var ev=window.event;
     // safari hack for dealing with non-printing keys
     // that are handled as modifiers
@@ -280,8 +281,8 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 			opt_color.attachEvent("onclick", do_color);
 			opt_paste.attachEvent("onclick", do_paste);
 		}
-		document.onkeypress=keypress;
-		document.onkeydown=keydown;
+		dterm.onkeypress=keypress; // this may fix the issue of focus stealing, not sure yet.
+		dterm.onkeydown=keydown;
 		timeout=window.setTimeout(update,100);
 	}
 	init();
