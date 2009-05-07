@@ -318,9 +318,9 @@ EditAreaLoader.prototype ={
 			if(editAreas[id]["settings"]["allow_toggle"]){
 				checked=(editAreas[id]["settings"]["display"]=="onload")?"checked='checked'":"";
 				html+="<div id='edit_area_toggle_"+i+"'>";
-				html+="<input id='edit_area_toggle_checkbox_"+ id +"' class='toggle_"+ id +"' type='checkbox' onclick='editAreaLoader.toggle(\""+ id +"\");' accesskey='e' "+checked+" />";
-				html+="<label for='edit_area_toggle_checkbox_"+ id +"'>{$toggle}</label></div>";	
-			}
+				html+="<input id='edit_area_toggle_checkbox_"+ id +"' class='toggle_"+ id +"' style='display=none;' type='checkbox' onclick='editAreaLoader.toggle(\""+ id +"\");' accesskey='e' "+checked+" />";
+				//html+="<label for='edit_area_toggle_checkbox_"+ id +"'>{$toggle}</label></div>";	
+	}
 			if(editAreas[id]["settings"]["debug"])
 				html+="<textarea id='edit_area_debug_"+ id +"' spellcheck='off' style='z-index: 20; width: 100%; height: 120px;overflow: auto; border: solid black 1px;'></textarea><br />";				
 			html= t.translate(html, editAreas[id]["settings"]["language"]);				
