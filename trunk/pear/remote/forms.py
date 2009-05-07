@@ -26,6 +26,7 @@ class ServerAddForm(forms.Form):
     new_serv = pear.remote.models.SSHConnection(
         server = self.cleaned_data['server'],
         user_name = self.cleaned_data['user_name'],
+        base_dir = self.cleaned_data['base_dir'],
         num_active = 0,
         has_valid_keys = False,
         user = u)
