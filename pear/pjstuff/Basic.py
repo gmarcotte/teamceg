@@ -462,6 +462,7 @@ class Basic:
       #window.alert("I checked for passenger")
       self.remote.get_meetinginfo(self)
       if self.currpass.getText() != self.passenger.getText():
+        self.currpass.setText(self.passenger.getText())
         window.alert("New passenger %s detected" % self.passenger.getText())
         
     if self.quitting == False and self.switching == False:
