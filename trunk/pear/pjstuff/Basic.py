@@ -196,13 +196,19 @@ class Basic:
       # set the local vars
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
-        self.editor.remove(self.synchID)
-        self.editor.add(HTML(self.driversynch), self.synchID)
+        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+        DOM.setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
+        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+        #self.editor.remove(self.synchID)
+        #self.editor.add(HTML(self.driversynch), self.synchID)
         ##DOM.setInnerHTML(DOM.getElementById(self.synchID), self.driversynch)
       else:
         self.isdriver = False
-        self.editor.remove(self.synchID)
-        self.editor.add(HTML(self.passengersynch), self.synchID)
+        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+        DOM.setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
+        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+        #self.editor.remove(self.synchID)
+        #self.editor.add(HTML(self.passengersynch), self.synchID)
         ##DOM.setInnerHTML(DOM.getElementById(self.synchID), self.passengersynch)
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
@@ -248,6 +254,7 @@ class Basic:
             if self.isdriver == False:
               window.alert("Driver status setting to true.")
               self.isdriver = True
+              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
               DOM.setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
               window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
               #self.editor.remove(self.synchID)
@@ -256,6 +263,7 @@ class Basic:
             if self.isdriver == True:
               window.alert("Driver status setting to false")
               self.isdriver = False
+              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
               DOM.setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
               window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
               #self.editor.remove(self.synchID)
@@ -267,6 +275,7 @@ class Basic:
           if self.isdriver == False:
             window.alert("switch Driver status setting to true")
             self.isdriver = True
+            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
             window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             #self.editor.remove(self.synchID)
@@ -276,6 +285,7 @@ class Basic:
           if self.isdriver == True:
             window.alert("switch Driver status setting to false")
             self.isdriver = False
+            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
             window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             #self.editor.remove(self.synchID)
