@@ -292,11 +292,12 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 			opt_color.attachEvent("onclick", do_color);
 			opt_paste.attachEvent("onclick", do_paste);
 		}
-		//document.getElementById(id).onkeypress=keypress; // this  doesn't steal, but it doesn't capture anything either
-		//document.getElementById(id).onkeydown=keydown;
-		this.onkeypress=keypress; //this still has the error where it steals focus from the chat
+		this.onkeypress=keypress; 
     this.onkeydown=keydown;
+    // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
+    // if we are the passenger terminal, set the update more aggressively
+    inter=window.setInterval(update,100);
 	}
 	init();
 }
