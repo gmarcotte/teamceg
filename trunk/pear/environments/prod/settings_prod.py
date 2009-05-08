@@ -17,6 +17,9 @@ DATABASE_PORT = ''
 # Server configuration
 SERVER_HOSTNAME = 'http://teamceg.princeton.edu'
 
+# Subversion Access
+SVN_BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../repos'))
+SVN_BASE_URL = 'http://teamceg.princeton.edu/repos'
 
 # Media configuration
 STATIC_SERVE = True

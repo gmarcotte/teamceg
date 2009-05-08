@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import auth
 from django.contrib.auth import models as auth_models
+from django.conf import settings
 
 from pear.core import emailer
 from pear.core.forms import fields as pear_fields
@@ -13,7 +14,17 @@ class NewProjectForm(forms.Form):
   name = forms.CharField('Project Name', required=True)
   description = forms.CharField('Project Description', required=False,
                               widget=forms.Textarea())
-  directory = forms.CharField('Directory', required=False)
+  directory = forms.CharField(
+      'Directory', required=False,
+      help_text=('Files for this project will be stored in this directory '
+                 '(relative to the base directory that you specify for '
+                 'your SSH connection)'))
+  
+  #repository = forms.CharField(
+  #    'SVN Repository', required=False,
+  #    help_text=('To use an existing Subversion repository, enter the URL '
+  #               'here. If you leave this blank, a repository will be created '
+  #               'for your project on our server.'))
   
   partners = pear_fields.ModelHasManyField(
       label="Partners",
@@ -45,6 +56,13 @@ class NewProjectForm(forms.Form):
     pr.directory = self.cleaned_data['directory']
     pr.course = self.cleaned_data['course']
     pr.is_public = self.cleaned_data['is_public']
+    pr.save()
+    
+   # if not self.cleaned_data['repository']:
+    pr.repos = 'project%d' % pr.id
+   # else:
+   #   pr.repository = self.cleaned_data['repository']
+    pr.create_repository()
     pr.save()
     
     pr.programmers = self.cleaned_data['partners']
