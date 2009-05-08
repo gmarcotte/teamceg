@@ -51,7 +51,7 @@ class Basic:
     
     # the left side
     # editor
-      # The editorID is the id of the actual editor text area
+    # The editorID is the id of the actual editor text area
     # the functionID is the id of the setupeditarea and set_listener/set_editable() functions
     # the synchID is the id of the interval command for setting synchEditors/synchListeners based on 
     #     whether driver or passenger.
@@ -64,7 +64,6 @@ class Basic:
     self.intervalID = "MYintervalID"
     self.editorsynchID = "MYeditorsynchID"
     self.listensynchID = "MYlistensynchID"
-    #self.editor = HTMLPanel("<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;' name='test_1'>asdf</textarea><script>SetUpEditArea('" + self.editorID + "');</script><div id='" + self.functionID + "'></div>")
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); /*setInterval('toggle()', 5000);*/</script>")
@@ -82,6 +81,8 @@ class Basic:
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
     //alert("synching editor");
+    // see if this helps with actually setting it to be editable again
+    editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
@@ -261,41 +262,28 @@ class Basic:
         for tpl in response:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
-              window.alert("Driver status setting to true.")
+              #window.alert("Driver status setting to true.")
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
-              #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              #DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
-              #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              #self.editor.add(HTML(self.driversynch), self.synchID)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
-              window.alert("Driver status setting to false")
+              #window.alert("Driver status setting to false")
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
-              #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              #DOM.setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
-              #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
           self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
-            window.alert("switch Driver status setting to true")
+            #window.alert("switch Driver status setting to true")
             self.isdriver = True
             self.editor.add(HTML(self.driversynch), self.synchID)
-            #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-            #setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
-            #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
-            window.alert("switch Driver status setting to false")
+            #window.alert("switch Driver status setting to false")
             self.isdriver = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
-            #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-            #setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
-            #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             self.switching = False
             
     elif request_info.method == 'user_quit':
@@ -306,9 +294,6 @@ class Basic:
       console.error("Error in onRemoteResponse function in Basic.py")
   
   def onRemoteError(self, response, request_info):
-    #window.alert("ERROR")
-    #alert(response)
-    #alert(str(response))
     pass
       
   def onInfoClick(self):
@@ -479,10 +464,6 @@ class Basic:
       if self.currpass.getText() != self.passenger.getText():
         window.alert("New passenger %s detected" % self.passenger.getText())
         
-    #if self.isdriver == True:
-    #  JS(""" alert("here"); syncheditor(); """)
-    #else:
-    #  JS(""" synchlisten(); """)
     if self.quitting == False and self.switching == False:
       # do server update stuff here
       self.remote.receive_chatmessage(self)
