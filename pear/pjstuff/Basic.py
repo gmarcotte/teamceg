@@ -75,7 +75,7 @@ class Basic:
     self.driversynch = """
     <script>
     clearInterval(window.listenInterval);
-    window.editorInterval = setInterval('syncheditor()', 5000);
+    window.editorInterval = setInterval('syncheditor()', 100);
     //alert(window.editorInterval);
       
     // might need to change the interval to an onkeypress sort of a deal...
@@ -92,7 +92,8 @@ class Basic:
     self.passengersynch = """
     <script>
     clearInterval(window.editorInterval);
-    window.listenInterval = setInterval('synchlisten()', 5000);
+    window.listenInterval = setInterval('synchlisten()', 100);
+    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\"></div>";
     //alert(window.listenInterval);
     function synchlisten() { 
     //alert("synching listen");
@@ -215,7 +216,6 @@ class Basic:
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
-        
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
@@ -429,11 +429,11 @@ class Basic:
       self.menu_body.setWidget(modepanel)
     
   def onSwitchDriversClick(self):
-    window.alert("You are trying to switch drivers")
+    #window.alert("You are trying to switch drivers")
     if self.isdriver == True:
       self.switching = True
       self.remote.switch_driver(self)
-      window.alert("Just sent switch command.")
+      #window.alert("Just sent switch command.")
     else:
       window.alert("Passengers cannot elect to switch!")
     
@@ -449,7 +449,7 @@ class Basic:
       audiopanel.add(audiobutton)
       self.menu_body.setWidget(audiopanel)
   def onSkypeClick(self):
-    window.alert("you are trying to make a skype call")
+    #window.alert("you are trying to make a skype call")
     #audiopanel.add(HTML("<a href='skype:NAME?call'>Skype call</a>"))
     DOM.getElementById('Skype call').click()
     self.location = Window.getLocation()
