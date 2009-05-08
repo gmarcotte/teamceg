@@ -70,19 +70,21 @@ class Basic:
     self.editorHTML.setID(self.editorHTMLID)
     
     # this gets the contents of the editor into the div area so we can send it
-    self.driversynch = """<div style=\"white-space: normal;\" class=\"gwt-HTML\">
-    <script>setInterval('syncheditor()', 5000);
+    self.driversynch = """
+    <script>
+    setInterval('syncheditor()', 5000);
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
     alert("synching editor");
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
-    }</script></div>"""
+    }</script>"""
     
     #<div style="white-space: normal;" class="gwt-HTML"><script> </script> </div>
-    self.passengersynch = """<div style=\"white-space: normal;\" class=\"gwt-HTML\">
-    <script>setInterval('synchlisten()', 5000);
+    self.passengersynch = """
+    <script>
+    setInterval('synchlisten()', 5000);
     function synchlisten() { 
     alert("synching listen");
     var currentfocus = document.activeElement;
@@ -90,7 +92,7 @@ class Basic:
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
     currentfocus.focus() // don't know if this works or not
-    }</script></div>"""
+    }</script>"""
     
     initialcontent = """<script> </script> """
     
@@ -200,13 +202,16 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        DOM.setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
+        DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
         window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+        self.editor.add(HTML(self.driversynch), self.synchID)
       else:
         self.isdriver = False
         window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        DOM.setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
+        DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
         window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+        self.editor.add(HTML(self.passengersynch), self.synchID)
+        
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
@@ -252,8 +257,9 @@ class Basic:
               window.alert("Driver status setting to true.")
               self.isdriver = True
               window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              DOM.setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
+              DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
               window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
+              self.editor.add(HTML(self.driversynch), self.synchID)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               window.alert("Driver status setting to false")
