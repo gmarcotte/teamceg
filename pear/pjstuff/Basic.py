@@ -195,10 +195,12 @@ class Basic:
       # set the local vars
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
-        self.editor.add(HTML(self.driversynch), self.synchID)
+        ##self.editor.add(HTML(self.driversynch), self.synchID)
+        DOM.setInnerHTML(DOM.getElementById(self.synchID), self.driversynch)
       else:
         self.isdriver = False
-        self.editor.add(HTML(self.passengersynch), self.synchID)
+        ##self.editor.add(HTML(self.passengersynch), self.synchID)
+        DOM.setInnerHTML(DOM.getElementById(self.synchID), self.passengersynch)
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
