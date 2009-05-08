@@ -398,10 +398,10 @@ class Multiplex:
 			if re.match('^[0-9A-Za-z-_. ]+$',login):
 				sys.stdout.write("Initiating SSH connection for %s@%s\n" % (login, ssh))
 				cmd=['ssh']
-				cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
+				#cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
 				cmd+=['-oNoHostAuthenticationForLocalhost=yes']
 				cmd+=['-oLogLevel=FATAL']
-				cmd+=['-i %s' % key_file]
+				cmd+=['-i%s' % key_file]
 				cmd+=['-F/dev/null','-l',login,ssh]
 			else:
 				os._exit(0)
