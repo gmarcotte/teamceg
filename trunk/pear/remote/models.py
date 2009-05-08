@@ -53,6 +53,8 @@ class SSHConnection(timestamp.TimestampedModel):
       if resp.find("Password:") >= 0:
         session.close()
         return None
+      session.sendline('')
+      session.sendline('')
       self.num_active += 1
       self.save()
       self.execute(session, 'cd %s' % self.base_dir)
