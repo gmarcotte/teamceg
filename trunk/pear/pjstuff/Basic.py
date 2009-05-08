@@ -243,6 +243,7 @@ class Basic:
     
     elif request_info.method == 'driver_status':
       if self.switching == False:
+        self.switching = True
         for tpl in response:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
@@ -256,6 +257,7 @@ class Basic:
               self.isdriver = False
               self.editor.remove(self.synchID)
               self.editor.add(HTML(self.passengersynch), self.synchID)
+          self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
         if (str(tpl[1])) == "True":
