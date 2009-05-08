@@ -24,6 +24,7 @@ class SSHConnection(timestamp.TimestampedModel):
   base_dir = models.CharField(max_length=100, blank=True)
   
   active_servers = AvailableSSHManager()
+  objects = models.Manager()
   
   def __unicode__(self):
     return '%s@%s' % (self.user_name, self.server)
