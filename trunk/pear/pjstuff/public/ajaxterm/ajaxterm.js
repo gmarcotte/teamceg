@@ -297,7 +297,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
     // if we are the passenger terminal, set the update more aggressively
-    inter=window.setInterval(update,100);
+    //inter=window.setInterval(update,100);
 	}
 	init();
 }

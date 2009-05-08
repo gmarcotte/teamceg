@@ -66,6 +66,7 @@ class Basic:
     self.listensynchID = "MYlistensynchID"
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
+    # listenID no longer exists, fix after demo.
     self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); /*setInterval('toggle()', 5000);*/</script>")
     self.editorHTML = HTML("The contents of the editor.")
     self.editorHTML.setVisible(False)
@@ -106,7 +107,9 @@ class Basic:
     
     initialcontent = """<script> </script> """
     
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
+
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "' style:'display=none'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
+
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
     self.editor.add(self.editorTextArea, self.editorID)
