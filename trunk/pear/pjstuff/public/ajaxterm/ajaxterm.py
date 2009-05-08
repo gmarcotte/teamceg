@@ -10,7 +10,7 @@ sys.path[0:0]=glob.glob('../../python')
 
 import qweb
 
-RSA_KEY_DIR = os.path.abspath(os.path.join(__file__, '../../../../keys'))
+RSA_KEY_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../keys'))
 
 class Terminal:
 	def __init__(self,width=80,height=24):
