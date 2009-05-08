@@ -73,7 +73,7 @@ class Basic:
     self.driversynch = """<script>setInterval('syncheditor()', 5000);
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    //alert("synching editor");
+    alert("synching editor");
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
@@ -81,7 +81,7 @@ class Basic:
     
     self.passengersynch = """<script>setInterval('synchlisten()', 5000);
     function synchlisten() { 
-    //alert("synching listen");
+    alert("synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
@@ -246,31 +246,31 @@ class Basic:
         for tpl in response:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
+              window.alert("Driver status setting to true.")
               self.isdriver = True
               self.editor.remove(self.synchID)
               self.editor.add(HTML(self.driversynch), self.synchID)
-              #DOM.setInnerHTML(DOM.getElementById(self.synchID), self.driversynch)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
+              window.alert("Driver status setting to false")
               self.isdriver = False
               self.editor.remove(self.synchID)
               self.editor.add(HTML(self.passengersynch), self.synchID)
-              #DOM.setInnerHTML(DOM.getElementById(self.synchID), self.passengersynch)
     elif request_info.method == 'switch_driver':
       for tpl in response:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
+            window.alert("Driver status setting to true")
             self.isdriver = True
             self.editor.remove(self.synchID)
             self.editor.add(HTML(self.driversynch), self.synchID)
-            #DOM.setInnerHTML(DOM.getElementById(self.synchID), self.driversynch)
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
+            window.alert("Driver status setting to false")
             self.isdriver = False
             self.editor.remove(self.synchID)
             self.editor.add(HTML(self.passengersynch), self.synchID)
-            #DOM.setInnerHTML(DOM.getElementById(self.synchID), self.passengersynch)
             self.switching = False
             
     elif request_info.method == 'user_quit':
