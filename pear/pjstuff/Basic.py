@@ -199,7 +199,6 @@ class Basic:
       if (len(response[3]) < 1):  # if there is no passenger
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
-          self.passenger.setText("None")
       else:  # if len(response[3]) > 0:  # if there is a passenger
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
@@ -457,13 +456,15 @@ class Basic:
     self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
-    # Right now will detect if you are first driver and a partner joins, hasn't been set up for after driver switching or if one partner leaves, etc.
+    # Check for new passenger
     if self.isdriver:
-      #window.alert("I checked for passenger")
       self.remote.get_meetinginfo(self)
       if self.currpass.getText() != self.passenger.getText():
         self.currpass.setText(self.passenger.getText())
-        window.alert("New passenger %s detected" % self.passenger.getText())
+        if self.passenger.getText() == "No Partner logged in":
+          window.alert("No partners logged in")
+        else:
+          window.alert("New passenger %s detected" % self.passenger.getText())
         
     if self.quitting == False and self.switching == False:
       # do server update stuff here
