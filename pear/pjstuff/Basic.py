@@ -67,26 +67,21 @@ class Basic:
     self.editorHTML.setID(self.editorHTMLID)
     
     # this gets the contents of the editor into the div area so we can send it
-    self.driversynch = """<script>setInterval('syncheditor()', 1000);
+    self.driversynch = """<script>setInterval('syncheditor()', 10);
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    //var ed = document.getElementById('MYeditorID'); 
     var content = editAreaLoader.getValue('MYeditorID');
-    //alert(ED);
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
     }</script>"""
     
-    self.passengersynch = """<script>setInterval('synchlisten()', 10000);
+    self.passengersynch = """<script>setInterval('synchlisten()', 10);
     function synchlisten() { 
-    // also need to do something here to get the focus back on whatever it was
-    // before we messed around with it...
     var currentfocus = document.activeElement;
-    alert(currentfocus.id)
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
-    currentfocus.focus()
+    currentfocus.focus() // don't know if this works or not
     }</script>"""
     
     initialcontent = """<script> </script> """
@@ -375,7 +370,7 @@ class Basic:
       self.color.setText("white")
       self.panel.setStyleName("white")
     
-    Timer(10000, self)
+    Timer(500, self)
     
   def toggleFlash(self):
     if self.active_flash.getText() == "Flashing":
