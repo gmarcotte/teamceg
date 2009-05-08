@@ -25501,8 +25501,8 @@ function __Basic_initialize() {
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 5000);\n    alert(window.editorInterval);\n      \n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    alert("synching editor");\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 5000);\n    alert(window.listenInterval);\n    function synchlisten() { \n    alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
+    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 5000);\n    //alert(window.editorInterval);\n      \n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    //alert("synching editor");\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 5000);\n    //alert(window.listenInterval);\n    function synchlisten() { \n    //alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
     var initialcontent = '<script> </script> ';
     this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
@@ -25649,9 +25649,10 @@ function __Basic_initialize() {
     this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
     this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
     this.drivername = ui_Label(sprintf('%s', this.list.__getitem__(3)));
-    this.passenger = ui_Label(sprintf('%s', this.list.__getitem__(4)));
-    this.passengername = ui_Label(sprintf('%s', this.list.__getitem__(5)));
-    if ((pyjslib_len(this.list.__getitem__(4)) < 1)) {
+    this.consoleID = ui_Label(sprintf('%s', this.list.__getitem__(4)));
+    this.passenger = ui_Label(sprintf('%s', this.list.__getitem__(5)));
+    this.passengername = ui_Label(sprintf('%s', this.list.__getitem__(6)));
+    if ((pyjslib_len(this.list.__getitem__(5)) < 1)) {
     this.passenger.setText('No Partner logged in');
     this.passengername.setText('No Partner logged in');
     }
@@ -25829,9 +25830,6 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onRemoteResponse.unbound_method = true;
     __Basic.prototype.onRemoteResponse.instance_method = true;
     __Basic.prototype.onRemoteError = function(response, request_info) {
-    window.alert('ERROR');
-    alert(response);
-    alert(pyjslib_str(response));
     };
     __Basic.prototype.__class__.onRemoteError = function() {
         return __Basic.prototype.onRemoteError.call.apply(__Basic.prototype.onRemoteError, arguments);
