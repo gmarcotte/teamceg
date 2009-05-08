@@ -25438,10 +25438,10 @@ function __Basic_initialize() {
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 5000);\n    //alert(window.editorInterval);\n      \n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    //alert("synching editor");\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 5000);\n    //alert(window.listenInterval);\n    function synchlisten() { \n    //alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
+    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 100);\n    //alert(window.editorInterval);\n      \n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    //alert("synching editor");\n    // see if this helps with actually setting it to be editable again\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', true);\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 100);\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\"></div>";\n    //alert(window.listenInterval);\n    function synchlisten() { \n    //alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
     var initialcontent = '<script> </script> ';
-    this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
+    this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 575px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
     this.editorTextArea.setID(this.editorID);
     this.editor.add(this.editorTextArea, this.editorID);
@@ -25454,7 +25454,7 @@ function __Basic_initialize() {
     vp.setBorderWidth(1);
     var term = ui_HTMLPanel(' <script> setterm(); </script> <div id=\'term\'></div>');
     term.setWidth('100%');
-    term.setHeight('426px');
+    term.setHeight('390px');
     var console = ui_SimplePanel();
     console.add(term);
     console.setWidth('400px');
@@ -25505,8 +25505,8 @@ function __Basic_initialize() {
     this.panel.setCellWidth(hp, '100%');
     this.panel.setCellHeight(hp, '100%');
     this.panel.setCellWidth(this.head, '100%');
-    this.panel.setWidth('1000px');
-    this.panel.setHeight('650px');
+    this.panel.setWidth('995px');
+    this.panel.setHeight('400px');
     ui_RootPanel().add(this.panel);
     this.currpass = ui_Label('No Partner logged in');
     this.onTimer();
@@ -25527,7 +25527,6 @@ function __Basic_initialize() {
                 
         
     this.driver.setText(sprintf('%s', tpl.__getitem__(1)));
-    this.passenger.setText('None');
 
             }
         } catch (e) {
@@ -25635,7 +25634,6 @@ function __Basic_initialize() {
         
     }
     else if ((request_info.method == 'send_flash')) {
-    this.Flash = this.Flash;
     }
     else if ((request_info.method == 'receive_flash')) {
 
@@ -25647,12 +25645,12 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(tpl.__getitem__(1)) == 'off')) {
     if (this.Flash) {
-    this.flashOff();
+    this.toggleFlash();
     }
     }
     else {
     if (!(this.Flash)) {
-    this.flashOn();
+    this.toggleFlash();
     }
     }
 
@@ -25697,14 +25695,12 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
-    window.alert('Driver status setting to true.');
     this.isdriver = true;
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
     }
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
     if ((this.isdriver == true)) {
-    window.alert('Driver status setting to false');
     this.isdriver = false;
     this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
@@ -25730,7 +25726,6 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
-    window.alert('switch Driver status setting to true');
     this.isdriver = true;
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
     this.switching = false;
@@ -25738,7 +25733,6 @@ function __Basic_initialize() {
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
     if ((this.isdriver == true)) {
-    window.alert('switch Driver status setting to false');
     this.isdriver = false;
     this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     this.switching = false;
@@ -25993,11 +25987,9 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onModeClick.unbound_method = true;
     __Basic.prototype.onModeClick.instance_method = true;
     __Basic.prototype.onSwitchDriversClick = function() {
-    window.alert('You are trying to switch drivers');
     if ((this.isdriver == true)) {
     this.switching = true;
     this.remote.switch_driver(this);
-    window.alert('Just sent switch command.');
     }
     else {
     window.alert('Passengers cannot elect to switch!');
@@ -26028,7 +26020,6 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onAudioClick.unbound_method = true;
     __Basic.prototype.onAudioClick.instance_method = true;
     __Basic.prototype.onSkypeClick = function() {
-    window.alert('you are trying to make a skype call');
     DOM_getElementById('Skype call').click();
     this.location = Window_getLocation();
     this.location.setHref('skype:NAME?call');
@@ -26043,7 +26034,11 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     this.remote.get_meetinginfo(this);
     if ((this.currpass.getText() != this.passenger.getText())) {
     this.currpass.setText(this.passenger.getText());
+    if ((this.passenger.getText() == 'No Partner logged in')) {
+    }
+    else {
     window.alert(sprintf('New passenger %s detected', this.passenger.getText()));
+    }
     }
     }
     if (((this.quitting == false)) && ((this.switching == false))) {
