@@ -147,8 +147,6 @@ def global_project_listing(request):
   }
   for key in request.GET.keys():
     get_data[key] = int(request.GET.get(key))
-    
-  raise Exception(str(get_data))
   
   projects = pear.projects.models.Project.objects.filter(is_public = True)
   
