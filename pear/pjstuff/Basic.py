@@ -220,7 +220,7 @@ class Basic:
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
       self.consoleID = Label("%s" % self.list[4])
-      alert(self.consoleID)
+      alert(self.list[4])
       self.passenger = Label("%s" % self.list[5]) # sometimes will be blank
       self.passengername = Label("%s" % self.list[6]) # sometimes will be blank
       if len(self.list[5]) < 1:
