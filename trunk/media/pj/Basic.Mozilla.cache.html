@@ -25417,8 +25417,7 @@ function __Basic_initialize() {
     this.flash = ui_Button('Start Flash', pyjslib_getattr(this, 'toggleFlash'));
     this.quit = ui_Button('Quit', pyjslib_getattr(this, 'onQuitClick'));
     this.menu_body = ui_SimplePanel();
-    this.menu_body.setWidth('500px');
-    this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/header_no_description.jpg\' height=\'20px\'>');
+    this.menu_contents = ui_HTMLPanel('<img src=\'/pj/images/logo_clean_long.jpg\' height=\'21px\'>');
     this.menu_body.setWidget(this.menu_contents);
     this.active_flash = ui_Label('Off');
     this.color = ui_Label('white');
@@ -25432,7 +25431,6 @@ function __Basic_initialize() {
     this.head.add(this.quit);
     this.head.add(ui_Label('|'));
     this.head.add(this.menu_body);
-    this.head.add(this.menu_contents);
     this.editorID = 'MYeditorID';
     this.editorHTMLID = 'MYeditorHTMLID';
     this.functionID = 'MYfunctionID';
@@ -25442,8 +25440,8 @@ function __Basic_initialize() {
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '<script>setInterval(\'syncheditor()\', 1000);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    //var ed = document.getElementById(\'MYeditorID\'); \n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    //alert(ED);\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '<script>setInterval(\'synchlisten()\', 10000);\n    function synchlisten() { \n    // also need to do something here to get the focus back on whatever it was\n    // before we messed around with it...\n    var currentfocus = document.activeElement;\n    alert(currentfocus.id)\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus()\n    }</script>';
+    this.driversynch = '<script>setInterval(\'syncheditor()\', 10);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '<script>setInterval(\'synchlisten()\', 10);\n    function synchlisten() { \n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
     var initialcontent = '<script> </script> ';
     this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
@@ -25471,7 +25469,7 @@ function __Basic_initialize() {
     this.text_area.setWidget(this.text);
     this.text_area.setSize('487px', '151px');
     this.text_box = ui_TextBox();
-    this.text_box.setVisibleLength('68');
+    this.text_box.setVisibleLength('58');
     this.text_box.setMaxLength('600');
     this.text_box.setID(this.chatID);
     this.text_box.addKeyboardListener(this);
@@ -25729,7 +25727,7 @@ function __Basic_initialize() {
     __Basic.prototype.onInfoClick = function() {
     if ((this.active_menu.getText() == 'Info')) {
     this.active_menu.setText('');
-    this.menu_body.setWidget(ui_Label(''));
+    this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Info');
@@ -25781,7 +25779,7 @@ function __Basic_initialize() {
     }
     }
     var filepanel = ui_VerticalPanel();
-    filepanel.setSpacing();
+    filepanel.setSpacing(7);
     filepanel.setCellHorizontalAlignment(filetree, __ui_HasAlignment.prototype.__class__.ALIGN_LEFT);
     filepanel.add(filetree);
     var filebutt = ui_Button('Close', pyjslib_getattr(this, 'onFileCloseClick'));
@@ -25847,7 +25845,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onModeClick = function() {
     if ((this.active_menu.getText() == 'Mode')) {
     this.active_menu.setText('');
-    this.menu_body.setWidget(ui_Label(''));
+    this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Mode');
@@ -25874,7 +25872,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onAudioClick = function() {
     if ((this.active_menu.getText() == 'Audio')) {
     this.active_menu.setText('');
-    this.menu_body.setWidget(ui_Label(''));
+    this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Audio');
@@ -25924,7 +25922,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     this.color.setText('white');
     this.panel.setStyleName('white');
     }
-    Timer_Timer(10000, this);
+    Timer_Timer(500, this);
     };
     __Basic.prototype.__class__.onTimer = function() {
         return __Basic.prototype.onTimer.call.apply(__Basic.prototype.onTimer, arguments);
