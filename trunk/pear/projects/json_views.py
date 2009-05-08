@@ -304,12 +304,11 @@ def switch_driver(request):
     
     # if the user is the driver, make the passenger the driver
     if str(request.user.id) == str(meeting.driver_id):
-      
       if meeting.passenger_id > 0:
         # make the passenger the driver
         temp = meeting.driver_id
         meeting.driver_id = meeting.passenger_id
-        meeting.passenger = temp
+        meeting.passenger_id = temp
         meeting.save()
         r.append(('notice','we switched drivers'))
         r.append(('isdriver','False'))
