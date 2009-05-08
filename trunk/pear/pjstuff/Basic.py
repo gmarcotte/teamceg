@@ -78,9 +78,7 @@ class Basic:
     clearInterval(window.listenInterval);
     window.editorInterval = setInterval('syncheditor()', 5000);
     alert(window.editorInterval);
-    //var interval = document.getElementById('MYintervalID');
-    //interval.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ window.editorInterval + "</div>";
-    
+      
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
     alert("synching editor");
@@ -106,7 +104,7 @@ class Basic:
     
     initialcontent = """<script> </script> """
     
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;'></textarea> <div id='" + self.editorsynchID + "'></div> <div id='" + self.listensynchID + "'></div> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
     self.editor.add(self.editorTextArea, self.editorID)
@@ -114,8 +112,6 @@ class Basic:
     self.editor.add(self.editorHTML, self.editorHTMLID)
     
     self.editor.add(HTML(initialcontent), self.synchID)
-    #self.editor.add(HTML(self.driversynch), self.editorsynchID)
-    #self.editor.add(HTML(self.passengersynch), self.listensynchID)
     self.editor.setWidth("100%")
     self.editor.setHeight("100%")
     
@@ -214,17 +210,11 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         self.editor.add(HTML(self.driversynch), self.synchID)
-        #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        #DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
-        #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        #self.editor.add(HTML(self.driversynch), self.synchID)
+        
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
-        #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        #DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
-        #window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        #self.editor.add(HTML(self.passengersynch), self.synchID)
+        
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
