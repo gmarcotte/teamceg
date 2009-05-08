@@ -26099,6 +26099,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     if (this.isdriver) {
     this.remote.get_meetinginfo(this);
     if ((this.currpass.getText() != this.passenger.getText())) {
+    this.currpass.setText(this.passenger.getText());
     window.alert(sprintf('New passenger %s detected', this.passenger.getText()));
     }
     }
