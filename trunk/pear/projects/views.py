@@ -59,7 +59,7 @@ def launch_project(request, project_id):
       meeting.flash = False
       meeting.console = ''
       meeting.editor = ''
-      meeting.save()
+    meeting.save()
     return shortcuts.render_to_response(
         'Basic.html',
         {'page_title': 'Project Workspace',
