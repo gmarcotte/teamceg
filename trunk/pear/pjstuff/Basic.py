@@ -113,8 +113,6 @@ class Basic:
     console.setWidth("400px")
     console.setHeight("100%")
     # not so hacky -- indeed, pretty decent little text chat
-    self.driver = Label("Unset")
-    self.passenger = Label("Unset") # this isn't right? Does it override our call to getsessioninfo?
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
     self.text = HTML("(There is a 600 character limit on messages)")
