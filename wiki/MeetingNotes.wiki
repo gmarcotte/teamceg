@@ -3,6 +3,17 @@
 = Introduction =
 Running record of notes from our team meetings. 
 
+= Thu, May 7 =
+== CEG meeting ==
+ # Temporarily fixed chat (yes, ajaxterm was stealing focus)
+ # File tree UI set up
+ # Prepared demo presentation
+ # Got Editor set up for two users, pushed to server
+
+= Wed, May 6 = 
+== CEG ish meeting ==
+ # (what did we accomplish in ele lab?..)
+
 = Tue, May 5 =
 == Individual ==
  # Started demo presentation
