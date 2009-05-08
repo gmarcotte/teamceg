@@ -26,6 +26,41 @@ def index(request):
       context_instance=template.RequestContext(request))
 
 
+def add_file(request, project_id):
+  """Add a file to the project."""
+  redirect_to = request.GET.get('next', 'my_projects/')
+  try:
+    project = pear.projects.models.Project.objects.get(pk=project_id)
+  except exceptions.ObjectDoesNotExist:
+    return http.HttpResponseRedirect(redirect_to)
+  
+  if request.method == 'POST':
+    try:
+      ssh_id = request.POST.get('server_id', 0)
+      ssh = pear.remote.models.SSHConnection.objects.get(pk=ssh_id)
+    except exceptions.ObjectDoesNotExist:
+      pass
+    else:
+      text = request.POST.get('text', '')
+      filename = request.POST.get('filename', '')
+      session = ssh.connect()
+      ssh.execute(session, 'cd %s' % project.directory)
+      ssh.create_file(session, filename, text)
+      ssh.svn_add_file(session, filename)
+      return http.HttpResponseRedirect(redirect_to)
+  
+  available_servers = request.user.servers.filter(has_valid_keys=True)
+  return shortcuts.render_to_response(
+      'global/projects/add_file.html',
+      {'page_title': 'Add a File',
+       'project': project,
+       'available_servers': available_servers},
+      context_instance=template.RequestContext(request))
+  
+  
+  
+
+
 def launch_project(request, project_id):
   """Launch the Pyjamas app for a given project"""
   redirect_to = request.GET.get('next', '/my_projects/')
