@@ -77,11 +77,10 @@ class Basic:
     <script>
     clearInterval(window.listenInterval);
     window.editorInterval = setInterval('syncheditor()', 100);
-    //alert(window.editorInterval);
       
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    //alert("synching editor");
+    
     // see if this helps with actually setting it to be editable again
     editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
     var content = editAreaLoader.getValue('MYeditorID');
@@ -94,21 +93,19 @@ class Basic:
     <script>
     clearInterval(window.editorInterval);
     window.listenInterval = setInterval('synchlisten()', 100);
-    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\"></div>";
-    //alert(window.listenInterval);
+
     function synchlisten() { 
-    //alert("synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
-    currentfocus.focus() // don't know if this works or not
+    currentfocus.focus() 
     }</script>"""
     
     initialcontent = """<script> </script> """
     
 
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "' style:'display=none'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
 
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
@@ -255,8 +252,10 @@ class Basic:
     elif request_info.method == 'receive_editor':
       # check to see if maybe there is an error here because of empty string?
       for tpl in response:
-        DOM.setInnerText(DOM.getElementById(self.editorHTMLID), tpl[1])
-        self.editorHTML.setVisible(False)
+        content = tpl[1]
+        innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>" + content+"</div>";
+        DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
+        #self.editorHTML.setVisible(False)
     
     elif request_info.method == 'driver_status':
       if self.switching == False:
