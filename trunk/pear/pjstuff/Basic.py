@@ -106,7 +106,7 @@ class Basic:
     
     initialcontent = """<script> </script> """
     
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
     self.editor.add(self.editorTextArea, self.editorID)
@@ -125,7 +125,7 @@ class Basic:
     # the console
     term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
     term.setWidth("100%")
-    term.setHeight("426px")
+    term.setHeight("390px")
     console = SimplePanel()
     console.add(term)
     console.setWidth("400px")
@@ -186,8 +186,8 @@ class Basic:
     self.panel.setCellWidth(hp, "100%")
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
-    self.panel.setWidth("1000px")  # out of 1024
-    self.panel.setHeight("600px")  # out of 768
+    self.panel.setWidth("995px")  # out of 1024
+    self.panel.setHeight("400px")  # out of 768
     
     RootPanel().add(self.panel)
     
