@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, FileUpload
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
@@ -295,11 +295,66 @@ class Basic:
       self.menu_body.setWidget(infomsg)
 
   def onFilesClick(self):
+    if self.active_menu.getText() == "Files":
+      self.active_menu.setText("")
+      self.menu_body.setWidget(self.menu_contents)
+    else:
+      self.active_menu.setText("Files")
+      filepanel = HorizontalPanel()
+      filetreebutton = Button("File Tree", getattr(self, "onFileTreeOpenClick"))
+      filedirbutton = Button("Add New Directory", getattr(self, "onFileDirOpenClick"))
+      fileuploadbutton = Button("Upload a File", getattr(self, "onFileUploadOpenClick"))
+      filetreebutton.setStyleName("supp-button")
+      filedirbutton.setStyleName("supp-button")
+      fileuploadbutton.setStyleName("supp-button")
+      filepanel.add(filetreebutton)
+      filepanel.add(filedirbutton)
+      filepanel.add(fileuploadbutton)
+      self.menu_body.setWidget(filepanel)
+  def onFileUploadOpenClick(self):
+    self.uploadform = FormPanel()
+    self.uploadform.setEncoding(FormPanel.ENCODING_MULTIPART)
+    self.uploadform.setMethod(FormPanel.METHOD_POST)
+    self.uploadform.setAction("http://www.google.com")
+    self.uploadform.setTarget("results")
+    upload_hp = HorizontalPanel()
+    upload_hp.setSpacing(7)
+    upload_hp.add(Label("Upload file:"))
+    self.fileup = FileUpload()
+    self.fileup.setName("file")
+    upload_hp.add(self.fileup)
+    fileuploadsubmitbutt = Button("Submit", getattr(self, "onFileUploadSubmitClick"))
+    fileuploadclosebutt = Button("Cancel", getattr(self, "onFileUploadCloseClick"))
+    uploadbutt_hp = HorizontalPanel()
+    uploadbutt_hp.setSpacing(7)
+    uploadbutt_hp.add(fileuploadsubmitbutt)
+    uploadbutt_hp.add(fileuploadclosebutt)
+    upload_vp = VerticalPanel()
+    upload_vp.setSpacing(4)
+    upload_vp.add(upload_hp)
+    results = NamedFrame("results")
+    upload_vp.add(results)
+    upload_vp.add(uploadbutt_hp)
+    upload_vp.setCellHorizontalAlignment(uploadbutt_hp, HasAlignment.ALIGN_CENTER)
+    self.uploadform.add(upload_vp)
+    self.upload_box = DialogBox()
+    self.upload_box.setHTML("File Upload")
+    self.upload_box.setWidget(self.uploadform)
+    self.upload_box.setPopupPosition(350, 150)
+    self.upload_box.show()
+  def onFileUploadSubmitClick(self):
+    self.uploadform.submit()
+    self.upload_box.hide()
+  def onFileUploadCloseClick(self):
+    self.upload_box.hide()
+  def onFileDirOpenClick(self):
+    pass ###
+  def onFileTreeOpenClick(self):
     filetree = Tree()
     filetree.addTreeListener(self)
     i = 0
     while (i < len(self.file_test)) and (self.file_test[i][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_test[i][1:]))
+      s1 = self.createTreeItem(str(self.file_test[i][1:]), value="garrett")
       i = i + 1
       while (i < len(self.file_test)) and (self.file_test[i][0] == "2"):
         s2 = self.createTreeItem(str(self.file_test[i][1:]), value="monkey")
@@ -321,19 +376,18 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
-        filetree.addItem(s1)
-      
-    filepanel = VerticalPanel()
-    filepanel.setSpacing(7)
-    filepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
-    filepanel.add(filetree)
-    filebutt = Button("Close", getattr(self, "onFileCloseClick"))
-    filepanel.add(filebutt)
-    filepanel.setCellHorizontalAlignment(filebutt, HasAlignment.ALIGN_CENTER)
-    filepanel.setWidth("400px")
+        filetree.addItem(s1)      
+    filetreepanel = VerticalPanel()
+    filetreepanel.setSpacing(7)
+    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    filetreepanel.add(filetree)
+    filetreebutt = Button("Close", getattr(self, "onFileTreeCloseClick"))
+    filetreepanel.add(filetreebutt)
+    filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
+    filetreepanel.setWidth("400px")
     self.file_box = DialogBox()
     self.file_box.setHTML("File Navigation")
-    self.file_box.setWidget(filepanel)
+    self.file_box.setWidget(filetreepanel)
     self.file_box.setPopupPosition(350, 200)
     self.file_box.show()
   def createTreeItem(self, label, value=None):
@@ -348,7 +402,7 @@ class Basic:
     #self.file_box.hide()
   def onTreeItemStateChanged(self, item):
     pass  # "We ignore this." but why again?
-  def onFileCloseClick(self):
+  def onFileTreeCloseClick(self):
     self.file_box.hide()
       
   def onModeClick(self):

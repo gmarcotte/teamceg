@@ -25442,8 +25442,8 @@ function __Basic_initialize() {
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '<script>setInterval(\'syncheditor()\', 5000);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    alert("synching editor")\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '<script>setInterval(\'synchlisten()\', 5000);\n    function synchlisten() { \n    alert("synching listen")\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
+    this.driversynch = '<script>setInterval(\'syncheditor()\', 5000);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    #alert("synching editor");\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '<script>setInterval(\'synchlisten()\', 5000);\n    function synchlisten() { \n    #alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
     var initialcontent = '<script> </script> ';
     this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
@@ -25580,11 +25580,13 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
     this.isdriver = true;
-    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.driversynch);
+    this.editor.remove(this.synchID);
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     }
     else {
     this.isdriver = false;
-    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.passengersynch);
+    this.editor.remove(this.synchID);
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
     this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
     this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
@@ -25689,6 +25691,7 @@ function __Basic_initialize() {
     }
     else if ((request_info.method == 'driver_status')) {
     if ((this.switching == false)) {
+    this.switching = true;
 
         var __tpl = response.__iter__();
         try {
@@ -25698,16 +25701,21 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
+    window.alert('Driver status setting to true.');
     this.isdriver = true;
-    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.driversynch);
+    this.editor.remove(this.synchID);
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     }
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
     if ((this.isdriver == true)) {
+    window.alert('Driver status setting to false');
     this.isdriver = false;
-    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.passengersynch);
+    this.editor.remove(this.synchID);
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
     }
+    this.switching = false;
 
             }
         } catch (e) {
@@ -25728,15 +25736,19 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
+    window.alert('Driver status setting to true');
     this.isdriver = true;
-    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.driversynch);
+    this.editor.remove(this.synchID);
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     this.switching = false;
     }
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
     if ((this.isdriver == true)) {
+    window.alert('Driver status setting to false');
     this.isdriver = false;
-    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.passengersynch);
+    this.editor.remove(this.synchID);
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     this.switching = false;
     }
     }
@@ -25790,11 +25802,97 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.onInfoClick.unbound_method = true;
     __Basic.prototype.onInfoClick.instance_method = true;
     __Basic.prototype.onFilesClick = function() {
+    if ((this.active_menu.getText() == 'Files')) {
+    this.active_menu.setText('');
+    this.menu_body.setWidget(this.menu_contents);
+    }
+    else {
+    this.active_menu.setText('Files');
+    var filepanel = ui_HorizontalPanel();
+    var filetreebutton = ui_Button('File Tree', pyjslib_getattr(this, 'onFileTreeOpenClick'));
+    var filedirbutton = ui_Button('Add New Directory', pyjslib_getattr(this, 'onFileDirOpenClick'));
+    var fileuploadbutton = ui_Button('Upload a File', pyjslib_getattr(this, 'onFileUploadOpenClick'));
+    filetreebutton.setStyleName('supp-button');
+    filedirbutton.setStyleName('supp-button');
+    fileuploadbutton.setStyleName('supp-button');
+    filepanel.add(filetreebutton);
+    filepanel.add(filedirbutton);
+    filepanel.add(fileuploadbutton);
+    this.menu_body.setWidget(filepanel);
+    }
+    };
+    __Basic.prototype.__class__.onFilesClick = function() {
+        return __Basic.prototype.onFilesClick.call.apply(__Basic.prototype.onFilesClick, arguments);
+    };
+    __Basic.prototype.__class__.onFilesClick.unbound_method = true;
+    __Basic.prototype.onFilesClick.instance_method = true;
+    __Basic.prototype.onFileUploadOpenClick = function() {
+    this.uploadform = ui_FormPanel();
+    this.uploadform.setEncoding(__ui_FormPanel.prototype.__class__.ENCODING_MULTIPART);
+    this.uploadform.setMethod(__ui_FormPanel.prototype.__class__.METHOD_POST);
+    this.uploadform.setAction('http://www.google.com');
+    this.uploadform.setTarget('results');
+    var upload_hp = ui_HorizontalPanel();
+    upload_hp.setSpacing(7);
+    upload_hp.add(ui_Label('Upload file:'));
+    this.fileup = ui_FileUpload();
+    this.fileup.setName('file');
+    upload_hp.add(this.fileup);
+    var fileuploadsubmitbutt = ui_Button('Submit', pyjslib_getattr(this, 'onFileUploadSubmitClick'));
+    var fileuploadclosebutt = ui_Button('Cancel', pyjslib_getattr(this, 'onFileUploadCloseClick'));
+    var uploadbutt_hp = ui_HorizontalPanel();
+    uploadbutt_hp.setSpacing(7);
+    uploadbutt_hp.add(fileuploadsubmitbutt);
+    uploadbutt_hp.add(fileuploadclosebutt);
+    var upload_vp = ui_VerticalPanel();
+    upload_vp.setSpacing(4);
+    upload_vp.add(upload_hp);
+    var results = ui_NamedFrame('results');
+    upload_vp.add(results);
+    upload_vp.add(uploadbutt_hp);
+    upload_vp.setCellHorizontalAlignment(uploadbutt_hp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.uploadform.add(upload_vp);
+    this.upload_box = ui_DialogBox();
+    this.upload_box.setHTML('File Upload');
+    this.upload_box.setWidget(this.uploadform);
+    this.upload_box.setPopupPosition(350, 150);
+    this.upload_box.show();
+    };
+    __Basic.prototype.__class__.onFileUploadOpenClick = function() {
+        return __Basic.prototype.onFileUploadOpenClick.call.apply(__Basic.prototype.onFileUploadOpenClick, arguments);
+    };
+    __Basic.prototype.__class__.onFileUploadOpenClick.unbound_method = true;
+    __Basic.prototype.onFileUploadOpenClick.instance_method = true;
+    __Basic.prototype.onFileUploadSubmitClick = function() {
+    this.uploadform.submit();
+    this.upload_box.hide();
+    };
+    __Basic.prototype.__class__.onFileUploadSubmitClick = function() {
+        return __Basic.prototype.onFileUploadSubmitClick.call.apply(__Basic.prototype.onFileUploadSubmitClick, arguments);
+    };
+    __Basic.prototype.__class__.onFileUploadSubmitClick.unbound_method = true;
+    __Basic.prototype.onFileUploadSubmitClick.instance_method = true;
+    __Basic.prototype.onFileUploadCloseClick = function() {
+    this.upload_box.hide();
+    };
+    __Basic.prototype.__class__.onFileUploadCloseClick = function() {
+        return __Basic.prototype.onFileUploadCloseClick.call.apply(__Basic.prototype.onFileUploadCloseClick, arguments);
+    };
+    __Basic.prototype.__class__.onFileUploadCloseClick.unbound_method = true;
+    __Basic.prototype.onFileUploadCloseClick.instance_method = true;
+    __Basic.prototype.onFileDirOpenClick = function() {
+    };
+    __Basic.prototype.__class__.onFileDirOpenClick = function() {
+        return __Basic.prototype.onFileDirOpenClick.call.apply(__Basic.prototype.onFileDirOpenClick, arguments);
+    };
+    __Basic.prototype.__class__.onFileDirOpenClick.unbound_method = true;
+    __Basic.prototype.onFileDirOpenClick.instance_method = true;
+    __Basic.prototype.onFileTreeOpenClick = function() {
     var filetree = ui_Tree();
     filetree.addTreeListener(this);
     var i = 0;
     while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '1'))) {
-    var s1 = this.createTreeItem(pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null)));
+    var s1 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'garrett'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
     var i =  ( i + 1 ) ;
     while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '2'))) {
     var s2 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'monkey'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
@@ -25822,25 +25920,25 @@ function __Basic_initialize() {
     filetree.addItem(s1);
     }
     }
-    var filepanel = ui_VerticalPanel();
-    filepanel.setSpacing(7);
-    filepanel.setCellHorizontalAlignment(filetree, __ui_HasAlignment.prototype.__class__.ALIGN_LEFT);
-    filepanel.add(filetree);
-    var filebutt = ui_Button('Close', pyjslib_getattr(this, 'onFileCloseClick'));
-    filepanel.add(filebutt);
-    filepanel.setCellHorizontalAlignment(filebutt, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
-    filepanel.setWidth('400px');
+    var filetreepanel = ui_VerticalPanel();
+    filetreepanel.setSpacing(7);
+    filetreepanel.setCellHorizontalAlignment(filetree, __ui_HasAlignment.prototype.__class__.ALIGN_LEFT);
+    filetreepanel.add(filetree);
+    var filetreebutt = ui_Button('Close', pyjslib_getattr(this, 'onFileTreeCloseClick'));
+    filetreepanel.add(filetreebutt);
+    filetreepanel.setCellHorizontalAlignment(filetreebutt, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    filetreepanel.setWidth('400px');
     this.file_box = ui_DialogBox();
     this.file_box.setHTML('File Navigation');
-    this.file_box.setWidget(filepanel);
+    this.file_box.setWidget(filetreepanel);
     this.file_box.setPopupPosition(350, 200);
     this.file_box.show();
     };
-    __Basic.prototype.__class__.onFilesClick = function() {
-        return __Basic.prototype.onFilesClick.call.apply(__Basic.prototype.onFilesClick, arguments);
+    __Basic.prototype.__class__.onFileTreeOpenClick = function() {
+        return __Basic.prototype.onFileTreeOpenClick.call.apply(__Basic.prototype.onFileTreeOpenClick, arguments);
     };
-    __Basic.prototype.__class__.onFilesClick.unbound_method = true;
-    __Basic.prototype.onFilesClick.instance_method = true;
+    __Basic.prototype.__class__.onFileTreeOpenClick.unbound_method = true;
+    __Basic.prototype.onFileTreeOpenClick.instance_method = true;
     __Basic.prototype.createTreeItem = function(label, value) {
     if (typeof value == 'undefined') value=null;
     var item = ui_TreeItem(label);
@@ -25878,14 +25976,14 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     };
     __Basic.prototype.__class__.onTreeItemStateChanged.unbound_method = true;
     __Basic.prototype.onTreeItemStateChanged.instance_method = true;
-    __Basic.prototype.onFileCloseClick = function() {
+    __Basic.prototype.onFileTreeCloseClick = function() {
     this.file_box.hide();
     };
-    __Basic.prototype.__class__.onFileCloseClick = function() {
-        return __Basic.prototype.onFileCloseClick.call.apply(__Basic.prototype.onFileCloseClick, arguments);
+    __Basic.prototype.__class__.onFileTreeCloseClick = function() {
+        return __Basic.prototype.onFileTreeCloseClick.call.apply(__Basic.prototype.onFileTreeCloseClick, arguments);
     };
-    __Basic.prototype.__class__.onFileCloseClick.unbound_method = true;
-    __Basic.prototype.onFileCloseClick.instance_method = true;
+    __Basic.prototype.__class__.onFileTreeCloseClick.unbound_method = true;
+    __Basic.prototype.onFileTreeCloseClick.instance_method = true;
     __Basic.prototype.onModeClick = function() {
     if ((this.active_menu.getText() == 'Mode')) {
     this.active_menu.setText('');
@@ -26074,8 +26172,6 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     this.quit_box = ui_DialogBox();
     this.quit_box.setHTML('Quit Confirmation');
     this.quit_box.setWidget(quitvp);
-    var left = 350;
-    var top = 200;
     this.quit_box.setPopupPosition(350, 200);
     this.quit_box.show();
     };
