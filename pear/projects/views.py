@@ -145,7 +145,10 @@ def global_project_listing(request):
       'orphans': 10,
       'page': 1
   }
-  get_data.update(request.GET)
+  for key in request.GET.keys():
+    get_data[key] = int(request.GET.get(key))
+    
+  raise Exception(str(get_data))
   
   projects = pear.projects.models.Project.objects.filter(is_public = True)
   
