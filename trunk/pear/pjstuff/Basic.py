@@ -81,6 +81,7 @@ class Basic:
     
     self.passengersynch = """<script>setInterval('synchlisten()', 5000);
     function synchlisten() { 
+    if (this.isdriver) return;
     alert("synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
@@ -261,14 +262,14 @@ class Basic:
       for tpl in response:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
-            window.alert("Driver status setting to true")
+            window.alert("switch Driver status setting to true")
             self.isdriver = True
             self.editor.remove(self.synchID)
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
-            window.alert("Driver status setting to false")
+            window.alert("switch Driver status setting to false")
             self.isdriver = False
             self.editor.remove(self.synchID)
             self.editor.add(HTML(self.passengersynch), self.synchID)
