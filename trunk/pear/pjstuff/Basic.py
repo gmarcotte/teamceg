@@ -8,12 +8,15 @@ from pyjamas.JSONService import JSONProxy
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver",])
 
 class Basic:
   def onModuleLoad(self):
     
     self.remote = DataService()
+    
+    # this tells us whether or not we are trying to quit...
+    self.quitting = False 
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
@@ -233,10 +236,33 @@ class Basic:
       for tpl in response:
         DOM.setInnerText(DOM.getElementById(self.editorHTMLID), tpl[1])
         self.editorHTML.setVisible(False)
-        
-    elif request_info.method == 'user_quit':
+    
+    elif request_info.method == 'driver_status':
       for tpl in response:
-        window.alert("%s" %tpl[1])
+        if (str(tpl[1])) == "True":
+          if self.isdriver == False:
+            self.isdriver = True
+            self.editor.add(HTML(self.driversynch), self.synchID)
+        elif str(tpl[1]) == "False":
+          if self.isdriver == True:
+            self.isdriver = False
+            self.editor.add(HTML(self.passengersynch), self.synchID)
+    elif request_info.method == 'switch_driver':
+      for tpl in response:
+        #window.alert(str(tpl[1]))
+        if (str(tpl[1])) == "True":
+          if self.isdriver == False:
+            self.isdriver = True
+            self.editor.add(HTML(self.driversynch), self.synchID)
+        elif str(tpl[1]) == "False":
+          if self.isdriver == True:
+            self.isdriver = False
+            self.editor.add(HTML(self.passengersynch), self.synchID)
+            
+    elif request_info.method == 'user_quit':
+      ##save everything for them
+      self.location = Window.getLocation()
+      self.location.setHref("http://teamceg.princeton.edu/")
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
@@ -329,6 +355,11 @@ class Basic:
     
   def onSwitchDriversClick(self):
     window.alert("You are trying to switch drivers")
+    if self.isdriver == True:
+      self.remote.switch_driver(self)
+      window.alert("Just sent switch command.")
+    else:
+      window.alert("Passengers cannot elect to switch!")
     ##
     
   def onAudioClick(self):
@@ -347,28 +378,32 @@ class Basic:
     window.alert("you are trying to make a skype call")
   
   def onTimer(self):
-    # do server update stuff here
-    self.remote.receive_chatmessage(self)
-    self.remote.receive_flash(self)
-    
-    if self.isdriver == True:
-      content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
-      if len(content) > 0:
-        self.remote.send_editor(content, self)
-    else:
-      self.remote.receive_editor(self)
-    
-    # do flash stuff here
-    if self.active_flash.getText() == "Flashing":
-      if self.color.getText() == "pink":
-        self.color.setText("green")
-        self.panel.setStyleName("green")
+    if self.quitting == False:
+      # do server update stuff here
+      self.remote.receive_chatmessage(self)
+      self.remote.receive_flash(self)
+      # this only really matters for passengers
+      if self.isdriver == False:
+        self.remote.driver_status(self) 
+      
+      if self.isdriver == True:
+        content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
+        if len(content) > 0:
+          self.remote.send_editor(content, self)
       else:
-        self.color.setText("pink")
-        self.panel.setStyleName("pink")
-    else:
-      self.color.setText("white")
-      self.panel.setStyleName("white")
+        self.remote.receive_editor(self)
+      
+      # do flash stuff here
+      if self.active_flash.getText() == "Flashing":
+        if self.color.getText() == "pink":
+          self.color.setText("green")
+          self.panel.setStyleName("green")
+        else:
+          self.color.setText("pink")
+          self.panel.setStyleName("pink")
+      else:
+        self.color.setText("white")
+        self.panel.setStyleName("white")
     
     Timer(500, self)
     
@@ -411,6 +446,8 @@ class Basic:
       self.text_box.setText("")
       
   def onQuitClick(self):
+    # We're trying to quit, pause communications
+    self.quitting = True
     #self.remote.user_quit(self)
     quitvp = VerticalPanel()
     quitvp.setSpacing(4)
@@ -430,8 +467,12 @@ class Basic:
     self.quit_box.show()
   def onQuitCancel(self):
     self.quit_box.hide()
+    # we're not trying to escape anymore, restart regular communications
+    self.quitting = False 
   def onQuitConfirm(self):
     self.quit_box.hide()
+    self.remote.user_quit(self)
+    ### THis is moved to on remote response
     ##save everything for them
-    self.location = Window.getLocation()
-    self.location.setHref("http://teamceg.princeton.edu/")
+    ##self.location = Window.getLocation()
+    ##self.location.setHref("http://teamceg.princeton.edu/")
