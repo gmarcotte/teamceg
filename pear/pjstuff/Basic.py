@@ -31,8 +31,8 @@ class Basic:
     self.flash = Button("Start Flash", getattr(self, "toggleFlash"))
     self.quit = Button("Quit", getattr(self, "onQuitClick"))
     self.menu_body = SimplePanel()
-    self.menu_body.setWidth("500px")
-    self.menu_contents = HTMLPanel("<img src='/pj/images/header_no_description.jpg' height='20px'>")
+    #self.menu_body.setWidth("500px")
+    self.menu_contents = HTMLPanel("<img src='/pj/images/logo_clean_long.jpg' height='21px'>")
     self.menu_body.setWidget(self.menu_contents)
     self.active_flash = Label("Off")
     self.color = Label("white")
@@ -47,7 +47,6 @@ class Basic:
     self.head.add(self.quit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
-    self.head.add(self.menu_contents)
     
     # the left side
     # editor
@@ -122,7 +121,7 @@ class Basic:
     self.text_area.setWidget(self.text)
     self.text_area.setSize("487px", "151px")
     self.text_box = TextBox()
-    self.text_box.setVisibleLength("68")
+    self.text_box.setVisibleLength("58")
     self.text_box.setMaxLength("600")
     self.text_box.setID(self.chatID)
     self.text_box.addKeyboardListener(self)
@@ -274,7 +273,7 @@ class Basic:
   def onInfoClick(self):
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
-      self.menu_body.setWidget(Label(""))
+      self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Info")
       id = self.remote.get_meetinginfo(self)
@@ -314,7 +313,7 @@ class Basic:
         filetree.addItem(s1)
       
     filepanel = VerticalPanel()
-    filepanel.setSpacing()
+    filepanel.setSpacing(7)
     filepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
     filepanel.add(filetree)
     filebutt = Button("Close", getattr(self, "onFileCloseClick"))
@@ -344,7 +343,7 @@ class Basic:
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
       self.active_menu.setText("")
-      self.menu_body.setWidget(Label(""))
+      self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Mode")
       modepanel = HorizontalPanel()
@@ -365,7 +364,7 @@ class Basic:
   def onAudioClick(self):
     if self.active_menu.getText() == "Audio":
       self.active_menu.setText("")
-      self.menu_body.setWidget(Label(""))
+      self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Audio")
       audiopanel = HorizontalPanel()

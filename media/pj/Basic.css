@@ -1,52 +1,73 @@
+/* Tree */
 .gwt-Tree {
-/* the tree itself */
-  font-family: Tahoma;
+  font-family: Verdana, Tahoma;
 }
 .gwt-Tree .gwt-TreeItem {
-/* a tree item */
-  font-size: 12px;
+  font-size: 13px;
 }
 .gwt-Tree .gwt-TreeItem-selected {
-/* a selected tree item */
+  background: #ffee99;
 }
 
-
-
-
-.whitebg {
-  bacground: #ffffff;
+/* Default buttons */
+.gwt-button {
+  background: #99cc66;
+  color: #ffffff;
+  font-size: 14px;
+  /*font-weight: bold;*/
+  border: 1px solid #ffffff;
+  border-style: rounded;
+  font-family: Verdana, Tahoma;
+}
+.gwt-Button:active {
+}
+.gwt-Button:hover {
+}
+.gwt-Button[disabled] {
+}
+.gwt-Button[disabled]:hover {
 }
 
-
+/* Custom Buttons */
 .supp-button {
   background: #ffdd88;
   color: #000000;
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid #ffffff;
   border-style: rounded;
-  font-family: Tahoma;
+  font-family: Verdana, Tahoma;
 }
 .not-button {
   background: ffffff;
   color: #000000;
-  font-size: 13px;
+  font-size: 14px;
   border: 1px solid #ffdd88;
-  font-family: Tahoma;
+  font-family: Verdana, Tahoma;
   padding: 1px;
 }
 
-
-
-.text-area {
-  border: 1px solid #000000;
-  background-image: url(/pj/images/logo_small.jpg);
-  background-position: 50% 50%;
-  background-repeat: repeat;
+/* Dialog Box */
+.gwt-DialogBox {
+  border: 2px outset;
+  background-color: white;
+  cursor: default;
+}
+.gwt-DialogBox .Caption {
+  font-family: Verdana, Tahoma, Arial;
+  background-color: #99dd88;
+  padding: 3px;
+  margin: 2px;
+  font-weight: bold;
+  cursor: default;
+  font-size: smaller;
+}
+.gwt-DialogBox .Contents {
+  padding: 10px;
+  background-color: #ffffff;
 }
 
-
-.gwt-PopupPanel { 
-  /* the outside of the popup */
+/* Popup Panel */
+.gwt-PopupPanel {
   background: #ffffff;
   border: 1px solid #000000;
   font-family: Georgia;
@@ -54,16 +75,30 @@
   padding: 3px;
 }
 
-
-
-.gwt-button {
-  background: #99cc66;
-  color: #ffffff;
-  font-size: 13px;
-  border: 1px solid #ffffff;
-  border-style: rounded;
-  font-family: Tahoma;
+/* Custom Text Area */
+.text-area {
+  padding: 2px;
+  border: 1px solid #000000;
+  background-image: url(/pj/images/logo_small.jpg);
+  background-position: 50% 50%;
+  background-repeat: repeat;
+  font-family: Verdana, Tahoma, Arial;
+  font-size: 14px;
 }
+
+/* Text Box */
+.gwt-TextBox {
+  padding: 2px;
+  font-family: Verdana, Tahoma, Arial; 
+  font-size: 14px;
+}
+
+
+
+.whitebg {
+  bacground: #ffffff;
+}
+
 
 
 .pink{
@@ -101,65 +136,4 @@
   font-style: italic;
   font-size: 11px;
   color: #666666;
-}
-
-/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
-.gwt-DialogBox {
-      border: 2px outset;
-      background-color: white;
-      cursor: default;
-    }
-.gwt-DialogBox .Caption {
-      font-family: Tahoma, Helvetica, Arial;
-      background-color: #99dd88;
-      padding: 3px;
-      margin: 2px;
-      font-weight: bold;
-      cursor: default;
-      font-size: smaller;
-    }
-.gwt-DialogBox .Contents {
-      padding: 10px;
-      background-color: #ffffff;
-    }
-
-
-
-/* Taken from Pyjamas Showcase online, http://pyjs.org/showcase/Showcase.html */
-.gwt-TabPanel {
-}
-.gwt-TabPanelBottom {
-      border: 1px solid #998855;
-}
-.gwt-TabBar {
-      background-color: #ffffff;
-}
-.gwt-TabBar .gwt-TabBarFirst {
-      height: 100%;
-      padding-left: 3px;
-}
-.gwt-TabBar .gwt-TabBarRest {
-      padding-right: 3px;
-}
-.gwt-TabBar .gwt-TabBarItem {
-      font-family: Tahoma, Helvetica, Arial;
-      font-size: smaller;
-      border-top: 0px solid #998855;
-      border-left: 0px solid #ccaa88;
-      border-right: 0px solid #ccaa88;
-      border-bottom: 0px solid #;
-      padding: 2px 6px 2px 6px;
-      cursor: pointer;
-}
-.gwt-TabBar .gwt-TabBarItem-selected {
-      font-family: Tahoma, Helvetica, Arial;
-      font-size: smaller;
-      text-decoration: ;
-      background-color: #cccc99;
-      border-top: 0px solid #ccaa88;
-      border-left: 0px solid #ccaa88;
-      border-right: 0px solid #ccaa88;
-      border-bottom: 0px solid #998855;
-      padding: 2px;
-      cursor: default;
 }
