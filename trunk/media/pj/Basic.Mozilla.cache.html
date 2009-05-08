@@ -25383,7 +25383,7 @@ function __DataService_initialize() {
     pyjs_extend(__DataService, __JSONService_JSONProxy);
     __DataService.prototype.__class__.__new__ = DataService;
     __DataService.prototype.__init__ = function() {
-    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash', 'send_editor', 'receive_editor', 'user_quit']));
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash', 'send_editor', 'receive_editor', 'user_quit', 'driver_status', 'switch_driver']));
     };
     __DataService.prototype.__class__.__init__ = function() {
         return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
@@ -25407,6 +25407,8 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.__new__ = Basic;
     __Basic.prototype.onModuleLoad = function() {
     this.remote = DataService();
+    this.quitting = false;
+    this.switching = false;
     this.remote.get_meetinginfo(this);
     this.active_menu = ui_Label('');
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
@@ -25440,8 +25442,8 @@ function __Basic_initialize() {
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '<script>setInterval(\'syncheditor()\', 10);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '<script>setInterval(\'synchlisten()\', 10);\n    function synchlisten() { \n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
+    this.driversynch = '<script>setInterval(\'syncheditor()\', 5000);\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    alert("synching editor")\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '<script>setInterval(\'synchlisten()\', 5000);\n    function synchlisten() { \n    alert("synching listen")\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
     var initialcontent = '<script> </script> ';
     this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
@@ -25461,8 +25463,6 @@ function __Basic_initialize() {
     console.add(term);
     console.setWidth('400px');
     console.setHeight('100%');
-    this.driver = ui_Label('Unset');
-    this.passenger = ui_Label('Unset');
     this.text_area = ui_ScrollPanel();
     this.text_area.setStyleName('text-area');
     this.text = ui_HTML('(There is a 600 character limit on messages)');
@@ -25580,11 +25580,11 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
     this.isdriver = true;
-    this.editor.add(ui_HTML(this.driversynch), this.synchID);
+    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.driversynch);
     }
     else {
     this.isdriver = false;
-    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
+    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.passengersynch);
     }
     this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
     this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
@@ -25687,7 +25687,8 @@ function __Basic_initialize() {
         }
         
     }
-    else if ((request_info.method == 'user_quit')) {
+    else if ((request_info.method == 'driver_status')) {
+    if ((this.switching == false)) {
 
         var __tpl = response.__iter__();
         try {
@@ -25695,7 +25696,18 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    window.alert(sprintf('%s', tpl.__getitem__(1)));
+    if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
+    if ((this.isdriver == false)) {
+    this.isdriver = true;
+    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.driversynch);
+    }
+    }
+    else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
+    if ((this.isdriver == true)) {
+    this.isdriver = false;
+    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.passengersynch);
+    }
+    }
 
             }
         } catch (e) {
@@ -25704,6 +25716,42 @@ function __Basic_initialize() {
             }
         }
         
+    }
+    }
+    else if ((request_info.method == 'switch_driver')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
+    if ((this.isdriver == false)) {
+    this.isdriver = true;
+    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.driversynch);
+    this.switching = false;
+    }
+    }
+    else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
+    if ((this.isdriver == true)) {
+    this.isdriver = false;
+    DOM_setInnerHTML(DOM_getElementById(this.synchID), this.passengersynch);
+    this.switching = false;
+    }
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'user_quit')) {
+    this.location = Window_getLocation();
+    this.location.setHref('http://teamceg.princeton.edu/');
     }
     else {
     console.error('Error in onRemoteResponse function in Basic.py');
@@ -25731,10 +25779,6 @@ function __Basic_initialize() {
     }
     else {
     this.active_menu.setText('Info');
-    var id = this.remote.get_meetinginfo(this);
-    if ((id < 0)) {
-    console.error('Server Error or Invalid Response');
-    }
     var infomsg = ui_Label(sprintf('Driver: %s, Passenger: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
     infomsg.setStyleName('not-button');
     this.menu_body.setWidget(infomsg);
@@ -25863,6 +25907,14 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onModeClick.instance_method = true;
     __Basic.prototype.onSwitchDriversClick = function() {
     window.alert('You are trying to switch drivers');
+    if ((this.isdriver == true)) {
+    this.switching = true;
+    this.remote.switch_driver(this);
+    window.alert('Just sent switch command.');
+    }
+    else {
+    window.alert('Passengers cannot elect to switch!');
+    }
     };
     __Basic.prototype.__class__.onSwitchDriversClick = function() {
         return __Basic.prototype.onSwitchDriversClick.call.apply(__Basic.prototype.onSwitchDriversClick, arguments);
@@ -25890,6 +25942,9 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onAudioClick.instance_method = true;
     __Basic.prototype.onSkypeClick = function() {
     window.alert('you are trying to make a skype call');
+    DOM_getElementById('Skype call').click();
+    this.location = Window_getLocation();
+    this.location.setHref('skype:NAME?call');
     };
     __Basic.prototype.__class__.onSkypeClick = function() {
         return __Basic.prototype.onSkypeClick.call.apply(__Basic.prototype.onSkypeClick, arguments);
@@ -25897,8 +25952,12 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onSkypeClick.unbound_method = true;
     __Basic.prototype.onSkypeClick.instance_method = true;
     __Basic.prototype.onTimer = function() {
+    if (((this.quitting == false)) && ((this.switching == false))) {
     this.remote.receive_chatmessage(this);
     this.remote.receive_flash(this);
+    if ((this.isdriver == false)) {
+    this.remote.driver_status(this);
+    }
     if ((this.isdriver == true)) {
     var content = DOM_getInnerText(DOM_getElementById(this.editorHTMLID));
     if ((pyjslib_len(content) > 0)) {
@@ -25921,6 +25980,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     else {
     this.color.setText('white');
     this.panel.setStyleName('white');
+    }
     }
     Timer_Timer(500, this);
     };
@@ -26001,6 +26061,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onKeyPress.unbound_method = true;
     __Basic.prototype.onKeyPress.instance_method = true;
     __Basic.prototype.onQuitClick = function() {
+    this.quitting = true;
     var quitvp = ui_VerticalPanel();
     quitvp.setSpacing(4);
     quitvp.add(ui_HTML('We hope you had a productive session, come back soon!'));
@@ -26025,6 +26086,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onQuitClick.instance_method = true;
     __Basic.prototype.onQuitCancel = function() {
     this.quit_box.hide();
+    this.quitting = false;
     };
     __Basic.prototype.__class__.onQuitCancel = function() {
         return __Basic.prototype.onQuitCancel.call.apply(__Basic.prototype.onQuitCancel, arguments);
@@ -26033,8 +26095,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onQuitCancel.instance_method = true;
     __Basic.prototype.onQuitConfirm = function() {
     this.quit_box.hide();
-    this.location = Window_getLocation();
-    this.location.setHref('http://teamceg.princeton.edu/');
+    this.remote.user_quit(this);
     };
     __Basic.prototype.__class__.onQuitConfirm = function() {
         return __Basic.prototype.onQuitConfirm.call.apply(__Basic.prototype.onQuitConfirm, arguments);

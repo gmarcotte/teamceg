@@ -81,7 +81,7 @@
   border: 1px solid #000000;
   background-image: url(/pj/images/logo_small.jpg);
   background-position: 50% 50%;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   font-family: Verdana, Tahoma, Arial;
   font-size: 14px;
 }

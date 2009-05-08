@@ -178,7 +178,6 @@ class Basic:
     
     # start the timer for updates from server
     self.onTimer()
-
       
   def onRemoteResponse(self, response, request_info):
     if request_info.method == 'get_username':
@@ -293,9 +292,6 @@ class Basic:
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Info")
-      id = self.remote.get_meetinginfo(self)
-      if id < 0:
-        console.error("Server Error or Invalid Response")
       infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
       infomsg.setStyleName("not-button")
       self.menu_body.setWidget(infomsg)
@@ -377,7 +373,6 @@ class Basic:
       window.alert("Just sent switch command.")
     else:
       window.alert("Passengers cannot elect to switch!")
-    ##
     
   def onAudioClick(self):
     if self.active_menu.getText() == "Audio":
@@ -389,10 +384,13 @@ class Basic:
       audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
       audiobutton.setStyleName("supp-button")
       audiopanel.add(audiobutton)
-      #audiopanel.add(HTML("<a href='callto://YourUserNameHere'>Skype call</a>"))
       self.menu_body.setWidget(audiopanel)
   def onSkypeClick(self):
     window.alert("you are trying to make a skype call")
+    #audiopanel.add(HTML("<a href='skype:NAME?call'>Skype call</a>"))
+    DOM.getElementById('Skype call').click()
+    self.location = Window.getLocation()
+    self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
     if self.quitting == False and self.switching == False:
@@ -478,8 +476,6 @@ class Basic:
     self.quit_box = DialogBox()
     self.quit_box.setHTML("Quit Confirmation")
     self.quit_box.setWidget(quitvp)
-    left = 350
-    top = 200
     self.quit_box.setPopupPosition(350, 200)  # (left, top)
     self.quit_box.show()
   def onQuitCancel(self):
@@ -489,7 +485,7 @@ class Basic:
   def onQuitConfirm(self):
     self.quit_box.hide()
     self.remote.user_quit(self)
-    ### THis is moved to on remote response
+    ### This is moved to on remote response
     ##save everything for them
     ##self.location = Window.getLocation()
     ##self.location.setHref("http://teamceg.princeton.edu/")
