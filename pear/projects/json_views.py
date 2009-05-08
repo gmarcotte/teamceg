@@ -138,6 +138,7 @@ def get_meetinginfo(request):
       r.append(('project', project.name))
       r.append(('driver', driver.email))
       r.append(('driver', driver.first_name))
+      r.append(('driver',meeting.driverconsole))
       if meeting.passenger_id > 0:
         passenger = PearUser.objects.get(pk=meeting.passenger_id)
         r.append(('passenger', passenger.email))

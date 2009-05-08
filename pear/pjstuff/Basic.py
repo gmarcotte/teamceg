@@ -219,9 +219,11 @@ class Basic:
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
-      self.passenger = Label("%s" % self.list[4]) # sometimes will be blank
-      self.passengername = Label("%s" % self.list[5]) # sometimes will be blank
-      if len(self.list[4]) < 1:
+      self.consoleID = Label("%s" % self.list[4])
+      alert(self.consoleID)
+      self.passenger = Label("%s" % self.list[5]) # sometimes will be blank
+      self.passengername = Label("%s" % self.list[6]) # sometimes will be blank
+      if len(self.list[5]) < 1:
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
     elif request_info.method == 'send_chatmessage':
