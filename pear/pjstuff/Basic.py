@@ -117,8 +117,8 @@ class Basic:
     self.editor.setWidth("100%")
     self.editor.setHeight("100%")
     
-    innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'></div>";
-    DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
+    #innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'></div>";
+    #DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
     
     
     
