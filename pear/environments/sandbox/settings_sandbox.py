@@ -17,12 +17,14 @@ DATABASE_PORT = ''
 # Server configuration
 SERVER_HOSTNAME = 'http://localhost:8000'
 
+# Subversion Access
+SVN_BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../repos'))
+SVN_BASE_URL = 'file://%s' % SVN_BASE_DIR
 
 # Media configuration
 STATIC_SERVE = True
 ADMIN_MEDIA_PREFIX = '/admin_media'
-MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), 
-                                          '../media/'))
+MEDIA_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../media/'))
 MEDIA_URL = 'http://localhost:8000'
 
 AJAXTERM_URL = 'http://localhost:8022/'

@@ -1,9 +1,12 @@
 #projects: models.py
 #CCI 3/27/09
 from django.db import models
+from django.conf import settings
 
 from pear.core import timestamp
 import pear.accounts.models
+
+import os
 
 
 YEAR_CHOICES = (
@@ -102,6 +105,20 @@ class Project(timestamp.TimestampedModel):
   
   def resurrect_url(self):
     return '/projects/%s/resurrect/' % self.id
+  
+  # Subversion interaction methods
+  def get_repository_dir(self):
+    return "%s%s%s" % (settings.SVN_BASE_DIR, os.sep, self.repos)
+  
+  def get_repository_url(self):
+    return "%s/%s" % (settings.SVN_BASE_URL, self.repos)
+  
+  def create_repository(self):
+    if os.path.exists(self.get_repository_dir()):
+      return False
+    else:
+      cmd = "svnadmin create %s" % self.get_repository_dir()
+      os.system(cmd)
 
   
   
