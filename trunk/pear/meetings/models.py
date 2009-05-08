@@ -30,8 +30,9 @@ class Meeting(timestamp.TimestampedModel):
   passenger = models.ForeignKey(pear.accounts.models.PearUser, related_name='passenger_for', null=True)
   # Project
   project = models.ForeignKey(pear.projects.models.Project)
-  # Console state
-  console = models.XMLField()
+  # Console session id for driver and passenger
+  passengerconsole = models.IntegerField(null=True)
+  driverconsole = models.IntegerField()
   # Editor state -- Note that we might need to change this to deal with maliciously long documents
   editor = models.TextField()
   # Chat state (queue of messages for each user and all messages)

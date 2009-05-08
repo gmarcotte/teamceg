@@ -306,6 +306,9 @@ def switch_driver(request):
     if str(request.user.id) == str(meeting.driver_id):
       if meeting.passenger_id > 0:
         # make the passenger the driver
+        tempid = meeting.passengerconsole
+        meeting.passengerconsole = meeting.driverconsole
+        meeting.driverconsole = tempid
         temp = meeting.driver_id
         meeting.driver_id = meeting.passenger_id
         meeting.passenger_id = temp

@@ -87,9 +87,11 @@ def launch_project(request, project_id):
     if meetings:
       meeting = meetings[0]
       meeting.passenger = request.user
+      meeting.passengerconsole = request.user.id
     else:
       meeting = Meeting()
       meeting.driver = request.user
+      meeting.driverconsole = request.user.id
       meeting.passenger = None
       meeting.project = project
       # set some other things
