@@ -61,6 +61,8 @@ class Basic:
     self.functionID = "MYfunctionID"
     self.synchID = "MYsynchID"
     self.chatID = "MYchatID"
+    self.editorsynchID = "MYeditorsynchID"
+    self.listensynchID = "MYlistensynchID"
     #self.editor = HTMLPanel("<textarea id='"+self.editorID+"' style='height: 610px; width: 100%;' name='test_1'>asdf</textarea><script>SetUpEditArea('" + self.editorID + "');</script><div id='" + self.functionID + "'></div>")
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
@@ -72,10 +74,11 @@ class Basic:
     # this gets the contents of the editor into the div area so we can send it
     self.driversynch = """
     <script>
-    setInterval('syncheditor()', 5000);
+    //setInterval('synch()', 5000);
+
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    alert("synching editor");
+    //alert("synching editor");
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
@@ -84,9 +87,10 @@ class Basic:
     #<div style="white-space: normal;" class="gwt-HTML"><script> </script> </div>
     self.passengersynch = """
     <script>
-    setInterval('synchlisten()', 5000);
+    //setInterval('synch()', 5000);
+    
     function synchlisten() { 
-    alert("synching listen");
+    //alert("synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
@@ -104,6 +108,8 @@ class Basic:
     self.editor.add(self.editorHTML, self.editorHTMLID)
     
     self.editor.add(HTML(initialcontent), self.synchID)
+    self.editor.add(HTML(self.driversynch), self.editorsynchID)
+    self.editor.add(HTML(self.passengersynch), self.listensynchID)
     self.editor.setWidth("100%")
     self.editor.setHeight("100%")
     
@@ -201,16 +207,8 @@ class Basic:
       # set the local vars
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
-        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
-        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        self.editor.add(HTML(self.driversynch), self.synchID)
       else:
         self.isdriver = False
-        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
-        window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-        self.editor.add(HTML(self.passengersynch), self.synchID)
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
@@ -256,17 +254,10 @@ class Basic:
             if self.isdriver == False:
               window.alert("Driver status setting to true.")
               self.isdriver = True
-              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              DOM.setInnerHTML(DOM.getElementById(self.synchID)," ")
-              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              self.editor.add(HTML(self.driversynch), self.synchID)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               window.alert("Driver status setting to false")
               self.isdriver = False
-              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-              DOM.setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
-              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
           self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
@@ -274,17 +265,11 @@ class Basic:
           if self.isdriver == False:
             window.alert("switch Driver status setting to true")
             self.isdriver = True
-            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-            setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
-            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             window.alert("switch Driver status setting to false")
             self.isdriver = False
-            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
-            setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
-            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             self.switching = False
             
     elif request_info.method == 'user_quit':
@@ -406,6 +391,10 @@ class Basic:
     self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
+    if self.isdriver == True:
+      JS(""" syncheditor(); """)
+    else:
+      JS(""" synchlisten(); """)
     if self.quitting == False and self.switching == False:
       # do server update stuff here
       self.remote.receive_chatmessage(self)
