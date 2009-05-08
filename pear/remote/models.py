@@ -166,14 +166,22 @@ class SSHConnection(timestamp.TimestampedModel):
       return True
     
   # Common remote operations
-  def create_file(self, filename, string):  
-    session = self.connect()
-    if not session:
-      return None
-    
+  def create_file(self, session, filename, string):      
     self.execute(session, 'cat /dev/null > %s' % filename)
     for line in string.split('\n'):
       self.execute(session, "echo '%s' >> %s" % (line, filename))
     resp = self.execute(session, 'cat %s' % filename)
-    self.close(session)
     return resp
+  
+  def svn_add_file(self, session, filename):
+    cmd = 'svn add %s' 
+    self.execute(session, cmd)
+    cmd = 'svn commit %s -m "Adding %s to repository"'
+    resp = self.execute(session, cmd)
+    return resp
+  
+  def checkout_project(self, session, project):
+    cmd = 'cd ~/%s' % self.base_dir
+    self.execute(session, cmd)
+    cmd = 'svn co %s %s' % (project.get_repository_url(), project.directory)
+    resp = self.execute(session, cmd)

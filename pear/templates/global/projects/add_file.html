@@ -1,0 +1,26 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<br>
+<form action="" method="POST">
+{% for ssh in available_servers %}
+{% if forloop.first %}
+SSH Connection:
+<select name="server">
+{% endif %} 
+<option value="{{ ssh.id }}">{{ ssh }}</option>
+{% if forloop.last %}
+</select>
+<br /><input type="submit" value="go" name="go" />
+</form>
+{% endif %}
+{% empty %}
+<p>You have not configured any SSH Connections yet.</p>
+{% endfor %}
+Filename: <input type="text" name="filename" /><br />
+Text:<br />
+<textarea name="text" rows="15" cols="80"></textarea><br />
+<input type="submit" value="Add File" name="add_file" />
+</form>
+
+{% endblock %}

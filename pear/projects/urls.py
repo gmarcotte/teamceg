@@ -12,6 +12,7 @@ urlpatterns = defaults.patterns('pear.projects.views',
     (r'^(?P<project_id>\d+)/delete/$', 'delete_project'),
     (r'^(?P<project_id>\d+)/resurrect/$', 'resurrect_project'),
     (r'^(?P<project_id>\d+)/launch/$', 'launch_project'),
+    (r'^(?P<project_id>\d+)/add_file/$', 'add_file'),
     # Ajax Views
     (r'^ajax/coursesearch/$', 'ajax_course_search'),
 )
