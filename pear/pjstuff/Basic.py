@@ -70,16 +70,16 @@ class Basic:
     self.editorHTML.setID(self.editorHTMLID)
     
     # this gets the contents of the editor into the div area so we can send it
-    self.driversynch = """<div id='MYsynchID'><script>setInterval('syncheditor()', 5000);
+    self.driversynch = """<script>setInterval('syncheditor()', 5000);
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
     alert("synching editor")
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
-    }</script></div>"""
+    }</script>"""
     
-    self.passengersynch = """<div id='MYsynchID'><script>setInterval('synchlisten()', 5000);
+    self.passengersynch = """<script>setInterval('synchlisten()', 5000);
     function synchlisten() { 
     alert("synching listen")
     var currentfocus = document.activeElement;
@@ -87,7 +87,7 @@ class Basic:
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
     currentfocus.focus() // don't know if this works or not
-    }</script></div>"""
+    }</script>"""
     
     initialcontent = """<script> </script> """
     
@@ -98,7 +98,7 @@ class Basic:
     self.editor.add(self.functionHTML, self.functionID)
     self.editor.add(self.editorHTML, self.editorHTMLID)
     
-    #self.editor.add(HTML(initialcontent), self.synchID)
+    self.editor.add(HTML(initialcontent), self.synchID)
     self.editor.setWidth("100%")
     self.editor.setHeight("100%")
     
