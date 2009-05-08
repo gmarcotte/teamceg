@@ -575,7 +575,3 @@ class Basic:
   def onQuitConfirm(self):
     self.quit_box.hide()
     self.remote.user_quit(self)
-    ### This is moved to on remote response
-    ##save everything for them
-    ##self.location = Window.getLocation()
-    ##self.location.setHref("http://teamceg.princeton.edu/")
