@@ -236,18 +236,18 @@ class Basic:
         self.editorHTML.setVisible(False)
     
     elif request_info.method == 'driver_status':
-      for tpl in response:
-        if (str(tpl[1])) == "True":
-          if self.isdriver == False:
-            self.isdriver = True
-            self.editor.add(HTML(self.driversynch), self.synchID)
-        elif str(tpl[1]) == "False":
-          if self.isdriver == True:
-            self.isdriver = False
-            self.editor.add(HTML(self.passengersynch), self.synchID)
+      if self.switching == False:
+        for tpl in response:
+          if (str(tpl[1])) == "True":
+            if self.isdriver == False:
+              self.isdriver = True
+              self.editor.add(HTML(self.driversynch), self.synchID)
+          elif str(tpl[1]) == "False":
+            if self.isdriver == True:
+              self.isdriver = False
+              self.editor.add(HTML(self.passengersynch), self.synchID)
     elif request_info.method == 'switch_driver':
       for tpl in response:
-        #window.alert(str(tpl[1]))
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
