@@ -1,39 +1,39 @@
 pre.stat {
-	margin: 0px;
-	padding: 4px;
-	display: block;
-	font-family: monospace;
+  margin: 0px;
+  padding: 4px;
+  display: block;
+  font-family: monospace;
   font-size: 11px;
-	white-space: pre;
-	background-color: black;
-	border-top: 1px solid black;
-	color: white;
+  white-space: pre;
+  background-color: black;
+  border-top: 1px solid black;
+  color: white;
 }
 pre.stat span {
-	padding: 0px;
+  padding: 0px;
 }
 pre.stat .on {
-	background-color: #080;
-	font-weight: bold;
-	color: white;
-	cursor: pointer;
+  background-color: #080;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
 }
 pre.stat .off {
-	background-color: #888;
-	font-weight: bold;
-	color: white;
-	cursor: pointer;
+  background-color: #888;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
 }
 pre.term {
-	margin: 0px;
-	padding: 4px;
-	display: block;
-	font-family: monospace;
+  margin: 0px;
+  padding: 4px;
+  display: block;
+  font-family: monospace;
   font-size: 11px;
-	white-space: pre;
-	background-color: black;
-	border-top: 1px solid white;
-	color: #eee;
+  white-space: pre;
+  background-color: black;
+  border-top: 1px solid white;
+  color: #eee;
 }
 pre.term span.f0  { color: #000; }
 pre.term span.f1  { color: #b00; }
@@ -62,5 +62,5 @@ pre.term span.b7  { background-color: #bbb; }
 
 /*body { background-color: #888; }*/
 #term {
-	float: left;
+  float: left;
 }
