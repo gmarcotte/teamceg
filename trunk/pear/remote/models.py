@@ -55,6 +55,7 @@ class SSHConnection(timestamp.TimestampedModel):
         return None
       self.num_active += 1
       self.save()
+      self.execute(session, 'cd %s' % self.base_dir)
       return session
     else:
       return None
@@ -122,7 +123,7 @@ class SSHConnection(timestamp.TimestampedModel):
     if settings.USE_PEXPECT:
       session = self.connect()
       if session:
-        resp = self.execute(session, 'rm -f .ssh/authorized_keys')
+        resp = self.execute(session, 'rm -f ~/.ssh/authorized_keys')
         self.close(session)
         raise Exception(resp)
 
@@ -144,7 +145,7 @@ class SSHConnection(timestamp.TimestampedModel):
     """
     if settings.USE_PEXPECT:
       pub_key = open(self.user.profile.get_public_file(), 'r').read().strip()
-      login = 'ssh %s "echo %s >> .ssh/authorized_keys"' % (self, pub_key)
+      login = 'ssh %s "echo %s >> ~/.ssh/authorized_keys"' % (self, pub_key)
       ssh = pexpect.spawn(login)
       ssh.expect(':')
       ssh.sendline('yes')
@@ -163,3 +164,16 @@ class SSHConnection(timestamp.TimestampedModel):
       self.has_valid_keys = False
       self.save()
       return True
+    
+  # Common remote operations
+  def create_file(self, filename, string):  
+    session = self.connect()
+    if not session:
+      return None
+    
+    self.execute(session, 'cat /dev/null > %s' % filename)
+    for line in string.split('\n'):
+      self.execute(session, "echo '%s' >> %s" % (line, filename))
+    resp = self.execute(session, 'cat %s' % filename)
+    self.close(session)
+    return resp
