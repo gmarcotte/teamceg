@@ -244,10 +244,10 @@ class Basic:
       for tpl in response:
         if str(tpl[1]) == "off":
           if self.Flash:
-            self.flashOff()
+            toggleFlash()
         else:
           if not self.Flash:
-            self.flashOn()
+            toggleFlash()
     elif request_info.method == 'send_editor':
       pass
     elif request_info.method == 'receive_editor':
