@@ -187,7 +187,7 @@ class Basic:
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
     self.panel.setWidth("1000px")  # out of 1024
-    self.panel.setHeight("650px")  # out of 768
+    self.panel.setHeight("600px")  # out of 768
     
     RootPanel().add(self.panel)
     
@@ -238,15 +238,15 @@ class Basic:
         self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'send_flash':
-      self.Flash = self.Flash
+      pass
     elif request_info.method == 'receive_flash':
       for tpl in response:
         if str(tpl[1]) == "off":
           if self.Flash:
-            toggleFlash()
+            self.toggleFlash()
         else:
           if not self.Flash:
-            toggleFlash()
+            self.toggleFlash()
     elif request_info.method == 'send_editor':
       pass
     elif request_info.method == 'receive_editor':
@@ -462,7 +462,8 @@ class Basic:
       if self.currpass.getText() != self.passenger.getText():
         self.currpass.setText(self.passenger.getText())
         if self.passenger.getText() == "No Partner logged in":
-          window.alert("No partners logged in")
+          #window.alert("No partners logged in")
+          pass
         else:
           window.alert("New passenger %s detected" % self.passenger.getText())
         
