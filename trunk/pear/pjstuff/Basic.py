@@ -78,7 +78,7 @@ class Basic:
 
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    //alert("synching editor");
+    alert("synching editor");
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
@@ -90,7 +90,7 @@ class Basic:
     //setInterval('synch()', 5000);
     
     function synchlisten() { 
-    //alert("synching listen");
+    alert("synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
