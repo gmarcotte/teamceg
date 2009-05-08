@@ -6,7 +6,7 @@
 {% for ssh in available_servers %}
 {% if forloop.first %}
 SSH Connection:
-<select name="server">
+<select name="server_id">
 {% endif %} 
 <option value="{{ ssh.id }}">{{ ssh }}</option>
 {% if forloop.last %}
