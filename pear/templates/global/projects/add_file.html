@@ -11,8 +11,7 @@ SSH Connection:
 <option value="{{ ssh.id }}">{{ ssh }}</option>
 {% if forloop.last %}
 </select>
-<br /><input type="submit" value="go" name="go" />
-</form>
+<br />
 {% endif %}
 {% empty %}
 <p>You have not configured any SSH Connections yet.</p>
