@@ -310,12 +310,12 @@ def switch_driver(request):
         meeting.driver_id = meeting.passenger_id
         meeting.passenger_id = temp
         meeting.save()
-        r.append(('notice','we switched drivers'))
+        #r.append(('notice','we switched drivers'))
         r.append(('isdriver','False'))
         
       else:
         # if there is no passenger, do nothing
-        r.append(('notice','no passenger'))
+        #r.append(('notice','no passenger'))
         r.append(('isdriver','True'))
     
     # error case that should NEVER happen
