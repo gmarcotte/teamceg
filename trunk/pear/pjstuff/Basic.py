@@ -74,6 +74,7 @@ class Basic:
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
     alert("synching editor");
+    alert(this.isdriver)
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
@@ -82,6 +83,7 @@ class Basic:
     self.passengersynch = """<script>setInterval('synchlisten()', 5000);
     function synchlisten() { 
     if (this.isdriver) return;
+    alert(this.isdriver)
     alert("synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
