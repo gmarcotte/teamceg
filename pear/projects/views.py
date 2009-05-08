@@ -46,28 +46,28 @@ def launch_project(request, project_id):
     except exceptions.ObjectDoesNotExist:
       server = 'localhost'
       user_name = 'teamceg'
+      
+    if meetings:
+      meeting = meetings[0]
+      meeting.passenger = request.user
     else:
-      if meetings:
-        meeting = meetings[0]
-        meeting.passenger = request.user
-      else:
-        meeting = Meeting()
-        meeting.driver = request.user
-        meeting.passenger = None
-        meeting.project = project
-        # set some other things
-        meeting.flash = False
-        meeting.console = ''
-        meeting.editor = ''
+      meeting = Meeting()
+      meeting.driver = request.user
+      meeting.passenger = None
+      meeting.project = project
+      # set some other things
+      meeting.flash = False
+      meeting.console = ''
+      meeting.editor = ''
       meeting.save()
-      return shortcuts.render_to_response(
-          'Basic.html',
-          {'page_title': 'Project Workspace',
-           'project': project,
-           'meeting': meeting,
-           'server_host': server,
-           'server_logon': user_name},
-          context_instance=template.RequestContext(request))
+    return shortcuts.render_to_response(
+        'Basic.html',
+        {'page_title': 'Project Workspace',
+         'project': project,
+         'meeting': meeting,
+         'server_host': server,
+         'server_logon': user_name},
+        context_instance=template.RequestContext(request))
   
   # Display a summary of the project session status before launching
   available_servers = request.user.servers.filter(has_valid_keys=True)
