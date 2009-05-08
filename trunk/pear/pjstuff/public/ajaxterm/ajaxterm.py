@@ -401,7 +401,7 @@ class Multiplex:
 				#cmd+=['-oPreferredAuthentications=keyboard-interactive,password']
 				cmd+=['-oNoHostAuthenticationForLocalhost=yes']
 				cmd+=['-oLogLevel=FATAL']
-				cmd+=['-i%s' % key_file]
+				cmd+=['-i %s' % key_file]
 				cmd+=['-F/dev/null','-l',login,ssh]
 			else:
 				os._exit(0)
