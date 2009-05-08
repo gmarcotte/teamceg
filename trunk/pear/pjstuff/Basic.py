@@ -241,22 +241,26 @@ class Basic:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
               self.isdriver = True
-              self.editor.add(HTML(self.driversynch), self.synchID)
+              #self.editor.add(HTML(self.driversynch), self.synchID)
+              DOM.setInnerText(DOM.getElementById(self.synchID), self.driversynch)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               self.isdriver = False
-              self.editor.add(HTML(self.passengersynch), self.synchID)
+              #self.editor.add(HTML(self.passengersynch), self.synchID)
+              DOM.setInnerText(DOM.getElementById(self.synchID), self.passengersynch)
     elif request_info.method == 'switch_driver':
       for tpl in response:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
-            self.editor.add(HTML(self.driversynch), self.synchID)
+            #self.editor.add(HTML(self.driversynch), self.synchID)
+            DOM.setInnerText(DOM.getElementById(self.synchID), self.driversynch)
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             self.isdriver = False
-            self.editor.add(HTML(self.passengersynch), self.synchID)
+            #self.editor.add(HTML(self.passengersynch), self.synchID)
+            DOM.setInnerText(DOM.getElementById(self.synchID), self.passengersynch)
             self.switching = False
             
     elif request_info.method == 'user_quit':
