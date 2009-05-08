@@ -28,7 +28,7 @@ def index(request):
 
 def add_file(request, project_id):
   """Add a file to the project."""
-  redirect_to = request.GET.get('next', 'my_projects/')
+  redirect_to = request.GET.get('next', '/projects/my_projects/')
   try:
     project = pear.projects.models.Project.objects.get(pk=project_id)
   except exceptions.ObjectDoesNotExist:
@@ -41,16 +41,14 @@ def add_file(request, project_id):
     except exceptions.ObjectDoesNotExist:
       pass
     else:
-      text = request.POST.get('text', '')
+      filetext = request.POST.get('text', '')
+      filetext = filetext.replace('\r\n', '\n')
       filename = request.POST.get('filename', '')
       session = ssh.connect()
-      text = ''
-      text += ssh.execute(session, 'cd %s' % project.directory)
-      text += ssh.execute(session, 'pwd')
-      text += ssh.create_file(session, filename, text)
-      text += ssh.svn_add_file(session, filename)
+      ssh.execute(session, 'cd %s' % project.directory)
+      ssh.create_file(session, filename, filetext)
+      ssh.svn_add_file(session, filename)
       ssh.close(session)
-      raise Exception(text)
       return http.HttpResponseRedirect(redirect_to)
   
   available_servers = request.user.servers.filter(has_valid_keys=True)
