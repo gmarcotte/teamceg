@@ -15,12 +15,12 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
         <script type="text/javascript" src="ajaxterm/ajaxterm.js"></script>
         <script language="Javascript" type="text/javascript" src="edit_area_full.js"></script>
         <script>
-        function myfunction() {
-        }
-        </script>
-        <script>
         function setterm() {
-          term=ajaxterm.Terminal("term",80,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}');
+          window.ajaxterm_console=ajaxterm.Terminal("term",60,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}');
+        }
+
+        function changeSID(var new_sid) {
+        	  window.ajaxterm_console.set_sid(new_sid);
         }
         </script>
 

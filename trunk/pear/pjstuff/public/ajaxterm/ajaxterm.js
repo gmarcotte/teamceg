@@ -1,9 +1,9 @@
 ajaxterm={};
-ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
+ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,id) {
 	var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
-	var sid=""+Math.round(Math.random()*1000000000);
+	var sid=id;
 	var query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
 	var query1=query0+"&c=1&k=";
 	var buf="";
@@ -21,6 +21,12 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 	var opt_paste=document.createElement('a');
 	var sdebug=document.createElement('span');
 	var dterm=document.createElement('div');
+	
+	function setSID(s) {
+		sid = s;
+		query0 = "s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
+		var query1=query0+"&c=1&k=";
+	}
 
 	function debug(s) {
 		sdebug.innerHTML=s;
@@ -294,7 +300,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key) {
 	}
 	init();
 }
-ajaxterm.Terminal=function(id,width,height,ssh,user,update_url,key) {
-	return new this.Terminal_ctor(id,width,height,ssh,user,update_url,key);
+ajaxterm.Terminal=function(id,width,height,ssh,user,update_url,key,id) {
+	return new this.Terminal_ctor(id,width,height,ssh,user,update_url,key,id);
 }
 
