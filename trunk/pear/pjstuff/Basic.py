@@ -248,14 +248,16 @@ class Basic:
             if self.isdriver == False:
               window.alert("Driver status setting to true.")
               self.isdriver = True
-              DOM.setInnerText(DOM.getElementById(self.synchID),self.driversynch)
+              DOM.setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
+              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
               #self.editor.remove(self.synchID)
               #self.editor.add(HTML(self.driversynch), self.synchID)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               window.alert("Driver status setting to false")
               self.isdriver = False
-              DOM.setInnerText(DOM.getElementById(self.synchID),self.passengersynch)
+              DOM.setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
+              window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
               #self.editor.remove(self.synchID)
               #self.editor.add(HTML(self.passengersynch), self.synchID)
           self.switching = False
@@ -265,7 +267,8 @@ class Basic:
           if self.isdriver == False:
             window.alert("switch Driver status setting to true")
             self.isdriver = True
-            setInnerText(DOM.getElementById(self.synchID),self.driversynch)
+            setInnerHTML(DOM.getElementById(self.synchID),self.driversynch)
+            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             #self.editor.remove(self.synchID)
             #self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
@@ -273,7 +276,8 @@ class Basic:
           if self.isdriver == True:
             window.alert("switch Driver status setting to false")
             self.isdriver = False
-            setInnerText(DOM.getElementById(self.synchID),self.passengersynch)
+            setInnerHTML(DOM.getElementById(self.synchID),self.passengersynch)
+            window.alert(DOM.getInnerHTML(DOM.getElementById(self.synchID)))
             #self.editor.remove(self.synchID)
             #self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
