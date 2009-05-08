@@ -221,7 +221,7 @@ class Basic:
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
       self.consoleID = Label("%s" % self.list[4])
-      alert(self.list[4])
+      #alert(self.list[4])
       self.passenger = Label("%s" % self.list[5]) # sometimes will be blank
       self.passengername = Label("%s" % self.list[6]) # sometimes will be blank
       if len(self.list[5]) < 1:
@@ -306,9 +306,10 @@ class Basic:
       console.error("Error in onRemoteResponse function in Basic.py")
   
   def onRemoteError(self, response, request_info):
-    window.alert("ERROR")
-    alert(response)
-    alert(str(response))
+    #window.alert("ERROR")
+    #alert(response)
+    #alert(str(response))
+    pass
       
   def onInfoClick(self):
     if self.active_menu.getText() == "Info":
