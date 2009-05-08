@@ -18,6 +18,7 @@ SSH Connection:
 {% endif %} 
 <option value="{{ ssh.id }}">{{ ssh }}</option>
 {% if forloop.last %}
+</select>
 <br /><input type="submit" value="go" name="go" />
 </form>
 {% endif %}
