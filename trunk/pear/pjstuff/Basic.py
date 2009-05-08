@@ -17,6 +17,7 @@ class Basic:
     
     # this tells us whether or not we are trying to quit...
     self.quitting = False 
+    self.switching = False
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
@@ -251,10 +252,12 @@ class Basic:
           if self.isdriver == False:
             self.isdriver = True
             self.editor.add(HTML(self.driversynch), self.synchID)
+            self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             self.isdriver = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
+            self.switching = False
             
     elif request_info.method == 'user_quit':
       ##save everything for them
@@ -353,6 +356,7 @@ class Basic:
   def onSwitchDriversClick(self):
     window.alert("You are trying to switch drivers")
     if self.isdriver == True:
+      self.switching = True
       self.remote.switch_driver(self)
       window.alert("Just sent switch command.")
     else:
@@ -375,7 +379,7 @@ class Basic:
     window.alert("you are trying to make a skype call")
   
   def onTimer(self):
-    if self.quitting == False:
+    if self.quitting == False and self.switching == False:
       # do server update stuff here
       self.remote.receive_chatmessage(self)
       self.remote.receive_flash(self)
