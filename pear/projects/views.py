@@ -44,9 +44,13 @@ def add_file(request, project_id):
       text = request.POST.get('text', '')
       filename = request.POST.get('filename', '')
       session = ssh.connect()
-      ssh.execute(session, 'cd %s' % project.directory)
-      ssh.create_file(session, filename, text)
-      ssh.svn_add_file(session, filename)
+      text = ''
+      text += ssh.execute(session, 'cd %s' % project.directory)
+      text += ssh.execute(session, 'pwd')
+      text += ssh.create_file(session, filename, text)
+      text += ssh.svn_add_file(session, filename)
+      ssh.close(session)
+      raise Exception(text)
       return http.HttpResponseRedirect(redirect_to)
   
   available_servers = request.user.servers.filter(has_valid_keys=True)

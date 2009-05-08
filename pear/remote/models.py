@@ -174,9 +174,9 @@ class SSHConnection(timestamp.TimestampedModel):
     return resp
   
   def svn_add_file(self, session, filename):
-    cmd = 'svn add %s' 
+    cmd = 'svn add %s' % filename
     self.execute(session, cmd)
-    cmd = 'svn commit %s -m "Adding %s to repository"'
+    cmd = 'svn commit %s -m "Adding %s to repository"' % (filename, filename)
     resp = self.execute(session, cmd)
     return resp
   
@@ -185,3 +185,4 @@ class SSHConnection(timestamp.TimestampedModel):
     self.execute(session, cmd)
     cmd = 'svn co %s %s' % (project.get_repository_url(), project.directory)
     resp = self.execute(session, cmd)
+    return resp
