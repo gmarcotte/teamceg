@@ -25438,14 +25438,15 @@ function __Basic_initialize() {
     this.functionID = 'MYfunctionID';
     this.synchID = 'MYsynchID';
     this.chatID = 'MYchatID';
+    this.intervalID = 'MYintervalID';
     this.editorsynchID = 'MYeditorsynchID';
     this.listensynchID = 'MYlistensynchID';
     this.functionHTML = ui_HTML( (  (  (  ( '<script>SetUpEditArea(\'' + this.editorID )  + '\',\'' )  + this.listenID )  + '\'); /*setInterval(\'toggle()\', 5000);*/</script>' ) );
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '\n    <script>\n    //setInterval(\'synch()\', 5000);\n\n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    alert("synching editor");\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '\n    <script>\n    //setInterval(\'synch()\', 5000);\n    \n    function synchlisten() { \n    alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
+    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 5000);\n    alert(window.editorInterval);\n      \n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    alert("synching editor");\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 5000);\n    alert(window.listenInterval);\n    function synchlisten() { \n    alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
     var initialcontent = '<script> </script> ';
     this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 610px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
@@ -25454,8 +25455,6 @@ function __Basic_initialize() {
     this.editor.add(this.functionHTML, this.functionID);
     this.editor.add(this.editorHTML, this.editorHTMLID);
     this.editor.add(ui_HTML(initialcontent), this.synchID);
-    this.editor.add(ui_HTML(this.driversynch), this.editorsynchID);
-    this.editor.add(ui_HTML(this.passengersynch), this.listensynchID);
     this.editor.setWidth('100%');
     this.editor.setHeight('100%');
     var vp = ui_VerticalPanel();
@@ -25516,6 +25515,7 @@ function __Basic_initialize() {
     this.panel.setWidth('1000px');
     this.panel.setHeight('650px');
     ui_RootPanel().add(this.panel);
+    this.currpass = ui_Label('No Partner logged in');
     this.onTimer();
     };
     __Basic.prototype.__class__.onModuleLoad = function() {
@@ -25584,9 +25584,11 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
     this.isdriver = true;
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     }
     else {
     this.isdriver = false;
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
     this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
     this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
@@ -25703,12 +25705,14 @@ function __Basic_initialize() {
     if ((this.isdriver == false)) {
     window.alert('Driver status setting to true.');
     this.isdriver = true;
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     }
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
     if ((this.isdriver == true)) {
     window.alert('Driver status setting to false');
     this.isdriver = false;
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
     }
     this.switching = false;
@@ -25734,6 +25738,7 @@ function __Basic_initialize() {
     if ((this.isdriver == false)) {
     window.alert('switch Driver status setting to true');
     this.isdriver = true;
+    this.editor.add(ui_HTML(this.driversynch), this.synchID);
     this.switching = false;
     }
     }
@@ -25741,6 +25746,7 @@ function __Basic_initialize() {
     if ((this.isdriver == true)) {
     window.alert('switch Driver status setting to false');
     this.isdriver = false;
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     this.switching = false;
     }
     }
@@ -26042,11 +26048,11 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onSkypeClick.unbound_method = true;
     __Basic.prototype.onSkypeClick.instance_method = true;
     __Basic.prototype.onTimer = function() {
-    if ((this.isdriver == true)) {
- syncheditor(); 
+    if (this.isdriver) {
+    this.remote.get_meetinginfo(this);
+    if ((this.currpass.getText() != this.passenger.getText())) {
+    window.alert(sprintf('New passenger %s detected', this.passenger.getText()));
     }
-    else {
- synchlisten(); 
     }
     if (((this.quitting == false)) && ((this.switching == false))) {
     this.remote.receive_chatmessage(this);

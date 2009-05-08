@@ -190,6 +190,7 @@ class Basic:
     RootPanel().add(self.panel)
     
     # start the timer for updates from server
+    self.currpass = Label("No Partner logged in")
     self.onTimer()
       
   def onRemoteResponse(self, response, request_info):
@@ -470,6 +471,13 @@ class Basic:
     self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
+    # Right now will detect if you are first driver and a partner joins, hasn't been set up for after driver switching or if one partner leaves, etc.
+    if self.isdriver:
+      #window.alert("I checked for passenger")
+      self.remote.get_meetinginfo(self)
+      if self.currpass.getText() != self.passenger.getText():
+        window.alert("New passenger %s detected" % self.passenger.getText())
+        
     #if self.isdriver == True:
     #  JS(""" alert("here"); syncheditor(); """)
     #else:
