@@ -1,0 +1,9 @@
+#summary The test cases we will need to try before this thing is done.
+
+= Introduction =
+
+Possible test cases/scenarios
+
+
+ # Invalid password for setting up server connection
+ # Invalid email on login (ie blahblah, instead of blahblah@provider.com)
