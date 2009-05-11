@@ -222,8 +222,8 @@ class Basic:
         if self.initEditor == False:
           window.alert("Adding another copy of driversynch in getmeetinginfo")
           self.editor.add(HTML(self.driversynch), self.synchID)
-          window.alert("setting syncheditor interval from getmeetinginfo")
-          self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
+          #window.alert("setting syncheditor interval from getmeetinginfo")
+          #self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
           self.initEditor = True
       else:
         self.isdriver = False
