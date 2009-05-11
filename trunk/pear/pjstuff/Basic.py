@@ -67,7 +67,7 @@ class Basic:
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
-    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); window.editorInterval = setInterval('syncheditor()', 10000);/*setInterval('toggle()', 5000);*/</script>")
+    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); </script>")
     self.editorHTML = HTML("The contents of the editor.")
     self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
@@ -219,7 +219,6 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         self.editor.add(HTML(self.driversynch), self.synchID)
-        
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
@@ -270,12 +269,10 @@ class Basic:
         for tpl in response:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
-              #window.alert("Driver status setting to true.")
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
-              #window.alert("Driver status setting to false")
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
           self.switching = False
@@ -283,13 +280,11 @@ class Basic:
       for tpl in response:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
-            #window.alert("switch Driver status setting to true")
             self.isdriver = True
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
-            #window.alert("switch Driver status setting to false")
             self.isdriver = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
