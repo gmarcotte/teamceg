@@ -469,6 +469,7 @@ class Basic:
       if str(thing[2]) == str(value):
         if str(thing[1])=="file":
           window.alert("Opening File: " + str(value))
+          self.remote.open_file(str(value),self)
           acted = True
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
