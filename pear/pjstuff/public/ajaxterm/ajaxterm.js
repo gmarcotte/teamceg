@@ -176,6 +176,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
       return true;
     }
 		
+		alert(sid);
 		if (isdriver == true) {
 			//alert("Driver, sending keypress.");
 		}
