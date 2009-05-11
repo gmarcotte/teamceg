@@ -1,6 +1,7 @@
 ajaxterm={};
 ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id) {
-  var ie=0;
+  var isdriver=true;
+	var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
 	var sid=term_id;
@@ -23,7 +24,13 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	var dterm=document.createElement('div');
 
 	function setSID(s) {
-		sid = s;
+		if (s == "true")
+			isdriver = true;
+		else
+			isdriver = false;
+	}
+	function set_driver(s) {
+		ispassenger = s;
 		query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
 		query1=query0+"&c=1&k=";
 	}
@@ -167,6 +174,12 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     if (focusElement.id == "MYchatID") {
       return true;
     }
+		
+		if (isdriver == false) {
+			alert("Passenger, not sending keypress");
+			return true;
+		}
+		
     if (!ev) var ev=window.event;
 		var kc;
 		var k="";
@@ -247,6 +260,10 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     if (focusElement.id == "MYchatID") {
       return true;
     }
+		if (isdriver == false) {
+			alert("Passenger, not sending keypress");
+			return true;
+		}
     // need to deal with non-ajaxterm calls... maybe here?
 		if (!ev) var ev=window.event;
     // safari hack for dealing with non-printing keys
