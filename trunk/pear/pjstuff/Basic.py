@@ -3,7 +3,7 @@ from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
 from pyjamas.JSONService import JSONProxy
-
+from ContextMenuPopupPanel import ContextMenuPopupPanel
 
 
 class DataService(JSONProxy):
@@ -467,7 +467,7 @@ class Basic:
   def createTreeItem(self, label, value=None):
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
-    item.setContextMenu(self)
+    item.setContextMenu(self) # this needs latest version of pjs
     if value != None:
       item.setUserObject(value)
     return item
