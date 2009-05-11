@@ -27,7 +27,15 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
           window.sid=new_sid;
           window.query0="s="+window.sid+window.query0suf;
           window.query1=window.query0+"&c=1&k=";
-          //alert(temp + ", " + window.sid+"  "+temp1+", "+window.query0+"  "+temp2+", "+window.query1);
+          alert(temp + ", " + window.sid+"  "+temp1+", "+window.query0+"  "+temp2+", "+window.query1);
+          if (window.isDriver == true) {
+            alert("driver->passenger");
+            window.isDriver = false;
+          }
+          else {
+            alert("passenger->driver");
+            window.isDriver=true
+          }
         }
         </script>
 
