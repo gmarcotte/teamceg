@@ -24,15 +24,13 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	var dterm=document.createElement('div');
 
 	function setSID(s) {
-		if (s == "true")
-			isdriver = true;
-		else
-			isdriver = false;
+		sid = s;
+		query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
+		query1=query0+"&c=1&k=";
+		
 	}
 	function set_driver(s) {
 		isdriver = s;
-		query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
-		query1=query0+"&c=1&k=";
 	}
 	
 	function debug(s) {
