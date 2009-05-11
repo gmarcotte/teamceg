@@ -321,11 +321,10 @@ class Basic:
         window.alert(str(tpl[1]))
     elif request_info.method == 'open_file':
       for tpl in response:
-        window.alert(str(tpl[1]))
+        #window.alert(str(tpl[1]))
         # todo: SAVE whatever is currently in the editor
-        
         # add response text to editor
-        self.editor.add(HTML("<script>alert('here!');editAreaLoader.setValue('MYeditorID','"+ tpl[1]+"');</script>"), self.functionID)
+        self.editor.add(HTML("<script>editAreaLoader.setValue('MYeditorID','"+ tpl[1]+"');</script>"), self.functionID)
     elif request_info.method == 'save_file':
       for tpl in response:
         window.alert(str(tpl[1]))
@@ -472,7 +471,7 @@ class Basic:
       #window.alert(str(thing[0]))
       if str(thing[2]) == str(value):
         if str(thing[1])=="file":
-          window.alert("Opening File: " + str(value))
+          #window.alert("Opening File: " + str(value))
           self.remote.open_file(str(value),self)
           acted = True
     # if it is a directory -> make a popup to add/delete files dirs
