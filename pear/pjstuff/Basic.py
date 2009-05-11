@@ -128,11 +128,11 @@ class Basic:
     vp = VerticalPanel()
     vp.setBorderWidth(1)
     # the console
-    term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
-    term.setWidth("100%")
-    term.setHeight("390px")
+    self.term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
+    self.term.setWidth("100%")
+    self.term.setHeight("390px")
     console = SimplePanel()
-    console.add(term)
+    console.add(self.term)
     console.setWidth("400px")
     console.setHeight("100%")
     # not so hacky -- indeed, pretty decent little text chat
