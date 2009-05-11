@@ -97,7 +97,7 @@ class Basic:
     function synchlisten() { 
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;//innerHTML;
-    content = content.substring(85);
+    content = content.substring(86, content.length-4);
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
     currentfocus.focus() 
