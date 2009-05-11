@@ -37,7 +37,9 @@ def register(request):
 
 
 def registered(request):
-  return shortcuts.render_to_response('global/accounts/registered.html')
+  return shortcuts.render_to_response(
+      'global/accounts/registered.html',
+      context_instance=template.RequestContext(request))
 
 
 def login(request):
@@ -110,7 +112,6 @@ def reset_password(request):
       {'page_title': 'Reset Password',
        'form': form},
       context_instance=template.RequestContext(request))
-  return http.HttpResponseRedirect(redirect_to)
 
 
 @auth_decorators.login_required
