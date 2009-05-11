@@ -462,7 +462,7 @@ class Basic:
   def onTreeItemSelected(self, item):
     acted = False
     value = item.getUserObject()
-    window.alert("You clicked on " + value)
+    #window.alert("You clicked on " + value)
     # if it is a file -> open it.
     for thing in self.file_list:
       #window.alert(str(thing[0]))

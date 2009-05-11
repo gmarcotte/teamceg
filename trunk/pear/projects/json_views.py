@@ -397,17 +397,17 @@ def save_file(request, filename, text):
     
 @network.jsonremote(service)
 def get_file_tree(request, root):
-  return [('1Top Level', 'dir', 'root/'), 
-          ('2Second Level', 'file', 'root/file1'), 
-          ('2Also Second Level', 'file', 'root/file2'),
-          ('1Top Level Again', 'dir', 'root/'),
-          ('2New second level', 'dir', 'root/subdir1/'),
-          ('3Third Level', 'dir', 'root/subdir1/subdir2/'),
-          ('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'),
-          ('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'),
-          ('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'),
-          ('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'),
-          ('2Second Level Again', 'file', 'root/subdir1/file6')]
+  return [('1root', 'dir', 'root/'), 
+          ('2file1', 'file', 'root/file1'), 
+          ('2file2', 'file', 'root/file2'),
+          ('1root', 'dir', 'root/'),
+          ('2subdir1', 'dir', 'root/subdir1/'),
+          ('3subdir2', 'dir', 'root/subdir1/subdir2/'),
+          ('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3/'),
+          ('5file3', 'file', 'root/subdir1/subdir2/subdir3/file3'),
+          ('3file4', 'file', 'root/subdir1/subdir2/file4'),
+          ('3file5', 'file', 'root/subdir1/subdir2/file5'),
+          ('2file6', 'file', 'root/subdir1/file6')]
   
 @network.jsonremote(service)
 def sync_all(request):
