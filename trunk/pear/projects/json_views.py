@@ -326,7 +326,7 @@ def switch_driver(request):
     # error case that should NEVER happen
     else:
       r.append(('notice','passenger should not call this method!'))
-    r.append(('consoleID',meeting.driverconsole))
+    r.append(('consoleID',str(meeting.driverconsole)))
     return r
   else:
     r = []
