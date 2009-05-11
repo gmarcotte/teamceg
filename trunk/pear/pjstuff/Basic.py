@@ -286,12 +286,14 @@ class Basic:
             #window.alert("Adding another copy of driversynch in switch-driver")
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
+            self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             self.isdriver = False
             #self.initEditor = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
+            self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
             
     elif request_info.method == 'user_quit':
       ##save everything for them
@@ -306,7 +308,7 @@ class Basic:
   def onInfoClick(self):
     #console.remove(self.term)
     #self.term.innerHTML = "<script> setterm('5'); </script> <div id='term'></div><div id='MYtermfunctionID'></div>"
-    self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+    #self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
       self.menu_body.setWidget(self.menu_contents)
