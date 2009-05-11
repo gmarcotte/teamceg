@@ -236,7 +236,7 @@ class Basic:
         self.passengername.setText("No Partner logged in")
       if str(self.consoleID) != str(previousconsoleID):
         window.alert("Changing console")
-        self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"'"+self.isdriver+");</script>"),"MYtermfunctionID")
+        self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"', "+self.isdriver+");</script>"),"MYtermfunctionID")
         
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
