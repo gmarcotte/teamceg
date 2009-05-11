@@ -322,6 +322,10 @@ class Basic:
     elif request_info.method == 'open_file':
       for tpl in response:
         window.alert(str(tpl[1]))
+        # todo: SAVE whatever is currently in the editor
+        
+        # add response text to editor
+        self.editor.add(HTML("<script>alert('here!');editAreaLoader.setValue('MYeditorID',"+ tpl[1]+");</script>"), self.functionID)
     elif request_info.method == 'save_file':
       for tpl in response:
         window.alert(str(tpl[1]))
