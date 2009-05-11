@@ -236,7 +236,6 @@ class Basic:
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
-        
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
       self.drivername = Label("%s" % self.list[3])
@@ -323,7 +322,22 @@ class Basic:
         #  alert(self.consoleID.getText())
         #  self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           
-            
+    elif request_info.method == 'new_file':
+      for tpl in response:
+        window.alert(str(tpl[1]))
+    elif request_info.method == 'new_directory':
+      for tpl in response:
+        window.alert(str(tpl[1]))
+    elif request_info.method == 'open_file':
+      for tpl in response:
+        window.alert(str(tpl[1]))
+    elif request_info.method == 'save_file':
+      for tpl in response:
+        window.alert(str(tpl[1]))
+    elif request_info.method == 'get_file_tree':
+      for tpl in response:
+        window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
+      
     elif request_info.method == 'user_quit':
       ##save everything for them
       self.location = Window.getLocation()
@@ -406,6 +420,7 @@ class Basic:
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
+    self.remote.get_file_tree('rd',self)
     while (i < len(self.file_test)) and (self.file_test[i][0][0] == "1"):
       s1 = self.createTreeItem(str(self.file_test[i][0][1:]), value=self.file_test[i][2])#"root/")
       i = i + 1

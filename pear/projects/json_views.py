@@ -394,15 +394,20 @@ def open_file(request, filename):
 @network.jsonremote(service)
 def save_file(request, filename, text):
   return [('notice', 'The new text of %s is %s' % (filename, text))]
-
+    
 @network.jsonremote(service)
 def get_file_tree(request, root):
-  return [('1d', 'rootdir'), 
-          ('2d', 'subdir'), 
-          ('3d', 'subsubdir'),
-          ('2d', 'subdir2'),
-          ('3f', 'file'),
-          ('3f', 'otherfile')]
+  return [('1Top Level', 'dir', 'root/'), 
+          ('2Second Level', 'file', 'root/file1'), 
+          ('2Also Second Level', 'file', 'root/file2'),
+          ('1Top Level Again', 'dir', 'root/'),
+          ('2New second level', 'dir', 'root/subdir1/'),
+          ('3Third Level', 'dir', 'root/subdir1/subdir2/'),
+          ('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'),
+          ('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'),
+          ('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'),
+          ('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'),
+          ('2Second Level Again', 'file', 'root/subdir1/file6')]
   
 @network.jsonremote(service)
 def sync_all(request):
