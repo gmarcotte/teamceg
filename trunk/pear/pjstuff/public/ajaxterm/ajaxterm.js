@@ -23,6 +23,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	var sdebug=document.createElement('span');
 	var dterm=document.createElement('div');
 
+	// these might not actually work cci
 	function setSID(s) {
 		sid = s;
 		query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
@@ -33,6 +34,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 		isdriver = s;
 		alert(isdriver);
 	}
+	//
 	
 	function debug(s) {
 		sdebug.innerHTML=s;
@@ -321,6 +323,12 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     this.onkeydown=keydown;
     // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
+		if (key.toString() == term_id.toString()) {
+			alert("I am the driver");
+		}
+		else {
+			alert("I am the passenger");
+		}
 	}
 	init();
 }
