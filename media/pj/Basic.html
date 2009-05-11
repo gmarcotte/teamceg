@@ -17,10 +17,25 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
         <script>
         function setterm() {
           window.ajaxterm_console=ajaxterm.Terminal("term",60,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}', '{{meeting.driverconsole}}');
-        }
+				}
 
-        function changeSID(new_sid) {
-        	  window.ajaxterm_console.set_sid(new_sid);
+        function changeSID(new_sid,drive) {
+          window.alert(new_sid+" "+drive);
+          var temp = window.sid;
+          var temp1 = window.query0;
+          var temp2 = window.query1;
+          window.sid=new_sid;
+          window.query0="s="+window.sid+window.query0suf;
+          window.query1=window.query0+"&c=1&k=";
+          alert(temp + ", " + window.sid+"  "+temp1+", "+window.query0+"  "+temp2+", "+window.query1);
+          if (window.isDriver == true) {
+            alert("driver->passenger");
+            window.isDriver = drive;
+          }
+          else {
+            alert("passenger->driver");
+            window.isDriver=drive;
+          }
         }
         </script>
 
@@ -31,10 +46,7 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
     //setInterval("synchEditors()", 10000);
     
     function SetUpEditArea(editorid, listenerid) {
-          // do everything we need to setup the edit-area
-        // initialisation
-        // also makes sure that the listener is set and ready to go.
-     // alert("setting up edit area from here")
+        // do everything we need to setup the edit-area
       editAreaLoader.init({
       id: editorid //"editarea"	// id of the textarea to transform		
       ,start_highlight: true	// if start with highlight
@@ -44,19 +56,20 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
       ,word_wrap: true
       ,language: "en"
       ,syntax: "c"	
-      ,toolbar: "new_document, save, load, |, search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight, |, help"
+      ,toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection"
       ,syntax_selection_allow: "css,html,js,php,python,vb,xml,c,cpp,sql,basic,pas,brainfuck"
       ,show_line_colors: true
       ,replace_tab_by_spaces: 4
-      ,load_callback: "my_load"
-      ,save_callback: "my_save"
     });
-    
-    window.editorid = editorid;
-    window.listenerid = listenerid;
-    window.editor = document.getElementById(editorid);
-    window.listener = document.getElementById(listenerid); // this may be wrong, now...
+
   }
+  
+  // fake
+  function my_save() {
+    
+  
+  }
+  
   
   function toggle() {
     // this works, but for the part where it changes the position of the cursor...
@@ -78,6 +91,8 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
     editAreaLoader.setValue(id, content);
     editAreaLoader.execCommand(id, 'set_editable', false);
   }
+  
+  
   
   
   function speak(EID, LID) {

@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, FileUpload
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, FileUpload, ContextMenuPopupPanel
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
@@ -42,6 +42,7 @@ class Basic:
     #self.file_test.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
     
     self.files = Button("Files", getattr(self, "onFilesClick"))
+    self.FileContext = SimplePanel("La di da")
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Start Flash", getattr(self, "toggleFlash"))
@@ -466,6 +467,7 @@ class Basic:
   def createTreeItem(self, label, value=None):
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
+    item.setContextMenu(self)
     if value != None:
       item.setUserObject(value)
     return item
@@ -622,3 +624,12 @@ class Basic:
   def onQuitConfirm(self):
     self.quit_box.hide()
     self.remote.user_quit(self)
+    
+    
+  def onContextMenu(self, sender):
+    event = DOM.eventGetCurrentEvent()
+    
+    x = DOM.eventsGetClientX(event) + 2
+    y = DOM.eventsGetClientY(event) + 2
+    popup = ContextMenuPopupPanel(self.FileContext)
+    popup.showAt(x, y)
