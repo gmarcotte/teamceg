@@ -64,7 +64,7 @@ class Basic:
     self.intervalID = "MYintervalID"
     self.editorsynchID = "MYeditorsynchID"
     self.listensynchID = "MYlistensynchID"
-    self.termfunctionID = "MYtermfunctionID"
+    #self.termfunctionID = "MYtermfunctionID"
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
@@ -128,7 +128,7 @@ class Basic:
     vp = VerticalPanel()
     vp.setBorderWidth(1)
     # the console
-    self.term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
+    self.term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
     self.term.setWidth("100%")
     self.term.setHeight("390px")
     console = SimplePanel()
@@ -219,14 +219,14 @@ class Basic:
         if self.initEditor == False:
           #window.alert("Adding another copy of driversynch in getmeetinginfo")
           self.editor.add(HTML(self.driversynch), self.synchID)
-          self.term.add(HTML("<script>alert('setting driver true');setDP(true);</script>"),self.termfunctionID)
+          #self.term.add(HTML("<script>alert('setting driver true');setDP(true);</script>"),self.termfunctionID)
           #window.alert("setting syncheditor interval from getmeetinginfo")
           #self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
           self.initEditor = True
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
-        self.term.add(HTML("<script>alert('setting driver false');setDP(false);</script>"),self.termfunctionID)
+        #self.term.add(HTML("<script>alert('setting driver false');setDP(false);</script>"),self.termfunctionID)
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
