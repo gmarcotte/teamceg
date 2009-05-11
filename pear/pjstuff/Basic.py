@@ -304,7 +304,8 @@ class Basic:
     pass
       
   def onInfoClick(self):
-    self.term.add(HTML("<script>setterm('5');</script>"),"MYtermfunctionID")
+		self.term.innerHTML = "<script> setterm('5'); </script> <div id='term'></div><div id='MYtermfunctionID'></div>"
+    #self.term.add(HTML("<script>setterm('5');</script>"),"MYtermfunctionID")
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
       self.menu_body.setWidget(self.menu_contents)
