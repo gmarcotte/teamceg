@@ -322,7 +322,7 @@ class Basic:
     pass
       
   def onInfoClick(self):
-      if self.active_menu.getText() == "Info":
+    if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
       self.menu_body.setWidget(self.menu_contents)
     else:
