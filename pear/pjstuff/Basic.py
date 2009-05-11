@@ -376,6 +376,7 @@ class Basic:
       ##filedirbutton.setStyleName("supp-button")
       fileuploadbutton.setStyleName("supp-button")
       filepanel.add(filetreebutton)
+      filepanel.add(filesavebutton)
       ##filepanel.add(filedirbutton)
       filepanel.add(fileuploadbutton)
       self.menu_body.setWidget(filepanel)
