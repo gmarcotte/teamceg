@@ -96,7 +96,7 @@ class Basic:
     document.getElementByID('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
     var currentfocus = document.activeElement;
-    var content = document.getElementById('MYeditorHTMLID').innerHTML;
+    var content = document.getElementById('MYeditorHTMLID').innerText;//innerHTML;
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
     currentfocus.focus() 
