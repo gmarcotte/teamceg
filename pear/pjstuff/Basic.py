@@ -339,7 +339,7 @@ class Basic:
     elif request_info.method == 'get_file_tree':
       self.file_test = []
       for tpl in response:
-        window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
+        #window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
         self.file_test.append(tpl)
         
       
