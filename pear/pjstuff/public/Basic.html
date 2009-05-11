@@ -17,8 +17,7 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
         <script>
         function setterm() {
           window.ajaxterm_console=ajaxterm.Terminal("term",60,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}', '{{meeting.driverconsole}}');
-					alert(window.ajaxterm_console); // see what we get back
-					alert (window.ajaxterm_console.isdriver);
+					ajaxterm.setSID("5");
 				}
 
         function changeSID(new_sid) {
