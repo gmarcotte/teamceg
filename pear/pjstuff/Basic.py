@@ -22,6 +22,7 @@ class Basic:
     # file info
     self.current_open = None
     self.modified = False
+    self.originalContents = ""
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
@@ -329,6 +330,7 @@ class Basic:
         # todo: SAVE whatever is currently in the editor
         # add response text to editor
         self.editor.add(HTML("<script>editAreaLoader.setValue('MYeditorID','"+ tpl[1]+"');</script>"), self.functionID)
+        self.originalContents = str(tpl[1])
     elif request_info.method == 'save_file':
       for tpl in response:
         window.alert(str(tpl[1]))
@@ -480,16 +482,39 @@ class Basic:
     acted = False
     value = item.getUserObject()
     #window.alert("You clicked on " + value)
+    # check if the file currently opened has been modified
+    currentcontent = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
+    if str(currentcontent) != self.originalContents:
+      self.modified = True
+    
     # if it is a file -> open it.
     for thing in self.file_list:
       #window.alert(str(thing[0]))
       if str(thing[2]) == str(value):
         if str(thing[1])=="file":
-          #window.alert("Opening File: " + str(value))
-          self.remote.open_file(str(value),self)
-          acted = True
-          self.modified = False
-          self.current_open = thing
+          # Is there currently a file open?
+          if self.current_open == None:
+            if self.modified == True:
+              # force the user to save or discard
+              guts = VerticalPanel()
+              guts.setSpacing(4)
+              guts.add(HTML('Would you like to save your changes?'))
+              guts.add(Button("Save", getattr(self, "onDialogSave")))
+              guts.add(Button("Discard", getattr(self, "onDialogDiscard")))
+              self.savediscard_box = DialogBox()
+              self.savediscard_box.setHTML("<b>Warning: Unsaved Changes</b>")
+              self.savediscard_box.setWidget(guts)
+              
+            else:
+              self.remote.open_file(str(value),self)
+              acted = True
+              self.modified = False
+              self.current_open = thing
+          else:
+            self.remote.open_file(str(value),self)
+            acted = True
+            self.modified = False
+            self.current_open = thing
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
       window.alert("Will display a popup window to manage directory: " + str(value))
@@ -500,6 +525,12 @@ class Basic:
   def onFileTreeCloseClick(self):
     self.file_box.hide()
       
+  def onDialogSave(self):
+    window.alert("Saving changes.")
+  
+  def onDialogDiscard(self):
+    window.alert("Discarding changes.")
+  
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
       self.active_menu.setText("")
