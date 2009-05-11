@@ -221,7 +221,7 @@ class Basic:
         self.editor.add(HTML(self.driversynch), self.synchID)
         if self.initEditor == False:
           self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
-          self.initEditor == True
+          self.initEditor = True
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
