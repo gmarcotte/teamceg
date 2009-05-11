@@ -8,7 +8,7 @@ from pyjamas.JSONService import JSONProxy
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver",])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree"])
 
 class Basic:
   def onModuleLoad(self):
