@@ -380,7 +380,7 @@ class Basic:
       filepanel.add(fileuploadbutton)
       self.menu_body.setWidget(filepanel)
   
-  def onFileSave:
+  def onFileSave(self):
     # get the text from the editor and send a save command to the server.
     if self.isdriver == True:
       content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
