@@ -77,11 +77,9 @@ class Basic:
     <script>
     clearInterval(window.listenInterval);
     clearInterval(window.editorInterval);
-    window.editorInterval = setInterval('syncheditor()', 10000); // was 100
+    window.editorInterval = setInterval('syncheditor()', 100); 
       
-    // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    //alert("Synching edit")
     // see if this helps with actually setting it to be editable again
     editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
     var content = editAreaLoader.getValue('MYeditorID');
@@ -94,7 +92,7 @@ class Basic:
     <script>
     clearInterval(window.editorInterval);
     clearInterval(window.listenInterval);
-    window.listenInterval = setInterval('synchlisten()', 10000); // was 100
+    window.listenInterval = setInterval('synchlisten()', 100); 
     //document.getElementById('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
     //alert("Synching listen");
