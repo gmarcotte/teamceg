@@ -29,17 +29,17 @@ class Basic:
     self.info = Button("Info", getattr(self, "onInfoClick"))
     #self.file_test = ["1Top level", "2Second level", "2Also second level", "1Top level again", "2New second level", "3Oh my, a 3rd level", "4A fourth level??", "5Zomg a fifth level?", "3Another third level", "3Yet another 3rd level", "2Hi, I'm 2nd level"]
     self.file_test = []
-    self.file_test.append(('1Top Level', 'dir', 'root/'))
-    self.file_test.append(('2Second Level', 'file', 'root/file1'))
-    self.file_test.append(('2Also Second Level', 'file', 'root/file2'))
-    self.file_test.append(('1Top Level Again', 'dir', 'root/'))
-    self.file_test.append(('2New second level', 'dir', 'root/subdir1/'))
-    self.file_test.append(('3Third Level', 'dir', 'root/subdir1/subdir2/'))
-    self.file_test.append(('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'))
-    self.file_test.append(('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'))
-    self.file_test.append(('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'))
-    self.file_test.append(('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'))
-    self.file_test.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
+    #self.file_test.append(('1Top Level', 'dir', 'root/'))
+    #self.file_test.append(('2Second Level', 'file', 'root/file1'))
+    #self.file_test.append(('2Also Second Level', 'file', 'root/file2'))
+    #self.file_test.append(('1Top Level Again', 'dir', 'root/'))
+    #self.file_test.append(('2New second level', 'dir', 'root/subdir1/'))
+    #self.file_test.append(('3Third Level', 'dir', 'root/subdir1/subdir2/'))
+    #self.file_test.append(('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'))
+    #self.file_test.append(('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'))
+    #self.file_test.append(('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'))
+    #self.file_test.append(('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'))
+    #self.file_test.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
     
     self.files = Button("Files", getattr(self, "onFilesClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
@@ -337,6 +337,7 @@ class Basic:
       for tpl in response:
         window.alert(str(tpl[1]))
     elif request_info.method == 'get_file_tree':
+      self.file_test = []
       for tpl in response:
         window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
         self.file_test.append(tpl)
