@@ -220,7 +220,7 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         if self.initEditor == False:
-          window.alert("Adding another copy of driversynch in getmeetinginfo")
+          #window.alert("Adding another copy of driversynch in getmeetinginfo")
           self.editor.add(HTML(self.driversynch), self.synchID)
           #window.alert("setting syncheditor interval from getmeetinginfo")
           #self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
@@ -276,7 +276,7 @@ class Basic:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
               self.isdriver = True
-              window.alert("Adding another copy of driversynch in driver-status")
+              #window.alert("Adding another copy of driversynch in driver-status")
               self.editor.add(HTML(self.driversynch), self.synchID)
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
@@ -289,7 +289,7 @@ class Basic:
           if self.isdriver == False:
             self.isdriver = True
             #self.initEditor = False
-            window.alert("Adding another copy of driversynch in switch-driver")
+            #window.alert("Adding another copy of driversynch in switch-driver")
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
         elif str(tpl[1]) == "False":
@@ -446,7 +446,7 @@ class Basic:
     #window.alert("You are trying to switch drivers")
     if self.isdriver == True:
       self.switching = True
-      self.editor.add(HTML("<script>alert('killing editor'); clearInterval(window.editorInterval);</script>"), self.functionID)
+      self.editor.add(HTML("<script>clearInterval(window.editorInterval);</script>"), self.functionID)
       self.remote.switch_driver(self)
       #window.alert("Just sent switch command.")
     else:
