@@ -219,9 +219,9 @@ class Basic:
       # set the local vars
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
-        window.alert("Adding another copy of driversynch in getmeetinginfo")
-        self.editor.add(HTML(self.driversynch), self.synchID)
         if self.initEditor == False:
+          window.alert("Adding another copy of driversynch in getmeetinginfo")
+          self.editor.add(HTML(self.driversynch), self.synchID)
           window.alert("setting syncheditor interval from getmeetinginfo")
           self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
           self.initEditor = True
