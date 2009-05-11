@@ -179,7 +179,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     if (focusElement.id == "MYchatID") {
       return true;
     }
-		alert(window.sid);
+		alert(query1);
     
 		if (isdriver == false) {
 			//alert("Passenger, not sending keypress");
