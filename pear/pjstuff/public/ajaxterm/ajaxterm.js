@@ -117,6 +117,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 				send+=keybuf.pop();
 			}
 			var query=query1+send;
+      alert(query);
 			if(opt_get.className=='on') {
 				r.open("GET",update_url+"u?"+query,true);
 				if(ie) {
