@@ -30,7 +30,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 			isdriver = false;
 	}
 	function set_driver(s) {
-		ispassenger = s;
+		isdriver = s;
 		query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
 		query1=query0+"&c=1&k=";
 	}
