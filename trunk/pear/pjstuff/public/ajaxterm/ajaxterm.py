@@ -350,7 +350,7 @@ class Terminal:
 		#else:
 		#	self.last_html=r
 #			print self
-    return r
+		return r
 	def __repr__(self):
 		d=self.dumplatin1()
 		r=""
