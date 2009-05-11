@@ -128,7 +128,7 @@ class Basic:
     vp = VerticalPanel()
     vp.setBorderWidth(1)
     # the console
-    self.term = HTMLPanel(" <script> setterm(); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
+    self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
     self.term.setWidth("100%")
     self.term.setHeight("390px")
     console = SimplePanel()
@@ -304,6 +304,7 @@ class Basic:
     pass
       
   def onInfoClick(self):
+	  self.term.add(HTML("<script>setterm('5');</script>"),"MYtermfunctionID")
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
       self.menu_body.setWidget(self.menu_contents)
