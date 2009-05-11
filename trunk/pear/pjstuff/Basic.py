@@ -275,8 +275,11 @@ class Basic:
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
               self.isdriver = True
-              #window.alert("Adding another copy of driversynch in driver-status")
               self.editor.add(HTML(self.driversynch), self.synchID)
+              alert(self.consoleID.getText())
+              self.consoleID = Label("%s" % tpl[1])
+              alert(self.consoleID.getText())
+              self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               self.isdriver = False
