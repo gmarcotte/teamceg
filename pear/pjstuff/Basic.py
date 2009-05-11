@@ -225,6 +225,9 @@ class Basic:
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
+        if self.initEditor == False:
+          self.editor.add(HTML("<script>clearInterval('syncheditor()');</script>"),self.functionID)
+          self.initEditor = True
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
