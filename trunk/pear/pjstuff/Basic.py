@@ -76,7 +76,7 @@ class Basic:
     self.driversynch = """
     <script>
     clearInterval(window.listenInterval);
-    clearInterval(window.editorInterval);
+    //clearInterval(window.editorInterval);
     window.editorInterval = setInterval('syncheditor()', 10000); // was 100
       
     // might need to change the interval to an onkeypress sort of a deal...
