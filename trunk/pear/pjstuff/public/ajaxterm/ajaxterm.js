@@ -4,8 +4,9 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
-	var sid=term_id;
-	var query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
+	//var sid=term_id; // 
+	window.sid=term_id;
+  var query0="s="+window.sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
 	var query1=query0+"&c=1&k=";
 	var buf="";
 	var timeout;
@@ -176,7 +177,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
       return true;
     }
 		
-		alert(sid);
+		alert(window.sid);
 		if (isdriver == true) {
 			//alert("Driver, sending keypress.");
 		}
@@ -337,8 +338,8 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 ajaxterm.Terminal=function(id,width,height,ssh,user,update_url,key,term_id) {
 	return new this.Terminal_ctor(id,width,height,ssh,user,update_url,key,term_id);
 }
-ajaxterm.setSID=function(s) {
-	alert("here"); alert(sid);
-	sid=s;
-	alert(sid);
-}
+/*ajaxterm.setSID=function(s) {
+	alert("here"); alert(window.sid);
+	window.sid=s;
+	alert(window.sid);
+}*/
