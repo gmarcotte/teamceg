@@ -64,7 +64,7 @@ class Basic:
     self.intervalID = "MYintervalID"
     self.editorsynchID = "MYeditorsynchID"
     self.listensynchID = "MYlistensynchID"
-		self.termfunctionID = "MYtermfunctionID"
+    self.termfunctionID = "MYtermfunctionID"
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
@@ -219,14 +219,14 @@ class Basic:
         if self.initEditor == False:
           #window.alert("Adding another copy of driversynch in getmeetinginfo")
           self.editor.add(HTML(self.driversynch), self.synchID)
-					self.term.add(HTML("<script>setDP(true);</script>"),self.termfunctionID)
+          self.term.add(HTML("<script>setDP(true);</script>"),self.termfunctionID)
           #window.alert("setting syncheditor interval from getmeetinginfo")
           #self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
           self.initEditor = True
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
-				self.term.add(HTML("<script>setDP(false);</script>"),self.termfunctionID)
+        self.term.add(HTML("<script>setDP(false);</script>"),self.termfunctionID)
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
