@@ -338,7 +338,7 @@ ajaxterm.Terminal=function(id,width,height,ssh,user,update_url,key,term_id) {
 	return new this.Terminal_ctor(id,width,height,ssh,user,update_url,key,term_id);
 }
 ajaxterm.setSID=function(s) {
-	alert("here");
-	this.sid=s;
-	alert(this.sid);
+	alert("here"); alert(sid);
+	sid=s;
+	alert(sid);
 }
