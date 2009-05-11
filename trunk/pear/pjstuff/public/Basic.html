@@ -20,7 +20,7 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
           //alert("in main html: " + window.sid);
 				}
 
-        function changeSID(new_sid) {
+        function changeSID(new_sid,drive) {
           var temp = window.sid;
           var temp1 = window.query0;
           var temp2 = window.query1;
@@ -30,11 +30,11 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
           alert(temp + ", " + window.sid+"  "+temp1+", "+window.query0+"  "+temp2+", "+window.query1);
           if (window.isDriver == true) {
             alert("driver->passenger");
-            window.isDriver = false;
+            window.isDriver = drive;
           }
           else {
             alert("passenger->driver");
-            window.isDriver=true
+            window.isDriver=drive;
           }
         }
         </script>
