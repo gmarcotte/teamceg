@@ -93,7 +93,7 @@ class Basic:
     <script>
     clearInterval(window.editorInterval);
     window.listenInterval = setInterval('synchlisten()', 100);
-
+    document.getElementByID('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;
@@ -257,7 +257,7 @@ class Basic:
       for tpl in response:
         content = tpl[1]
         innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>" + content+"</div>";
-        DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), content)#innerhtml)#tpl[1]) was innerText
+        DOM.setInnerText(DOM.getElementById(self.editorHTMLID), content)#innerhtml)#tpl[1]) was innerText
         #self.editorHTML.setVisible(False)
     
     elif request_info.method == 'driver_status':
