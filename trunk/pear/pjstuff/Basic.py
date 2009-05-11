@@ -493,7 +493,7 @@ class Basic:
       if str(thing[2]) == str(value):
         if str(thing[1])=="file":
           # Is there currently a file open?
-          if self.current_open == None:
+          if self.current_open != None:
             if self.modified == True:
               # force the user to save or discard
               guts = VerticalPanel()
@@ -504,7 +504,7 @@ class Basic:
               self.savediscard_box = DialogBox()
               self.savediscard_box.setHTML("<b>Warning: Unsaved Changes</b>")
               self.savediscard_box.setWidget(guts)
-              
+              self.savediscard_box.show()
             else:
               self.remote.open_file(str(value),self)
               acted = True
