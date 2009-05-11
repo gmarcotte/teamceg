@@ -31,6 +31,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	}
 	function set_driver(s) {
 		isdriver = s;
+		alert(isdriver);
 	}
 	
 	function debug(s) {
