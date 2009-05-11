@@ -345,12 +345,12 @@ class Terminal:
 			if i%w==w-1:
 				span+='\n'
 		r='<?xml version="1.0" encoding="ISO-8859-1"?><pre class="term">%s</pre>'%r
-		if self.last_html==r:
-			return '<?xml version="1.0"?><idem></idem>'
-		else:
-			self.last_html=r
+		#if self.last_html==r:
+		#	return '<?xml version="1.0"?><idem></idem>'
+		#else:
+		#	self.last_html=r
 #			print self
-			return r
+    return r
 	def __repr__(self):
 		d=self.dumplatin1()
 		r=""

@@ -1,6 +1,5 @@
 ajaxterm={};
 ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id) {
-	var ispassenger=1;
   var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
@@ -101,7 +100,6 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	function update() {
 //		debug("ts: "+((new Date).getTime())+" rmax:"+rmax);
 		if(sending==0) {
-      alert("sending was zero")
 			sending=1;
 			sled.className='on';
 			var r=new XMLHttpRequest();
@@ -298,11 +296,6 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     this.onkeydown=keydown;
     // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
-    // if we are the passenger terminal, set the update more aggressively
-    if (ispassenger==1){
-      alert("passenger");
-      inter=window.setInterval(update,100);
-    }
 	}
 	init();
 }
