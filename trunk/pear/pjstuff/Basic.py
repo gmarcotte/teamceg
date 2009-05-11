@@ -14,7 +14,7 @@ class Basic:
   def onModuleLoad(self):
     
     self.remote = DataService()
-    
+    self.initEditor = False
     # this tells us whether or not we are trying to quit...
     self.quitting = False 
     self.switching = False
@@ -67,7 +67,7 @@ class Basic:
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
-    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); window.editorInterval = setInterval('syncheditor()', 10000);</script>")
+    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); </script>")
     self.editorHTML = HTML("The contents of the editor.")
     self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
@@ -219,6 +219,9 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         self.editor.add(HTML(self.driversynch), self.synchID)
+        if self.initEditor == False:
+          self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
+          self.initEditor == True
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
@@ -281,11 +284,13 @@ class Basic:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
+            self.initEditor = False
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             self.isdriver = False
+            self.initEditor = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
             
