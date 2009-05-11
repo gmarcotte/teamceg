@@ -324,10 +324,10 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
 		if (key.toString() == term_id.toString()) {
-			alert("I am the driver");
+			isdriver = true;
 		}
 		else {
-			alert("I am the passenger");
+			isdriver = false;
 		}
 	}
 	init();
