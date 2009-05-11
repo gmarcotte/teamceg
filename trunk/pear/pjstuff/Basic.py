@@ -77,6 +77,7 @@ class Basic:
     <script>
     clearInterval(window.listenInterval);
     clearInterval(window.editorInterval);
+    window.alert("Setting syncheditor interval from driversynch")
     window.editorInterval = setInterval('syncheditor()', 10000); // was 100
       
     // might need to change the interval to an onkeypress sort of a deal...
@@ -220,6 +221,7 @@ class Basic:
         self.isdriver = True
         self.editor.add(HTML(self.driversynch), self.synchID)
         if self.initEditor == False:
+          window.alert("setting syncheditor interval from getmeetinginfo")
           self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
           self.initEditor = True
       else:
