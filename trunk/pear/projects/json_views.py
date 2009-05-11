@@ -317,6 +317,7 @@ def switch_driver(request):
         #r.append(('notice','we switched drivers'))
         r.append(('isdriver','False'))
         
+        
       else:
         # if there is no passenger, do nothing
         #r.append(('notice','no passenger'))
@@ -325,6 +326,7 @@ def switch_driver(request):
     # error case that should NEVER happen
     else:
       r.append(('notice','passenger should not call this method!'))
+    r.append(('consoleID',meeting.driverconsole))
     return r
   else:
     r = []
