@@ -88,15 +88,19 @@ def launch_project(request, project_id):
       meeting = meetings[0]
       meeting.passenger = request.user
       meeting.passengerconsole = request.user.id
+      # this is only if it actually has ssh connection, will break if they don't
+      # but we need to start enforcing this anyway now that key setting works
+      meeting.passengerssh = ssh 
     else:
       meeting = Meeting()
       meeting.driver = request.user
       meeting.driverconsole = request.user.id
+      meeting.driverssh = ssh
       meeting.passenger = None
       meeting.project = project
       # set some other things
       meeting.flash = False
-      meeting.console = ''
+      #meeting.console = '' this was leftover from before.
       meeting.editor = ''
     meeting.save()
     return shortcuts.render_to_response(
