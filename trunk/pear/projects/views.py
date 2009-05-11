@@ -58,9 +58,6 @@ def add_file(request, project_id):
        'project': project,
        'available_servers': available_servers},
       context_instance=template.RequestContext(request))
-  
-  
-  
 
 
 def launch_project(request, project_id):
