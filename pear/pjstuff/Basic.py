@@ -272,21 +272,21 @@ class Basic:
       if self.switching == False:
         self.switching = True
         for tpl in response:
-          if (str(tpl[0])) == "consoleid":
+          if (str(tpl[1])) != "True" and (str(tpl[1])) != "False":
             self.consoleID = Label("%s" % tpl[1])
-          elif (str(tpl[1])) == "True":
+          if (str(tpl[1])) == "True":
             if self.isdriver == False:
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
-              alert(self.consoleID.getText())
+              #alert(self.consoleID.getText())
               #self.consoleID = Label("%s" % tpl[1]) #NO
-              alert(self.consoleID.getText())
+              #alert(self.consoleID.getText())
               self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
-              alert(self.consoleID.getText())
+              #alert(self.consoleID.getText())
               self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           self.switching = False
     elif request_info.method == 'switch_driver':
