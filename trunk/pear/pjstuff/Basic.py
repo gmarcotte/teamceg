@@ -76,7 +76,8 @@ class Basic:
     self.driversynch = """
     <script>
     clearInterval(window.listenInterval);
-    window.editorInterval = setInterval('syncheditor()', 1000); // was 100
+    clearInterval(window.editorInterval);
+    window.editorInterval = setInterval('syncheditor()', 10000); // was 100
       
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
@@ -92,7 +93,8 @@ class Basic:
     self.passengersynch = """
     <script>
     clearInterval(window.editorInterval);
-    window.listenInterval = setInterval('synchlisten()', 1000); // was 100
+    clearInterval(window.listenInterval);
+    window.listenInterval = setInterval('synchlisten()', 10000); // was 100
     document.getElementByID('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
     alert("Synching listen");
