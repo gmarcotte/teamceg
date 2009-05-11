@@ -465,6 +465,7 @@ class Basic:
     window.alert("You clicked on " + value)
     # if it is a file -> open it.
     for thing in self.file_list:
+      window.alert(str(thing[0]))
       if str(thing[0]) == str(value):
         window.alert("Opening File: " + str(value))
         acted = True
