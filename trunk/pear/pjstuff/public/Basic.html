@@ -20,7 +20,8 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
 					if (driverc.length == 0) {
 						alert("setting normally");
 						window.ajaxterm_console=ajaxterm.Terminal("term",60,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}', '{{meeting.driverconsole}}');
-            ajaxterm.setSID("5");
+            //ajaxterm.setSID("5");
+            alert("in main html: " + window.sid);
           }
 					else {
 						alert("setting specially");
