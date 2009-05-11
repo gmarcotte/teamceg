@@ -44,8 +44,8 @@ EMAIL_PASSWORD = ''
 EMAIL_PORT = 587
 
 # SSH Configuration options
-USE_PEXPECT = True
 RSA_KEY_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../keys'))
+SSH_SERVER_HOST = 'teamceg.princeton.edu'
 
 # Version info
 PEAR_VERSION = 'Pre-Release'

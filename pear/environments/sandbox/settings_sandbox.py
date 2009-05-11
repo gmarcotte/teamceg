@@ -47,8 +47,8 @@ EMAIL_PORT = 0
 ALLOW_INITIALIZE_SCRIPT = True
 
 # SSH Configuration options
-USE_PEXPECT = False
 RSA_KEY_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../keys'))
+SSH_SERVER_HOST = 'localhost'
 
 # Version info
 PEAR_VERSION = 'Sandbox'

@@ -6,8 +6,7 @@ from django.conf import settings
 
 from pear.core import timestamp
 
-if settings.USE_PEXPECT:
-  import pexpect
+import paramiko
 import os
 import sys
 
@@ -75,8 +74,12 @@ class Profile(timestamp.TimestampedModel):
     
   def refresh_keys(self):
     """Generate a new public/private key pair for this user"""
-    if settings.USE_PEXPECT:
-      cmd = "rm %s %s" % (self.get_private_file(), self.get_public_file())
-      os.system(cmd)
-      cmd = "ssh-keygen -q -t dsa -f %s -N ''" % self.get_private_file()
-      os.system(cmd)
+    if os.path.exists(self.get_private_file()):
+      os.remove(self.get_private_file())
+    if os.path.exists(self.get_public_file()):
+      os.remove(self.get_public_file())
+    newkey = paramiko.RSAKey.generate(2048)
+    newkey.write_private_key_file(self.get_private_file())
+    pubkey = open(self.get_public_file(), 'w')
+    pubkey.write('ssh-rsa %s root@%s' % (newkey.get_base64(), settings.SSH_SERVER_HOST))
+    pubkey.close()

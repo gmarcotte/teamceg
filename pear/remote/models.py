@@ -4,16 +4,8 @@ from django.conf import settings
 from pear.core import timestamp
 import pear.accounts.models
 
-if settings.USE_PEXPECT:
-  import pexpect
-import sys
-
-class AvailableSSHManager(models.Manager):
-  """A custom manager to only get SSH connections that have valid RSA keys installed."""
-  def get_query_set(self):
-    return super(
-        AvailableSSHManager, self).get_query_set().filter(has_valid_keys=True)
-
+import paramiko
+import time
 
 class SSHConnection(timestamp.TimestampedModel):
   server = models.CharField(max_length=50)
@@ -23,7 +15,6 @@ class SSHConnection(timestamp.TimestampedModel):
   has_valid_keys = models.BooleanField()
   base_dir = models.CharField(max_length=100, blank=True)
   
-  active_servers = AvailableSSHManager()
   objects = models.Manager()
   
   def __unicode__(self):
@@ -41,79 +32,50 @@ class SSHConnection(timestamp.TimestampedModel):
   
   ########## Connection Methods #################
   def connect(self):
-    """Initiate an SSH connection to this server.  Returns a pExpect
+    """Initiate an SSH connection to this server.  Returns a paramiko
     object that must be kept alive until the connection is closed.
     """
-    if settings.USE_PEXPECT:
-      key_file = self.user.profile.get_private_file()
-      login = "ssh -i "+ key_file + " " + self.user_name + "@" + self.server
-      session = pexpect.spawn(login)
-      resp = self.read_output(session)
-      # If the SSH prompts for a password, then our connection failed
-      if resp.find("Password:") >= 0:
-        session.close()
-        return None
-      session.sendline('')
-      session.sendline('')
-      self.num_active += 1
-      self.save()
-      self.execute(session, 'cd %s' % self.base_dir)
-      return session
-    else:
+    key_file = self.user.profile.get_private_file()
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+      client.connect(
+          hostname = self.server,
+          username = self.user_name,
+          key_filename = key_file)
+    except:
       return None
-    
-  def read_output(self, session):
-    if settings.USE_PEXPECT:
-      txt = ''
-      while(True):
-        try:
-          txt += session.read_nonblocking(timeout=1)
-        except:
-          break
-      return txt
-    return ''
+    client.exec_command('cd %s' % self.base_dir)
+    self.num_active += 1
+    self.save()
+    return client
 
-  def execute(self, session, command):
+  def execute(self, client, command):
     """Execute a remote command over ssh, and return the response.
     Args:
-      session: The pExpect object returned when initializing the connection.
+      client: The paramiko object returned when initializing the connection.
       command: The command to run on the remote server
 
     Returns:
-      The output of running the command on the remote server.
+      A 2-tuple, with the first entry indicating the success of the command.
+      True indicates the response is from stdout, False indicates the
+      response is from stderr.  The second entry is the response
+      from the server.
     """
-    if settings.USE_PEXPECT:
-      session.sendline(command)
-      resp = self.read_output(session)
-      lines = resp.split('\n')
-      resp = '\n'.join(lines[1:-1])
-      return resp
+    stdin, stdout, stderr = client.exec_command(command)
+    out_resp = stdout.read()
+    err_resp = stderr.read()
+    if err_resp:
+      return (False, err_resp)
     else:
-      return ''
-    
-  def send_control(self, session, control):
-    """Send a control character to the remote server.
-    Args:
-      session: The pExpect object returned when initializing the connection.
-      command: The control character to send.
-
-    Returns:
-      The output of sending the control character to the remote server.
-    """
-    if settings.USE_PEXPECT:
-      session.sendcontrol(control)
-      resp = self.read_output(session)
-      lines = resp.split('\n')
-      resp = '\n'.join(lines[1:-1])
-      return resp
-
-  def close(self, session):
+      return (True, out_resp)
+  
+  def close(self, client):
     """Close an SSH session to a remote server.
     Args:
-      session: The pExpect object returned when initializing the connection.
+      session: The paramiko object returned when initializing the connection.
     """
-    session.sendline('exit')
-    session.close()
+    client.close()
     self.num_active -= 1
     self.save()  
   
@@ -122,19 +84,17 @@ class SSHConnection(timestamp.TimestampedModel):
     """Removes the RSA keys from the server, so that we can no
     longer log in to their account.
     """
-    if settings.USE_PEXPECT:
-      session = self.connect()
-      if session:
-        resp = self.execute(session, 'rm -f ~/.ssh/authorized_keys')
-        self.close(session)
-        raise Exception(resp)
+    client = self.connect()
+    if client:
+      resp = self.execute(client, 'rm -f ~/.ssh/authorized_keys')
+      self.close(client)
 
     # See if clearing worked
-    session = self.connect()
-    if session:
+    client = self.connect()
+    if client:
       self.has_valid_keys = True
       self.save()
-      self.close(session)
+      self.close(client)
       return False
     else:
       self.has_valid_keys = False
@@ -145,46 +105,51 @@ class SSHConnection(timestamp.TimestampedModel):
     """Sets the RSA key for the user on the server. The plaintext
     password must be given as an argument, raising a potential security risk.
     """
-    if settings.USE_PEXPECT:
-      pub_key = open(self.user.profile.get_public_file(), 'r').read().strip()
-      login = 'ssh %s "echo %s >> ~/.ssh/authorized_keys"' % (self, pub_key)
-      ssh = pexpect.spawn(login)
-      ssh.expect(':')
-      ssh.sendline('yes')
-      ssh.expect(':')
-      ssh.sendline(password)
-      ssh.close()
-          
+    pub_key = open(self.user.profile.get_public_file(), 'r').read().strip()
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    try:
+      client.connect(
+          hostname = self.server,
+          username = self.user_name,
+          password = password)
+      client.exec_command('echo %s >> ~/.ssh/authorized_keys' % (pub_key))
+      client.close()
+    except:
+      pass
+    
+    time.sleep(.5)
     # See if setting worked
     session = self.connect()
     if session:
       self.has_valid_keys = True
       self.save()
       self.close(session)
-      return False
+      return True
     else:
       self.has_valid_keys = False
       self.save()
-      return True
+      return False
     
   # Common remote operations
-  def create_file(self, session, filename, string):      
-    self.execute(session, 'cat /dev/null > %s' % filename)
+  def create_file(self, session, filename, string):   
+    filepath = "%s/%s" % (self.base_dir, filename)
+    self.execute(session, 'cat /dev/null > %s' % filepath)
     for line in string.split('\n'):
-      self.execute(session, "echo '%s' >> %s" % (line, filename))
-    resp = self.execute(session, 'cat %s' % filename)
+      self.execute(session, "echo '%s' >> %s" % (line, filepath))
+    resp = self.execute(session, 'cat %s' % filepath)
     return resp
   
-  def svn_add_file(self, session, filename):
-    cmd = 'svn add %s' % filename
+  def svn_add_file(self, session, filepath):
+    filepath = "%s/%s" % (self.base_dir, filename)
+    cmd = 'svn add %s' % filepath
     self.execute(session, cmd)
-    cmd = 'svn commit %s -m "Adding %s to repository"' % (filename, filename)
+    cmd = 'svn commit %s -m "Adding %s to repository"' % (filepath, filepath)
     resp = self.execute(session, cmd)
     return resp
   
   def checkout_project(self, session, project):
-    cmd = 'cd ~/%s' % self.base_dir
-    self.execute(session, cmd)
-    cmd = 'svn co %s %s' % (project.get_repository_url(), project.directory)
+    dirpath = "%s/%s" % (self.base_dir, project.directory)
+    cmd = 'svn co %s %s' % (project.get_repository_url(), dirpath)
     resp = self.execute(session, cmd)
     return resp
