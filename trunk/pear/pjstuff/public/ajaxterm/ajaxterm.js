@@ -329,6 +329,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 		else {
 			isdriver = false;
 		}
+		return ajaxterm; // maybe this will let us keep the object in scope?
 	}
 	init();
 }
