@@ -378,5 +378,37 @@ def user_quit(request):
       r.append(('notice','there was a passenger, and we deleted them'))
         
     return r
-    
+  
+@network.jsonremote(service)
+def new_file(request, filename):
+  return [('notice', 'I created file %s' % filename)]
+
+@network.jsonremote(service)
+def new_directory(request, dirname):
+  return [('notice', 'I created directory %s' % dirname)]
+
+@network.jsonremote(service)
+def open_file(request, filename):
+  return [('notice', 'This is the text of %s' % filename)]
+
+@network.jsonremote(service)
+def save_file(request, filename, text):
+  return [('notice', 'The new text of %s is %s' % (filename, text))]
+
+@network.jsonremote(service)
+def get_file_tree(request, root):
+  return [('1d', 'rootdir'), 
+          ('2d', 'subdir'), 
+          ('3d', 'subsubdir'),
+          ('2d', 'subdir2'),
+          ('3f', 'file'),
+          ('3f', 'otherfile')]
+  
+@network.jsonremote(service)
+def sync_all(request):
+  return [('notice', 'I synced the entire project')]
+
+@network.jsonremote(service)
+def delete_file(request, filename):
+  return [('notice', 'I deleted %s' % filename)]
   
