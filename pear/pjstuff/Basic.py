@@ -133,7 +133,6 @@ class Basic:
     console.add(term)
     console.setWidth("400px")
     console.setHeight("100%")
-    DOM.setStyleProperty(term, 'background-color:', '#000000')
     # not so hacky -- indeed, pretty decent little text chat
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
