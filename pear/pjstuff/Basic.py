@@ -234,10 +234,10 @@ class Basic:
       if len(self.list[5]) < 1:
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
-        
       if str(self.consoleID) != str(previousconsoleID):
         window.alert("Changing console")
         self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+        
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
@@ -284,6 +284,10 @@ class Basic:
           self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
+        if (str(tpl[0])) == "consoleID":
+          alert(self.consoleID)
+          self.consoleID = Label("%s" % tpl[1])
+          alert(self.consoleID)
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
