@@ -27,19 +27,7 @@ class Basic:
     # building the menu bar
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
-    #self.file_test = ["1Top level", "2Second level", "2Also second level", "1Top level again", "2New second level", "3Oh my, a 3rd level", "4A fourth level??", "5Zomg a fifth level?", "3Another third level", "3Yet another 3rd level", "2Hi, I'm 2nd level"]
-    self.file_test = []
-    #self.file_test.append(('1Top Level', 'dir', 'root/'))
-    #self.file_test.append(('2Second Level', 'file', 'root/file1'))
-    #self.file_test.append(('2Also Second Level', 'file', 'root/file2'))
-    #self.file_test.append(('1Top Level Again', 'dir', 'root/'))
-    #self.file_test.append(('2New second level', 'dir', 'root/subdir1/'))
-    #self.file_test.append(('3Third Level', 'dir', 'root/subdir1/subdir2/'))
-    #self.file_test.append(('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'))
-    #self.file_test.append(('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'))
-    #self.file_test.append(('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'))
-    #self.file_test.append(('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'))
-    #self.file_test.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
+    self.file_list = []
     
     self.files = Button("Files", getattr(self, "onFilesClick"))
     self.FileContext = SimplePanel("La di da")
@@ -338,10 +326,10 @@ class Basic:
       for tpl in response:
         window.alert(str(tpl[1]))
     elif request_info.method == 'get_file_tree':
-      self.file_test = []
+      self.file_list = []
       for tpl in response:
         #window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
-        self.file_test.append(tpl)
+        self.file_list.append(tpl)
         
       
     elif request_info.method == 'user_quit':
@@ -427,26 +415,26 @@ class Basic:
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
     self.remote.get_file_tree('rd',self)
-    while (i < len(self.file_test)) and (self.file_test[i][0][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_test[i][0][1:]), value=self.file_test[i][2])#"root/")
+    while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
+      s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
       i = i + 1
-      while (i < len(self.file_test)) and (self.file_test[i][0][0] == "2"):
-        s2 = self.createTreeItem(str(self.file_test[i][0][1:]), value=self.file_test[i][2])
+      while (i < len(self.file_list)) and (self.file_list[i][0][0] == "2"):
+        s2 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
         s1.addItem(s2)
         s1.setState(True, fireEvents=False)
         i = i + 1
-        while (i < len(self.file_test)) and (self.file_test[i][0][0] == "3"):
-          s3 = self.createTreeItem(str(self.file_test[i][0][1:]), value=self.file_test[i][2])
+        while (i < len(self.file_list)) and (self.file_list[i][0][0] == "3"):
+          s3 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
           s2.addItem(s3)
           s2.setState(False, fireEvents=False)
           i = i + 1
-          while (i < len(self.file_test)) and (self.file_test[i][0][0] == "4"):
-            s4 = self.createTreeItem(str(self.file_test[i][0][1:]), value=self.file_test[i][2])
+          while (i < len(self.file_list)) and (self.file_list[i][0][0] == "4"):
+            s4 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
             s3.addItem(s4)
             s3.setState(False, fireEvents=False)
             i = i + 1
-            while (i < len(self.file_test)) and (self.file_test[i][0][0] == "5"):
-              s5 = self.createTreeItem(str(self.file_test[i][0][1:]), value=self.file_test[i][2])
+            while (i < len(self.file_list)) and (self.file_list[i][0][0] == "5"):
+              s5 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
@@ -467,13 +455,23 @@ class Basic:
   def createTreeItem(self, label, value=None):
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
-    item.setContextMenu(self) # this needs latest version of pjs
+    #Will not work don't bother ##item.setContextMenu(self) # this needs latest version of pjs
     if value != None:
       item.setUserObject(value)
     return item
   def onTreeItemSelected(self, item):
+    acted = False
     value = item.getUserObject()
     window.alert("You clicked on " + value)
+    # if it is a file -> open it.
+    for thing in self.file_list:
+      if str(thing[0]) == str(value):
+        window.alert("Opening File: " + str(value))
+        acted = True
+    # if it is a directory -> make a popup to add/delete files dirs
+    if acted == False:
+      window.alert("Will display a popup window to manage directory: " + str(value))
+    
     #self.file_box.hide()
   def onTreeItemStateChanged(self, item):
     pass  # "We ignore this." but why again?
