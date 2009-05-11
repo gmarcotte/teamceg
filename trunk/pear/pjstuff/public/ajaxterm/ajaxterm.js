@@ -24,7 +24,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	var dterm=document.createElement('div');
 
 	// these might not actually work cci
-	function setSID(s) {
+	/*function setSID(s) {
 		sid = s;
 		query0="s="+sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
 		query1=query0+"&c=1&k=";
@@ -33,7 +33,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	function set_driver(s) {
 		isdriver = s;
 		alert(isdriver);
-	}
+	}*/
 	//
 	
 	function debug(s) {
@@ -336,4 +336,8 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 ajaxterm.Terminal=function(id,width,height,ssh,user,update_url,key,term_id) {
 	return new this.Terminal_ctor(id,width,height,ssh,user,update_url,key,term_id);
 }
-
+ajaxterm.setSID=function(s) {
+	alert("here");
+	this.sid=s;
+	alert(this.sid);
+}
