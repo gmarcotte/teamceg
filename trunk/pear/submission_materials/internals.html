@@ -8,4 +8,16 @@
   <p>[[Developer information, in a file called internals.html. This should describe the internal structure of the software for the developers who will take over after you sell your company, with enough detail that they could continue to evolve your system once you're gone. State clearly the development environment (operating system, languages, compilers, frameworks, etc.) where the system can be built, and the environment where it will run. If you used major components like Rails or Django, these must be noted, along with your best guess about how to get copies. Do not include them! We won't try to recreate your system, but we want to see how it's put together, spelled out carefully enough that we could imagine taking it over if so motivated. Don't get mired in detail, however; 3-4 pages are likely to be sufficient. ]]</p>
   <p>internals: well described / adequately described / badly described</p>
   
+  OS: any 
+  languages: python v 2.5, html, css (if those last 2 count)
+  compilers: python
+  frameworks: django (http://www.djangoproject.com/download/), pyjamas (http://code.google.com/p/pyjamas/downloads/list)
+  also, mysql (http://dev.mysql.com/downloads/)
+  
+  if edit pyjamas app, run build shell script pear/pjstuff/build.sh or type out its contents and execute (add detail)
+  if edit django, run syncdb then runserver; if change database, run initialize.py in pear/environments/sandbox/initialize.py (add detail)
+  push all changes to your server (or make changes on the server)
+  
+  --needs a lot more detail!
+  
 </body>
