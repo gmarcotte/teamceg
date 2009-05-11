@@ -465,10 +465,11 @@ class Basic:
     window.alert("You clicked on " + value)
     # if it is a file -> open it.
     for thing in self.file_list:
-      window.alert(str(thing[0]))
-      if str(thing[0]) == str(value):
-        window.alert("Opening File: " + str(value))
-        acted = True
+      #window.alert(str(thing[0]))
+      if str(thing[2]) == str(value):
+        if str(thing[1])=="file":
+          window.alert("Opening File: " + str(value))
+          acted = True
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
       window.alert("Will display a popup window to manage directory: " + str(value))
