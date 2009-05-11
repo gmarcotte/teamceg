@@ -25,7 +25,20 @@ class Basic:
     # building the menu bar
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
-    self.file_test = ["1Top level", "2Second level", "2Also second level", "1Top level again", "2New second level", "3Oh my, a 3rd level", "4A fourth level??", "5Zomg a fifth level?", "3Another third level", "3Yet another 3rd level", "2Hi, I'm 2nd level"]
+    #self.file_test = ["1Top level", "2Second level", "2Also second level", "1Top level again", "2New second level", "3Oh my, a 3rd level", "4A fourth level??", "5Zomg a fifth level?", "3Another third level", "3Yet another 3rd level", "2Hi, I'm 2nd level"]
+    self.file_test = []
+    self.file_test.append(('1Top Level', 'dir', 'root/'))
+    self.file_test.append(('2Second Level', 'file', 'root/file1'))
+    self.file_test.append(('2Also Second Level', 'file', 'root/file2'))
+    self.file_test.append(('1Top Level Again', 'dir', 'root/'))
+    self.file_test.append(('2New second level', 'dir', 'root/subdir1/'))
+    self.file_test.append(('3Third Level', 'dir', 'root/subdir1/subdir2/'))
+    self.file_test.append(('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'))
+    self.file_test.append(('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'))
+    self.file_test.append(('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'))
+    self.file_test.append(('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'))
+    self.file_test.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
+    
     self.files = Button("Files", getattr(self, "onFilesClick"))
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
@@ -393,26 +406,26 @@ class Basic:
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
-    while (i < len(self.file_test)) and (self.file_test[i][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_test[i][1:]), value="root")
+    while (i < len(self.file_test)) and (self.file_test[i][0][0] == "1"):
+      s1 = self.createTreeItem(str(self.file_test[i][1:]), value=self.file_test[i][2])#"root/")
       i = i + 1
-      while (i < len(self.file_test)) and (self.file_test[i][0] == "2"):
-        s2 = self.createTreeItem(str(self.file_test[i][1:]), value="root/subdir1")
+      while (i < len(self.file_test)) and (self.file_test[i][0][0] == "2"):
+        s2 = self.createTreeItem(str(self.file_test[i][1:]), value=self.file_test[i][2])
         s1.addItem(s2)
         s1.setState(True, fireEvents=False)
         i = i + 1
-        while (i < len(self.file_test)) and (self.file_test[i][0] == "3"):
-          s3 = self.createTreeItem(str(self.file_test[i][1:]), value="root/subdir1/file")
+        while (i < len(self.file_test)) and (self.file_test[i][0][0] == "3"):
+          s3 = self.createTreeItem(str(self.file_test[i][1:]), value=self.file_test[i][2])
           s2.addItem(s3)
           s2.setState(False, fireEvents=False)
           i = i + 1
-          while (i < len(self.file_test)) and (self.file_test[i][0] == "4"):
-            s4 = self.createTreeItem(str(self.file_test[i][1:]), value="root/subdir1/subsubdir1/subsubdir2")
+          while (i < len(self.file_test)) and (self.file_test[i][0][0] == "4"):
+            s4 = self.createTreeItem(str(self.file_test[i][1:]), value=self.file_test[i][2])
             s3.addItem(s4)
             s3.setState(False, fireEvents=False)
             i = i + 1
-            while (i < len(self.file_test)) and (self.file_test[i][0] == "5"):
-              s5 = self.createTreeItem(str(self.file_test[i][1:]), value="roo/subdir1/subsubdir1/subsubdir2/file")
+            while (i < len(self.file_test)) and (self.file_test[i][0][0] == "5"):
+              s5 = self.createTreeItem(str(self.file_test[i][1:]), value=self.file_test[i][2])
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
