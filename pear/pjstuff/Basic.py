@@ -297,9 +297,11 @@ class Basic:
             self.switching = False
             # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         else:
-          alert(self.consoleID)
+          alert(str(self.consoleID))
           self.consoleID = Label("%s" % tpl[1])
-          alert(self.consoleID)
+          alert(str(self.consoleID))
+          self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+          
             
     elif request_info.method == 'user_quit':
       ##save everything for them
