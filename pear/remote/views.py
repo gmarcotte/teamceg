@@ -29,6 +29,8 @@ def delete_server(request, server_id):
   
   if request.method == 'POST':
     if request.POST.has_key('confirm'):
+      request.session['flash_params'] = {'type': 'success'}
+      request.session['flash_msg'] = 'Successfully Deleted %s' % server
       server.delete()
     return http.HttpResponseRedirect(redirect_to)
   else:

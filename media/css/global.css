@@ -127,3 +127,21 @@ a img {
 	text-align: center;
 	margin: 5px 0px;
 }
+
+/* FLASH MESSAGES */
+div.message_success,
+div.message_error {
+  padding: 10px 10px 10px 35px;
+  font-size: 14px;
+  margin: 10px 15px;
+}
+
+div.message_success {
+  background: #fff9d7 url(/admin_media/img/admin/icon_success.gif) no-repeat scroll 10px 10px;
+  border: 1px solid #e2c822;
+}
+
+div.message_error {
+  background: #ffebe8 url(/admin_media/img/admin/icon_error.gif) no-repeat scroll 10px 10px;
+  border: 1px solid #dd3c10;
+}
