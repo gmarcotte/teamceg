@@ -100,8 +100,8 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	}
 	function update() {
 //		debug("ts: "+((new Date).getTime())+" rmax:"+rmax);
-    alert("Updating!");
 		if(sending==0) {
+      alert("sending was zero")
 			sending=1;
 			sled.className='on';
 			var r=new XMLHttpRequest();
