@@ -4,6 +4,7 @@ from django.conf import settings
 from pear.core import timestamp
 import pear.accounts.models
 
+import os
 import paramiko
 import time
 
@@ -132,24 +133,57 @@ class SSHConnection(timestamp.TimestampedModel):
       return False
     
   # Common remote operations
-  def create_file(self, session, filename, string):   
-    filepath = "%s/%s" % (self.base_dir, filename)
-    self.execute(session, 'cat /dev/null > %s' % filepath)
+  def get_relative_filename(self, filepath):
+    return os.path.normcase(os.path.normcase(os.path.join(self.base_dir, filepath)))
+  
+  def save_file(self, session, filename, string):   
+    filepath = self.get_relative_filename(filename)
+    self.execute(session, 'rm -f %s' % filepath)
     for line in string.split('\n'):
       self.execute(session, "echo '%s' >> %s" % (line, filepath))
     resp = self.execute(session, 'cat %s' % filepath)
     return resp
   
-  def svn_add_file(self, session, filepath):
-    filepath = "%s/%s" % (self.base_dir, filename)
-    cmd = 'svn add %s' % filepath
+  def load_file(self, session, filename):
+    filepath = self.get_relative_filename(filename)
+    resp = self.execute(session, 'cat %s' % filepath)
+    return resp
+  
+  def read_file_tree(self, session, root_dir):
+    dirpath = self.get_relative_filename(root_dir)
+    cmd = 'find %s' % dirpath
+    resp = self.execute(session, cmd)
+    return resp
+    
+  def svn_add(self, session, filepath):
+    fullpath = self.get_relative_filename(filepath)
+    cmd = 'svn add %s' % fullpath
     self.execute(session, cmd)
-    cmd = 'svn commit %s -m "Adding %s to repository"' % (filepath, filepath)
+    cmd = 'svn commit %s -m "Adding %s to repository"' % (fullpath, filepath)
     resp = self.execute(session, cmd)
     return resp
   
-  def checkout_project(self, session, project):
-    dirpath = "%s/%s" % (self.base_dir, project.directory)
-    cmd = 'svn co %s %s' % (project.get_repository_url(), dirpath)
+  def svn_checkout(self, session, repos, working_copy):
+    dirpath = self.get_relative_filename(working_copy)
+    cmd = 'svn co %s %s' % (repos, working_copy)
     resp = self.execute(session, cmd)
     return resp
+  
+  def svn_update(self, session, filepath):
+    fullpath = self.get_relative_filename(filepath)
+    cmd = 'svn update %s' % fullpath
+    resp = self.execute(session, cmd)
+    return resp
+  
+  def svn_delete(self, session, filepath):
+    fullpath = self.get_relative_filename(filepath)
+    cmd = 'svn delete %s -m "Deleting %s from the repository"' % (fullpath, filepath)
+    resp = self.execute(session, cmd)
+    return resp
+  
+  def svn_commit(self, session, filepath):
+    fullpath = self.get_relative_filename(filepath)
+    cmd = 'svn commit %s -m "Saving changes to %s"' % (fullpath, filepath)
+    resp = self.execute(session, cmd)
+    return resp
+    
