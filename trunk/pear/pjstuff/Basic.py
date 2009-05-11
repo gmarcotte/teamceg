@@ -19,6 +19,10 @@ class Basic:
     self.quitting = False 
     self.switching = False
     
+    # file info
+    self.current_open = None
+    self.modified = False
+    
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
     self.remote.get_file_tree('rd',self) # will need to change rd to actual root directory.
@@ -30,7 +34,7 @@ class Basic:
     self.file_list = []
     
     self.files = Button("Files", getattr(self, "onFilesClick"))
-    self.FileContext = SimplePanel("La di da")
+    #self.FileContext = SimplePanel("La di da")
     self.mode = Button("Mode", getattr(self, "onModeClick"))
     self.audio = Button("Audio", getattr(self, "onAudioClick"))
     self.flash = Button("Start Flash", getattr(self, "toggleFlash"))
@@ -363,16 +367,25 @@ class Basic:
       self.active_menu.setText("Files")
       filepanel = HorizontalPanel()
       filetreebutton = Button("File Tree", getattr(self, "onFileTreeOpenClick"))
+      filesavebutton = Button("Save", getattr(self,"onFileSave"))
       ## we may add back later
       #filedirbutton = Button("Add New Directory", getattr(self, "onFileDirOpenClick"))
       fileuploadbutton = Button("Upload a File", getattr(self, "onFileUploadOpenClick"))
       filetreebutton.setStyleName("supp-button")
+      filesavebutton.setStyleName("supp-button")
       ##filedirbutton.setStyleName("supp-button")
       fileuploadbutton.setStyleName("supp-button")
       filepanel.add(filetreebutton)
       ##filepanel.add(filedirbutton)
       filepanel.add(fileuploadbutton)
       self.menu_body.setWidget(filepanel)
+  
+  def onFileSave:
+    # get the text from the editor and send a save command to the server.
+    if self.isdriver == True:
+      content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
+      self.remote.save_file(str(current_open[2]),content, self)
+  
   def onFileUploadOpenClick(self):
     self.uploadform = FormPanel()
     self.uploadform.setEncoding(FormPanel.ENCODING_MULTIPART)
@@ -474,6 +487,8 @@ class Basic:
           #window.alert("Opening File: " + str(value))
           self.remote.open_file(str(value),self)
           acted = True
+          self.modified = False
+          self.current_open = thing
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
       window.alert("Will display a popup window to manage directory: " + str(value))
@@ -630,10 +645,10 @@ class Basic:
     self.remote.user_quit(self)
     
     
-  def onContextMenu(self, sender):
-    event = DOM.eventGetCurrentEvent()
-    
-    x = DOM.eventsGetClientX(event) + 2
-    y = DOM.eventsGetClientY(event) + 2
-    popup = ContextMenuPopupPanel(self.FileContext)
-    popup.showAt(x, y)
+  #def onContextMenu(self, sender):
+  #  event = DOM.eventGetCurrentEvent()
+  ##  
+   # x = DOM.eventsGetClientX(event) + 2
+   # y = DOM.eventsGetClientY(event) + 2
+   # popup = ContextMenuPopupPanel(self.FileContext)
+   # popup.showAt(x, y)
