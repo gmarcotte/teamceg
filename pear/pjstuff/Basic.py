@@ -67,7 +67,7 @@ class Basic:
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
-    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); /*setInterval('toggle()', 5000);*/</script>")
+    self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); window.editorInterval = setInterval('syncheditor()', 10000);/*setInterval('toggle()', 5000);*/</script>")
     self.editorHTML = HTML("The contents of the editor.")
     self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
