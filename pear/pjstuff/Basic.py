@@ -95,7 +95,7 @@ class Basic:
     clearInterval(window.editorInterval);
     clearInterval(window.listenInterval);
     window.listenInterval = setInterval('synchlisten()', 10000); // was 100
-    document.getElementByID('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
+    //document.getElementById('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
     alert("Synching listen");
     var currentfocus = document.activeElement;
@@ -219,9 +219,9 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         self.editor.add(HTML(self.driversynch), self.synchID)
-        if self.initEditor == False:
-          self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
-          self.initEditor = True
+        #if self.initEditor == False:
+        #  self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
+        #  self.initEditor = True
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
