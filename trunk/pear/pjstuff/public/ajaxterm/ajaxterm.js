@@ -1,6 +1,7 @@
 ajaxterm={};
 ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id) {
-	var ie=0;
+	var ispassenger=0;
+  var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
 	var sid=term_id;
@@ -297,7 +298,10 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
     // if we are the passenger terminal, set the update more aggressively
-    //inter=window.setInterval(update,100);
+    if (ispassenger==0){
+      alert("passenger updating")
+      inter=window.setInterval(update,100);
+    }
 	}
 	init();
 }

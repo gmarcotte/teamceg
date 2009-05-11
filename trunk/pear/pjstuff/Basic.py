@@ -95,7 +95,6 @@ class Basic:
     window.listenInterval = setInterval('synchlisten()', 100); 
     //document.getElementById('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
-    //alert("Synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;//innerHTML;
     content = content.substring(86, content.length-6);
