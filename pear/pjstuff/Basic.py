@@ -64,7 +64,7 @@ class Basic:
     self.intervalID = "MYintervalID"
     self.editorsynchID = "MYeditorsynchID"
     self.listensynchID = "MYlistensynchID"
-    #self.termfunctionID = "MYtermfunctionID"
+    self.termfunctionID = "MYtermfunctionID"
     
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
@@ -128,7 +128,7 @@ class Basic:
     vp = VerticalPanel()
     vp.setBorderWidth(1)
     # the console
-    self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div>")  #Frame("http://127.0.0.1:8023/")
+    self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
     self.term.setWidth("100%")
     self.term.setHeight("390px")
     console = SimplePanel()
