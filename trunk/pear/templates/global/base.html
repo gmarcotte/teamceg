@@ -42,6 +42,11 @@
 {% include "global/nav_menu.html" %}
 
 <div id="content-main">
+{% flash %}
+  <div class="message_{{ params.type }}">
+    {{ msg }}
+  </div>
+{% endflash %}
 {% block content %}{% endblock %}
 </div>
 
