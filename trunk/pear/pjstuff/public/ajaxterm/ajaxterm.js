@@ -1,6 +1,6 @@
 ajaxterm={};
 ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id) {
-  var isdriver=true;
+  window.isDriver=true;
 	var ie=0;
 	if(window.ActiveXObject)
 		ie=1;
@@ -182,7 +182,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     }
 		//alert(query1);
     
-		if (isdriver == false) {
+		if (window.isDriver == false) {
 			//alert("Passenger, not sending keypress");
 			return true;
 		}
@@ -268,7 +268,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
       return true;
     }
 		
-		if (isdriver == false) {
+		if (window.isDriver == false) {
 			//alert("Passenger, not sending keypress");
 			return true;
 		}
@@ -322,10 +322,10 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     // if we are the real terminal, set the update normally
     timeout=window.setTimeout(update,100);
 		if (key.toString() == term_id.toString()) {
-			isdriver = true;
+			window.isDriver = true;
 		}
 		else {
-			isdriver = false;
+			window.isDriver = false;
 		}
 		return ajaxterm; // maybe this will let us keep the object in scope?
 	}
