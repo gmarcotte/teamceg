@@ -6,8 +6,10 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 		ie=1;
 	//var sid=term_id; // 
 	window.sid=term_id;
-  var query0="s="+window.sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
-	var query1=query0+"&c=1&k=";
+  window.query0suf="&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
+  window.query0="s="+window.sid+window.query0suf;
+  //var query0="s="+window.sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
+	var query1=window.query0+"&c=1&k=";
 	var buf="";
 	var timeout;
 	var error_timeout;
@@ -57,9 +59,9 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 	function do_color(event) {
 		var o=opt_color.className=(opt_color.className=='off')?'on':'off';
 		if(o=='on')
-			query1=query0+"&c=1&k=";
+			query1=window.query0+"&c=1&k=";
 		else
-			query1=query0+"&k=";
+			query1=window.query0+"&k=";
 		debug('Color '+opt_color.className);
 	}
 	function mozilla_clipboard() {

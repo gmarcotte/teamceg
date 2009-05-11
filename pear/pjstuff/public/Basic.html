@@ -22,8 +22,10 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
 
         function changeSID(new_sid) {
           var temp = window.sid;
+          var temp1 = window.query0;
           window.sid=new_sid;
-          alert(temp + ", " + window.sid);
+          window.query0="s="+window.sid+window.query0suf;
+          alert(temp + ", " + window.sid+"  "+temp1+", "+window.query0);
         }
         </script>
 
