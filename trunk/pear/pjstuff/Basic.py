@@ -211,6 +211,7 @@ class Basic:
           self.passenger.setText("%s" % tpl[3])
     elif request_info.method == 'get_meetinginfo':
       self.list = []
+      previousconsoleID=self.consoleID
       for tpl in response:
         self.list.append("%s" % tpl[1])
       # set the local vars
@@ -233,6 +234,10 @@ class Basic:
       if len(self.list[5]) < 1:
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
+        
+      if str(self.consoleID) != str(previousconsoleID):
+        window.alert("Changing console")
+        self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
@@ -282,18 +287,15 @@ class Basic:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
-            #self.initEditor = False
-            #window.alert("Adding another copy of driversynch in switch-driver")
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
-            self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+            # need to hold off until we know the id self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             self.isdriver = False
-            #self.initEditor = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
-            self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+            # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
             
     elif request_info.method == 'user_quit':
       ##save everything for them
