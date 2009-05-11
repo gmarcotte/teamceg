@@ -385,7 +385,7 @@ class Basic:
     # get the text from the editor and send a save command to the server.
     if self.isdriver == True:
       content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
-      self.remote.save_file(str(current_open[2]),content, self)
+      self.remote.save_file(str(self.current_open[2]),content, self)
   
   def onFileUploadOpenClick(self):
     self.uploadform = FormPanel()
