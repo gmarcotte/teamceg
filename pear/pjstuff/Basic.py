@@ -339,13 +339,14 @@ class Basic:
       self.active_menu.setText("Files")
       filepanel = HorizontalPanel()
       filetreebutton = Button("File Tree", getattr(self, "onFileTreeOpenClick"))
-      filedirbutton = Button("Add New Directory", getattr(self, "onFileDirOpenClick"))
+      ## we may add back later
+      #filedirbutton = Button("Add New Directory", getattr(self, "onFileDirOpenClick"))
       fileuploadbutton = Button("Upload a File", getattr(self, "onFileUploadOpenClick"))
       filetreebutton.setStyleName("supp-button")
-      filedirbutton.setStyleName("supp-button")
+      ##filedirbutton.setStyleName("supp-button")
       fileuploadbutton.setStyleName("supp-button")
       filepanel.add(filetreebutton)
-      filepanel.add(filedirbutton)
+      ##filepanel.add(filedirbutton)
       filepanel.add(fileuploadbutton)
       self.menu_body.setWidget(filepanel)
   def onFileUploadOpenClick(self):
@@ -390,26 +391,28 @@ class Basic:
     filetree = Tree()
     filetree.addTreeListener(self)
     i = 0
+    ## Values will be full paths of the files, so we can send them directly
+    ## Names will be filename within the directory or the directory name
     while (i < len(self.file_test)) and (self.file_test[i][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_test[i][1:]), value="garrett")
+      s1 = self.createTreeItem(str(self.file_test[i][1:]), value="root")
       i = i + 1
       while (i < len(self.file_test)) and (self.file_test[i][0] == "2"):
-        s2 = self.createTreeItem(str(self.file_test[i][1:]), value="monkey")
+        s2 = self.createTreeItem(str(self.file_test[i][1:]), value="root/subdir1")
         s1.addItem(s2)
         s1.setState(True, fireEvents=False)
         i = i + 1
         while (i < len(self.file_test)) and (self.file_test[i][0] == "3"):
-          s3 = self.createTreeItem(str(self.file_test[i][1:]), value="butt")
+          s3 = self.createTreeItem(str(self.file_test[i][1:]), value="root/subdir1/file")
           s2.addItem(s3)
           s2.setState(False, fireEvents=False)
           i = i + 1
           while (i < len(self.file_test)) and (self.file_test[i][0] == "4"):
-            s4 = self.createTreeItem(str(self.file_test[i][1:]), value="Peace")
+            s4 = self.createTreeItem(str(self.file_test[i][1:]), value="root/subdir1/subsubdir1/subsubdir2")
             s3.addItem(s4)
             s3.setState(False, fireEvents=False)
             i = i + 1
             while (i < len(self.file_test)) and (self.file_test[i][0] == "5"):
-              s5 = self.createTreeItem(str(self.file_test[i][1:]), value="Pie..")
+              s5 = self.createTreeItem(str(self.file_test[i][1:]), value="roo/subdir1/subsubdir1/subsubdir2/file")
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
