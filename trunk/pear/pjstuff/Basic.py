@@ -297,9 +297,9 @@ class Basic:
             self.switching = False
             # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         else:
-          alert(str(self.consoleID))
+          alert(self.consoleID.getText())
           self.consoleID = Label("%s" % tpl[1])
-          alert(str(self.consoleID))
+          alert(self.consoleID.getText())
           self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
           
             
