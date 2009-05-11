@@ -219,9 +219,9 @@ class Basic:
       if (str(self.list[0]) == 'true'):
         self.isdriver = True
         self.editor.add(HTML(self.driversynch), self.synchID)
-        #if self.initEditor == False:
-        #  self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
-        #  self.initEditor = True
+        if self.initEditor == False:
+          self.editor.add(HTML("<script>window.editorInterval = setInterval('syncheditor()', 10000);</script>"),self.functionID)
+          self.initEditor = True
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
@@ -284,13 +284,13 @@ class Basic:
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
-            self.initEditor = False
+            #self.initEditor = False
             self.editor.add(HTML(self.driversynch), self.synchID)
             self.switching = False
         elif str(tpl[1]) == "False":
           if self.isdriver == True:
             self.isdriver = False
-            self.initEditor = False
+            #self.initEditor = False
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
             
