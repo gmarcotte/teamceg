@@ -284,10 +284,6 @@ class Basic:
           self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
-        if (str(tpl[0])) == "consoleID":
-          alert(self.consoleID)
-          self.consoleID = Label("%s" % tpl[1])
-          alert(self.consoleID)
         if (str(tpl[1])) == "True":
           if self.isdriver == False:
             self.isdriver = True
@@ -300,6 +296,10 @@ class Basic:
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
             # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+        else:
+          alert(self.consoleID)
+          self.consoleID = Label("%s" % tpl[1])
+          alert(self.consoleID)
             
     elif request_info.method == 'user_quit':
       ##save everything for them
