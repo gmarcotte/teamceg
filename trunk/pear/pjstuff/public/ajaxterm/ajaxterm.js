@@ -177,11 +177,6 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
       return true;
     }
 		
-		alert(window.sid);
-		if (isdriver == true) {
-			//alert("Driver, sending keypress.");
-		}
-		
 		if (isdriver == false) {
 			//alert("Passenger, not sending keypress");
 			return true;
@@ -267,10 +262,6 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
     if (focusElement.id == "MYchatID") {
       return true;
     }
-		
-		if (isdriver == true) {
-			//alert("Driver, sending keypress.");
-		}
 		
 		if (isdriver == false) {
 			//alert("Passenger, not sending keypress");
