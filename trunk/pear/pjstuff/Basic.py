@@ -76,11 +76,11 @@ class Basic:
     self.driversynch = """
     <script>
     clearInterval(window.listenInterval);
-    window.editorInterval = setInterval('syncheditor()', 100);
+    window.editorInterval = setInterval('syncheditor()', 1000); // was 100
       
     // might need to change the interval to an onkeypress sort of a deal...
     function syncheditor() { 
-    
+    alert("Synching edit")
     // see if this helps with actually setting it to be editable again
     editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
     var content = editAreaLoader.getValue('MYeditorID');
@@ -92,9 +92,10 @@ class Basic:
     self.passengersynch = """
     <script>
     clearInterval(window.editorInterval);
-    window.listenInterval = setInterval('synchlisten()', 100);
+    window.listenInterval = setInterval('synchlisten()', 1000); // was 100
     document.getElementByID('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
+    alert("Synching listen");
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;//innerHTML;
     content = content.substring(86, content.length-6);
