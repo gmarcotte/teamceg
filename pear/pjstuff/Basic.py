@@ -225,9 +225,6 @@ class Basic:
       else:
         self.isdriver = False
         self.editor.add(HTML(self.passengersynch), self.synchID)
-        if self.initEditor == False:
-          self.editor.add(HTML("<script>clearInterval('syncheditor()');</script>"),self.functionID)
-          self.initEditor = True
         
       self.project = Label("%s" % self.list[1])
       self.driver = Label("%s" % self.list[2])
@@ -444,6 +441,7 @@ class Basic:
     #window.alert("You are trying to switch drivers")
     if self.isdriver == True:
       self.switching = True
+      self.editor.add(HTML("<script>alert('killing editor'); clearInterval(window.editorInterval);</script>"), self.functionID)
       self.remote.switch_driver(self)
       #window.alert("Just sent switch command.")
     else:
