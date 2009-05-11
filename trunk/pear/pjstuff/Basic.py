@@ -286,6 +286,8 @@ class Basic:
             if self.isdriver == True:
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
+              alert(self.consoleID.getText())
+              self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
@@ -301,11 +303,12 @@ class Basic:
             self.editor.add(HTML(self.passengersynch), self.synchID)
             self.switching = False
             # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
-        else:
-          alert(self.consoleID.getText())
-          self.consoleID = Label("%s" % tpl[1])
-          alert(self.consoleID.getText())
-          self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
+        # Let's wait and try this on driver_status
+        #else:
+        #  alert(self.consoleID.getText())
+        #  self.consoleID = Label("%s" % tpl[1])
+        #  alert(self.consoleID.getText())
+        #  self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           
             
     elif request_info.method == 'user_quit':
