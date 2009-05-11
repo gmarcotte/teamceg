@@ -34,8 +34,8 @@ class Meeting(timestamp.TimestampedModel):
   passengerconsole = models.IntegerField(null=True)
   driverconsole = models.IntegerField()
   # ssh connections for driver and passenger
-  passengerssh = models.ForeignKey(pear.remote.models.SSHConnection, related_name='active')
-  driverssh = models.ForeignKey(pear.remote.models.SSHConnection, related_name='inactive', null=True)
+  passengerssh = models.ForeignKey(pear.remote.models.SSHConnection, related_name='inactive', null=True)
+  driverssh = models.ForeignKey(pear.remote.models.SSHConnection, related_name='active')
   # Editor state -- Note that we might need to change this to deal with maliciously long documents
   editor = models.TextField()
   # Chat state (queue of messages for each user and all messages)
