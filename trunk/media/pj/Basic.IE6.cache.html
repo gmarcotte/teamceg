@@ -25376,7 +25376,7 @@ function __DataService_initialize() {
     pyjs_extend(__DataService, __JSONService_JSONProxy);
     __DataService.prototype.__class__.__new__ = DataService;
     __DataService.prototype.__init__ = function() {
-    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash', 'send_editor', 'receive_editor', 'user_quit', 'driver_status', 'switch_driver']));
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash', 'send_editor', 'receive_editor', 'user_quit', 'driver_status', 'switch_driver', 'new_file', 'new_directory', 'open_file', 'save_file', 'get_file_tree']));
     };
     __DataService.prototype.__class__.__init__ = function() {
         return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
@@ -25400,13 +25400,26 @@ function __Basic_initialize() {
     __Basic.prototype.__class__.__new__ = Basic;
     __Basic.prototype.onModuleLoad = function() {
     this.remote = DataService();
+    this.initEditor = false;
     this.quitting = false;
     this.switching = false;
     this.remote.get_meetinginfo(this);
     this.active_menu = ui_Label('');
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
-    this.file_test = new pyjslib_List(['1Top level', '2Second level', '2Also second level', '1Top level again', '2New second level', '3Oh my, a 3rd level', '4A fourth level??', '5Zomg a fifth level?', '3Another third level', '3Yet another 3rd level', '2Hi, I\'m 2nd level']);
+    this.file_test = new pyjslib_List([]);
+    this.file_test.append(new pyjslib_Tuple(['1Top Level', 'dir', 'root/']));
+    this.file_test.append(new pyjslib_Tuple(['2Second Level', 'file', 'root/file1']));
+    this.file_test.append(new pyjslib_Tuple(['2Also Second Level', 'file', 'root/file2']));
+    this.file_test.append(new pyjslib_Tuple(['1Top Level Again', 'dir', 'root/']));
+    this.file_test.append(new pyjslib_Tuple(['2New second level', 'dir', 'root/subdir1/']));
+    this.file_test.append(new pyjslib_Tuple(['3Third Level', 'dir', 'root/subdir1/subdir2/']));
+    this.file_test.append(new pyjslib_Tuple(['4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/']));
+    this.file_test.append(new pyjslib_Tuple(['5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3']));
+    this.file_test.append(new pyjslib_Tuple(['3Third Level Again', 'file', 'root/subdir1/subdir2/file4']));
+    this.file_test.append(new pyjslib_Tuple(['3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5']));
+    this.file_test.append(new pyjslib_Tuple(['2Second Level Again', 'file', 'root/subdir1/file6']));
     this.files = ui_Button('Files', pyjslib_getattr(this, 'onFilesClick'));
+    this.FileContext = ui_SimplePanel('La di da');
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
     this.flash = ui_Button('Start Flash', pyjslib_getattr(this, 'toggleFlash'));
@@ -25434,12 +25447,13 @@ function __Basic_initialize() {
     this.intervalID = 'MYintervalID';
     this.editorsynchID = 'MYeditorsynchID';
     this.listensynchID = 'MYlistensynchID';
-    this.functionHTML = ui_HTML( (  (  (  ( '<script>SetUpEditArea(\'' + this.editorID )  + '\',\'' )  + this.listenID )  + '\'); /*setInterval(\'toggle()\', 5000);*/</script>' ) );
+    this.termfunctionID = 'MYtermfunctionID';
+    this.functionHTML = ui_HTML( (  (  (  ( '<script>SetUpEditArea(\'' + this.editorID )  + '\',\'' )  + this.listenID )  + '\'); </script>' ) );
     this.editorHTML = ui_HTML('The contents of the editor.');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 100);\n    //alert(window.editorInterval);\n      \n    // might need to change the interval to an onkeypress sort of a deal...\n    function syncheditor() { \n    //alert("synching editor");\n    // see if this helps with actually setting it to be editable again\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', true);\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 100);\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\"></div>";\n    //alert(window.listenInterval);\n    function synchlisten() { \n    //alert("synching listen");\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() // don\'t know if this works or not\n    }</script>';
+    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    clearInterval(window.editorInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 100); \n      \n    function syncheditor() { \n    // see if this helps with actually setting it to be editable again\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', true);\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    clearInterval(window.listenInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 100); \n    //document.getElementById(\'MYeditorHTMLID\').innerHTML="<div id=\'MYeditorHTMLID\' style=\'white-space: normal; display: none;\' class=\'gwt-HTML\'>Initial Text</div>"\n    function synchlisten() { \n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;//innerHTML;\n    content = content.substring(86, content.length-6);\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() \n    }</script>';
     var initialcontent = '<script> </script> ';
     this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 575px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
@@ -25452,11 +25466,11 @@ function __Basic_initialize() {
     this.editor.setHeight('100%');
     var vp = ui_VerticalPanel();
     vp.setBorderWidth(1);
-    var term = ui_HTMLPanel(' <script> setterm(); </script> <div id=\'term\'></div>');
-    term.setWidth('100%');
-    term.setHeight('390px');
+    this.term = ui_HTMLPanel(' <script> setterm(\'\'); </script> <div id=\'term\'></div><div id=\'MYtermfunctionID\'></div>');
+    this.term.setWidth('100%');
+    this.term.setHeight('390px');
     var console = ui_SimplePanel();
-    console.add(term);
+    console.add(this.term);
     console.setWidth('400px');
     console.setHeight('100%');
     this.text_area = ui_ScrollPanel();
@@ -25558,6 +25572,7 @@ function __Basic_initialize() {
     }
     else if ((request_info.method == 'get_meetinginfo')) {
     this.list = new pyjslib_List([]);
+    var previousconsoleID = this.consoleID;
 
         var __tpl = response.__iter__();
         try {
@@ -25576,7 +25591,10 @@ function __Basic_initialize() {
         
     if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
     this.isdriver = true;
+    if ((this.initEditor == false)) {
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
+    this.initEditor = true;
+    }
     }
     else {
     this.isdriver = false;
@@ -25591,6 +25609,10 @@ function __Basic_initialize() {
     if ((pyjslib_len(this.list.__getitem__(5)) < 1)) {
     this.passenger.setText('No Partner logged in');
     this.passengername.setText('No Partner logged in');
+    }
+    if ((pyjslib_str(this.consoleID) != pyjslib_str(previousconsoleID))) {
+    window.alert('Changing console');
+    this.term.add(ui_HTML( (  (  (  ( '<script>changeSID(\'' + this.consoleID.getText() )  + '\', ' )  + this.isdriver )  + ');</script>' ) ), 'MYtermfunctionID');
     }
     }
     else if ((request_info.method == 'send_chatmessage')) {
@@ -25672,8 +25694,9 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    DOM_setInnerText(DOM_getElementById(this.editorHTMLID), tpl.__getitem__(1));
-    this.editorHTML.setVisible(false);
+    var content = tpl.__getitem__(1);
+    var innerhtml =  (  ( '<div id=\'MYeditorHTMLID\' style=\'white-space: normal; display: none;\' class=\'gwt-HTML\'>' + content )  + '</div>' ) ;
+    DOM_setInnerHTML(DOM_getElementById(this.editorHTMLID), innerhtml);
 
             }
         } catch (e) {
@@ -25693,16 +25716,21 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
+    if (((pyjslib_str(tpl.__getitem__(1)) != 'True')) && ((pyjslib_str(tpl.__getitem__(1)) != 'False'))) {
+    this.consoleID = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    }
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
     this.isdriver = true;
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
+    this.term.add(ui_HTML( (  (  (  ( '<script>changeSID(\'' + this.consoleID.getText() )  + '\',' )  + this.isdriver )  + ');</script>' ) ), 'MYtermfunctionID');
     }
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
     if ((this.isdriver == true)) {
     this.isdriver = false;
     this.editor.add(ui_HTML(this.passengersynch), this.synchID);
+    this.term.add(ui_HTML( (  (  (  ( '<script>changeSID(\'' + this.consoleID.getText() )  + '\',' )  + this.isdriver )  + ');</script>' ) ), 'MYtermfunctionID');
     }
     }
     this.switching = false;
@@ -25793,13 +25821,10 @@ function __Basic_initialize() {
     this.active_menu.setText('Files');
     var filepanel = ui_HorizontalPanel();
     var filetreebutton = ui_Button('File Tree', pyjslib_getattr(this, 'onFileTreeOpenClick'));
-    var filedirbutton = ui_Button('Add New Directory', pyjslib_getattr(this, 'onFileDirOpenClick'));
     var fileuploadbutton = ui_Button('Upload a File', pyjslib_getattr(this, 'onFileUploadOpenClick'));
     filetreebutton.setStyleName('supp-button');
-    filedirbutton.setStyleName('supp-button');
     fileuploadbutton.setStyleName('supp-button');
     filepanel.add(filetreebutton);
-    filepanel.add(filedirbutton);
     filepanel.add(fileuploadbutton);
     this.menu_body.setWidget(filepanel);
     }
@@ -25874,26 +25899,26 @@ function __Basic_initialize() {
     var filetree = ui_Tree();
     filetree.addTreeListener(this);
     var i = 0;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '1'))) {
-    var s1 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'garrett'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '1'))) {
+    var s1 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '2'))) {
-    var s2 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'monkey'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '2'))) {
+    var s2 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
     s1.addItem(s2);
     pyjs_kwargs_method_call(s1, 'setState', [{fireEvents:false}, true]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '3'))) {
-    var s3 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'butt'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '3'))) {
+    var s3 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
     s2.addItem(s3);
     pyjs_kwargs_method_call(s2, 'setState', [{fireEvents:false}, false]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '4'))) {
-    var s4 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'Peace'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '4'))) {
+    var s4 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
     s3.addItem(s4);
     pyjs_kwargs_method_call(s3, 'setState', [{fireEvents:false}, false]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0) == '5'))) {
-    var s5 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:'Pie..'}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i), 1, null))]);
+    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '5'))) {
+    var s5 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
     s4.addItem(s5);
     pyjs_kwargs_method_call(s4, 'setState', [{fireEvents:false}, false]);
     var i =  ( i + 1 ) ;
@@ -25926,6 +25951,7 @@ function __Basic_initialize() {
     if (typeof value == 'undefined') value=null;
     var item = ui_TreeItem(label);
     DOM_setStyleAttribute(item.getElement(), 'cursor', 'pointer');
+    item.setContextMenu(this);
     if ((value != null)) {
     item.setUserObject(value);
     }
@@ -25989,6 +26015,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onSwitchDriversClick = function() {
     if ((this.isdriver == true)) {
     this.switching = true;
+    this.editor.add(ui_HTML('<script>clearInterval(window.editorInterval);</script>'), this.functionID);
     this.remote.switch_driver(this);
     }
     else {
@@ -26189,6 +26216,18 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     };
     __Basic.prototype.__class__.onQuitConfirm.unbound_method = true;
     __Basic.prototype.onQuitConfirm.instance_method = true;
+    __Basic.prototype.onContextMenu = function(sender) {
+    var event = DOM_eventGetCurrentEvent();
+    var x =  ( DOM_eventsGetClientX(event) + 2 ) ;
+    var y =  ( DOM_eventsGetClientY(event) + 2 ) ;
+    var popup = ui_ContextMenuPopupPanel(this.FileContext);
+    popup.showAt(x, y);
+    };
+    __Basic.prototype.__class__.onContextMenu = function() {
+        return __Basic.prototype.onContextMenu.call.apply(__Basic.prototype.onContextMenu, arguments);
+    };
+    __Basic.prototype.__class__.onContextMenu.unbound_method = true;
+    __Basic.prototype.onContextMenu.instance_method = true;
 }
 __DataService_initialize();
 __Basic_initialize();
