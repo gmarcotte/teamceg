@@ -21,6 +21,8 @@ class Basic:
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
+    self.remote.get_file_tree('rd',self) # will need to change rd to actual root directory.
+    
     
     # building the menu bar
     self.active_menu = Label("")
@@ -337,6 +339,8 @@ class Basic:
     elif request_info.method == 'get_file_tree':
       for tpl in response:
         window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
+        self.file_test.append(tpl)
+        
       
     elif request_info.method == 'user_quit':
       ##save everything for them
