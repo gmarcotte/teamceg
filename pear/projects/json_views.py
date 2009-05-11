@@ -272,7 +272,8 @@ def driver_status(request):
     if (meeting == None):
       r.append(('error', 'ERROR: no active meeting!'))
       return r
-    
+      
+    r.append(('consoleid',meeting.driverconsole))
     # if the user is the driver return true 
     if str(request.user.id) == str(meeting.driver_id):
         r.append(('isdriver','True'))
