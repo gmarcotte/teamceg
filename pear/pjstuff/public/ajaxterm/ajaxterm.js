@@ -9,7 +9,8 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
   window.query0suf="&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
   window.query0="s="+window.sid+window.query0suf;
   //var query0="s="+window.sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
-	var query1=window.query0+"&c=1&k=";
+	window.query1=window.query0+"&c=1&k=";
+  //var query1=window.query0+"&c=1&k=";
 	var buf="";
 	var timeout;
 	var error_timeout;
