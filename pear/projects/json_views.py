@@ -400,7 +400,6 @@ def get_file_tree(request, root):
   return [('1root', 'dir', 'root/'), 
           ('2file1', 'file', 'root/file1'), 
           ('2file2', 'file', 'root/file2'),
-          ('1root', 'dir', 'root/'),
           ('2subdir1', 'dir', 'root/subdir1/'),
           ('3subdir2', 'dir', 'root/subdir1/subdir2/'),
           ('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3/'),
@@ -411,7 +410,7 @@ def get_file_tree(request, root):
   
 @network.jsonremote(service)
 def sync_all(request):
-  return [('notice', 'I synced the entire project')]
+  return [('notice', 'I synched the entire project')]
 
 @network.jsonremote(service)
 def delete_file(request, filename):
