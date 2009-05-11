@@ -257,7 +257,7 @@ class Basic:
       for tpl in response:
         content = tpl[1]
         innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>" + content+"</div>";
-        DOM.setInnerText(DOM.getElementById(self.editorHTMLID), content)#innerhtml)#tpl[1]) was innerText
+        DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
         #self.editorHTML.setVisible(False)
     
     elif request_info.method == 'driver_status':
