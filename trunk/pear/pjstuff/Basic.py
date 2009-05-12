@@ -140,7 +140,6 @@ class Basic:
     self.term.setHeight("172px")
     console = SimplePanel()
     console.add(self.term)
-    ##console.setWidth("400px")
     console.setHeight("100%")
     console.setStyleName("console")
     
@@ -166,47 +165,12 @@ class Basic:
     vp_right.setBorderWidth(1)
     
     # file tree
-    filetree = Tree()
-    filetree.addTreeListener(self)
-    i = 0
-    self.remote.get_file_tree(self)
-    while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
-      i = i + 1
-      while (i < len(self.file_list)) and (self.file_list[i][0][0] == "2"):
-        s2 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-        s1.addItem(s2)
-        s1.setState(True, fireEvents=False)
-        i = i + 1
-        while (i < len(self.file_list)) and (self.file_list[i][0][0] == "3"):
-          s3 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-          s2.addItem(s3)
-          s2.setState(False, fireEvents=False)
-          i = i + 1
-          while (i < len(self.file_list)) and (self.file_list[i][0][0] == "4"):
-            s4 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-            s3.addItem(s4)
-            s3.setState(False, fireEvents=False)
-            i = i + 1
-            while (i < len(self.file_list)) and (self.file_list[i][0][0] == "5"):
-              s5 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-              s4.addItem(s5)
-              s4.setState(False, fireEvents=False)
-              i = i + 1
-        filetree.addItem(s1)      
     filetreepanel = VerticalPanel()
     filetreepanel.setSpacing(7)
     filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    tempbutt = Button("Refresh", getattr("onFileTreeOpenClick"))
     filetreepanel.add(filetree)
-    filetreebutt = Button("Close", getattr(self, "onFileTreeCloseClick"))
-    filetreepanel.add(filetreebutt)
-    filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
-    filetreepanel.setWidth("400px")
-    filetreepanel = VerticalPanel()
-    filetreepanel.setSpacing(7)
-    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
-    filetreepanel.add(filetree)
-    filetreepanel.setWidth("400px")
+    filetreepanel.setWidth("370px")
     self.file_tree = SimplePanel()
     self.file_tree.setWidget(filetreepanel)
     
