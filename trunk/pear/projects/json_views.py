@@ -146,7 +146,7 @@ def get_meetinginfo(request):
       
       r.append(('new_sid', str(meeting.driverconsole)))
       r.append(('new_ssh', str(meeting.driverssh.server)))
-      r.append(('new_user', str(meeting.driverssh.user)))
+      r.append(('new_user', str(meeting.driverssh.user_name)))
       r.append(('new_key', str(meeting.driver_id))) 
     return r
     # if meeting, return info
@@ -279,7 +279,7 @@ def driver_status(request):
     
     r.append(('new_sid', str(meeting.driverconsole)))
     r.append(('new_ssh', str(meeting.driverssh.server)))
-    r.append(('new_user', str(meeting.driverssh.user)))
+    r.append(('new_user', str(meeting.driverssh.user_name)))
     r.append(('new_key', str(meeting.driver_id)))    
     ##r.append(('consoleid',str(meeting.driverconsole)))
     # if the user is the driver return true 
@@ -329,14 +329,14 @@ def switch_driver(request):
         #r.append(('notice','we switched drivers'))
         r.append(('new_sid', str(meeting.driverconsole)))
         r.append(('new_ssh', str(meeting.driverssh.server)))
-        r.append(('new_user', str(meeting.driverssh.user)))
+        r.append(('new_user', str(meeting.driverssh.user_name)))
         r.append(('new_key', str(meeting.driver_id)))
         r.append(('isdriver','False'))
         
       else:
         r.append(('new_sid', str(meeting.driverconsole)))
         r.append(('new_ssh', str(meeting.driverssh.server)))
-        r.append(('new_user', str(meeting.driverssh.user)))
+        r.append(('new_user', str(meeting.driverssh.user_name)))
         r.append(('new_key', str(meeting.driver_id)))
         # if there is no passenger, do nothing
         #r.append(('notice','no passenger'))
