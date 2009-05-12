@@ -167,7 +167,9 @@ class Basic:
     
     # file tree
     #(setWidth("370px"))
-    self.file_tree = SimplePanel()
+    self.file_tree = VerticalPanel()
+    tempbutt = Button("Refresh", getattr("onFileTreeOpenClick"))
+    self.file_tree.add(tempbutt)
     self.file_tree.add(Label("Temp for filler"))
     
     # not so hacky -- indeed, pretty decent little text chat
@@ -198,7 +200,7 @@ class Basic:
     vp_right.add(real_chat)
     vp_right.setWidth("100%")
     vp_right.setHeight("100%")
-    vp_right.setCellHeight(self.file_tree, "650%")
+    vp_right.setCellHeight(self.file_tree, "65%")
     vp_right.setCellHeight(real_chat, "35%")
     
     # putting the left and right sides together
@@ -208,9 +210,9 @@ class Basic:
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
     hp.add(vp_left)
     hp.add(vp_right)
-    hp.setCellWidth(vp_left, "73%")
+    hp.setCellWidth(vp_left, "71%")
     vp_left.setWidth("100%")
-    hp.setCellWidth(vp_right, "27%")
+    hp.setCellWidth(vp_right, "29%")
     vp_right.setWidth("100%")
     #hp.setCellVerticalAlignment(self.editor, HasAlignment.ALIGN_JUSTIFY)
     ##hp.setCellVerticalAlignment(vp_left, HasAlignment.ALIGN_TOP)
