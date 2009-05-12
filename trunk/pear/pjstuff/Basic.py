@@ -634,15 +634,15 @@ class Basic:
       alert(str(self.file_list[i][2])+" "+str(self.current_directory))
       if str(self.file_list[i][2]) == str(self.current_directory)[:len(str(self.current_directory))-1]:
         window.alert("Matched directory")
-        level = self.file_list[i][0][0]
+        level = str(int(self.file_list[i][0][0]) + 1)
         start = i
         window.alert(level + " " + start)
-    for i in range(start, len(self.file_list)):
+    for i in range(start+1, len(self.file_list)):
       if self.file_list[i][0][0] == level:
         window.alert("found file")
         self.FilesToDelete.append(CheckBox(str(self.file_list[i][2])))
       else:
-        level = 0
+        level = "0"
           
     self.FilesToDelete.append(CheckBox("File1"))
     self.FilesToDelete.append(CheckBox("File2"))
