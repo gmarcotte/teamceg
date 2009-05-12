@@ -282,7 +282,7 @@ class Basic:
           if not self.Flash:
             self.toggleFlash()
     elif request_info.method == 'send_editor':
-      window.alert("sent editor")
+      #window.alert("sent editor")
       pass
     elif request_info.method == 'receive_editor':
       # check to see if maybe there is an error here because of empty string?
@@ -780,7 +780,7 @@ class Basic:
     self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
-    alert(self.isdriver)
+    alert(self.switching + " " + self.quitting)
     # Check for new passenger
     if self.isdriver:
       self.remote.get_meetinginfo(self)
@@ -805,7 +805,6 @@ class Basic:
         if len(content) > 0:
           self.remote.send_editor(content, self)
       else:
-        window.alert("attempting to receive editor.")
         self.remote.receive_editor(self)
       
       # do flash stuff here
