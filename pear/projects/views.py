@@ -78,8 +78,7 @@ def launch_project(request, project_id):
       server = ssh.server
       user_name = ssh.user_name
     except exceptions.ObjectDoesNotExist:
-      server = 'localhost'
-      user_name = 'teamceg'
+      return http.HttpResponseRedirect(redirect_to)
       
     if meetings:
       meeting = meetings[0]
@@ -100,6 +99,12 @@ def launch_project(request, project_id):
       #meeting.console = '' this was leftover from before.
       meeting.editor = ''
     meeting.save()
+    
+    c = ssh.connect()
+    if ssh.svn_test(c, project.directory):
+      ssh.svn_update(c, project.directory)
+    else:
+      ssh.svn_checkout(c, project.get_repository_url(), project.directory)
     return shortcuts.render_to_response(
         'Basic.html',
         {'page_title': 'Project Workspace',
