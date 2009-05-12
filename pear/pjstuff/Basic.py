@@ -527,9 +527,11 @@ class Basic:
       
   def onDialogSave(self):
     window.alert("Saving changes.")
+    self.savediscard_box.hide()
   
   def onDialogDiscard(self):
     window.alert("Discarding changes.")
+    self.savediscard_box.hide()
   
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
