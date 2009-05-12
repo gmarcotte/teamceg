@@ -20,6 +20,16 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
 				}
 
         function changeSID(new_sid,new_ssh,new_user,new_key,drive) {
+          alert(drive);
+          window.isDriver = drive;
+          //if (window.isDriver == true) {
+          //  window.new_ssh = window.MY_SSH
+          //  window.new_user = window.MY_USER
+          //}
+          //else {
+          //  window.isDriver=drive;
+          //}
+          
           var temp = window.query1;
           window.sid=new_sid;
           window.ssh = new_ssh;
@@ -28,14 +38,7 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
           window.query0="s="+window.sid+"&w="+window.width+"&h="+window.height+"&ssh="+window.ssh+"&user="+window.user+"&key="+window.key;
           window.query1=window.query0+"&c=1&k=";
           alert(temp + ", "+window.query1);
-          if (window.isDriver == true) {
-            alert("driver->passenger");
-            window.isDriver = drive;
-          }
-          else {
-            alert("passenger->driver");
-            window.isDriver=drive;
-          }
+          
         }
         </script>
 
