@@ -497,8 +497,8 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
-        s1.setState(True, fireEvents=False)
-        filetree.addItem(s1)      
+      #  s1.setState(True, fireEvents=False)
+      filetree.addItem(s1)      
     filetreepanel = VerticalPanel()
     filetreepanel.setSpacing(7)
     filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
