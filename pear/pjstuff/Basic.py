@@ -496,6 +496,7 @@ class Basic:
           if self.current_open != None:
             if self.modified == True:
               # force the user to save or discard
+              self.nextfile = thing
               guts = VerticalPanel()
               guts.setSpacing(4)
               guts.add(HTML('Unsaved changes were detected in an open file. Would you like to save your changes?'))
@@ -508,9 +509,9 @@ class Basic:
               self.savediscard_box = DialogBox()
               self.savediscard_box.setHTML("<b>Warning: Unsaved Changes</b>")
               self.savediscard_box.setWidget(guts)
-              
               self.savediscard_box.setPopupPosition(200, 200)
               self.savediscard_box.show()
+              acted = True
             else:
               self.remote.open_file(str(value),self)
               acted = True
@@ -533,10 +534,18 @@ class Basic:
       
   def onDialogSave(self):
     window.alert("Saving changes.")
+    content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
+    self.remote.save_file(str(self.current_open[2]), content, self) #self.current_open
+    self.remote.open_file(str(self.nextfile[2]),self) #self.nextfile
+    self.modified = False
+    self.current_open = self.nextfile
     self.savediscard_box.hide()
   
   def onDialogDiscard(self):
     window.alert("Discarding changes.")
+    self.remote.open_file(str(self.nextfile[2]),self) # self.nextfile
+    self.modified = False
+    self.current_open = self.nextfile
     self.savediscard_box.hide()
   
   def onModeClick(self):
