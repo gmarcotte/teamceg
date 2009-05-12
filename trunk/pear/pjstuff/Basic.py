@@ -165,14 +165,15 @@ class Basic:
     vp_right.setBorderWidth(1)
     
     # file tree
+    self.file_box = SimplePanel()
     filetreepanel = VerticalPanel()
     filetreepanel.setSpacing(7)
-    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
-    tempbutt = Button("Refresh", getattr("onFileTreeOpenClick"))
-    filetreepanel.add(filetree)
     filetreepanel.setWidth("370px")
-    self.file_tree = SimplePanel()
-    self.file_tree.setWidget(filetreepanel)
+    tempbutt = Button("Refresh", getattr("onFileTreeOpenClick"))
+    filetreepanel.add(tempbutt)
+    filetreepanel.setCellHorizontalAlignment(tempbutt, HasAlignment.ALIGN_RIGHT)
+    filetreepanel.add(self.file_box)
+    filetreepanel.setCellHorizontalAlignment(self.file_box, HasAlignment.ALIGN_LEFT)
     
     
     # not so hacky -- indeed, pretty decent little text chat
@@ -556,11 +557,11 @@ class Basic:
     filetreepanel.add(filetreebutt)
     filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
     filetreepanel.setWidth("400px")
-    self.file_box = DialogBox()
-    self.file_box.setHTML("File Navigation")
+    ####self.file_box = DialogBox()
+    ####self.file_box.setHTML("File Navigation")
     self.file_box.setWidget(filetreepanel)
-    self.file_box.setPopupPosition(350, 200)
-    self.file_box.show()
+    ####self.file_box.setPopupPosition(350, 200)
+    ####self.file_box.show()
   def createTreeItem(self, label, value=None):
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
