@@ -209,6 +209,12 @@ class SSHConnection(timestamp.TimestampedModel):
     resp = self.execute(session, cmd)
     return resp
   
+  def svn_test(self, session, filepath):
+    fullpath = self.get_relative_filename(filepath)
+    cmd = 'svn status %s' % fullpath
+    status,text = self.execute(session, cmd)
+    return status
+  
   def svn_revert(self, session, filepath):
     fullpath = self.get_relative_filename(filepath)
     cmd = 'svn revert %s' % fullpath
