@@ -117,7 +117,7 @@ class Basic:
     initialcontent = """<script> </script> """
     
 
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 272px; width: 572px;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 272px; width: 571px;'></textarea> <div id='" + self.functionID + "'></div>")
 
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
@@ -126,7 +126,7 @@ class Basic:
     self.editor.add(self.editorHTML, self.editorHTMLID)
     
     self.editor.add(HTML(initialcontent), self.synchID)
-    self.editor.setWidth("572px")
+    self.editor.setWidth("571px")
     self.editor.setHeight("100%")
     
     #innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'></div>";
@@ -136,8 +136,8 @@ class Basic:
     
     # the console
     self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
-    self.term.setWidth("572px")
-    self.term.setHeight("272px")
+    self.term.setWidth("571px")
+    self.term.setHeight("172px")
     console = SimplePanel()
     console.add(self.term)
     ##console.setWidth("400px")
