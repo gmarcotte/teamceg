@@ -172,6 +172,7 @@ class Basic:
     self.file_tree.add(tempbutt)
     self.file_tree.add(Label("Temp for filler"))
     self.tree_panel = SimplePanel()
+    self.file_tree.add(self.tree_panel)
     
     filetree = Tree()
     filetree.addTreeListener(self)
