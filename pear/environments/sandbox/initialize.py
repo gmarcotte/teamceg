@@ -98,14 +98,14 @@ def ask_input_question(question, default=''):
     return answer
   
 
-def clear_user_keys(output_file):
+def clear_user_keys(output_file=None):
   for file in os.listdir(settings.RSA_KEY_DIR):
     if os.path.isfile("%s/%s" % (settings.RSA_KEY_DIR, file)):
       write_msg('Deleting RSA key: %s\n' % file, output_file, sys.stdout)
       os.remove("%s/%s" % (settings.RSA_KEY_DIR, file))
       
 
-def clear_repositories(output_file):
+def clear_repositories(output_file=None):
   for top_dir in os.listdir(settings.SVN_BASE_DIR):
     write_msg('Deleting repository: %s' % top_dir, output_file, sys.stdout)
     for root, dirs, files in os.walk(top_dir, topdown=False):
@@ -115,7 +115,7 @@ def clear_repositories(output_file):
           os.rmdir(os.path.join(root, name))
 
 
-def create_root_user(output_file):
+def create_root_user(output_file=None):
   """Create a superuser for testing purposes"""
   from pear.accounts import forms
   from pear.accounts import models
@@ -214,10 +214,10 @@ def main(argv=None):
     cursor.execute("CREATE DATABASE %s CHARACTER SET utf8" % settings.DATABASE_NAME)
     
     sys.stdout.write("Deleting RSA keys \n")
-    clear_user_keys(output_file)
+    clear_user_keys()
     
     sys.stdout.write("Deleting SVN repositories \n")
-    clear_repositories(output_file)
+    clear_repositories()
     
     # Execute "python manage.py syncdb"
     os.chdir(root_path)
@@ -228,7 +228,7 @@ def main(argv=None):
     cursor.execute("TRUNCATE auth_user")
     
     # Set up a superuser
-    create_root_user(output_file)
+    create_root_user()
     
     # Change root password
     set_root_password()
