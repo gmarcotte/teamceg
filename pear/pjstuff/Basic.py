@@ -12,7 +12,7 @@ class DataService(JSONProxy):
 
 class Basic:
   def onModuleLoad(self):
-    window.addCloseListener(getattr(self,"onWindowCloseAbrupt"))
+    #window.addCloseListener(getattr(self,"onWindowCloseAbrupt"))
     self.remote = DataService()
     self.initEditor = False
     # this tells us whether or not we are trying to quit...
