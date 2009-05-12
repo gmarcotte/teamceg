@@ -204,12 +204,12 @@ class Basic:
               s4.setState(False, fireEvents=False)
               i = i + 1
         filetree.addItem(s1)
-    filetreepanel = VerticalPanel()
-    filetreepanel.setSpacing(7)
-    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
-    filetreepanel.add(filetree)
-    filetreepanel.setWidth("370px")
-    self.tree_panel.setWidget(filetree)
+    #filetreepanel = VerticalPanel()
+    #filetreepanel.setSpacing(7)
+    #filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    #filetreepanel.add(filetree)
+    #filetreepanel.setWidth("370px")
+    self.tree_panel.add(filetree)
     
     
     
