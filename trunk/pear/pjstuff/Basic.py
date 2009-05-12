@@ -90,7 +90,7 @@ class Basic:
       
     function syncheditor() { 
     // see if this helps with actually setting it to be editable again
-    alert("synching editor")
+    //alert("synching editor")
     editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
@@ -105,7 +105,7 @@ class Basic:
     window.listenInterval = setInterval('synchlisten()', 100); 
     //document.getElementById('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
-    alert("synching listen")
+    //alert("synching listen")
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;//innerHTML;
     content = content.substring(86, content.length-6);
