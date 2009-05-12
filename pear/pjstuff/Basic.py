@@ -533,7 +533,7 @@ class Basic:
     self.file_box.hide()
       
   def onDialogSave(self):
-    window.alert("Saving changes.")
+    #window.alert("Saving changes.")
     content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
     self.remote.save_file(str(self.current_open[2]), content, self) #self.current_open
     self.remote.open_file(str(self.nextfile[2]),self) #self.nextfile
@@ -542,7 +542,7 @@ class Basic:
     self.savediscard_box.hide()
   
   def onDialogDiscard(self):
-    window.alert("Discarding changes.")
+    #window.alert("Discarding changes.")
     self.remote.open_file(str(self.nextfile[2]),self) # self.nextfile
     self.modified = False
     self.current_open = self.nextfile
