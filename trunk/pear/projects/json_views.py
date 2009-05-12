@@ -376,6 +376,11 @@ def user_quit(request):
         # make the passenger the driver
         meeting.driver_id = meeting.passenger_id
         meeting.passenger = None
+        meeting.driverconsole = meeting.passengerconsole
+        meeting.passengerconsole = None
+        meeting.driverssh = meeting.passengerssh
+        meeting.passengerssh = None
+        
         meeting.save()
         r.append(('notice','there was a passenger, and we switched drivers'))
         
