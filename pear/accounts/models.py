@@ -47,6 +47,14 @@ class PearUser(auth_models.User):
       server.delete()
     self.profile.delete()
     super(PearUser, self).delete()
+    
+  @property
+  def current_meeting(self):
+    if self.driver_for.count():
+      return self.driver_for.latest('id')
+    if self.passenger_for.count():
+      return self.passenger_for.latest('id')
+    return None
 
 
 class Profile(timestamp.TimestampedModel):

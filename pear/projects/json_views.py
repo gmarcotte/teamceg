@@ -381,19 +381,61 @@ def user_quit(request):
   
 @network.jsonremote(service)
 def new_file(request, filename):
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  ssh.save_file(client, project.get_path(filename))
+  ssh.svn_add(client, project.get_path(filename))    
+  ssh.close(client)
   return [('notice', 'I created file %s' % filename)]
 
 @network.jsonremote(service)
 def new_directory(request, dirname):
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  ssh.make_directory(client, project.get_path(dirname))
+  ssh.close(client)
   return [('notice', 'I created directory %s' % dirname)]
+
 
 @network.jsonremote(service)
 def open_file(request, filename):
-  return [('notice', 'This is the text of %s' % filename)]
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  status,text = ssh.load_file(client, project.get_path(filename))
+  ssh.close(client)
+  if status:
+    return [('filetext', text)]
+  else:  
+    return [('error', 'Error reading %s: %s' % (filename, text))]
+
 
 @network.jsonremote(service)
 def save_file(request, filename, text):
-  return [('notice', 'The new text of %s is %s' % (filename, text))]
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  status,text = ssh.save_file(client, project.get_path(filename), text)
+  ssh.close(client)
+  if status:
+    return [('filetext', 'The new text of %s is %s' % (filename, text))]
+  else:
+    return [('error', 'Error saving %s: %s' % (filename, text))]
+  
     
 @network.jsonremote(service)
 def get_file_tree(request, root):
@@ -410,9 +452,27 @@ def get_file_tree(request, root):
   
 @network.jsonremote(service)
 def sync_all(request):
-  return [('notice', 'I synched the entire project')]
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  ssh.svn_commit(client, project.directory)
+  ssh.close(client)
+  return [('notice', 'I synced the entire project')]
 
 @network.jsonremote(service)
 def delete_file(request, filename):
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  status,text = ssh.svn_delete(client, project.get_path(filename))
+  if not status:
+    status,text = ssh.svn_revert(client, project.get_path(filename))
+    status,text = ssh.delete_file(client, project.get_path(filename))
+  ssh.close(client)
   return [('notice', 'I deleted %s' % filename)]
-  

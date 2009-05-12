@@ -106,7 +106,10 @@ class Project(timestamp.TimestampedModel):
   def resurrect_url(self):
     return '/projects/%s/resurrect/' % self.id
   
-  # Subversion interaction methods
+  # Subversion/filesystem interaction methods
+  def get_path(self, filename):
+    return os.path.normcase(os.path.normpath(os.path.join(self.directory, filepath)))
+  
   def get_repository_dir(self):
     return "%s%s%s" % (settings.SVN_BASE_DIR, os.sep, self.repos)
   

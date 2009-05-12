@@ -134,14 +134,19 @@ class SSHConnection(timestamp.TimestampedModel):
     
   # Common remote operations
   def get_relative_filename(self, filepath):
-    return os.path.normcase(os.path.normcase(os.path.join(self.base_dir, filepath)))
+    return os.path.normcase(os.path.normpath(os.path.join(self.base_dir, filepath)))
   
-  def save_file(self, session, filename, string):   
+  def save_file(self, session, filename, string=''):   
     filepath = self.get_relative_filename(filename)
     self.execute(session, 'rm -f %s' % filepath)
     for line in string.split('\n'):
       self.execute(session, "echo '%s' >> %s" % (line, filepath))
     resp = self.execute(session, 'cat %s' % filepath)
+    return resp
+  
+  def make_directory(self, session, dirname):
+    dirpath = self.get_relative_filename(dirname)
+    resp = self.execute(session, 'mkdir -p -v %s' % dirpath)
     return resp
   
   def load_file(self, session, filename):
@@ -151,16 +156,35 @@ class SSHConnection(timestamp.TimestampedModel):
   
   def read_file_tree(self, session, root_dir):
     dirpath = self.get_relative_filename(root_dir)
-    cmd = 'find %s' % dirpath
-    resp = self.execute(session, cmd)
+    cmd = 'find %s -ls' % dirpath
+    status,output = self.execute(session, cmd)
+    lines = output.strip().split('\n')
+    tree = []
+    for line in lines:
+      bits = line.split()
+      perms = bits[2]
+      file = bits[10]
+      if file.find('.svn') > 0:
+        continue
+      file = file.lstrip(dirpath)
+      file_bits = file.split('/')
+      depth = len(file_bits)
+      if perms[0] == 'd':
+        tag = 'dir'
+      else:
+        tag = 'file'
+      tree.append(("%d%s" % (depth, file_bits[-1]), tag, file.lstrip(root_dir)))      
+    return tree
+  
+  def delete_file(self, session, filename):
+    filepath = self.get_relative_filename(filename)
+    resp = self.execute(session, 'rm -f %s' % filepath)
     return resp
     
   def svn_add(self, session, filepath):
     fullpath = self.get_relative_filename(filepath)
     cmd = 'svn add %s' % fullpath
     self.execute(session, cmd)
-    cmd = 'svn commit %s -m "Adding %s to repository"' % (fullpath, filepath)
-    resp = self.execute(session, cmd)
     return resp
   
   def svn_checkout(self, session, repos, working_copy):
@@ -177,7 +201,17 @@ class SSHConnection(timestamp.TimestampedModel):
   
   def svn_delete(self, session, filepath):
     fullpath = self.get_relative_filename(filepath)
-    cmd = 'svn delete %s -m "Deleting %s from the repository"' % (fullpath, filepath)
+    cmd = 'svn delete %s' % fullpath
+    status,text = self.execute(session, cmd)
+    if not status:
+      return (status, text)
+    cmd = 'svn commit %s -m "Deleting %s"' % (fullpath, filepath)
+    resp = self.execute(session, cmd)
+    return resp
+  
+  def svn_revert(self, session, filepath):
+    fullpath = self.get_relative_filename(filepath)
+    cmd = 'svn revert %s' % fullpath
     resp = self.execute(session, cmd)
     return resp
   
