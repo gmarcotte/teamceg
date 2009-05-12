@@ -214,6 +214,8 @@ class SSHConnection(timestamp.TimestampedModel):
     fullpath = self.get_relative_filename(filepath)
     cmd = 'svn add %s' % fullpath
     resp = self.execute(session, cmd)
+    cmd == 'svn commit %s -m "Adding %s"' % (fullpath, filepath)
+    resp = self.execute(session, cmd)
     return resp
   
   def svn_checkout(self, session, repos, working_copy):
