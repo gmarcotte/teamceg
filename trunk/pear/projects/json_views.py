@@ -413,7 +413,7 @@ def new_file(request, filename):
   ssh.save_file(client, project.get_path(filename))
   ssh.svn_add(client, project.get_path(filename))    
   ssh.close(client)
-  return [('notice', 'I created file %s' % filename)]
+  return [('notice', 'Created file %s' % filename)]
 
 @network.jsonremote(service)
 def new_directory(request, dirname):
@@ -425,7 +425,7 @@ def new_directory(request, dirname):
   client = ssh.connect()
   ssh.make_directory(client, project.get_path(dirname))
   ssh.close(client)
-  return [('notice', 'I created directory %s' % dirname)]
+  return [('notice', 'Created directory %s' % dirname)]
 
 
 @network.jsonremote(service)
@@ -455,7 +455,7 @@ def save_file(request, filename, text):
   status,text = ssh.save_file(client, project.get_path(filename), text)
   ssh.close(client)
   if status:
-    return [('filetext', 'The new text of %s is %s' % (filename, text))]
+    return [('filetext', 'Saved %s' % filename)]#'The new text of %s is %s' % (filename, text))]
   else:
     return [('error', 'Error saving %s: %s' % (filename, text))]
   
