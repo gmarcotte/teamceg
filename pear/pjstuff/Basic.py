@@ -299,8 +299,6 @@ class Basic:
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
               #alert(self.consoleID.getText())
-              #self.consoleID = Label("%s" % tpl[1]) #NO
-              #alert(self.consoleID.getText())
               self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
@@ -593,8 +591,7 @@ class Basic:
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
     self.file_box.hide()
-    
-    
+        
   def onAddOK(self):
     #window.alert(self.NewFileName.getText())
     newfile = self.current_directory + self.NewFileName.getText()
@@ -699,7 +696,6 @@ class Basic:
   def onCancelManageDialog(self):
     self.manage_directory_box.hide()
       
-              
   def onDialogSave(self):
     #window.alert("Saving changes.")
     content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
@@ -861,11 +857,3 @@ class Basic:
     self.quit_box.hide()
     self.remote.user_quit(self)
     
-    
-  #def onContextMenu(self, sender):
-  #  event = DOM.eventGetCurrentEvent()
-  ##  
-   # x = DOM.eventsGetClientX(event) + 2
-   # y = DOM.eventsGetClientY(event) + 2
-   # popup = ContextMenuPopupPanel(self.FileContext)
-   # popup.showAt(x, y)
