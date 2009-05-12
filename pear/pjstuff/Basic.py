@@ -171,7 +171,7 @@ class Basic:
     tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
     self.file_tree.add(tempbutt)
     self.file_tree.add(Label("Temp for filler"))
-    self.file_tree.add(getattr(self, "onFileTreeGet"))
+    #self.file_tree.add(getattr(self, "onFileTreeGet"))
     
     # not so hacky -- indeed, pretty decent little text chat
     self.text_area = ScrollPanel()
