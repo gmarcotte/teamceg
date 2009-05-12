@@ -170,7 +170,6 @@ class Basic:
     self.file_tree = VerticalPanel()
     tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
     self.file_tree.add(tempbutt)
-    self.file_tree.add(Label("Temp for filler"))
     self.tree_panel = SimplePanel()
     
     filetree = Tree()
@@ -210,6 +209,8 @@ class Basic:
     #filetreepanel.setWidth("370px")
     self.tree_panel.add(filetree)
     self.file_tree.add(self.tree_panel)
+    self.file_tree.add(Label("Temp for filler"))
+    
     
     
     
@@ -245,8 +246,8 @@ class Basic:
     vp_right.add(real_chat)
     vp_right.setWidth("100%")
     vp_right.setHeight("100%")
-    vp_right.setCellHeight(self.file_tree, "65%")
-    vp_right.setCellHeight(real_chat, "35%")
+    vp_right.setCellHeight(self.file_tree, "63%")
+    vp_right.setCellHeight(real_chat, "37%")
     
     # putting the left and right sides together
     hp = HorizontalPanel()
