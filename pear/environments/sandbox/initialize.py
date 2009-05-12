@@ -100,13 +100,13 @@ def ask_input_question(question, default=''):
 
 def clear_user_keys():
   for file in os.listdir(settings.RSA_KEY_DIR):
-    if os.path.isfile(file):
+    if os.path.isfile("%s/%s" (settings.RSA_KEY_DIR, file)):
       write_msg('Deleting RSA key: %s\n' % file, output_file, sys.stdout)
       os.remove("%s/%s" % (settings.RSA_KEY_DIR, file))
       
 def clear_repositories():
   for top_dir in os.listdir(settings.SVN_BASE_DIR):
-    write_msg('Deleting repository: %s' % topdir, output_file, sys.stdout)
+    write_msg('Deleting repository: %s' % top_dir, output_file, sys.stdout)
     for root, dirs, files in os.walk(top_dir, topdown=False):
       for name in files:
           os.remove(os.path.join(root, name))
