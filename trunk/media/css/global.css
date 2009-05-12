@@ -6,7 +6,11 @@ body {
   margin: 0px;
   padding: 0px;
   background-color: #001100;
-  font-family: "Palatino Linotype", Times, serif;
+  font-family: Georgia, Times, serif;
+}
+
+p {
+  font-size: 15px;
 }
 
 a img {

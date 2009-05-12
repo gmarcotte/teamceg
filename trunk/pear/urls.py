@@ -23,6 +23,7 @@ urlpatterns = defaults.patterns('',
     (r'^accounts/', defaults.include('pear.accounts.urls')),
     (r'^projects/', defaults.include('pear.projects.urls')),
     (r'^remote/', defaults.include('pear.remote.urls')),
+    (r'^support/', defaults.include('pear.support.urls')),
     (r'^admin/', defaults.include(admin.site.urls)),
     
 )
