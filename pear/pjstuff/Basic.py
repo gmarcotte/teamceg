@@ -169,7 +169,7 @@ class Basic:
     tree_vp = VerticalPanel()
     tree_vp.setSpacing(7)
     tree_vp.setWidth("370px")
-    tempbutt = Button("Refresh", getattr("onFileTreeOpenClick"))
+    tempbutt = Button("Refresh")
     tree_vp.add(tempbutt)
     tree_vp.setCellHorizontalAlignment(tempbutt, HasAlignment.ALIGN_RIGHT)
     tree_vp.add(self.file_box)
