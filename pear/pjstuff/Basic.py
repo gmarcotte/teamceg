@@ -26,23 +26,23 @@ class Basic:
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
-    ###self.remote.get_file_tree('pairdir',self) # will need to change rd to actual root directory.
-    # not sure what's going on with this call?
     
     # building the menu bar
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.file_list = []
-    self.file_list.append(('1root', 'dir', 'root'))
-    self.file_list.append(('2file1', 'file', 'root/file1'))
-    self.file_list.append(('2file2', 'file', 'root/file2'))
-    self.file_list.append(('2subdir1', 'dir', 'root/subdir1'))
-    self.file_list.append(('3subdir2', 'dir', 'root/subdir1/subdir2'))
-    self.file_list.append(('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3'))
-    self.file_list.append(('5file3', 'file', 'root/subdir1/subdir2/subdir3/file3'))
-    self.file_list.append(('3file4', 'file', 'root/subdir1/subdir2/file4'))
-    self.file_list.append(('3file5', 'file', 'root/subdir1/subdir2/file5'))
-    self.file_list.append(('2file6', 'file', 'root/subdir1/file6'))
+    self.remote.get_file_tree(self) # will need to change rd to actual root directory.
+    
+    #self.file_list.append(('1root', 'dir', 'root'))
+    #self.file_list.append(('2file1', 'file', 'root/file1'))
+    #self.file_list.append(('2file2', 'file', 'root/file2'))
+    #self.file_list.append(('2subdir1', 'dir', 'root/subdir1'))
+    #self.file_list.append(('3subdir2', 'dir', 'root/subdir1/subdir2'))
+    #self.file_list.append(('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3'))
+    #self.file_list.append(('5file3', 'file', 'root/subdir1/subdir2/subdir3/file3'))
+    #self.file_list.append(('3file4', 'file', 'root/subdir1/subdir2/file4'))
+    #self.file_list.append(('3file5', 'file', 'root/subdir1/subdir2/file5'))
+    #self.file_list.append(('2file6', 'file', 'root/subdir1/file6'))
     
     
     
@@ -511,7 +511,7 @@ class Basic:
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
-    ## not sure what's going on with this call? #self.remote.get_file_tree('pairdir',self)
+    self.remote.get_file_tree(self)
     while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
       s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
       i = i + 1
