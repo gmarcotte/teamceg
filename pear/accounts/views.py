@@ -93,6 +93,23 @@ def change_password(request):
       {'page_title': 'Change Password',
        'form': form},
       context_instance=template.RequestContext(request))
+  
+@auth_decorators.login_required
+def regen_keys(request):
+  """Regenerate the user's RSA public/private keys."""
+  redirect_to = request.REQUEST.get('next', '/remote/servers/')
+  
+  if request.method == "POST":
+    if request.POST.has_key('confirm_regen'):
+      request.user.profile.refresh_keys()
+      for server in request.user.servers.all():
+        server.clear_remote_keys()
+    return http.HttpResponseRedirect(redirect_to)
+  else:
+    return shortcuts.render_to_response(
+        'global/accounts/regen_keys.html',
+        {'page_title': 'Regenerate RSA Keys',},
+        context_instance=template.RequestContext(request))
 
 
 def reset_password(request):
