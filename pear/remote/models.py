@@ -166,8 +166,8 @@ class SSHConnection(timestamp.TimestampedModel):
       file = bits[10]
       if file.find('.svn') > 0:
         continue
-      file = file.lstrip('/'.join(dirpath.split('/')[:-1]) + '/')
-      path = file.lstrip(dirpath + '/')
+      file = file[len('/'.join(dirpath.split('/')[:-1]))+1]
+      path = file[len(dirpath)+1:]
       file_bits = file.split('/')
       depth = len(file_bits)
       if perms[0] == 'd':
