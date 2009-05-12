@@ -1,26 +1,43 @@
 <head>
   <title>Pairgramming..Product</title>
-  <link rel=StyleSheet href="submission_docs.css" type="text/css">
+  <link rel=StyleSheet href="product.css" type="text/css">
 </head>
 <body>
   <h2>Product Promotion</h2>
-
-  <p>[[Advertising material, starting in a page called product.html: teaser web page, short product description, screen shots, tutorial sequences, etc. This is the part that explains to potential customers or users what's neat about your project. The content and format are up to you, but try to make it short and seductive. (It's better if it works with all browsers and does not require plug-ins, but we will mainly use Firefox and perhaps Safari.) ]]</p>
-  <p>advertising: appealing, attractive / straightforward listing of features / sloppy, careless</p>
   
-  Tentative Plans:  --needs more work
-    
-    screen shot of pyjamas main page with labels/description bubbles
-        editor
-            syntax-highlighted, many languages supported
-            GUI
-            use emacs/vi in the console if you prefer emacs/vi
-        console
-            connect to your favorite server (like hats)
-        text chat
-            easy communication with your partner
-    
-    easy start-up (create an account with us, set up ssh, create/join project, launch)
-    with django pgs screenshot
+  <img><a href="http://teamceg.princeton.edu"><img src="Product_head_small.jpg" width="800px"></a></img>
+  <br><br>
+  <p>Paired programming is a commonly used learning and coding practice introduced and encouraged in COS 126, 217, and 227 at Princeton.  However, students often have difficulty scheduling blocks of time to code together.  <b>Pairgramming</b> saves students time by enabling them to pair program remotely.  Pairgramming can save you a hike out to Friend Center, and let you work together during holidays or vacations when you and your partner(s) may be separated.</p>
+  <p><a href="Product_console.jpg"><img src="Product_console.jpg" width="370px" class="floatRight"></a><b>Pairgramming</b> provides a <b2>console</b2> with full functionality which you can use to SSH into your favorite development server (such as Hats)!  Once you're logged in, you have all your settings and keyboard shortcuts, just like a plain SSH.  <b>Pairgramming</b> respects your <b2>privacy</b2>.  We never see or store your plaintext password.  Instead, we create an RSA public/private key pair and do require your password once to set up your connection; then if you ever want us out of your account, you can delete the key and that's it.  We never have the knowledge to change your passowrds or view your webmail; just access your development server account.  If you still don't trust us that much, you can simply enter your password yourself each time you start a new session and ssh from the console directly.</p>
+  <p><a href="Product_editor.jpg"><img src="Product_editor.jpg" width="350px" class="floatLeft"></a><b>Pairgramming</b> also features a GUI and multi-language syntax highlighting (C, Python, Xml, Brainfuck, and more) <b2>text editor</b2>.  No more learning M-f or C-u nonsense to move the cursor like in emacs.  Of course, if you prefer, our console provides full emacs or vi support capabilities.  <b>Pairgramming</b> also has <b2>subversion control</b2>, so you can track your changes, revert to older versions, and edit your files without worrying about transferring or losing changes. </p>
+  <p><b>Pairgramming</b> also has a blazing fast two-way <b2>text chat</b2> so you can always communicate with your partner.  FIXME=> If you enter the sequence '{{{' you enter "code mode," where you can type code and it gets sent as text formatted exactly as you entered it, so no more losing quotes and indenting when discussing code in a chat message.  Naturally you close "code mode" with '}}}'. </p>
+  <br>
+  <img><a href="Product_screenshot_1.jpg"><img src="Product_screenshot_1.jpg" height="170px" border="1px"></a>
+  <a href="Product_screenshot_2.jpg"><img src="Product_screenshot_2.jpg" height="170px" border="1px"></a>
+  <a href="Product_screenshot_3.jpg"><img src="Product_screenshot_3.jpg" height="170px" border="1px"></a></img>
+  <br><br>
+  <h3>Getting Started</h3>
+  <p><img src="Product_one.jpg" class="floatLeft" width="50px"><br>Create an account with us by going to <a href="http://teamceg.princeton.edu">http://teamceg.princeton.edu</a> and clicking "Register".  Then fill out the form which loads.  All you need is a valid e-mail address to register. </p>
+  <img><a href="Tutorial_1.jpg"><img src="Tutorial_1.jpg" height="200px" border="1px"></a></img>
+  <p><img src="Product_two.jpg" class="floatLeft" width="50px"><br>You will receive a validation e-mail welcoming you to Pairgramming.  Use the password in this e-mail to log in.  You should probably immediately change your password to something easier to remember.  You can change your password by clicking the "Change password" navigation link on the left side of the screen. </p>
+  <img><a href="Tutorial_2.jpg"><img src="Tutorial_2.jpg" height="200px" border="1px"></a></img>
+  <p><img src="Product_three.jpg" class="floatLeft" width="50px"><br>Now click the "Create connection" navigation link on the left side of the screen.  For example, if Ellen Kim wanted to create a connection to her Hats account, she would enter "hats.princeton.edu" for Server, "ellenkim" for Username, and "PairgrammingExample" for Base directory; any projects or files created using this connection will be stored in the PairgrammingExample directory now.  Ellen will probably enter her password for Password, and we will not store or see her plaintext password.  Then click Submit. </p>
+  <img><a href="Tutorial_3.jpg"><img src="Tutorial_3.jpg" height="200px" border="1px"></a></img>
+  <p>If Ellen typed the Server and Password correctly, she will see that she has Valid Keys for her hats connection. </p>
+  <img><a href="Tutorial_4.jpg"><img src="Tutorial_4.jpg" height="200px" border="1px"></a></img>
+  <p><img src="Product_four.jpg" class="floatLeft" width="50px"><br>You are ready to create or join a project.  To join, click the "Public Projects" navigation button and then click "Join" next to the project you'd like to join.  Be sure to confirm "Sign me up" after you click "Join". </p>
+  <img><a href="Tutorial_5.jpg"><img src="Tutorial_5.jpg" height="200px" border="1px"></a></img>
+  <p>To create a new project, click the "Create Project" navigation button.  Create a name for your new project, and continue to fill out the rest of the information on the form.  Fields in yellow (Partners and Course) are optional.  If you would like your project to appear on the Public Projects page so that others may join, check the "Make public?" box. </p>
+  <img><a href="Tutorial_6.jpg"><img src="Tutorial_6.jpg" height="200px" border="1px"></a></img>
+  <p><img src="Product_five.jpg" class="floatLeft" width="50px"><br>After you have joined or created a project, click the "My Projects" navigation button.  Select the project you would like to open, and click the "Launch" link next to it. </p>
+  <img><a href="Tutorial_7.jpg"><img src="Tutorial_7.jpg" height="200px" border="1px"></a></img>
+  <p><img src="Product_five.jpg" class="floatLeft" width="50px"><br>FIXME=> Create a new document by blahblahblahblah.  If you would like to upload new files to start your project, click "Files" then "Upload" at the menu buttons along the top of the window.  When you're done, click "Quit" then "Save and Quit" if you're really done.  Easy, isn't it? </p>
+  <img><a href="Tutorial_8.jpg"><img src="Tutorial_8.jpg" height="200px" border="1px"></a></img>
+  <p>If you're opening a project that your partner already has open, you will enter the actual Pairgramming app as the passenger, so you won't be able to edit the console or the editor.  Text chat, however, should be fully functional, and you should talk to your partner to catch up on what he/she is working on.  If you would like to "switch seats" with your partner, the driver should click on "FIXME" and confirm that the passenger wants to drive and that the driver wants to passenge -- er, be the passenger. </p>
+  
+  
+  
+  <br><br><br><br><br><p>[[Advertising material, starting in a page called product.html: teaser web page, short product description, screen shots, tutorial sequences, etc. This is the part that explains to potential customers or users what's neat about your project. The content and format are up to you, but try to make it short and seductive. (It's better if it works with all browsers and does not require plug-ins, but we will mainly use Firefox and perhaps Safari.) ]]</p>
+  <p>advertising: appealing, attractive / straightforward listing of features / sloppy, careless</p>
   
 </body>
