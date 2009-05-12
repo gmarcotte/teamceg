@@ -635,6 +635,7 @@ class Basic:
     self.file_box.setPopupPosition(350, 200)
     self.file_box.show()
   def createTreeItem(self, label, value=None):
+    window.alert("tree item created")
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
     #Will not work don't bother ##item.setContextMenu(self) # this needs latest version of pjs
