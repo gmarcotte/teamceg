@@ -8,7 +8,7 @@ from ContextMenuPopupPanel import ContextMenuPopupPanel
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree"])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree","delete_file"])
 
 class Basic:
   def onModuleLoad(self):
@@ -657,10 +657,23 @@ class Basic:
   
   def onDirClick(self):
     for i in range(0, len(self.FilesToDelete)):
+      self.FilesToDelete[i].setChecked(True)
       self.FilesToDelete[i].setEnabled(False)
   
   def onDelOK(self):
     window.alert("Deleting!")
+    # whole directory?
+    if self.DelDir.isChecked():
+      window.alert(self.current_directory[:len(self.current_directory)-1])
+      self.remote.delete_file(self.current_directory[:len(self.current_directory)-1],self)
+    
+    # just files
+    else:
+      for i in range(0, len(self.FilesToDelete)):
+        if self.FilesToDelete[i].isChecked():
+          fname = self.current_directory + self.FilesToDelete[i] # we put file names (not full paths)in the list
+          window.alert(fname)
+          self.remote.delete_file(fname,self)
     self.manage_del_box.hide()
       
   def onCancelDel(self):
