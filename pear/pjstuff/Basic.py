@@ -231,32 +231,68 @@ class Basic:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("%s" % tpl[3])
     elif request_info.method == 'get_meetinginfo':
-      self.list = []
-      previousconsoleID=self.consoleID
+      haspassenger = False
+      previousconsoleID = self.consoleID
       for tpl in response:
-        self.list.append("%s" % tpl[1])
-      # set the local vars
-      if (str(self.list[0]) == 'true'):
-        self.isdriver = True
-        if self.initEditor == False:
-          self.editor.add(HTML(self.driversynch), self.synchID)
-          self.initEditor = True
-      else:
-        self.isdriver = False
-        self.editor.add(HTML(self.passengersynch), self.synchID)
-      self.project = Label("%s" % self.list[1])
-      self.driver = Label("%s" % self.list[2])
-      self.drivername = Label("%s" % self.list[3])
-      self.consoleID = Label("%s" % self.list[4])
-      #alert(self.list[4])
-      self.passenger = Label("%s" % self.list[5]) # sometimes will be blank
-      self.passengername = Label("%s" % self.list[6]) # sometimes will be blank
-      if len(self.list[5]) < 1:
+        if str(tpl[0]) == '':
+          if str(tpl[1]) == 'true':
+            self.isdriver = True
+            if self.initEditor == False:
+              self.editor.add(HTML(self.driversynch), self.synchID)
+              self.initEditor = True
+          else:
+            self.isdriver = False
+            self.editor.add(HTML(self.passengersynch), self.synchID)
+        if str(tpl[0]) == 'project':
+          self.project = Label("%s" % tpl[1])
+        if str(tpl[0]) == 'driver':
+          self.driver = Label("%s" % tpl[1])
+        if str(tpl[0]) == 'drivername':
+          self.drivername = Label("%s" % tpl[1])
+        if str(tpl[0]) == 'new_sid':
+          self.consoleID = str(tpl[1])
+        if str(tpl[0]) == 'new_ssh':
+          self.ssh = str(tpl[1])
+        if str(tpl[0]) == 'new_user':
+          self.usr = str(tpl[1])
+        if str(tpl[0]) == 'new_key':
+          self.key = str(tpl[1])
+        if str(tpl[0]) == 'passenger':
+          self.passenger = Label("%s" % tpl[1])
+          haspassenger = True
+        if str(tpl[0]) == 'passengername':
+          self.passengername = Label("%s" % tpl[1])
+      if haspassenger == False:
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
       if str(self.consoleID) != str(previousconsoleID):
-        #window.alert("Changing console")
-        self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"', "+self.isdriver+");</script>"),"MYtermfunctionID")
+        self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
+      #self.list = []
+      #previousconsoleID=self.consoleID
+      #for tpl in response:
+      #  self.list.append("%s" % tpl[1])
+      ## set the local vars
+      #if (str(self.list[0]) == 'true'):
+      #  self.isdriver = True
+      #  if self.initEditor == False:
+      #    self.editor.add(HTML(self.driversynch), self.synchID)
+      #    self.initEditor = True
+      #else:
+      #  self.isdriver = False
+      #  self.editor.add(HTML(self.passengersynch), self.synchID)
+      #self.project = Label("%s" % self.list[1])
+      #self.driver = Label("%s" % self.list[2])
+      #self.drivername = Label("%s" % self.list[3])
+      #self.consoleID = Label("%s" % self.list[4])
+      ##alert(self.list[4])
+      #self.passenger = Label("%s" % self.list[5]) # sometimes will be blank
+      #self.passengername = Label("%s" % self.list[6]) # sometimes will be blank
+      #if len(self.list[5]) < 1:
+      #  self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
+      #  self.passengername.setText("No Partner logged in")
+      ##if str(self.consoleID) != str(previousconsoleID):
+      #  #window.alert("Changing console")
+      #  #self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"', "+self.isdriver+");</script>"),"MYtermfunctionID")
         
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
@@ -304,13 +340,13 @@ class Basic:
             if str(tpl[1]) == 'False':
               if self.isdriver == True:
                 self.isdriver = False 
-                self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+                self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
             if str(tpl[1]) == 'True':
               if self.isdriver == False:
                 self.isdriver = True
                 self.editor.add(HTML(self.driversynch), self.synchID)
                 #new_ssh,new_user,new_key,
-                self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+                self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
           
           #if (str(tpl[1])) != "True" and (str(tpl[1])) != "False":
           #  self.consoleID = Label("%s" % tpl[1])
