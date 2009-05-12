@@ -554,7 +554,7 @@ class Basic:
     contents.add(HTML('Add files and directories.'))
     contentshpn = HorizontalPanel()
     contentshpn.setSpacing(7)
-    self.NewFileName = TextBox
+    self.NewFileName = TextBox()
     self.NewFileName.setID(self.chatID) # This should protect it from ajaxterm stealing...
     contentshpn.add(self.NewFileName)
     contentshp = HorizontalPanel()
