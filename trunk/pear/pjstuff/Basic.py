@@ -599,8 +599,14 @@ class Basic:
     #window.alert(self.NewFileName.getText())
     newfile = self.current_directory + self.NewFileName.getText()
     window.alert(newfile)
-    if self.NewDir.ischecked():
+    if self.NewDir.isChecked():
       window.alert("Directory")
+      self.remote.new_directory(newfile,self)
+      # update the file tree! TODO
+    else:
+      window.alert("File")
+      self.remote.new_file(newfile,self)
+      # update the file tree! TODO
     self.manage_add_box.hide()
     
   def onCancelAdd(self):
