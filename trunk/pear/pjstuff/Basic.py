@@ -175,13 +175,11 @@ class Basic:
    
     # putting the left and right sides together
     hp = HorizontalPanel()
-    #hp.add(console)
     hp.setBorderWidth(1)
     hp.setHorizontalAlignment(HasAlignment.ALIGN_CENTER)
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
     hp.add(self.editor)
     hp.add(vp)
-    #hp.setCellWidth(console, "60%")
     hp.setCellWidth(self.editor, "50%")
     hp.setCellWidth(vp, "50%")
     hp.setCellVerticalAlignment(console, HasAlignment.ALIGN_TOP)
@@ -418,15 +416,16 @@ class Basic:
       filesavebutton = Button("Save", getattr(self,"onFileSave"))
       ## we may add back later
       #filedirbutton = Button("Add New Directory", getattr(self, "onFileDirOpenClick"))
-      fileuploadbutton = Button("Upload a File", getattr(self, "onFileUploadOpenClick"))
+      #fileuploadbutton = Button("Upload a File", getattr(self, "onFileUploadOpenClick"))
       filetreebutton.setStyleName("supp-button")
       filesavebutton.setStyleName("supp-button")
       ##filedirbutton.setStyleName("supp-button")
-      fileuploadbutton.setStyleName("supp-button")
+      #fileuploadbutton.setStyleName("supp-button")
       filepanel.add(filetreebutton)
       filepanel.add(filesavebutton)
       ##filepanel.add(filedirbutton)
-      filepanel.add(fileuploadbutton)
+      #filepanel.add(fileuploadbutton)
+      #filepanel.add(Label("%s" % self.current_open[2]))
       self.menu_body.setWidget(filepanel)
  
   def onFileSave(self):
@@ -514,7 +513,7 @@ class Basic:
     filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
     filetreepanel.setWidth("400px")
     self.file_box = DialogBox()
-    self.file_box.setHTML("File Navigation")
+    self.file_box.setHTML("<b>File Navigation</b> <i>%s</i>" % str(self.current_open[2]))
     self.file_box.setWidget(filetreepanel)
     self.file_box.setPopupPosition(350, 200)
     self.file_box.show()
