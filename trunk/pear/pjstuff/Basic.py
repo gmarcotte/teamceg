@@ -491,6 +491,26 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
+              while (i < len(self.file_list)) and (self.file_list[i][0][0] == "6"):
+                s6 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
+                s5.addItem(s5)
+                s5.setState(False, fireEvents=False)
+                i = i + 1
+                while (i < len(self.file_list)) and (self.file_list[i][0][0] == "7"):
+                  s7 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
+                  s6.addItem(s5)
+                  s6.setState(False, fireEvents=False)
+                  i = i + 1
+                  while (i < len(self.file_list)) and (self.file_list[i][0][0] == "8"):
+                    s8 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
+                    s7.addItem(s5)
+                    s7.setState(False, fireEvents=False)
+                    i = i + 1
+                    while (i < len(self.file_list)) and (self.file_list[i][0][0] == "9"):
+                      s9 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
+                      s8.addItem(s5)
+                      s8.setState(False, fireEvents=False)
+                      i = i + 1
       #  s1.setState(True, fireEvents=False)
       filetree.addItem(s1)      
     filetreepanel = VerticalPanel()
@@ -598,6 +618,7 @@ class Basic:
     self.NewFile.setChecked(True)
     contentshpfd.add(self.NewDir)
     contentshpfd.add(self.NewFile)
+    
     contentshpn = HorizontalPanel()
     contentshpn.setSpacing(7)
     self.NewFileName = TextBox()
