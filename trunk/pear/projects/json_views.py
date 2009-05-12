@@ -438,18 +438,19 @@ def save_file(request, filename, text):
   
     
 @network.jsonremote(service)
-def get_file_tree(request, root):
+def get_file_tree(request):
   meeting = request.user.current_meeting
   if meeting is None:
     return [('error', 'ERROR: no active meeting')]
   project = meeting.project
   ssh = meeting.driverssh
   client = ssh.connect()
-  tree = ssh.read_file_tree(client, project.get_path(root))
+  tree = ssh.read_file_tree(client, project.directory)
   ssh.close(client)
   return tree
   
-@network.jsonremote(service)
+  
+@network.jsonremote(serviced)
 def sync_all(request):
   meeting = request.user.current_meeting
   if meeting is None:
