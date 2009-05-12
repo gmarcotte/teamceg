@@ -519,8 +519,8 @@ class Basic:
   def onFileDirOpenClick(self):
     pass ###
   def onFileTreeOpenClick(self):
-    filetree = Tree()
-    filetree.addTreeListener(self)
+    self.filetree = Tree()
+    self.filetree.addTreeListener(self)
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
@@ -548,10 +548,10 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
-        filetree.addItem(s1)
+        self.filetree.addItem(s1)
     ####self.file_box = DialogBox()
     ####self.file_box.setHTML("File Navigation")
-    self.file_box.setWidget(filetree)
+    self.file_box.setWidget(self.filetree)
     ####self.file_box.setPopupPosition(350, 200)
     ####self.file_box.show()
   def createTreeItem(self, label, value=None):
