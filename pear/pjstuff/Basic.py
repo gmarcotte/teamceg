@@ -162,6 +162,8 @@ class Basic:
     
     
     # the right side
+    vp_right = VerticalPanel()
+    vp_right.setBorderWidth(1)
     
     # file tree
     #(setWidth("370px"))
@@ -191,8 +193,6 @@ class Basic:
     real_chat.setStyleName("whitebg")
     
     # putting the new right side together
-    vp_right = VerticalPanel()
-    vp_right.setBorderWidth(1)
     vp_right.add(self.file_tree)
     vp_right.add(real_chat)
     vp_right.setWidth("100%")
