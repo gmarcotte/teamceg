@@ -7,3 +7,4 @@ Possible test cases/scenarios
 
  # Invalid password for setting up server connection
  # Invalid email on login (ie blahblah, instead of blahblah@provider.com)
+ # Open one project with many different developing servers
