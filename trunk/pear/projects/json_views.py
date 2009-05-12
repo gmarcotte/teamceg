@@ -47,7 +47,7 @@ def send_chatmessage(request,message):
         msg.receiver = None
     else:
       msg.receiver = PearUser.objects.get(pk=meeting.driver_id)
-    fullmessage = request.user.first_name + "JSON : "+ message
+    fullmessage = request.user.first_name + ": "+ message
     msg.message = fullmessage
     msg.save()
     # add this message to the queue in the database
