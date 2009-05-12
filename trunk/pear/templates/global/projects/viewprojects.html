@@ -1,7 +1,8 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-<table id="project-list">
+<h3>Active Projects</h3>
+<table class="project-list">
 <tr>
   <th>Name</th>
   <th>Course</th>
@@ -36,5 +37,31 @@
 <tr><td colspan="4">You don't have any projects yet.</td></tr>
 {% endfor %}
 </table>
+
+{% if deleted_projects %}
+<h3>Deleted Projects</h3>
+<table class="project-list">
+<tr>
+  <th>Name</th>
+  <th>Course</th>
+  <th>Actions</th>
+</tr>
+{% for project in deleted_projects %}
+<tr>
+  <td>{{ project.name }}</td>
+  <td>
+  {% if project.course %}
+    {{ project.course }}
+  {% else %}
+    ---
+  {% endif %}
+  </td>
+  <td>
+  <a href="{{project.resurrect_url}}?next=/projects/my_projects/">Resurrect</a> 
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
 
 {% endblock %}

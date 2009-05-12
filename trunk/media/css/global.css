@@ -33,22 +33,22 @@ a img {
 }
 
 /* PROJECT LISTING TABLE */
-#project-list {
+.project-list {
 	border-collapse: collapse;
 }
 
-#project-list th,
-#project-list td {
+.project-list th,
+.project-list td {
 	border: thin solid gray;
 	text-align: center;
 	padding: 0px 5px;	
 }
 
-#project-list th {
+.project-list th {
 	font-size: small;
 }
 
-#project-list td {
+.project-list td {
 	font-size: smaller;
 }
 
