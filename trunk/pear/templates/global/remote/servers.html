@@ -2,6 +2,9 @@
 
 {% block content %}
 
+<p>Your RSA keys are: {% if user.profile.has_keys %}VALID{%else%}INVALID{%endif%}.
+(<a href="{{ user.get_key_regen_url }}">Generate New Keys</a>)</p>
+
 <table id="server-list">
 <tr>
 	<th>Connection</th>

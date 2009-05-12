@@ -55,6 +55,10 @@ class PearUser(auth_models.User):
     if self.passenger_for.count():
       return self.passenger_for.latest('id')
     return None
+  
+  # URL Accessors
+  def get_key_regen_url(self):
+    return '/accounts/regen_keys/'
 
 
 class Profile(timestamp.TimestampedModel):

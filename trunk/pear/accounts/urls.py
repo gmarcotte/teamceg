@@ -9,6 +9,7 @@ urlpatterns = defaults.patterns('pear.accounts.views',
     (r'^reset_password/$', 'reset_password'),
     (r'^delete/$', 'delete'),
     (r'^invite/$', 'invite_user'),
+    (r'^regen_keys/$', 'regen_keys'),
     
     
     # AJAX Views
