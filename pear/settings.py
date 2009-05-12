@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'pear.projects',
     'pear.remote',
     'pear.meetings',
+    'pear.support',
     
     # This one must be last
     'pear.core.templatetags',
