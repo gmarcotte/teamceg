@@ -33,19 +33,6 @@ class Basic:
     self.file_list = []
     self.remote.get_file_tree(self) # will need to change rd to actual root directory.
     
-    #self.file_list.append(('1root', 'dir', 'root'))
-    #self.file_list.append(('2file1', 'file', 'root/file1'))
-    #self.file_list.append(('2file2', 'file', 'root/file2'))
-    #self.file_list.append(('2subdir1', 'dir', 'root/subdir1'))
-    #self.file_list.append(('3subdir2', 'dir', 'root/subdir1/subdir2'))
-    #self.file_list.append(('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3'))
-    #self.file_list.append(('5file3', 'file', 'root/subdir1/subdir2/subdir3/file3'))
-    #self.file_list.append(('3file4', 'file', 'root/subdir1/subdir2/file4'))
-    #self.file_list.append(('3file5', 'file', 'root/subdir1/subdir2/file5'))
-    #self.file_list.append(('2file6', 'file', 'root/subdir1/file6'))
-    
-    
-    
     self.files = Button("Files", getattr(self, "onFilesClick"))
     #self.FileContext = SimplePanel("La di da")
     self.mode = Button("Mode", getattr(self, "onModeClick"))
@@ -269,32 +256,7 @@ class Basic:
         self.passengername.setText("No Partner logged in")
       if str(self.consoleID) != str(previousconsoleID):
         self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
-      #self.list = []
-      #previousconsoleID=self.consoleID
-      #for tpl in response:
-      #  self.list.append("%s" % tpl[1])
-      ## set the local vars
-      #if (str(self.list[0]) == 'true'):
-      #  self.isdriver = True
-      #  if self.initEditor == False:
-      #    self.editor.add(HTML(self.driversynch), self.synchID)
-      #    self.initEditor = True
-      #else:
-      #  self.isdriver = False
-      #  self.editor.add(HTML(self.passengersynch), self.synchID)
-      #self.project = Label("%s" % self.list[1])
-      #self.driver = Label("%s" % self.list[2])
-      #self.drivername = Label("%s" % self.list[3])
-      #self.consoleID = Label("%s" % self.list[4])
-      ##alert(self.list[4])
-      #self.passenger = Label("%s" % self.list[5]) # sometimes will be blank
-      #self.passengername = Label("%s" % self.list[6]) # sometimes will be blank
-      #if len(self.list[5]) < 1:
-      #  self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
-      #  self.passengername.setText("No Partner logged in")
-      ##if str(self.consoleID) != str(previousconsoleID):
-      #  #window.alert("Changing console")
-      #  #self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"', "+self.isdriver+");</script>"),"MYtermfunctionID")
+     
         
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
@@ -342,12 +304,15 @@ class Basic:
             if str(tpl[1]) == 'False':
               if self.isdriver == True:
                 self.isdriver = False 
+                self.editor.add(HTML(self.passengersynch), self.synchID)
+                window.alert("Doing a console set from isdriver False in driverstatus")
                 self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
             if str(tpl[1]) == 'True':
               if self.isdriver == False:
                 self.isdriver = True
                 self.editor.add(HTML(self.driversynch), self.synchID)
                 #new_ssh,new_user,new_key,
+                window.alert("Doing a console set from isdriver true in driverstatus")
                 self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
           
           #if (str(tpl[1])) != "True" and (str(tpl[1])) != "False":
@@ -382,6 +347,7 @@ class Basic:
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
               self.switching = False
+              window.alert("console set from switch-driver isdriver true")
               self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
               # need to hold off until we know the id self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
           elif str(tpl[1]) == "False":
@@ -389,6 +355,7 @@ class Basic:
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
               self.switching = False
+              window.alert("console set from switch-driver isdriver FALSE")
               self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
               # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         # Let's wait and try this on driver_status
