@@ -524,14 +524,39 @@ class Basic:
             self.current_open = thing
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
-      window.alert("Will display a popup window to manage directory: " + str(value))
+      window.alert("Will display a dialog window to manage directory: " + str(value))
+      contents = VerticalPanel()
+      contents.setSpacing(4)
+      contents.add(HTML('Add or delete files and directories.'))
+      contentshp = HorizontalPanel()
+      contentshp.setSpacing(7)
+      contentshp.add(Button("Add",getattr(self,"onAddDialog")))
+      contentshp.add(Button("Delete",getattr(self,"onDeleteDialog")))
+      contentshp.add(Button("Cancel",getattr(self,"onCancelManageDialog")))
+      contents.add(contentshp)
+      contents.setCellHorizontalAlignment(contentshp, HasAlignment.ALIGN_CENTER)
+      self.manage_directory_box = DialogBox()
+      self.manage_directory_box.setHTML("<b>Manage Directory</b>")
+      self.manage_directory_box.setWidget(contents)
+      self.manage_directory_box.setPopupPosition(200,200)
+      self.manage_directory_box.show()
     
     #self.file_box.hide()
   def onTreeItemStateChanged(self, item):
     pass  # "We ignore this." but why again?
   def onFileTreeCloseClick(self):
     self.file_box.hide()
+  
+  def onAddDialog(self):
+    window.alert("Add files/directories")
+    self.manage_directory_box.hide()
+  def onDeleteDialog(self):
+    window.alert("Delete files/directories")
+    self.manage_directory_box.hide()
+  def onCancelManageDialog(self):
+    self.manage_directory_box.hide()
       
+              
   def onDialogSave(self):
     #window.alert("Saving changes.")
     content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
