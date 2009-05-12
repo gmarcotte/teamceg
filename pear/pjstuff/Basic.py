@@ -90,6 +90,7 @@ class Basic:
       
     function syncheditor() { 
     // see if this helps with actually setting it to be editable again
+    alert("synching editor")
     editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
     var content = editAreaLoader.getValue('MYeditorID');
     var listener = document.getElementById('MYeditorHTMLID');
@@ -104,6 +105,7 @@ class Basic:
     window.listenInterval = setInterval('synchlisten()', 100); 
     //document.getElementById('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
     function synchlisten() { 
+    alert("synching listen")
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;//innerHTML;
     content = content.substring(86, content.length-6);
@@ -213,7 +215,7 @@ class Basic:
       if (len(response[3]) < 1):  # if there is no passenger
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
-      else:  # if len(response[3]) > 0:  # if there is a passenger
+      else: 
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("%s" % tpl[3])
@@ -255,6 +257,7 @@ class Basic:
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
       if str(self.consoleID) != str(previousconsoleID):
+        window.alert("Changing console in get_meetinginfo")
         self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
      
         
@@ -315,22 +318,6 @@ class Basic:
                 window.alert("Doing a console set from isdriver true in driverstatus")
                 self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
           
-          #if (str(tpl[1])) != "True" and (str(tpl[1])) != "False":
-          #  self.consoleID = Label("%s" % tpl[1])
-          #if (str(tpl[1])) == "True":
-          #  if self.isdriver == False:
-          #    self.isdriver = True
-          #    self.editor.add(HTML(self.driversynch), self.synchID)
-          #    #alert(self.consoleID.getText())
-          #    # this needs to be changed significantly
-          #    ###self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
-          #elif str(tpl[1]) == "False":
-          #  if self.isdriver == True:
-          #    self.isdriver = False
-          #    self.editor.add(HTML(self.passengersynch), self.synchID)
-          #    #alert(self.consoleID.getText())
-          #    self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
-          #self.switching = False
     elif request_info.method == 'switch_driver':
       for tpl in response:
         if (str(tpl[0])) == 'new_sid':
@@ -384,7 +371,7 @@ class Basic:
     elif request_info.method == 'get_file_tree':
       self.file_list = []
       for tpl in response:
-        window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
+        #window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
         self.file_list.append(tpl)
         
       
