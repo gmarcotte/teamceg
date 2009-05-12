@@ -117,7 +117,7 @@ class Basic:
     initialcontent = """<script> </script> """
     
 
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 272px; width: 600px;'></textarea> <div id='" + self.functionID + "'></div>")
 
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
@@ -126,7 +126,7 @@ class Basic:
     self.editor.add(self.editorHTML, self.editorHTMLID)
     
     self.editor.add(HTML(initialcontent), self.synchID)
-    self.editor.setWidth("100%")
+    self.editor.setWidth("600px")
     self.editor.setHeight("100%")
     
     #innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'></div>";
@@ -134,32 +134,65 @@ class Basic:
     
     
     
-    # the right side
-    vp = VerticalPanel()
-    vp.setBorderWidth(1)
     # the console
     self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
-    self.term.setWidth("100%")
-    self.term.setHeight("390px")
+    self.term.setWidth("600px")
+    self.term.setHeight("272px")
     console = SimplePanel()
     console.add(self.term)
-    console.setWidth("400px")
+    ##console.setWidth("400px")
     console.setHeight("100%")
+    console.setStyleName("console")
+    
+    
+    
+    # putting the new left side together
+    vp_left = VerticalPanel()
+    vp_left.setBorderWidth(1)
+    vp_left.add(self.editor)
+    vp_left.add(console)
+    vp_left.setCellHeight(self.editor, "50%")
+    self.editor.setHeight("100%")
+    vp_left.setCellHeight(console, "50%")
+    console.setHeight("100%")
+    
+    
+    
+    
+    
+    
+    # the right side
+    vp_right = VerticalPanel()
+    vp_right.setBorderWidth(1)
+    
+    # file tree
+    filetree = Tree()
+    filetree.addTreeListener(self)
+    ###Need to fill this in after file tree works as is in dialogbox
+    filetreepanel = VerticalPanel()
+    filetreepanel.setSpacing(7)
+    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    filetreepanel.add(filetree)
+    filetreepanel.setWidth("400px")
+    self.file_tree = SimplePanel()
+    self.file_tree.setWidget(filetreepanel)
+    
+    
     # not so hacky -- indeed, pretty decent little text chat
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
     self.text = HTML("(There is a 600 character limit on messages)")
     self.text_area.setWidget(self.text)
-    self.text_area.setSize("487px", "151px")
+    self.text_area.setSize("370px", "151px")
     self.text_box = TextBox()
-    self.text_box.setVisibleLength("58")
+    self.text_box.setVisibleLength("41")
     self.text_box.setMaxLength("600")
     self.text_box.setID(self.chatID)
     self.text_box.addKeyboardListener(self)
-    text_send = Button("Send", getattr(self, "onTextSend"))
+    self.text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
-    text_entry.add(text_send)
+    text_entry.add(self.text_send)
     text_entry.setWidth("340px")
     real_chat = VerticalPanel()
     #real_chat.add(self.chat_transcript)
@@ -168,24 +201,27 @@ class Basic:
     real_chat.add(text_entry)
     real_chat.setStyleName("whitebg")
     
-    vp.add(console)
-    vp.add(real_chat)
-    vp.setWidth("100%")
-    vp.setHeight("100%")
-    vp.setCellHeight(console, "50%")
-    vp.setCellHeight(real_chat, "50%")
+    # putting the new right side together
+    vp_right.add(self.file_tree)
+    vp_right.add(real_chat)
+    vp_right.setWidth("100%")
+    vp_right.setHeight("100%")
+    vp_right.setCellHeight(self.file_tree, "650%")
+    vp_right.setCellHeight(real_chat, "35%")
     
     # putting the left and right sides together
     hp = HorizontalPanel()
     hp.setBorderWidth(1)
     hp.setHorizontalAlignment(HasAlignment.ALIGN_CENTER)
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
-    hp.add(self.editor)
-    hp.add(vp)
-    hp.setCellWidth(self.editor, "50%")
-    hp.setCellWidth(vp, "50%")
+    hp.add(vp_left)
+    hp.add(vp_right)
+    hp.setCellWidth(vp_left, "73%")
+    vp_left.setWidth("100%")
+    hp.setCellWidth(vp_right, "27%")
+    vp_right.setWidth("100%")
     #hp.setCellVerticalAlignment(self.editor, HasAlignment.ALIGN_JUSTIFY)
-    hp.setCellVerticalAlignment(console, HasAlignment.ALIGN_TOP)
+    ##hp.setCellVerticalAlignment(vp_left, HasAlignment.ALIGN_TOP)
     hp.setWidth("100%")
     hp.setHeight("100%")
     
@@ -202,7 +238,7 @@ class Basic:
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
     self.panel.setWidth("995px")  # out of 1024
-    self.panel.setHeight("400px")  # out of 768
+    self.panel.setHeight("600px")  # out of 768
     
     RootPanel().add(self.panel)
     
@@ -400,9 +436,14 @@ class Basic:
   def onInfoClick(self):
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
+      self.info.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Info")
+      self.info.setStyleName("sel-button")
+      self.files.setStyleName("gwt-button")
+      self.mode.setStyleName("gwt-button")
+      self.audio.setStyleName("gwt-button")
       infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
       infomsg.setStyleName("not-button")
       self.menu_body.setWidget(infomsg)
@@ -410,9 +451,14 @@ class Basic:
   def onFilesClick(self):
     if self.active_menu.getText() == "Files":
       self.active_menu.setText("")
+      self.files.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
-      self.active_menu.setText("Files")
+      self.active_menu.setText("Files")      
+      self.info.setStyleName("gwt-button")
+      self.files.setStyleName("sel-button")
+      self.mode.setStyleName("gwt-button")
+      self.audio.setStyleName("gwt-button")
       filepanel = HorizontalPanel()
       filetreebutton = Button("File Tree", getattr(self, "onFileTreeOpenClick"))
       filesavebutton = Button("Save", getattr(self,"onFileSave"))
@@ -454,14 +500,14 @@ class Basic:
     uploadbutt_hp.setSpacing(7)
     uploadbutt_hp.add(fileuploadsubmitbutt)
     uploadbutt_hp.add(fileuploadclosebutt)
-    upload_vp = VerticalPanel()
-    upload_vp.setSpacing(4)
-    upload_vp.add(upload_hp)
+    upload_vp_right = VerticalPanel()
+    upload_vp_right.setSpacing(4)
+    upload_vp_right.add(upload_hp)
     results = NamedFrame("results")
-    upload_vp.add(results)
-    upload_vp.add(uploadbutt_hp)
-    upload_vp.setCellHorizontalAlignment(uploadbutt_hp, HasAlignment.ALIGN_CENTER)
-    self.uploadform.add(upload_vp)
+    upload_vp_right.add(results)
+    upload_vp_right.add(uploadbutt_hp)
+    upload_vp_right.setCellHorizontalAlignment(uploadbutt_hp, HasAlignment.ALIGN_CENTER)
+    self.uploadform.add(upload_vp_right)
     self.upload_box = DialogBox()
     self.upload_box.setHTML("File Upload")
     self.upload_box.setWidget(self.uploadform)
@@ -739,9 +785,14 @@ class Basic:
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
       self.active_menu.setText("")
+      self.mode.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Mode")
+      self.info.setStyleName("gwt-button")
+      self.files.setStyleName("gwt-button")
+      self.mode.setStyleName("sel-button")
+      self.audio.setStyleName("gwt-button")
       modepanel = HorizontalPanel()
       modebutt = Button("Switch Drivers", getattr(self, "onSwitchDriversClick"))
       modebutt.setStyleName("supp-button")
@@ -761,9 +812,14 @@ class Basic:
   def onAudioClick(self):
     if self.active_menu.getText() == "Audio":
       self.active_menu.setText("")
+      self.audio.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Audio")
+      self.info.setStyleName("gwt-button")
+      self.files.setStyleName("gwt-button")
+      self.mode.setStyleName("gwt-button")
+      self.audio.setStyleName("sel-button")
       audiopanel = HorizontalPanel()
       audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
       audiobutton.setStyleName("supp-button")
@@ -828,6 +884,7 @@ class Basic:
       self.flash.setText("Stop Flash")
     
   def onTextSend(self):
+    self.text_send.setStyleName("sel-button")
     id = self.remote.get_username(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
@@ -840,11 +897,14 @@ class Basic:
     msg = self.text_box.getText()
     self.remote.send_chatmessage(msg, self)
     self.text_box.setText("")
+    self.text_send.setStyleName("gwt-button")
     
   def onKeyUp(self, sender, keyCode, modifers):
-    pass
+    if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
+      self.text_send.setStyleName("gwt-button")
   def onKeyDown(self, sender, keyCode, modifiers):
-    pass
+    if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
+      self.text_send.setStyleName("sel-button")
   def onKeyPress(self, sender, keyCode, modifiers):
     if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
       id = self.remote.get_username(self)
@@ -860,28 +920,31 @@ class Basic:
       self.text_box.setText("")
       
   def onQuitClick(self):
+    self.quit.setStyleName("sel-button")
     # We're trying to quit, pause communications
     self.quitting = True
     #self.remote.user_quit(self)
-    quitvp = VerticalPanel()
-    quitvp.setSpacing(4)
-    quitvp.add(HTML("We hope you had a productive session, come back soon!"))
+    quitvp_right = VerticalPanel()
+    quitvp_right.setSpacing(4)
+    quitvp_right.add(HTML("We hope you had a productive session, come back soon!"))
     quithp = HorizontalPanel()
     quithp.setSpacing(7)
     quithp.add(Button("Wait, don't quit yet!", getattr(self, "onQuitCancel")))
     quithp.add(Button("Save and quit", getattr(self, "onQuitConfirm")))
-    quitvp.add(quithp)
-    quitvp.setCellHorizontalAlignment(quithp, HasAlignment.ALIGN_CENTER)
+    quitvp_right.add(quithp)
+    quitvp_right.setCellHorizontalAlignment(quithp, HasAlignment.ALIGN_CENTER)
     self.quit_box = DialogBox()
     self.quit_box.setHTML("Quit Confirmation")
-    self.quit_box.setWidget(quitvp)
+    self.quit_box.setWidget(quitvp_right)
     self.quit_box.setPopupPosition(350, 200)  # (left, top)
     self.quit_box.show()
   def onQuitCancel(self):
+    self.quit.setStyleName("gwt-button")
     self.quit_box.hide()
     # we're not trying to escape anymore, restart regular communications
     self.quitting = False 
   def onQuitConfirm(self):
+    self.quit.setStyleName("gwt-button")
     self.quit_box.hide()
     self.remote.sync_all(self)
     self.remote.user_quit(self)

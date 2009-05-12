@@ -14,7 +14,14 @@
   background: #99cc66;
   color: #ffffff;
   font-size: 14px;
-  /*font-weight: bold;*/
+  border: 1px solid #ffffff;
+  border-style: rounded;
+  font-family: Verdana, Tahoma;
+}
+.sel-button {
+  background: #668833;
+  color: #ffffff;
+  font-size: 14px;
   border: 1px solid #ffffff;
   border-style: rounded;
   font-family: Verdana, Tahoma;
@@ -93,7 +100,10 @@
   font-size: 14px;
 }
 
-
+/* Console */
+.console {
+  background: #black;
+}
 
 .whitebg {
   bacground: #ffffff;
