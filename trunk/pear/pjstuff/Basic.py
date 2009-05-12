@@ -286,7 +286,6 @@ class Basic:
       pass
     elif request_info.method == 'receive_editor':
       # check to see if maybe there is an error here because of empty string?
-      window.alert("receiving editor.")
       for tpl in response:
         alert(str(tpl[1]))
         content = tpl[1]
@@ -781,7 +780,6 @@ class Basic:
     self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
-    alert(self.switching + " " + self.quitting)
     # Check for new passenger
     if self.isdriver:
       self.remote.get_meetinginfo(self)
