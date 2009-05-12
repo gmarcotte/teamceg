@@ -166,24 +166,24 @@ class Basic:
     real_chat.add(text_entry)
     real_chat.setStyleName("whitebg")
    
-    #vp.add(console) # console and chat added to vertical panel
+    vp.add(console) # console and chat added to vertical panel
     vp.add(real_chat)
     vp.setWidth("100%")
     vp.setHeight("100%")
-    #vp.setCellHeight(console, "50%")
+    vp.setCellHeight(console, "50%")
     vp.setCellHeight(real_chat, "50%")
    
     # putting the left and right sides together
     hp = HorizontalPanel()
-    hp.add(console)
+    #hp.add(console)
     hp.setBorderWidth(1)
     hp.setHorizontalAlignment(HasAlignment.ALIGN_CENTER)
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
     hp.add(self.editor)
     hp.add(vp)
-    hp.setCellWidth(console, "60%")
-    hp.setCellWidth(self.editor, "60%")
-    hp.setCellWidth(vp, "40%")
+    #hp.setCellWidth(console, "60%")
+    hp.setCellWidth(self.editor, "50%")
+    hp.setCellWidth(vp, "50%")
     hp.setCellVerticalAlignment(console, HasAlignment.ALIGN_TOP)
     hp.setWidth("100%")
     hp.setHeight("100%")
@@ -634,6 +634,7 @@ class Basic:
        
   def onAddOK(self):
     newfile = self.current_directory + self.NewFileName.getText()
+    newfile = newfile.lstrip("/")
     if self.NewDir.isChecked():
       self.remote.new_directory(newfile,self)
       self.remote.get_file_tree(self)
