@@ -26,7 +26,7 @@ class Basic:
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
-    self.remote.get_file_tree('rd',self) # will need to change rd to actual root directory.
+    self.remote.get_file_tree('pairdir',self) # will need to change rd to actual root directory.
     
     
     # building the menu bar
@@ -433,7 +433,7 @@ class Basic:
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
-    self.remote.get_file_tree('rd',self)
+    self.remote.get_file_tree('pairdir',self)
     while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
       s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
       i = i + 1
