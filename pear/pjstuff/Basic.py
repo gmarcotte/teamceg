@@ -631,6 +631,7 @@ class Basic:
     # find the files in this directory
     level = "0"
     for i in range(0,len(self.file_list)):
+      alert(str(self.file_list[i][2])+" "+str(self.current_directory))
       if str(self.file_list[i][2]) == str(self.current_directory):
         window.alert("Matched directory")
         #level = self.file_list[i][0][0]
