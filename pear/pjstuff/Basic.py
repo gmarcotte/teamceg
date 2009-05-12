@@ -696,6 +696,7 @@ class Basic:
     if self.DelDir.isChecked():
       dir = self.current_directory[:len(self.current_directory)]
       dir = dir.lstrip("/")
+      dir = dir.rstrip("/")
       self.remote.delete_file(dir,self) # do we need to prevent root?
    
     # just files
