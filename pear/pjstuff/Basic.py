@@ -320,6 +320,7 @@ class Basic:
                 #new_ssh,new_user,new_key,
                 window.alert("Doing a console set from isdriver true in driverstatus")
                 self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
+          self.switching = False
           
     elif request_info.method == 'switch_driver':
       for tpl in response:
