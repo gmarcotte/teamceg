@@ -101,8 +101,17 @@ def ask_input_question(question, default=''):
 def clear_user_keys():
   for file in os.listdir(settings.RSA_KEY_DIR):
     if os.path.isfile(file):
+      write_msg('Deleting RSA key: %s\n' % file, output_file, sys.stdout)
       os.remove(file)
-
+      
+def clear_repositories():
+  for top_dir in os.listdir(settings.SVN_BASE_DIR):
+    write_msg('Deleting repository: %s' % topdir, output_file, sys.stdout)
+    for root, dirs, files in os.walk(top_dir, topdown=False):
+      for name in files:
+          os.remove(os.path.join(root, name))
+      for name in dirs:
+          os.rmdir(os.path.join(root, name))
 
 def create_root_user():
   """Create a superuser for testing purposes"""

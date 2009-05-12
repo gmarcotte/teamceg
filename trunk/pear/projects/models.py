@@ -82,7 +82,7 @@ class Project(timestamp.TimestampedModel):
   is_public = models.BooleanField()
   
   is_deleted = models.BooleanField(editable=False, default=False)
-  
+
   # Display Methods
   def __unicode__(self):
     return self.name
@@ -108,7 +108,7 @@ class Project(timestamp.TimestampedModel):
   
   # Subversion/filesystem interaction methods
   def get_path(self, filename):
-    return os.path.normcase(os.path.normpath(os.path.join(self.directory, filepath)))
+    return os.path.normcase(os.path.normpath(os.path.join(self.directory, filename)))
   
   def get_repository_dir(self):
     return "%s%s%s" % (settings.SVN_BASE_DIR, os.sep, self.repos)
