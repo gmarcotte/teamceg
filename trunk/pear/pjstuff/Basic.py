@@ -780,6 +780,7 @@ class Basic:
     self.location.setHref("skype:NAME?call")
   
   def onTimer(self):
+    alert(self.isdriver)
     # Check for new passenger
     if self.isdriver:
       self.remote.get_meetinginfo(self)
