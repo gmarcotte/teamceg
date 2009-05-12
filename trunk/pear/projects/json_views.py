@@ -450,7 +450,7 @@ def get_file_tree(request):
   return tree
   
   
-@network.jsonremote(serviced)
+@network.jsonremote(service)
 def sync_all(request):
   meeting = request.user.current_meeting
   if meeting is None:
