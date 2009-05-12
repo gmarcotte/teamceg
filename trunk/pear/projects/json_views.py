@@ -137,13 +137,17 @@ def get_meetinginfo(request):
         r.append(('isdriver', 'false'))
       r.append(('project', project.name))
       r.append(('driver', driver.email))
-      r.append(('driver', driver.first_name))
-      r.append(('driver',meeting.driverconsole))
+      r.append(('drivername', driver.first_name))
+      #r.append(('consoleID',meeting.driverconsole))
       if meeting.passenger_id > 0:
         passenger = PearUser.objects.get(pk=meeting.passenger_id)
         r.append(('passenger', passenger.email))
-        r.append(('passenger', passenger.first_name))
+        r.append(('passengername', passenger.first_name))
       
+      r.append(('new_sid', str(meeting.driverconsole)))
+      r.append(('new_ssh', str(meeting.driverssh)))
+      r.append(('new_user', str(meeting.driver_id)))
+      r.append(('new_key', str(meeting.driver_id))) 
     return r
     # if meeting, return info
   else:
