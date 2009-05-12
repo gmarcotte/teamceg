@@ -439,16 +439,15 @@ def save_file(request, filename, text):
     
 @network.jsonremote(service)
 def get_file_tree(request, root):
-  return [('1root', 'dir', 'root/'), 
-          ('2file1', 'file', 'root/file1'), 
-          ('2file2', 'file', 'root/file2'),
-          ('2subdir1', 'dir', 'root/subdir1/'),
-          ('3subdir2', 'dir', 'root/subdir1/subdir2/'),
-          ('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3/'),
-          ('5file3', 'file', 'root/subdir1/subdir2/subdir3/file3'),
-          ('3file4', 'file', 'root/subdir1/subdir2/file4'),
-          ('3file5', 'file', 'root/subdir1/subdir2/file5'),
-          ('2file6', 'file', 'root/subdir1/file6')]
+  meeting = request.user.current_meeting
+  if meeting is None:
+    return [('error', 'ERROR: no active meeting')]
+  project = meeting.project
+  ssh = meeting.driverssh
+  client = ssh.connect()
+  tree = ssh.read_file_tree(client, project.get_path(root))
+  ssh.close(client)
+  return tree
   
 @network.jsonremote(service)
 def sync_all(request):
