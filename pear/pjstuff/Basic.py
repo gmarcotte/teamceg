@@ -8,7 +8,7 @@ from ContextMenuPopupPanel import ContextMenuPopupPanel
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree","delete_file","sync_all"])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree","delete_file","delete_directory","sync_all"])
 
 class Basic:
   def onModuleLoad(self):
@@ -697,7 +697,7 @@ class Basic:
       dir = self.current_directory[:len(self.current_directory)]
       dir = dir.lstrip("/")
       dir = dir.rstrip("/")
-      self.remote.delete_file(dir,self) # do we need to prevent root?
+      self.remote.delete_directory(dir,self) # do we need to prevent root?
    
     # just files
     else:
