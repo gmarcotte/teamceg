@@ -347,16 +347,10 @@ class Basic:
               #window.alert("console set from switch-driver isdriver FALSE")
               self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
               # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
-        # Let's wait and try this on driver_status
-        #else:
-        #  alert(self.consoleID.getText())
-        #  self.consoleID = Label("%s" % tpl[1])
-        #  alert(self.consoleID.getText())
-        #  self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
          
     elif request_info.method == 'new_file':
       for tpl in response:
-        window.alert(str(tpl[1]))
+        #window.alert(str(tpl[1]))
     elif request_info.method == 'new_directory':
       for tpl in response:
         window.alert(str(tpl[1]))
@@ -528,7 +522,6 @@ class Basic:
     # prevent non-driver from modifying file tree structure
     if self.isdriver == False:
       return
-    #window.alert("You clicked on " + value)
     # check if the file currently opened has been modified
     currentcontent = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
    
@@ -538,7 +531,6 @@ class Basic:
    
     # if it is a file -> open it.
     for thing in self.file_list:
-      #window.alert(str(thing[0]))
       if str(thing[2]) == str(value):
         if str(thing[1])=="file":
           # Is there currently a file open?
@@ -831,11 +823,6 @@ class Basic:
     if id < 0:
       console.error("Server Error or Invalid Response")
     self.remote.receive_chatmessage(self)
-    # wait until we get the response
-    #if self.isdriver:
-    #    msg = self.drivername.getText() + ": " + self.text_box.getText()
-    #else:  # if not self.isdriver:
-    #  msg = self.passengername.getText() + ": " + self.text_box.getText()
     msg = self.text_box.getText()
     self.remote.send_chatmessage(msg, self)
     self.text_box.setText("")
@@ -850,10 +837,6 @@ class Basic:
       if id < 0:
         console.error("Server Error or Invalid Response")
       self.remote.receive_chatmessage(self)
-      #if self.isdriver:
-      #  msg = self.drivername.getText() + ": " + self.text_box.getText()
-      #else:
-      #  msg = self.passengername.getText() + ": " + self.text_box.getText()
       msg = self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
@@ -861,7 +844,6 @@ class Basic:
   def onQuitClick(self):
     # We're trying to quit, pause communications
     self.quitting = True
-    #self.remote.user_quit(self)
     quitvp = VerticalPanel()
     quitvp.setSpacing(4)
     quitvp.add(HTML("We hope you had a productive session, come back soon!"))
