@@ -561,13 +561,13 @@ class Basic:
     self.file_box.hide()
   
   def onAddDialog(self):
-    window.alert("Add files/directories")
+    #window.alert("Add files/directories")
     contents = VerticalPanel()
     contents.setSpacing(4)
     contents.add(HTML('Add files and directories.'))
     contentshpfd = HorizontalPanel()
-    self.NewDir = RadioButton("group1","file")
-    self.NewFile = RadioButton("group1","directory")
+    self.NewDir = RadioButton("group1","directory")
+    self.NewFile = RadioButton("group1","file")
     self.NewFile.setChecked(True)
     contentshpfd.add(self.NewDir)
     contentshpfd.add(self.NewFile)
@@ -598,13 +598,13 @@ class Basic:
   def onAddOK(self):
     #window.alert(self.NewFileName.getText())
     newfile = self.current_directory + self.NewFileName.getText()
-    window.alert(newfile)
+    #window.alert(newfile)
     if self.NewDir.isChecked():
-      window.alert("Directory")
+      #window.alert("Directory")
       self.remote.new_directory(newfile,self)
       # update the file tree! TODO
     else:
-      window.alert("File")
+      #window.alert("File")
       self.remote.new_file(newfile,self)
       # update the file tree! TODO
     self.manage_add_box.hide()
