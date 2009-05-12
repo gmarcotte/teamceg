@@ -117,10 +117,12 @@ def create_project(request):
 def project_index(request):
   u = request.user
   project_list = u.projects.filter(is_deleted=False)  # returns all projects associated with that user
+  deleted_projects = u.projects.filter(is_deleted=True)
   return shortcuts.render_to_response(
       'global/projects/viewprojects.html',
       {'page_title': 'View Projects', 
-       'project_list': project_list,},
+       'project_list': project_list,
+       'deleted_projects': deleted_projects,},
       context_instance=template.RequestContext(request))
   
 @auth_decorators.login_required
