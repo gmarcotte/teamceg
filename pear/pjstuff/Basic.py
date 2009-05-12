@@ -525,6 +525,7 @@ class Basic:
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
       #window.alert("Will display a dialog window to manage directory: " + str(value))
+      self.current_directory = str(value) + "/"
       contents = VerticalPanel()
       contents.setSpacing(4)
       contents.add(HTML('Add or delete files and directories.'))
@@ -577,7 +578,9 @@ class Basic:
     
     
   def onAddOK(self):
-    window.alert(self.NewFileName.getText())
+    #window.alert(self.NewFileName.getText())
+    newfile = self.current_directory + self.NewFileName.getText()
+    alert(newfile)
     self.manage_add_box.hide()
     
   def onCancelAdd(self):
