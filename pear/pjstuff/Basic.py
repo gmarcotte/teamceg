@@ -263,13 +263,13 @@ class Basic:
         
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
-        alert(str(tpl[1]))
+        #alert(str(tpl[1]))
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
-        alert(str(tpl[1]))
+        #alert(str(tpl[1]))
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
@@ -854,10 +854,11 @@ class Basic:
       if id < 0:
         console.error("Server Error or Invalid Response")
       self.remote.receive_chatmessage(self)
-      if self.isdriver:
-        msg = self.drivername.getText() + ": " + self.text_box.getText()
-      else: 
-        msg = self.passengername.getText() + ": " + self.text_box.getText()
+      #if self.isdriver:
+      #  msg = self.drivername.getText() + ": " + self.text_box.getText()
+      #else: 
+      #  msg = self.passengername.getText() + ": " + self.text_box.getText()
+      msg = self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
       
