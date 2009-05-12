@@ -214,6 +214,9 @@ def main(argv=None):
     sys.stdout.write("Deleting RSA keys \n")
     clear_user_keys()
     
+    sys.stdout.write("Deleting SVN repositories \n")
+    clear_repositories()
+    
     # Execute "python manage.py syncdb"
     os.chdir(root_path)
     os.system("python manage.py syncdb")
