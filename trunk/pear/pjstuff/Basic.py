@@ -614,6 +614,38 @@ class Basic:
   
   def onDeleteDialog(self):
     window.alert("Delete files/directories")
+    contents = VerticalPanel()
+    contents.setSpacing(4)
+    contents.add(HTML('Delete files and directories.'))
+    contentshpfd = HorizontalPanel()
+    self.DelDir = RadioButton("group2","whole directory")
+    self.DelFile = RadioButton("group2","files")
+    self.DelFile.setChecked(True)
+    contentshpfd.add(self.DelDir)
+    contentshpfd.add(self.DelFile)
+    contentshpn = HorizontalPanel()
+    contentshpn.setSpacing(7)
+    self.FilesToDelete = []
+    self.FilesToDelete.append(CheckBox("File1"))
+    self.FilesToDelete.append(CheckBox("File2"))
+    self.FilesToDelete.append(CheckBox("File3"))
+    for i in range(0,len(self.FilesToDelete)):
+      contentshpn.add(self.FilesToDelete[i])
+    contentshp = HorizontalPanel()
+    contentshp.setSpacing(7)
+    contentshp.add(Button("Add",getattr(self,"onAddOK")))
+    contentshp.add(Button("Cancel",getattr(self,"onCancelAdd")))
+    contents.add(contentshpfd)
+    contents.add(contentshpn)
+    contents.add(contentshp)
+    contents.setCellHorizontalAlignment(contentshp, HasAlignment.ALIGN_CENTER)
+    self.manage_del_box = DialogBox()
+    self.manage_del_box.setHTML("<b>Delete</b>")
+    self.manage_del_box.setWidget(contents)
+    self.manage_del_box.setPopupPosition(200,200)
+    
+    self.manage_del_box.show()
+    # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
     self.file_box.hide()
     
