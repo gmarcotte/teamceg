@@ -171,7 +171,7 @@ class Basic:
     tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
     self.file_tree.add(tempbutt)
     self.file_tree.add(Label("Temp for filler"))
-    onFileTreeRefresh()
+    self.onFileTreeRefresh()
     the_tree = SimplePanel()
     the_tree.setWidget(self.tree)
     self.file_tree.add(the_tree)
@@ -518,7 +518,7 @@ class Basic:
     self.upload_box.hide()
   def onFileDirOpenClick(self):
     pass ###
-  def onFileTreeRefresh(self):
+  def self.onFileTreeRefresh(self):
     filetree = Tree()
     filetree.addTreeListener(self)
     i = 0
