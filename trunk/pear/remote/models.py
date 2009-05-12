@@ -184,7 +184,7 @@ class SSHConnection(timestamp.TimestampedModel):
   def svn_add(self, session, filepath):
     fullpath = self.get_relative_filename(filepath)
     cmd = 'svn add %s' % fullpath
-    self.execute(session, cmd)
+    resp = self.execute(session, cmd)
     return resp
   
   def svn_checkout(self, session, repos, working_copy):
