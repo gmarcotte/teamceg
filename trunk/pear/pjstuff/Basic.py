@@ -366,7 +366,7 @@ class Basic:
         # todo: SAVE whatever is currently in the editor
         # add response text to editor
         contents = str(tpl[1])
-        contents = contents.replace('\n','\\\n')
+        contents = contents.replace('\n','\\n')
         self.editor.add(HTML("<script>editAreaLoader.setValue('MYeditorID','"+contents+"');</script>"), self.functionID)
         self.originalContents = str(tpl[1])
         self.modified = False
