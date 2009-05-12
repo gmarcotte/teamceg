@@ -494,8 +494,5 @@ def delete_file(request, filename):
   ssh = meeting.driverssh
   client = ssh.connect()
   status,text = ssh.svn_delete(client, project.get_path(filename))
-  if not status:
-    status,text = ssh.svn_revert(client, project.get_path(filename))
-    status,text = ssh.delete_file(client, project.get_path(filename))
   ssh.close(client)
   return [('notice', 'I deleted %s' % filename)]
