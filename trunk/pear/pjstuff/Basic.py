@@ -33,17 +33,16 @@ class Basic:
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.file_list = []
-    self.file_list.append(('1Top Level', 'dir', 'root/'))
-    self.file_list.append(('2Second Level', 'file', 'root/file1'))
-    self.file_list.append(('2Also Second Level', 'file', 'root/file2'))
-    self.file_list.append(('1Top Level Again', 'dir', 'root/'))
-    self.file_list.append(('2New second level', 'dir', 'root/subdir1/'))
-    self.file_list.append(('3Third Level', 'dir', 'root/subdir1/subdir2/'))
-    self.file_list.append(('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'))
-    self.file_list.append(('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'))
-    self.file_list.append(('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'))
-    self.file_list.append(('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'))
-    self.file_list.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
+    self.file_list.append(('1root', 'dir', 'root'))
+    self.file_list.append(('2file1', 'file', 'root/file1'))
+    self.file_list.append(('2file2', 'file', 'root/file2'))
+    self.file_list.append(('2subdir1', 'dir', 'root/subdir1'))
+    self.file_list.append(('3subdir2', 'dir', 'root/subdir1/subdir2'))
+    self.file_list.append(('4subdir3', 'dir', 'root/subdir1/subdir2/subdir3'))
+    self.file_list.append(('5file3', 'file', 'root/subdir1/subdir2/subdir3/file3'))
+    self.file_list.append(('3file4', 'file', 'root/subdir1/subdir2/file4'))
+    self.file_list.append(('3file5', 'file', 'root/subdir1/subdir2/file5'))
+    self.file_list.append(('2file6', 'file', 'root/subdir1/file6'))
     
     
     
@@ -566,6 +565,12 @@ class Basic:
     contents = VerticalPanel()
     contents.setSpacing(4)
     contents.add(HTML('Add files and directories.'))
+    contentshpfd = HorizontalPanel()
+    self.NewDir = RadioButton("group1","file")
+    self.NewFile = RadioButton("group1","directory")
+    self.NewFile.setChecked(True)
+    contentshpfd.add(self.NewDir)
+    contentshpfd.add(self.NewFile)
     contentshpn = HorizontalPanel()
     contentshpn.setSpacing(7)
     self.NewFileName = TextBox()
@@ -575,7 +580,7 @@ class Basic:
     contentshp.setSpacing(7)
     contentshp.add(Button("Add",getattr(self,"onAddOK")))
     contentshp.add(Button("Cancel",getattr(self,"onCancelAdd")))
-    
+    contents.add(contentshpfd)
     contents.add(contentshpn)
     contents.add(contentshp)
     contents.setCellHorizontalAlignment(contentshp, HasAlignment.ALIGN_CENTER)
@@ -593,7 +598,9 @@ class Basic:
   def onAddOK(self):
     #window.alert(self.NewFileName.getText())
     newfile = self.current_directory + self.NewFileName.getText()
-    alert(newfile)
+    window.alert(newfile)
+    if self.NewDir.ischecked():
+      window.alert("Directory")
     self.manage_add_box.hide()
     
   def onCancelAdd(self):
