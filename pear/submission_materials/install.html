@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>Pairgramming - Install</title>
+  <link rel=StyleSheet href="submission_docs.css" type="text/css">
+</head>
+<body>
+  <h2>Install</h2>
+  
+  <p>The Pairgramming environment runs as a web service, and thus requires
+  no installation on the part of the user.  For web administrators seeking
+  to set up their own Pairgramming server, some assembly is required.</p>
+  
+  <p><strong>Required Software</strong></p>
+  <ul>
+  <li><a href="http://www.apache.org/">Apache Web Server</a></li>
+  <li><a href="http://www.mysql.com/">MySQL</a> relational database</li>
+  <li><a href="http://www.python.org/">Python 2.4+</a> interpreter</li>
+  <li><a href="http://sourceforge.net/projects/mysql-python">MySQL-Python Bindings</a></li>
+  </ul>
+  
+  <p>With these basic tools in place, all necessary packages can be obtained from
+  the Subversion repository hosted at: 
+  <a href="http://code.google.com/p/teamceg">Pairgramming on Google Code</a>
+  
+  In addition to our own software, this repository contains the following external packages:
+  <ul>
+  <li><a href="http://www.djangoproject.com/">Django</a>, a Python web framework</li>
+  <li><a href="http://antony.lesuisse.org/software/ajaxterm/">Ajaxterm</a>, a Javascript/Python terminal emulator</li>
+  <li><a href="http://sourceforge.net/projects/editarea">EditArea</a>, a Javascript WYSIWYG editor designed for coding</li>
+  <li><a href="http://www.metasnark.com/paramiko/">Paramiko</a>, a Python implementation of the SSH2 protocol</li>
+  <li><a href="http://www.amk.ca/python/code/crypto.html">PyCrypto</a>, a Python cryptography library</li>
+  <li><a href="http://pyjs.org/">Pyjamas</a>, a Python port of Google Web Toolkit</li>
+  <li><a href="http://www.pimentech.fr/accueil">Pimentech</a>, a 3rd party library for Django that provides nice JSON interaction</li>
+  </p>
+  
+  <p>Check out a full copy of the trunk development branch onto your web server,
+  and configure Apache to use Django as described:
+  <a href="http://docs.djangoproject.com/en/dev/howto/deployment/modpython/">here</a></p>
+  
+  <p>Set up a MySQL user and database for use by Pairgramming, as described in the MySQL documentation.</p>
+  
+  <p> Then copy the pear/environments/prod/settings_prod.py file to pear/settings_local.py,
+  and update all relevant fields to reflect your setup (e.g. hostnames, email servers, database, etc).
+  Refer to <a href="http://www.djangoproject.com/documentation">Django documentation</a> for
+  more information about the settings configuration.</p>
+  
+  <p> Now run the vendor/install.py script to set up the 3rd party packages, and then run
+  pear/environments/sandbox/initialize.py to set up the database and create a default
+  user.  This user's login info will be:
+  
+  email: pairgramming@gmail.com
+  password: pw
+  
+  unless you modify it by changing the login script (highly recommended).  You should
+  also change the password manually after this is created.
+  </p>
+  
+  <p>Now add the following lines to the virtual host Apache configuration file that
+  you set up for Django:
+  <br /><br />
+  ProxyPass /ajaxterm/ http://localhost:8022/
+  ProxyPassReverse /ajaxterm/ http://localhost:8022/
+  <br /><br />
+  And start up the Ajaxterm daemon by navigating to pear/pjstuff/public/ajaxterm
+  and running (as the www user):<br />
+    python ajaxterm.py -d
+  </p>
+  
+  <p>You should now be off and running with your own Pairgramming system.</p> 
+  
+</body>
+</html>
