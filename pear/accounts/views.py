@@ -120,6 +120,9 @@ def reset_password(request):
     form = pear.accounts.forms.PasswordResetForm(request.POST)
     if form.is_valid():
       form.save()
+      request.session['flash_params'] = {'type': 'success'}
+      request.session['flash_msg'] = ('Your password has been reset and a new '
+                                      'password will be emailed to you shortly. ')
       return http.HttpResponseRedirect(redirect_to)
   else:
     form = pear.accounts.forms.PasswordResetForm() # ERROR

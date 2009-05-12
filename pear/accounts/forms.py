@@ -56,7 +56,7 @@ class RegistrationForm(forms.Form):
     
     password = auth_models.User.objects.make_random_password()
     username = pear.accounts.util.make_username_from_email(self.cleaned_data['email'])
-    u = auth_models.User()
+    u = accounts_models.PearUser()
     u.first_name = self.cleaned_data['first_name']
     u.last_name = self.cleaned_data['last_name']
     u.email = self.cleaned_data['email']
