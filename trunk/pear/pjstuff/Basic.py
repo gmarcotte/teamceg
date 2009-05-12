@@ -26,13 +26,26 @@ class Basic:
     
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
-    self.remote.get_file_tree('pairdir',self) # will need to change rd to actual root directory.
-    
+    ###self.remote.get_file_tree('pairdir',self) # will need to change rd to actual root directory.
+    # not sure what's going on with this call?
     
     # building the menu bar
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.file_list = []
+    self.file_list.append(('1Top Level', 'dir', 'root/'))
+    self.file_list.append(('2Second Level', 'file', 'root/file1'))
+    self.file_list.append(('2Also Second Level', 'file', 'root/file2'))
+    self.file_list.append(('1Top Level Again', 'dir', 'root/'))
+    self.file_list.append(('2New second level', 'dir', 'root/subdir1/'))
+    self.file_list.append(('3Third Level', 'dir', 'root/subdir1/subdir2/'))
+    self.file_list.append(('4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/'))
+    self.file_list.append(('5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3'))
+    self.file_list.append(('3Third Level Again', 'file', 'root/subdir1/subdir2/file4'))
+    self.file_list.append(('3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5'))
+    self.file_list.append(('2Second Level Again', 'file', 'root/subdir1/file6'))
+    
+    
     
     self.files = Button("Files", getattr(self, "onFilesClick"))
     #self.FileContext = SimplePanel("La di da")
@@ -433,7 +446,7 @@ class Basic:
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
-    self.remote.get_file_tree('pairdir',self)
+    ## not sure what's going on with this call? #self.remote.get_file_tree('pairdir',self)
     while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
       s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
       i = i + 1
