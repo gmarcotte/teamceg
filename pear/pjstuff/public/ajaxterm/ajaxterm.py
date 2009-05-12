@@ -13,7 +13,7 @@ import qweb
 RSA_KEY_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../../keys'))
 
 class Terminal:
-	def __init__(self,width=80,height=24):
+	def __init__(self,width=80,height=18):
 		self.width=width
 		self.height=height
 		self.init()
