@@ -100,7 +100,7 @@ def ask_input_question(question, default=''):
 
 def clear_user_keys():
   for file in os.listdir(settings.RSA_KEY_DIR):
-    if os.path.isfile("%s/%s" (settings.RSA_KEY_DIR, file)):
+    if os.path.isfile("%s/%s" % (settings.RSA_KEY_DIR, file)):
       write_msg('Deleting RSA key: %s\n' % file, output_file, sys.stdout)
       os.remove("%s/%s" % (settings.RSA_KEY_DIR, file))
       
