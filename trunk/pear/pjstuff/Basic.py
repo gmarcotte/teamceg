@@ -211,9 +211,7 @@ class Basic:
     filetreepanel.add(filetreebutt)
     filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
     filetreepanel.setWidth("400px")
-    self.file_box.setWidget(filetreepanel)
-    self.file_box.setPopupPosition(350, 200)
-    self.file_box.show()
+    self.tree_panel.setWidget(filetreepanel)
     
     
     
