@@ -630,16 +630,16 @@ class Basic:
     self.FilesToDelete = []
     # find the files in this directory
     level = "0"
-    for i in range(0,len(file_list)):
-      if str(file_list[i][2]) == str(self.current_directory):
+    for i in range(0,len(self.file_list)):
+      if str(self.file_list[i][2]) == str(self.current_directory):
         window.alert("Matched directory")
-        level = file_list[i][0][0]
+        level = self.file_list[i][0][0]
         start = i
         window.alert(level + " " + start)
-    for i in range(start, len(file_list)):
-      if entry[0][0] == level:
+    for i in range(start, len(self.file_list)):
+      if self.file_list[i][0][0] == level:
         window.alert("found file")
-        self.FilesToDelete.append(CheckBox(str(entry[2])))
+        self.FilesToDelete.append(CheckBox(str(self.file_list[i][2])))
       else:
         level = 0
           
