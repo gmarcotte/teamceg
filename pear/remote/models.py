@@ -189,7 +189,7 @@ class SSHConnection(timestamp.TimestampedModel):
   
   def svn_checkout(self, session, repos, working_copy):
     dirpath = self.get_relative_filename(working_copy)
-    cmd = 'svn co %s %s' % (repos, working_copy)
+    cmd = 'svn co %s %s' % (repos, dirpath)
     resp = self.execute(session, cmd)
     return resp
   
