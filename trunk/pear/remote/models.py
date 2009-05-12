@@ -152,7 +152,7 @@ class SSHConnection(timestamp.TimestampedModel):
       self.save()
       return False
     
-  # Common remote operations
+  # Common remote operations  
   def get_relative_filename(self, filepath):
     return os.path.normcase(os.path.normpath(os.path.join(self.base_dir, filepath)))
   
@@ -168,6 +168,13 @@ class SSHConnection(timestamp.TimestampedModel):
     dirpath = self.get_relative_filename(dirname)
     resp = self.execute(session, 'mkdir -p -v %s' % dirpath)
     return resp
+  
+  def setup_base_dir(self):
+    session = self.connect()
+    if session is None:
+      return False
+    status,text = self.make_directory(session, '')
+    return status
   
   def load_file(self, session, filename):
     filepath = self.get_relative_filename(filename)
