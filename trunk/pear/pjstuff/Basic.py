@@ -166,6 +166,7 @@ class Basic:
     
     # file tree
     self.file_box = SimplePanel()
+    self.file_box.setWidget("Hello")
     tree_vp = VerticalPanel()
     tree_vp.setSpacing(7)
     tree_vp.setWidth("370px")
