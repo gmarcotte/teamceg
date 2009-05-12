@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, TreeContentPanel, FileUpload
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, FileUpload
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
@@ -12,27 +12,26 @@ class DataService(JSONProxy):
 
 class Basic:
   def onModuleLoad(self):
-    #window.addCloseListener(getattr(self,"onWindowCloseAbrupt"))
     self.remote = DataService()
     self.initEditor = False
     # this tells us whether or not we are trying to quit...
-    self.quitting = False 
+    self.quitting = False
     self.switching = False
-    
+   
     # file info
     self.current_open = None
     self.modified = False
     self.originalContents = ""
-    
+   
     # Figure out session info -- am i driver or passenger, etc.
     self.remote.get_meetinginfo(self)
-    
+   
     # building the menu bar
     self.active_menu = Label("")
     self.info = Button("Info", getattr(self, "onInfoClick"))
     self.file_list = []
     self.remote.get_file_tree(self) # will need to change rd to actual root directory.
-    
+   
     self.files = Button("Files", getattr(self, "onFilesClick"))
     #self.FileContext = SimplePanel("La di da")
     self.mode = Button("Mode", getattr(self, "onModeClick"))
@@ -40,7 +39,6 @@ class Basic:
     self.flash = Button("Start Flash", getattr(self, "toggleFlash"))
     self.quit = Button("Quit", getattr(self, "onQuitClick"))
     self.menu_body = SimplePanel()
-    #self.menu_body.setWidth("500px")
     self.menu_contents = HTMLPanel("<img src='/pj/images/logo_clean_long.jpg' height='21px'>")
     self.menu_body.setWidget(self.menu_contents)
     self.active_flash = Label("Off")
@@ -56,12 +54,12 @@ class Basic:
     self.head.add(self.quit)
     self.head.add(Label("|"))
     self.head.add(self.menu_body)
-    
+   
     # the left side
     # editor
     # The editorID is the id of the actual editor text area
     # the functionID is the id of the setupeditarea and set_listener/set_editable() functions
-    # the synchID is the id of the interval command for setting synchEditors/synchListeners based on 
+    # the synchID is the id of the interval command for setting synchEditors/synchListeners based on
     #     whether driver or passenger.
     ### For now let's try hard-coding these
     self.editorID = "MYeditorID"
@@ -73,22 +71,22 @@ class Basic:
     self.editorsynchID = "MYeditorsynchID"
     self.listensynchID = "MYlistensynchID"
     self.termfunctionID = "MYtermfunctionID"
-    
+   
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
     self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); </script>")
     self.editorHTML = HTML(" ")
     self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
-    
+   
     # this gets the contents of the editor into the div area so we can send it
     self.driversynch = """
     <script>
     clearInterval(window.listenInterval);
     clearInterval(window.editorInterval);
-    window.editorInterval = setInterval('syncheditor()', 100); 
-      
-    function syncheditor() { 
+    window.editorInterval = setInterval('syncheditor()', 100);
+     
+    function syncheditor() {
     // see if this helps with actually setting it to be editable again
     //alert("synching editor")
     editAreaLoader.execCommand('MYeditorID', 'set_editable', true);
@@ -96,144 +94,70 @@ class Basic:
     var listener = document.getElementById('MYeditorHTMLID');
     listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";
     }</script>"""
-    
+   
     #<div style="white-space: normal;" class="gwt-HTML"><script> </script> </div>
     self.passengersynch = """
     <script>
     clearInterval(window.editorInterval);
     clearInterval(window.listenInterval);
-    window.listenInterval = setInterval('synchlisten()', 100); 
+    window.listenInterval = setInterval('synchlisten()', 100);
     //document.getElementById('MYeditorHTMLID').innerHTML="<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>Initial Text</div>"
-    function synchlisten() { 
+    function synchlisten() {
     //alert("synching listen")
     var currentfocus = document.activeElement;
     var content = document.getElementById('MYeditorHTMLID').innerHTML;//innerHTML;
     content = content.substring(86, content.length-6);
     editAreaLoader.setValue('MYeditorID', content);
     editAreaLoader.execCommand('MYeditorID', 'set_editable', false);
-    currentfocus.focus() 
+    currentfocus.focus()
     }</script>"""
-    
+   
     initialcontent = """<script> </script> """
-    
+   
 
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 272px; width: 571px;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 575px; width: 100%;'></textarea> <div id='" + self.functionID + "'></div>")
 
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
     self.editor.add(self.editorTextArea, self.editorID)
     self.editor.add(self.functionHTML, self.functionID)
     self.editor.add(self.editorHTML, self.editorHTMLID)
-    
+   
     self.editor.add(HTML(initialcontent), self.synchID)
-    self.editor.setWidth("571px")
+    self.editor.setWidth("100%")
     self.editor.setHeight("100%")
-    
+   
     #innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'></div>";
     #DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
-    
-    
-    
+   
+   
+   
+    # the right side
+    vp = VerticalPanel()
+    vp.setBorderWidth(1)
     # the console
     self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
-    self.term.setWidth("571px")
-    self.term.setHeight("172px")
+    self.term.setWidth("100%")
+    self.term.setHeight("390px")
     console = SimplePanel()
     console.add(self.term)
-    ##console.setWidth("400px")
+    console.setWidth("400px")
     console.setHeight("100%")
-    console.setStyleName("console")
-    
-    
-    
-    # putting the new left side together
-    vp_left = VerticalPanel()
-    vp_left.setBorderWidth(1)
-    vp_left.add(self.editor)
-    vp_left.add(console)
-    vp_left.setCellHeight(self.editor, "50%")
-    self.editor.setHeight("100%")
-    vp_left.setCellHeight(console, "50%")
-    console.setHeight("100%")
-    
-    
-    
-    
-    
-    
-    # the right side
-    vp_right = VerticalPanel()
-    vp_right.setBorderWidth(1)
-    
-    ################################ file tree ################################################
-    #(setWidth("370px"))
-    self.file_tree = VerticalPanel()
-    tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
-    self.file_tree.add(tempbutt)
-    self.tree_panel = TreeContentPanel()
-    
-    filetree = Tree()
-    filetree.addTreeListener(self)
-    i = 0
-    ## Values will be full paths of the files, so we can send them directly
-    ## Names will be filename within the directory or the directory name
-    self.remote.get_file_tree(self)
-    while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
-      i = i + 1
-      while (i < len(self.file_list)) and (self.file_list[i][0][0] == "2"):
-        s2 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-        s1.addItem(s2)
-        s1.setState(True, fireEvents=False)
-        i = i + 1
-        while (i < len(self.file_list)) and (self.file_list[i][0][0] == "3"):
-          s3 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-          s2.addItem(s3)
-          s2.setState(False, fireEvents=False)
-          i = i + 1
-          while (i < len(self.file_list)) and (self.file_list[i][0][0] == "4"):
-            s4 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-            s3.addItem(s4)
-            s3.setState(False, fireEvents=False)
-            i = i + 1
-            while (i < len(self.file_list)) and (self.file_list[i][0][0] == "5"):
-              s5 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-              s4.addItem(s5)
-              s4.setState(False, fireEvents=False)
-              i = i + 1
-        filetree.addItem(s1)
-    #filetreepanel = VerticalPanel()
-    #filetreepanel.setSpacing(7)
-    #filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
-    #filetreepanel.add(filetree)
-    #filetreepanel.setWidth("370px")
-    self.tree_panel.setTreeItem(filetree)
-    self.file_tree.add(self.tree_panel)
-    self.file_tree.add(Label("Temp for filler"))
-    self.file_tree.add(Label("Temp for filler"))
-    
-    
-    
-    
-    
-    
-    
-    
     # not so hacky -- indeed, pretty decent little text chat
     self.text_area = ScrollPanel()
     self.text_area.setStyleName("text-area")
     self.text = HTML("(There is a 600 character limit on messages)")
     self.text_area.setWidget(self.text)
-    self.text_area.setSize("370px", "151px")
+    self.text_area.setSize("487px", "151px")
     self.text_box = TextBox()
-    self.text_box.setVisibleLength("41")
+    self.text_box.setVisibleLength("58")
     self.text_box.setMaxLength("600")
     self.text_box.setID(self.chatID)
     self.text_box.addKeyboardListener(self)
-    self.text_send = Button("Send", getattr(self, "onTextSend"))
+    text_send = Button("Send", getattr(self, "onTextSend"))
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
-    text_entry.add(self.text_send)
+    text_entry.add(text_send)
     text_entry.setWidth("340px")
     real_chat = VerticalPanel()
     #real_chat.add(self.chat_transcript)
@@ -241,35 +165,32 @@ class Basic:
     self.text_area.setScrollPosition(999999)
     real_chat.add(text_entry)
     real_chat.setStyleName("whitebg")
-    
-    # putting the new right side together
-    vp_right.add(self.file_tree)
-    vp_right.add(real_chat)
-    vp_right.setWidth("100%")
-    vp_right.setHeight("100%")
-    vp_right.setCellHeight(self.file_tree, "63%")
-    vp_right.setCellHeight(real_chat, "37%")
-    
+   
+    vp.add(console)
+    vp.add(real_chat)
+    vp.setWidth("100%")
+    vp.setHeight("100%")
+    vp.setCellHeight(console, "50%")
+    vp.setCellHeight(real_chat, "50%")
+   
     # putting the left and right sides together
     hp = HorizontalPanel()
     hp.setBorderWidth(1)
     hp.setHorizontalAlignment(HasAlignment.ALIGN_CENTER)
     hp.setVerticalAlignment(HasAlignment.ALIGN_MIDDLE)
-    hp.add(vp_left)
-    hp.add(vp_right)
-    hp.setCellWidth(vp_left, "71%")
-    vp_left.setWidth("100%")
-    hp.setCellWidth(vp_right, "29%")
-    vp_right.setWidth("100%")
+    hp.add(self.editor)
+    hp.add(vp)
+    hp.setCellWidth(self.editor, "50%")
+    hp.setCellWidth(vp, "50%")
     #hp.setCellVerticalAlignment(self.editor, HasAlignment.ALIGN_JUSTIFY)
-    ##hp.setCellVerticalAlignment(vp_left, HasAlignment.ALIGN_TOP)
+    hp.setCellVerticalAlignment(console, HasAlignment.ALIGN_TOP)
     hp.setWidth("100%")
     hp.setHeight("100%")
-    
+   
     # footer label
     self.footer = Label("A TeamCEG production")
     self.footer.setStyleName("footer")
-    
+   
     # putting it all together
     self.panel = DockPanel()
     self.panel.add(self.head, DockPanel.NORTH)
@@ -279,20 +200,20 @@ class Basic:
     self.panel.setCellHeight(hp, "100%")
     self.panel.setCellWidth(self.head, "100%")
     self.panel.setWidth("995px")  # out of 1024
-    self.panel.setHeight("600px")  # out of 768
-    
+    self.panel.setHeight("400px")  # out of 768
+   
     RootPanel().add(self.panel)
-    
+   
     # start the timer for updates from server
     self.currpass = Label("No Partner logged in")
     self.onTimer()
-      
+     
   def onRemoteResponse(self, response, request_info):
     if request_info.method == 'get_username':
       if (len(response[3]) < 1):  # if there is no passenger
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
-      else: 
+      else:
         for tpl in response:
           self.driver.setText("%s" % tpl[1])
           self.passenger.setText("%s" % tpl[3])
@@ -337,7 +258,7 @@ class Basic:
         #window.alert("Changing console in get_meetinginfo")
         self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
      
-        
+       
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
         #alert(str(tpl[1]))
@@ -371,7 +292,7 @@ class Basic:
         innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>" + content+"</div>";
         DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
         #self.editorHTML.setVisible(False)
-    
+   
     elif request_info.method == 'driver_status':
       if self.switching == False:
         self.switching = True
@@ -387,7 +308,7 @@ class Basic:
           if (str(tpl[0])) == 'isdriver':
             if str(tpl[1]) == 'False':
               if self.isdriver == True:
-                self.isdriver = False 
+                self.isdriver = False
                 self.editor.add(HTML(self.passengersynch), self.synchID)
                 #window.alert("Doing a console set from isdriver False in driverstatus")
                 self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
@@ -399,7 +320,7 @@ class Basic:
                 #window.alert("Doing a console set from isdriver true in driverstatus")
                 self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
           self.switching = False
-          
+         
     elif request_info.method == 'switch_driver':
       for tpl in response:
         if (str(tpl[0])) == 'new_sid':
@@ -433,7 +354,7 @@ class Basic:
         #  self.consoleID = Label("%s" % tpl[1])
         #  alert(self.consoleID.getText())
         #  self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
-          
+         
     elif request_info.method == 'new_file':
       for tpl in response:
         window.alert(str(tpl[1]))
@@ -452,18 +373,17 @@ class Basic:
       self.modified = False
       for tpl in response:
         window.alert(str(tpl[1]))
-        
+       
     elif request_info.method == 'delete_file':
       for tpl in response:
         window.alert(str(tpl[1]))
     elif request_info.method == 'get_file_tree':
-      window.alert("i asked for file tree info")
       self.file_list = []
       for tpl in response:
         #window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
         self.file_list.append(tpl)
-        
-      
+       
+     
     elif request_info.method == 'user_quit':
       self.location = Window.getLocation()
       self.location.setHref("http://teamceg.princeton.edu/")
@@ -471,21 +391,17 @@ class Basic:
       pass
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
-  
+ 
   def onRemoteError(self, response, request_info):
     pass
-      
+     
   def onInfoClick(self):
+
     if self.active_menu.getText() == "Info":
       self.active_menu.setText("")
-      self.info.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Info")
-      self.info.setStyleName("sel-button")
-      self.files.setStyleName("gwt-button")
-      self.mode.setStyleName("gwt-button")
-      self.audio.setStyleName("gwt-button")
       infomsg = Label("Driver: %s, Passenger: %s" % (self.driver.getText(), self.passenger.getText()))
       infomsg.setStyleName("not-button")
       self.menu_body.setWidget(infomsg)
@@ -493,14 +409,9 @@ class Basic:
   def onFilesClick(self):
     if self.active_menu.getText() == "Files":
       self.active_menu.setText("")
-      self.files.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
-      self.active_menu.setText("Files")      
-      self.info.setStyleName("gwt-button")
-      self.files.setStyleName("sel-button")
-      self.mode.setStyleName("gwt-button")
-      self.audio.setStyleName("gwt-button")
+      self.active_menu.setText("Files")
       filepanel = HorizontalPanel()
       filetreebutton = Button("File Tree", getattr(self, "onFileTreeOpenClick"))
       filesavebutton = Button("Save", getattr(self,"onFileSave"))
@@ -516,14 +427,14 @@ class Basic:
       ##filepanel.add(filedirbutton)
       filepanel.add(fileuploadbutton)
       self.menu_body.setWidget(filepanel)
-  
+ 
   def onFileSave(self):
     # get the text from the editor and send a save command to the server.
     if self.isdriver == True:
       content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
       self.remote.save_file(str(self.current_open[2]),content, self)
       self.originalContents = content
-  
+ 
   def onFileUploadOpenClick(self):
     self.uploadform = FormPanel()
     self.uploadform.setEncoding(FormPanel.ENCODING_MULTIPART)
@@ -542,14 +453,14 @@ class Basic:
     uploadbutt_hp.setSpacing(7)
     uploadbutt_hp.add(fileuploadsubmitbutt)
     uploadbutt_hp.add(fileuploadclosebutt)
-    upload_vp_right = VerticalPanel()
-    upload_vp_right.setSpacing(4)
-    upload_vp_right.add(upload_hp)
+    upload_vp = VerticalPanel()
+    upload_vp.setSpacing(4)
+    upload_vp.add(upload_hp)
     results = NamedFrame("results")
-    upload_vp_right.add(results)
-    upload_vp_right.add(uploadbutt_hp)
-    upload_vp_right.setCellHorizontalAlignment(uploadbutt_hp, HasAlignment.ALIGN_CENTER)
-    self.uploadform.add(upload_vp_right)
+    upload_vp.add(results)
+    upload_vp.add(uploadbutt_hp)
+    upload_vp.setCellHorizontalAlignment(uploadbutt_hp, HasAlignment.ALIGN_CENTER)
+    self.uploadform.add(upload_vp)
     self.upload_box = DialogBox()
     self.upload_box.setHTML("File Upload")
     self.upload_box.setWidget(self.uploadform)
@@ -562,38 +473,6 @@ class Basic:
     self.upload_box.hide()
   def onFileDirOpenClick(self):
     pass ###
-  def onFileTreeRefresh(self):
-    filetree = Tree()
-    filetree.addTreeListener(self)
-    i = 0
-    ## Values will be full paths of the files, so we can send them directly
-    ## Names will be filename within the directory or the directory name
-    self.remote.get_file_tree(self)
-    while (i < len(self.file_list)) and (self.file_list[i][0][0] == "1"):
-      s1 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])#"root/")
-      i = i + 1
-      while (i < len(self.file_list)) and (self.file_list[i][0][0] == "2"):
-        s2 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-        s1.addItem(s2)
-        s1.setState(True, fireEvents=False)
-        i = i + 1
-        while (i < len(self.file_list)) and (self.file_list[i][0][0] == "3"):
-          s3 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-          s2.addItem(s3)
-          s2.setState(False, fireEvents=False)
-          i = i + 1
-          while (i < len(self.file_list)) and (self.file_list[i][0][0] == "4"):
-            s4 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-            s3.addItem(s4)
-            s3.setState(False, fireEvents=False)
-            i = i + 1
-            while (i < len(self.file_list)) and (self.file_list[i][0][0] == "5"):
-              s5 = self.createTreeItem(str(self.file_list[i][0][1:]), value=self.file_list[i][2])
-              s4.addItem(s5)
-              s4.setState(False, fireEvents=False)
-              i = i + 1
-        filetree.addItem(s1)
-    self.tree = filetree
   def onFileTreeOpenClick(self):
     filetree = Tree()
     filetree.addTreeListener(self)
@@ -624,7 +503,7 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
-        filetree.addItem(s1)
+        filetree.addItem(s1)      
     filetreepanel = VerticalPanel()
     filetreepanel.setSpacing(7)
     filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
@@ -639,7 +518,6 @@ class Basic:
     self.file_box.setPopupPosition(350, 200)
     self.file_box.show()
   def createTreeItem(self, label, value=None):
-    window.alert("tree item created")
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
     #Will not work don't bother ##item.setContextMenu(self) # this needs latest version of pjs
@@ -655,11 +533,11 @@ class Basic:
     #window.alert("You clicked on " + value)
     # check if the file currently opened has been modified
     currentcontent = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
-    
+   
     if str(currentcontent) != self.originalContents:
       if self.originalContents != None:
         self.modified = True
-    
+   
     # if it is a file -> open it.
     for thing in self.file_list:
       #window.alert(str(thing[0]))
@@ -719,7 +597,7 @@ class Basic:
     pass  
   def onFileTreeCloseClick(self):
     self.file_box.hide()
-  
+ 
   def onAddDialog(self):
     contents = VerticalPanel()
     contents.setSpacing(4)
@@ -747,12 +625,12 @@ class Basic:
     self.manage_add_box.setHTML("<b>Add</b>")
     self.manage_add_box.setWidget(contents)
     self.manage_add_box.setPopupPosition(200,200)
-    
+   
     self.manage_add_box.show()
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
     self.file_box.hide()
-        
+       
   def onAddOK(self):
     newfile = self.current_directory + self.NewFileName.getText()
     if self.NewDir.isChecked():
@@ -762,10 +640,10 @@ class Basic:
       self.remote.new_file(newfile,self)
       self.remote.get_file_tree(self)
     self.manage_add_box.hide()
-    
+   
   def onCancelAdd(self):
     self.manage_add_box.hide()
-  
+ 
   def onDeleteDialog(self):
     contents = VerticalPanel()
     contents.setSpacing(4)
@@ -793,6 +671,7 @@ class Basic:
       else:
         level = "0"
 
+
     for i in range(0,len(self.FilesToDelete)):
       contentshpn.add(self.FilesToDelete[i])
     contentshp = HorizontalPanel()
@@ -807,25 +686,25 @@ class Basic:
     self.manage_del_box.setHTML("<b>Delete</b>")
     self.manage_del_box.setWidget(contents)
     self.manage_del_box.setPopupPosition(200,200)
-    
+   
     self.manage_del_box.show()
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
     self.file_box.hide()
-    
+   
   def onFileClick(self):
     for i in range(0, len(self.FilesToDelete)):
       self.FilesToDelete[i].setEnabled(True)
-  
+ 
   def onDirClick(self):
     for i in range(0, len(self.FilesToDelete)):
       self.FilesToDelete[i].setChecked(True)
       self.FilesToDelete[i].setEnabled(False)
-  
+ 
   def onDelOK(self):
     if self.DelDir.isChecked():
       self.remote.delete_file(self.current_directory[:len(self.current_directory)-1],self)
-    
+   
     # just files
     else:
       for i in range(0, len(self.FilesToDelete)):
@@ -834,13 +713,13 @@ class Basic:
           self.remote.delete_file(fname,self)
     self.remote.get_file_tree(self)
     self.manage_del_box.hide()
-      
+     
   def onCancelDel(self):
     self.manage_del_box.hide()
-  
+ 
   def onCancelManageDialog(self):
     self.manage_directory_box.hide()
-      
+     
   def onDialogSave(self):
     content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
     self.remote.save_file(str(self.current_open[2]), content, self) #self.current_open
@@ -849,31 +728,26 @@ class Basic:
     # set the content to none
     self.current_open = self.nextfile
     self.savediscard_box.hide()
-  
+ 
   def onDialogDiscard(self):
     self.remote.open_file(str(self.nextfile[2]),self) # self.nextfile
     self.modified = False
     # set the content to None
     self.current_open = self.nextfile
     self.savediscard_box.hide()
-  
+ 
   def onModeClick(self):
     if self.active_menu.getText() == "Mode":
       self.active_menu.setText("")
-      self.mode.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Mode")
-      self.info.setStyleName("gwt-button")
-      self.files.setStyleName("gwt-button")
-      self.mode.setStyleName("sel-button")
-      self.audio.setStyleName("gwt-button")
       modepanel = HorizontalPanel()
       modebutt = Button("Switch Drivers", getattr(self, "onSwitchDriversClick"))
       modebutt.setStyleName("supp-button")
       modepanel.add(modebutt)
       self.menu_body.setWidget(modepanel)
-    
+   
   def onSwitchDriversClick(self):
     #window.alert("You are trying to switch drivers")
     if self.isdriver == True:
@@ -883,18 +757,13 @@ class Basic:
       #window.alert("Just sent switch command.")
     else:
       window.alert("Passengers cannot elect to switch!")
-    
+   
   def onAudioClick(self):
     if self.active_menu.getText() == "Audio":
       self.active_menu.setText("")
-      self.audio.setStyleName("gwt-button")
       self.menu_body.setWidget(self.menu_contents)
     else:
       self.active_menu.setText("Audio")
-      self.info.setStyleName("gwt-button")
-      self.files.setStyleName("gwt-button")
-      self.mode.setStyleName("gwt-button")
-      self.audio.setStyleName("sel-button")
       audiopanel = HorizontalPanel()
       audiobutton = Button("Skype Call", getattr(self, "onSkypeClick"))
       audiobutton.setStyleName("supp-button")
@@ -906,7 +775,7 @@ class Basic:
     DOM.getElementById('Skype call').click()
     self.location = Window.getLocation()
     self.location.setHref("skype:NAME?call")
-  
+ 
   def onTimer(self):
     # Check for new passenger
     if self.isdriver:
@@ -918,15 +787,15 @@ class Basic:
           pass
         else:
           window.alert("New passenger %s detected" % self.passenger.getText())
-        
+       
     if self.quitting == False and self.switching == False:
       # do server update stuff here
       self.remote.receive_chatmessage(self)
       self.remote.receive_flash(self)
       # this only really matters for passengers
       if self.isdriver == False:
-        self.remote.driver_status(self) 
-      
+        self.remote.driver_status(self)
+     
       if self.isdriver == True:
         content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
         if len(content) > 0:
@@ -935,7 +804,7 @@ class Basic:
           self.remote.send_editor(" ", self)
       else:
         self.remote.receive_editor(self)
-      
+     
       # do flash stuff here
       if self.active_flash.getText() == "Flashing":
         if self.color.getText() == "pink":
@@ -947,9 +816,9 @@ class Basic:
       else:
         self.color.setText("white")
         self.panel.setStyleName("white")
-    
+   
     Timer(500, self)
-    
+   
   def toggleFlash(self):
     if self.active_flash.getText() == "Flashing":
       self.active_flash.setText("Off")
@@ -957,9 +826,8 @@ class Basic:
     else:
       self.active_flash.setText("Flashing")
       self.flash.setText("Stop Flash")
-    
+   
   def onTextSend(self):
-    self.text_send.setStyleName("sel-button")
     id = self.remote.get_username(self)
     if id < 0:
       console.error("Server Error or Invalid Response")
@@ -972,14 +840,11 @@ class Basic:
     msg = self.text_box.getText()
     self.remote.send_chatmessage(msg, self)
     self.text_box.setText("")
-    self.text_send.setStyleName("gwt-button")
-    
+   
   def onKeyUp(self, sender, keyCode, modifers):
-    if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
-      self.text_send.setStyleName("gwt-button")
+    pass
   def onKeyDown(self, sender, keyCode, modifiers):
-    if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
-      self.text_send.setStyleName("sel-button")
+    pass
   def onKeyPress(self, sender, keyCode, modifiers):
     if keyCode == KeyboardListener.KEY_ENTER and sender == self.text_box:
       id = self.remote.get_username(self)
@@ -988,45 +853,35 @@ class Basic:
       self.remote.receive_chatmessage(self)
       #if self.isdriver:
       #  msg = self.drivername.getText() + ": " + self.text_box.getText()
-      #else: 
+      #else:
       #  msg = self.passengername.getText() + ": " + self.text_box.getText()
       msg = self.text_box.getText()
       self.remote.send_chatmessage(msg, self)
       self.text_box.setText("")
-      
+     
   def onQuitClick(self):
-    self.quit.setStyleName("sel-button")
     # We're trying to quit, pause communications
     self.quitting = True
     #self.remote.user_quit(self)
-    quitvp_right = VerticalPanel()
-    quitvp_right.setSpacing(4)
-    quitvp_right.add(HTML("We hope you had a productive session, come back soon!"))
+    quitvp = VerticalPanel()
+    quitvp.setSpacing(4)
+    quitvp.add(HTML("We hope you had a productive session, come back soon!"))
     quithp = HorizontalPanel()
     quithp.setSpacing(7)
     quithp.add(Button("Wait, don't quit yet!", getattr(self, "onQuitCancel")))
     quithp.add(Button("Save and quit", getattr(self, "onQuitConfirm")))
-    quitvp_right.add(quithp)
-    quitvp_right.setCellHorizontalAlignment(quithp, HasAlignment.ALIGN_CENTER)
+    quitvp.add(quithp)
+    quitvp.setCellHorizontalAlignment(quithp, HasAlignment.ALIGN_CENTER)
     self.quit_box = DialogBox()
     self.quit_box.setHTML("Quit Confirmation")
-    self.quit_box.setWidget(quitvp_right)
+    self.quit_box.setWidget(quitvp)
     self.quit_box.setPopupPosition(350, 200)  # (left, top)
     self.quit_box.show()
   def onQuitCancel(self):
-    self.quit.setStyleName("gwt-button")
     self.quit_box.hide()
     # we're not trying to escape anymore, restart regular communications
-    self.quitting = False 
+    self.quitting = False
   def onQuitConfirm(self):
-    self.quit.setStyleName("gwt-button")
     self.quit_box.hide()
     self.remote.sync_all(self)
     self.remote.user_quit(self)
-    
-  # this is called when we are exiting the actual browser window,
-  # when the user did not quit themselves
-  def onWindowCloseAbrupt(self):
-    self.remote.sync_all(self)
-    self.remote.user_quit(self)
-    
