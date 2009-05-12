@@ -567,8 +567,12 @@ class Basic:
     self.manage_add_box.setHTML("<b>Add</b>")
     self.manage_add_box.setWidget(contents)
     self.manage_add_box.setPopupPosition(200,200)
+    
     self.manage_add_box.show()
+    # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
+    self.file_box.hide()
+    
     
   def onAddOK(self):
     self.manage_add_box.hide()
@@ -579,6 +583,7 @@ class Basic:
   def onDeleteDialog(self):
     window.alert("Delete files/directories")
     self.manage_directory_box.hide()
+    self.file_box.hide()
     
   def onCancelManageDialog(self):
     self.manage_directory_box.hide()
