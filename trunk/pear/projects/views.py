@@ -100,22 +100,23 @@ def launch_project(request, project_id):
 
 @auth_decorators.login_required
 def create_project(request):
-    if request.method == 'POST':
-      form = pear.projects.forms.NewProjectForm(request.POST)
-      if form.is_valid():
-        form.save(request.user)
-        return http.HttpResponseRedirect('/')
-    else:
-      form = pear.projects.forms.NewProjectForm()
-    return shortcuts.render_to_response(
-        'global/projects/newproject.html',
-        {'page_title': 'New Project', 'form': form,},
-        context_instance=template.RequestContext(request))
+  redirect_to = request.GET.get('next', '/projects/my_projects/')
+  if request.method == 'POST':
+    form = pear.projects.forms.NewProjectForm(request.POST)
+    if form.is_valid():
+      form.save(request.user)
+      return http.HttpResponseRedirect(redirect_to)
+  else:
+    form = pear.projects.forms.NewProjectForm()
+  return shortcuts.render_to_response(
+      'global/projects/newproject.html',
+      {'page_title': 'New Project', 'form': form,},
+      context_instance=template.RequestContext(request))
 
 @auth_decorators.login_required
 def project_index(request):
   u = request.user
-  project_list = u.projects.all()  # returns all projects associated with that user
+  project_list = u.projects.filter(is_deleted=False)  # returns all projects associated with that user
   return shortcuts.render_to_response(
       'global/projects/viewprojects.html',
       {'page_title': 'View Projects', 
@@ -159,7 +160,7 @@ def global_project_listing(request):
   for key in request.GET.keys():
     get_data[key] = int(request.GET.get(key))
   
-  projects = pear.projects.models.Project.objects.filter(is_public = True)
+  projects = pear.projects.models.Project.objects.filter(is_public = True, is_deleted=False)
   
   if get_data['active'] in [0, 1]:  
     projects = projects.filter(is_active = get_data['active'])
@@ -221,7 +222,7 @@ def delete_project(request, project_id):
     return http.HttpResponseRedirect(next)
   
   if (request.user not in project.programmers.all() or 
-      project.programmers.count() == 1 or
+      project.programmers.count() > 1 or
       project.is_deleted):
     return http.HttpResponseRedirect(next)
   
