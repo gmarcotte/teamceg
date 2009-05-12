@@ -140,6 +140,7 @@ class Basic:
     self.term.setHeight("172px")
     console = SimplePanel()
     console.add(self.term)
+    ##console.setWidth("400px")
     console.setHeight("100%")
     console.setStyleName("console")
     
@@ -165,16 +166,16 @@ class Basic:
     vp_right.setBorderWidth(1)
     
     # file tree
-    self.file_box = SimplePanel()
-    self.file_box.setWidget("Hello")
-    tree_vp = VerticalPanel()
-    tree_vp.setSpacing(7)
-    tree_vp.setWidth("370px")
-    tempbutt = Button("Refresh")
-    tree_vp.add(tempbutt)
-    tree_vp.setCellHorizontalAlignment(tempbutt, HasAlignment.ALIGN_RIGHT)
-    tree_vp.add(self.file_box)
-    tree_vp.setCellHorizontalAlignment(self.file_box, HasAlignment.ALIGN_LEFT)
+    filetree = Tree()
+    filetree.addTreeListener(self)
+    ###Need to fill this in after file tree works as is in dialogbox
+    filetreepanel = VerticalPanel()
+    filetreepanel.setSpacing(7)
+    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    filetreepanel.add(filetree)
+    filetreepanel.setWidth("400px")
+    self.file_tree = SimplePanel()
+    self.file_tree.setWidget(filetreepanel)
     
     
     # not so hacky -- indeed, pretty decent little text chat
@@ -520,8 +521,8 @@ class Basic:
   def onFileDirOpenClick(self):
     pass ###
   def onFileTreeOpenClick(self):
-    self.filetree = Tree()
-    self.filetree.addTreeListener(self)
+    filetree = Tree()
+    filetree.addTreeListener(self)
     i = 0
     ## Values will be full paths of the files, so we can send them directly
     ## Names will be filename within the directory or the directory name
@@ -549,12 +550,20 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
-        self.filetree.addItem(s1)
-    ####self.file_box = DialogBox()
-    ####self.file_box.setHTML("File Navigation")
-    self.file_box.setWidget(self.filetree)
-    ####self.file_box.setPopupPosition(350, 200)
-    ####self.file_box.show()
+        filetree.addItem(s1)      
+    filetreepanel = VerticalPanel()
+    filetreepanel.setSpacing(7)
+    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
+    filetreepanel.add(filetree)
+    filetreebutt = Button("Close", getattr(self, "onFileTreeCloseClick"))
+    filetreepanel.add(filetreebutt)
+    filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
+    filetreepanel.setWidth("400px")
+    self.file_box = DialogBox()
+    self.file_box.setHTML("File Navigation")
+    self.file_box.setWidget(filetreepanel)
+    self.file_box.setPopupPosition(350, 200)
+    self.file_box.show()
   def createTreeItem(self, label, value=None):
     item = TreeItem(label)
     DOM.setStyleAttribute(item.getElement(), "cursor", "pointer")
@@ -634,8 +643,7 @@ class Basic:
   def onTreeItemStateChanged(self, item):
     pass  
   def onFileTreeCloseClick(self):
-    ####self.file_box.hide()
-    pass
+    self.file_box.hide()
   
   def onAddDialog(self):
     contents = VerticalPanel()
@@ -668,7 +676,7 @@ class Basic:
     self.manage_add_box.show()
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
-    ####self.file_box.hide()
+    self.file_box.hide()
         
   def onAddOK(self):
     newfile = self.current_directory + self.NewFileName.getText()
@@ -728,7 +736,7 @@ class Basic:
     self.manage_del_box.show()
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
-    ####self.file_box.hide()
+    self.file_box.hide()
     
   def onFileClick(self):
     for i in range(0, len(self.FilesToDelete)):
