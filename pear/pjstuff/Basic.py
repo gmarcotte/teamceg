@@ -625,7 +625,7 @@ class Basic:
     self.DelFile.addClickListener(getattr(self,"onDirClick"))
     contentshpfd.add(self.DelDir)
     contentshpfd.add(self.DelFile)
-    contentshpn = HorizontalPanel()
+    contentshpn = VerticalPanel()
     contentshpn.setSpacing(7)
     self.FilesToDelete = []
     self.FilesToDelete.append(CheckBox("File1"))
@@ -652,10 +652,12 @@ class Basic:
     self.file_box.hide()
     
   def onFileClick(self):
+    window.alert("enabling")
     for i in range(0, len(self.FilesToDelete)):
       self.FilesToDelete[i].setEnabled(True)
   
   def onDirClick(self):
+    window.alert("disabling")
     for i in range(0, len(self.FilesToDelete)):
       self.FilesToDelete[i].setEnabled(False)
   
