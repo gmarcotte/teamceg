@@ -628,6 +628,21 @@ class Basic:
     contentshpn = VerticalPanel()
     contentshpn.setSpacing(7)
     self.FilesToDelete = []
+    # find the files in this directory
+    level = "0"
+    for i in range(0,len(file_list)):
+      if str(file_list[i][2]) == str(self.current_directory):
+        window.alert("Matched directory")
+        level = file_list[i][0][0]
+        start = i
+        window.alert(level + " " + start)
+    for i in range(start, len(file_list)):
+      if entry[0][0] == level:
+        window.alert("found file")
+        self.FilesToDelete.append(CheckBox(str(entry[2])))
+      else:
+        level = 0
+          
     self.FilesToDelete.append(CheckBox("File1"))
     self.FilesToDelete.append(CheckBox("File2"))
     self.FilesToDelete.append(CheckBox("File3"))
@@ -672,7 +687,7 @@ class Basic:
       for i in range(0, len(self.FilesToDelete)):
         if self.FilesToDelete[i].isChecked():
           fname = self.current_directory + self.FilesToDelete[i].getText() # we put file names (not full paths)in the list
-          window.alert(fname)
+          #window.alert(fname)
           self.remote.delete_file(fname,self)
     self.manage_del_box.hide()
       
