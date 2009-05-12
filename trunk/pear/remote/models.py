@@ -29,7 +29,10 @@ class SSHConnection(timestamp.TimestampedModel):
     return '/remote/servers/%d/refresh/' % self.id
   
   def get_clear_url(self):
-    return '/remote/servers/%d/clear/' % self.id  
+    return '/remote/servers/%d/clear/' % self.id
+  
+  def get_test_url(self):
+    return '/remote/servers/%d/test/' % self.id
   
   ########## Connection Methods #################
   def connect(self):
@@ -81,6 +84,23 @@ class SSHConnection(timestamp.TimestampedModel):
     self.save()  
   
   ########## Authentication Methods #############
+  def test_remote_keys(self):
+    """Test if the remote keys have been set successfully, and update
+    the model status if necessary.  This is particularly useful when 
+    the user has chosen to manually upload the keys to the remote
+    server."""
+    client = self.connect()
+    if client:
+      self.has_valid_keys = True
+      self.save()
+      self.close(client)
+      return True
+    else:
+      self.has_valid_keys = False
+      self.save()
+      return False
+    
+  
   def clear_remote_keys(self):
     """Removes the RSA keys from the server, so that we can no
     longer log in to their account.

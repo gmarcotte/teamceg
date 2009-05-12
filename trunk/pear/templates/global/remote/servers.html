@@ -8,18 +8,22 @@
 <table id="server-list">
 <tr>
 	<th>Connection</th>
+	<th>Working Directory</th>
 	<th>Valid Keys</th>
 	<th>Actions</th>
 </tr>
 {% for server in server_list %}
 <tr>
 	<td>{{ server.user_name }}@{{ server.server }}</td>
+	<td>{{ server.base_dir }}</td>
 	<td>{{ server.has_valid_keys|yesno:"Yes, No" }}</td>
-	<td><a href="{{ server.get_refresh_url }}">Refresh Keys</a> |
-		{% if server.has_valid_keys %} 
+	<td>{% if server.has_valid_keys %} 
 		<a href="{{ server.get_clear_url }}">Clear Keys</a> |
+		{% else %}
+		<a href="{{ server.get_refresh_url }}">Refresh Keys</a> |
 		{% endif %}
-	    <a href="{{ server.get_delete_url }}">Delete</a></td>
+		 <a href="{{ server.get_test_url }}">Test Connection</a> |
+	   <a href="{{ server.get_delete_url }}">Delete</a></td>
 </tr>
 {% empty %}
 <tr>

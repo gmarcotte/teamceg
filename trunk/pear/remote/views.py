@@ -39,17 +39,30 @@ def delete_server(request, server_id):
         {'page_title': "Delete Server Connection",
          'server': server},
         context_instance=template.RequestContext(request))
-    
+
+
+@auth_decorators.login_required
+def test_keys(request, server_id):
+  redirect_to = request.REQUEST.get('next', '/remote/servers/')
+  try:
+    server = pear.remote.models.SSHConnection.objects.get(pk=server_id, user=request.user)
+  except exceptions.ObjectDoesNotExist:
+    return http.HttpResponseRedirect(redirect_to)
+  
+  if server.test_remote_keys():
+    request.session['flash_params'] = {'type': 'success'}
+    request.session['flash_msg'] = 'Successfully connected to %s' % server
+  else:
+    request.session['flash_params'] = {'type': 'error'}
+    request.session['flash_msg'] = 'Failed to connect to %s.  Please try refreshing or reinstalling the RSA keys.' % server
+  return http.HttpResponseRedirect(redirect_to)
 
 @auth_decorators.login_required
 def clear_keys(request, server_id):
   redirect_to = request.REQUEST.get('next', '/remote/servers/')
   try:
-    server = pear.remote.models.SSHConnection.objects.get(pk=server_id)
+    server = pear.remote.models.SSHConnection.objects.get(pk=server_id, user=request.user)
   except exceptions.ObjectDoesNotExist:
-    return http.HttpResponseRedirect(redirect_to)
-  
-  if request.user != server.user:
     return http.HttpResponseRedirect(redirect_to)
   
   if request.method == 'POST':
