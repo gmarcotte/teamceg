@@ -25160,6 +25160,328 @@ __JSONService_JSONService_initialize();
 __JSONService_JSONProxy_initialize();
 __JSONService_JSONResponseTextHandler_initialize();
 __JSONService_JSONRequestInfo_initialize();
+function __PopupPanel_PopupPanel() {
+}
+function PopupPanel_PopupPanel(autoHide, modal, rootpanel) {
+    if (typeof autoHide == 'undefined') autoHide=false;
+    if (typeof modal == 'undefined') modal=true;
+    if (typeof rootpanel == 'undefined') rootpanel=null;
+    var instance = new __PopupPanel_PopupPanel();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+PopupPanel_PopupPanel.parse_kwargs = function ( __kwargs, autoHide, modal, rootpanel ) {
+    if (typeof autoHide == 'undefined')
+        autoHide=__kwargs.autoHide;
+    if (typeof modal == 'undefined')
+        modal=__kwargs.modal;
+    if (typeof rootpanel == 'undefined')
+        rootpanel=__kwargs.rootpanel;
+    var __r = [autoHide, modal, rootpanel];
+    return __r;
+};
+function __PopupPanel_PopupPanel_initialize() {
+    if(__PopupPanel_PopupPanel.__was_initialized__) return;
+    __PopupPanel_PopupPanel.__was_initialized__ = true;
+    if(!__ui_SimplePanel.__was_initialized__)
+        __ui_SimplePanel_initialize();
+    pyjs_extend(__PopupPanel_PopupPanel, __ui_SimplePanel);
+    __PopupPanel_PopupPanel.prototype.__class__.__new__ = PopupPanel_PopupPanel;
+    __PopupPanel_PopupPanel.prototype.__init__ = function(autoHide, modal, rootpanel) {
+    if (typeof autoHide == 'undefined') autoHide=false;
+    if (typeof modal == 'undefined') modal=true;
+    if (typeof rootpanel == 'undefined') rootpanel=null;
+    this.popupListeners = new pyjslib_List([]);
+    this.showing = false;
+    this.autoHide = false;
+    this.modal = modal;
+    if ((rootpanel == null)) {
+    var rootpanel = ui_RootPanel();
+    }
+    this.rootpanel = rootpanel;
+    __ui_SimplePanel.prototype.__class__.__init__(this, this.createElement());
+    DOM_setStyleAttribute(this.getElement(), 'position', 'absolute');
+    if (autoHide) {
+    this.autoHide = autoHide;
+    }
+    };
+__PopupPanel_PopupPanel.prototype.__init__.parse_kwargs = function ( __kwargs, autoHide, modal, rootpanel ) {
+    if (typeof autoHide == 'undefined')
+        autoHide=__kwargs.autoHide;
+    if (typeof modal == 'undefined')
+        modal=__kwargs.modal;
+    if (typeof rootpanel == 'undefined')
+        rootpanel=__kwargs.rootpanel;
+    var __r = [autoHide, modal, rootpanel];
+    return __r;
+};
+    __PopupPanel_PopupPanel.prototype.__class__.__init__ = function() {
+        return __PopupPanel_PopupPanel.prototype.__init__.call.apply(__PopupPanel_PopupPanel.prototype.__init__, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.__init__.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.__init__.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.__class__.__init__.parse_kwargs = __PopupPanel_PopupPanel.prototype.__init__.parse_kwargs;
+    __PopupPanel_PopupPanel.prototype.addPopupListener = function(listener) {
+    this.popupListeners.append(listener);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.addPopupListener = function() {
+        return __PopupPanel_PopupPanel.prototype.addPopupListener.call.apply(__PopupPanel_PopupPanel.prototype.addPopupListener, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.addPopupListener.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.addPopupListener.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.getPopupLeft = function() {
+    return DOM_getIntAttribute(this.getElement(), 'offsetLeft');
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.getPopupLeft = function() {
+        return __PopupPanel_PopupPanel.prototype.getPopupLeft.call.apply(__PopupPanel_PopupPanel.prototype.getPopupLeft, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.getPopupLeft.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.getPopupLeft.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.getPopupTop = function() {
+    return DOM_getIntAttribute(this.getElement(), 'offsetTop');
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.getPopupTop = function() {
+        return __PopupPanel_PopupPanel.prototype.getPopupTop.call.apply(__PopupPanel_PopupPanel.prototype.getPopupTop, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.getPopupTop.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.getPopupTop.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.createElement = function() {
+    return DOM_createDiv();
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.createElement = function() {
+        return __PopupPanel_PopupPanel.prototype.createElement.call.apply(__PopupPanel_PopupPanel.prototype.createElement, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.createElement.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.createElement.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.hide = function(autoClosed) {
+    if (typeof autoClosed == 'undefined') autoClosed=false;
+    if (!(this.showing)) {
+    return;
+    }
+    this.showing = false;
+    DOM_removeEventPreview(this);
+    this.rootpanel.remove(this);
+    this.onHideImpl(this.getElement());
+
+        var __listener = this.popupListeners.__iter__();
+        try {
+            while (true) {
+                var listener = __listener.next();
+                
+        
+    if (listener.onPopupClosed) {
+    listener.onPopupClosed(this, autoClosed);
+    }
+    else {
+    listener(this, autoClosed);
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    };
+__PopupPanel_PopupPanel.prototype.hide.parse_kwargs = function ( __kwargs, autoClosed ) {
+    if (typeof autoClosed == 'undefined')
+        autoClosed=__kwargs.autoClosed;
+    var __r = [autoClosed];
+    return __r;
+};
+    __PopupPanel_PopupPanel.prototype.__class__.hide = function() {
+        return __PopupPanel_PopupPanel.prototype.hide.call.apply(__PopupPanel_PopupPanel.prototype.hide, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.hide.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.hide.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.__class__.hide.parse_kwargs = __PopupPanel_PopupPanel.prototype.hide.parse_kwargs;
+    __PopupPanel_PopupPanel.prototype.isModal = function() {
+    return this.modal;
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.isModal = function() {
+        return __PopupPanel_PopupPanel.prototype.isModal.call.apply(__PopupPanel_PopupPanel.prototype.isModal, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.isModal.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.isModal.instance_method = true;
+    __PopupPanel_PopupPanel.prototype._event_targets_popup = function(event) {
+    var target = DOM_eventGetTarget(event);
+    return (target) && (DOM_isOrHasChild(this.getElement(), target));
+    };
+    __PopupPanel_PopupPanel.prototype.__class__._event_targets_popup = function() {
+        return __PopupPanel_PopupPanel.prototype._event_targets_popup.call.apply(__PopupPanel_PopupPanel.prototype._event_targets_popup, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__._event_targets_popup.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype._event_targets_popup.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.onEventPreview = function(event) {
+    var type = DOM_eventGetType(event);
+    if ((type == 'keydown')) {
+    return (this.onKeyDownPreview(DOM_eventGetKeyCode(event), __ui_KeyboardListener.prototype.__class__.getKeyboardModifiers(event))) && ((!(this.modal)) || (this._event_targets_popup(event)));
+    }
+    else if ((type == 'keyup')) {
+    return (this.onKeyUpPreview(DOM_eventGetKeyCode(event), __ui_KeyboardListener.prototype.__class__.getKeyboardModifiers(event))) && ((!(this.modal)) || (this._event_targets_popup(event)));
+    }
+    else if ((type == 'keypress')) {
+    return (this.onKeyPressPreview(DOM_eventGetKeyCode(event), __ui_KeyboardListener.prototype.__class__.getKeyboardModifiers(event))) && ((!(this.modal)) || (this._event_targets_popup(event)));
+    }
+    else if ((type == 'mousedown')) {
+    if ((DOM_getCaptureElement() != null)) {
+    return true;
+    }
+    if ((this.autoHide) && (!(this._event_targets_popup(event)))) {
+    this.hide(true);
+    return true;
+    }
+    }
+    else if (((type == 'mouseup')) || ((type == 'mousemove')) || ((type == 'click')) || ((type == 'dblclick'))) {
+    if ((DOM_getCaptureElement() != null)) {
+    return true;
+    }
+    }
+    return (!(this.modal)) || (this._event_targets_popup(event));
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onEventPreview = function() {
+        return __PopupPanel_PopupPanel.prototype.onEventPreview.call.apply(__PopupPanel_PopupPanel.prototype.onEventPreview, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onEventPreview.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.onEventPreview.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.onKeyDownPreview = function(key, modifiers) {
+    return true;
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onKeyDownPreview = function() {
+        return __PopupPanel_PopupPanel.prototype.onKeyDownPreview.call.apply(__PopupPanel_PopupPanel.prototype.onKeyDownPreview, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onKeyDownPreview.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.onKeyDownPreview.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.onKeyPressPreview = function(key, modifiers) {
+    return true;
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onKeyPressPreview = function() {
+        return __PopupPanel_PopupPanel.prototype.onKeyPressPreview.call.apply(__PopupPanel_PopupPanel.prototype.onKeyPressPreview, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onKeyPressPreview.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.onKeyPressPreview.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.onKeyUpPreview = function(key, modifiers) {
+    return true;
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onKeyUpPreview = function() {
+        return __PopupPanel_PopupPanel.prototype.onKeyUpPreview.call.apply(__PopupPanel_PopupPanel.prototype.onKeyUpPreview, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onKeyUpPreview.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.onKeyUpPreview.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.onHideImpl = function(popup) {
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onHideImpl = function() {
+        return __PopupPanel_PopupPanel.prototype.onHideImpl.call.apply(__PopupPanel_PopupPanel.prototype.onHideImpl, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onHideImpl.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.onHideImpl.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.onShowImpl = function(popup) {
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onShowImpl = function() {
+        return __PopupPanel_PopupPanel.prototype.onShowImpl.call.apply(__PopupPanel_PopupPanel.prototype.onShowImpl, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.onShowImpl.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.onShowImpl.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.removePopupListener = function(listener) {
+    this.popupListeners.remove(listener);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.removePopupListener = function() {
+        return __PopupPanel_PopupPanel.prototype.removePopupListener.call.apply(__PopupPanel_PopupPanel.prototype.removePopupListener, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.removePopupListener.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.removePopupListener.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.setPopupPosition = function(left, top) {
+    if ((left < 0)) {
+    var left = 0;
+    }
+    if ((top < 0)) {
+    var top = 0;
+    }
+    var element = this.getElement();
+    DOM_setStyleAttribute(element, 'left',  ( left + 'px' ) );
+    DOM_setStyleAttribute(element, 'top',  ( top + 'px' ) );
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.setPopupPosition = function() {
+        return __PopupPanel_PopupPanel.prototype.setPopupPosition.call.apply(__PopupPanel_PopupPanel.prototype.setPopupPosition, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.setPopupPosition.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.setPopupPosition.instance_method = true;
+    __PopupPanel_PopupPanel.prototype.show = function() {
+    if (this.showing) {
+    return;
+    }
+    this.showing = true;
+    DOM_addEventPreview(this);
+    this.rootpanel.add(this);
+    this.onShowImpl(this.getElement());
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.show = function() {
+        return __PopupPanel_PopupPanel.prototype.show.call.apply(__PopupPanel_PopupPanel.prototype.show, arguments);
+    };
+    __PopupPanel_PopupPanel.prototype.__class__.show.unbound_method = true;
+    __PopupPanel_PopupPanel.prototype.show.instance_method = true;
+}
+__PopupPanel_PopupPanel_initialize();
+function __ContextMenuPopupPanel_ContextMenuPopupPanel() {
+}
+function ContextMenuPopupPanel_ContextMenuPopupPanel(item) {
+    var instance = new __ContextMenuPopupPanel_ContextMenuPopupPanel();
+    if(instance.__init__) instance.__init__.apply(instance, arguments);
+    return instance;
+}
+
+
+function __ContextMenuPopupPanel_ContextMenuPopupPanel_initialize() {
+    if(__ContextMenuPopupPanel_ContextMenuPopupPanel.__was_initialized__) return;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.__was_initialized__ = true;
+    if(!__PopupPanel_PopupPanel.__was_initialized__)
+        __PopupPanel_PopupPanel_initialize();
+    pyjs_extend(__ContextMenuPopupPanel_ContextMenuPopupPanel, __PopupPanel_PopupPanel);
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.__new__ = ContextMenuPopupPanel_ContextMenuPopupPanel;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__init__ = function(item) {
+    this.item = item;
+    __PopupPanel_PopupPanel.prototype.__class__.__init__(this, true);
+    this.setWidget(item);
+    };
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.__init__ = function() {
+        return __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__init__.call.apply(__ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__init__, arguments);
+    };
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.__init__.unbound_method = true;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__init__.instance_method = true;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.showAt = function(x, y) {
+    this.setPopupPosition(x, y);
+    this.item.onShow();
+    this.show();
+    };
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.showAt = function() {
+        return __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.showAt.call.apply(__ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.showAt, arguments);
+    };
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.showAt.unbound_method = true;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.showAt.instance_method = true;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.onEventPreview = function(event) {
+    var type = DOM_eventGetType(event);
+    if ((type == 'click')) {
+    var target = DOM_eventGetTarget(event);
+    var parentMenuElement = this.item.getElement();
+    if (DOM_isOrHasChild(parentMenuElement, target)) {
+    if (this.item.onBrowserEvent(event)) {
+    this.hide();
+    }
+    return true;
+    }
+    }
+    return __PopupPanel_PopupPanel.prototype.__class__.onEventPreview(this, event);
+    };
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.onEventPreview = function() {
+        return __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.onEventPreview.call.apply(__ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.onEventPreview, arguments);
+    };
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.__class__.onEventPreview.unbound_method = true;
+    __ContextMenuPopupPanel_ContextMenuPopupPanel.prototype.onEventPreview.instance_method = true;
+}
+__ContextMenuPopupPanel_ContextMenuPopupPanel_initialize();
 
 //
 // BEGIN sprintf.js
@@ -25390,7 +25712,7 @@ function __DataService_initialize() {
     pyjs_extend(__DataService, __JSONService_JSONProxy);
     __DataService.prototype.__class__.__new__ = DataService;
     __DataService.prototype.__init__ = function() {
-    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash', 'send_editor', 'receive_editor', 'user_quit', 'driver_status', 'switch_driver', 'new_file', 'new_directory', 'open_file', 'save_file', 'get_file_tree']));
+    __JSONService_JSONProxy.prototype.__class__.__init__(this, '/projects/services/', new pyjslib_List(['get_username', 'get_meetinginfo', 'send_chatmessage', 'receive_chatmessage', 'send_flash', 'receive_flash', 'send_editor', 'receive_editor', 'user_quit', 'driver_status', 'switch_driver', 'new_file', 'new_directory', 'open_file', 'save_file', 'get_file_tree', 'delete_file', 'sync_all']));
     };
     __DataService.prototype.__class__.__init__ = function() {
         return __DataService.prototype.__init__.call.apply(__DataService.prototype.__init__, arguments);
@@ -25417,13 +25739,15 @@ function __Basic_initialize() {
     this.initEditor = false;
     this.quitting = false;
     this.switching = false;
+    this.current_open = null;
+    this.modified = false;
+    this.originalContents = '';
     this.remote.get_meetinginfo(this);
-    this.remote.get_file_tree('rd', this);
     this.active_menu = ui_Label('');
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
-    this.file_test = new pyjslib_List([]);
+    this.file_list = new pyjslib_List([]);
+    this.remote.get_file_tree(this);
     this.files = ui_Button('Files', pyjslib_getattr(this, 'onFilesClick'));
-    this.FileContext = ui_SimplePanel('La di da');
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
     this.audio = ui_Button('Audio', pyjslib_getattr(this, 'onAudioClick'));
     this.flash = ui_Button('Start Flash', pyjslib_getattr(this, 'toggleFlash'));
@@ -25453,65 +25777,83 @@ function __Basic_initialize() {
     this.listensynchID = 'MYlistensynchID';
     this.termfunctionID = 'MYtermfunctionID';
     this.functionHTML = ui_HTML( (  (  (  ( '<script>SetUpEditArea(\'' + this.editorID )  + '\',\'' )  + this.listenID )  + '\'); </script>' ) );
-    this.editorHTML = ui_HTML('The contents of the editor.');
+    this.editorHTML = ui_HTML(' ');
     this.editorHTML.setVisible(false);
     this.editorHTML.setID(this.editorHTMLID);
-    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    clearInterval(window.editorInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 100); \n      \n    function syncheditor() { \n    // see if this helps with actually setting it to be editable again\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', true);\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
-    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    clearInterval(window.listenInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 100); \n    //document.getElementById(\'MYeditorHTMLID\').innerHTML="<div id=\'MYeditorHTMLID\' style=\'white-space: normal; display: none;\' class=\'gwt-HTML\'>Initial Text</div>"\n    function synchlisten() { \n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;//innerHTML;\n    content = content.substring(86, content.length-6);\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() \n    }</script>';
+    this.driversynch = '\n    <script>\n    clearInterval(window.listenInterval);\n    clearInterval(window.editorInterval);\n    window.editorInterval = setInterval(\'syncheditor()\', 100); \n      \n    function syncheditor() { \n    // see if this helps with actually setting it to be editable again\n    //alert("synching editor")\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', true);\n    var content = editAreaLoader.getValue(\'MYeditorID\');\n    var listener = document.getElementById(\'MYeditorHTMLID\');\n    listener.innerHTML = "<div id=\\"MYeditorHTMLID\\" style=\\"white-space: normal; display: none;\\" class=\\"gwt-HTML\\">"+ content + "</div>";\n    }</script>';
+    this.passengersynch = '\n    <script>\n    clearInterval(window.editorInterval);\n    clearInterval(window.listenInterval);\n    window.listenInterval = setInterval(\'synchlisten()\', 100); \n    //document.getElementById(\'MYeditorHTMLID\').innerHTML="<div id=\'MYeditorHTMLID\' style=\'white-space: normal; display: none;\' class=\'gwt-HTML\'>Initial Text</div>"\n    function synchlisten() { \n    //alert("synching listen")\n    var currentfocus = document.activeElement;\n    var content = document.getElementById(\'MYeditorHTMLID\').innerHTML;//innerHTML;\n    content = content.substring(86, content.length-6);\n    editAreaLoader.setValue(\'MYeditorID\', content);\n    editAreaLoader.execCommand(\'MYeditorID\', \'set_editable\', false);\n    currentfocus.focus() \n    }</script>';
     var initialcontent = '<script> </script> ';
-    this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 575px; width: 100%;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
+    this.editor = ui_HTMLPanel( (  (  (  (  (  (  (  (  ( '<div id=\'' + this.synchID )  + '\'</div><div id=\'' )  + this.editorHTMLID )  + '\'></div>' )  + '<textarea id=\'' )  + this.editorID )  + '\' style=\'height: 272px; width: 600px;\'></textarea> <div id=\'' )  + this.functionID )  + '\'></div>' ) );
     this.editorTextArea = ui_TextArea();
     this.editorTextArea.setID(this.editorID);
     this.editor.add(this.editorTextArea, this.editorID);
     this.editor.add(this.functionHTML, this.functionID);
     this.editor.add(this.editorHTML, this.editorHTMLID);
     this.editor.add(ui_HTML(initialcontent), this.synchID);
-    this.editor.setWidth('100%');
+    this.editor.setWidth('600px');
     this.editor.setHeight('100%');
-    var vp = ui_VerticalPanel();
-    vp.setBorderWidth(1);
     this.term = ui_HTMLPanel(' <script> setterm(\'\'); </script> <div id=\'term\'></div><div id=\'MYtermfunctionID\'></div>');
-    this.term.setWidth('100%');
-    this.term.setHeight('390px');
+    this.term.setWidth('600px');
+    this.term.setHeight('272px');
     var console = ui_SimplePanel();
     console.add(this.term);
-    console.setWidth('400px');
     console.setHeight('100%');
+    console.setStyleName('console');
+    var vp_left = ui_VerticalPanel();
+    vp_left.setBorderWidth(1);
+    vp_left.add(this.editor);
+    vp_left.add(console);
+    vp_left.setCellHeight(this.editor, '50%');
+    this.editor.setHeight('100%');
+    vp_left.setCellHeight(console, '50%');
+    console.setHeight('100%');
+    var vp_right = ui_VerticalPanel();
+    vp_right.setBorderWidth(1);
+    var filetree = ui_Tree();
+    filetree.addTreeListener(this);
+    var filetreepanel = ui_VerticalPanel();
+    filetreepanel.setSpacing(7);
+    filetreepanel.setCellHorizontalAlignment(filetree, __ui_HasAlignment.prototype.__class__.ALIGN_LEFT);
+    filetreepanel.add(filetree);
+    filetreepanel.setWidth('400px');
+    this.file_tree = ui_SimplePanel();
+    this.file_tree.setWidget(filetreepanel);
     this.text_area = ui_ScrollPanel();
     this.text_area.setStyleName('text-area');
     this.text = ui_HTML('(There is a 600 character limit on messages)');
     this.text_area.setWidget(this.text);
-    this.text_area.setSize('487px', '151px');
+    this.text_area.setSize('370px', '151px');
     this.text_box = ui_TextBox();
-    this.text_box.setVisibleLength('58');
+    this.text_box.setVisibleLength('41');
     this.text_box.setMaxLength('600');
     this.text_box.setID(this.chatID);
     this.text_box.addKeyboardListener(this);
-    var text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
+    this.text_send = ui_Button('Send', pyjslib_getattr(this, 'onTextSend'));
     var text_entry = ui_HorizontalPanel();
     text_entry.add(this.text_box);
-    text_entry.add(text_send);
+    text_entry.add(this.text_send);
     text_entry.setWidth('340px');
     var real_chat = ui_VerticalPanel();
     real_chat.add(this.text_area);
     this.text_area.setScrollPosition(999999);
     real_chat.add(text_entry);
     real_chat.setStyleName('whitebg');
-    vp.add(console);
-    vp.add(real_chat);
-    vp.setWidth('100%');
-    vp.setHeight('100%');
-    vp.setCellHeight(console, '50%');
-    vp.setCellHeight(real_chat, '50%');
+    vp_right.add(this.file_tree);
+    vp_right.add(real_chat);
+    vp_right.setWidth('100%');
+    vp_right.setHeight('100%');
+    vp_right.setCellHeight(this.file_tree, '650%');
+    vp_right.setCellHeight(real_chat, '35%');
     var hp = ui_HorizontalPanel();
     hp.setBorderWidth(1);
     hp.setHorizontalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
     hp.setVerticalAlignment(__ui_HasAlignment.prototype.__class__.ALIGN_MIDDLE);
-    hp.add(this.editor);
-    hp.add(vp);
-    hp.setCellWidth(this.editor, '50%');
-    hp.setCellWidth(vp, '50%');
-    hp.setCellVerticalAlignment(console, __ui_HasAlignment.prototype.__class__.ALIGN_TOP);
+    hp.add(vp_left);
+    hp.add(vp_right);
+    hp.setCellWidth(vp_left, '73%');
+    vp_left.setWidth('100%');
+    hp.setCellWidth(vp_right, '27%');
+    vp_right.setWidth('100%');
     hp.setWidth('100%');
     hp.setHeight('100%');
     this.footer = ui_Label('A TeamCEG production');
@@ -25524,7 +25866,7 @@ function __Basic_initialize() {
     this.panel.setCellHeight(hp, '100%');
     this.panel.setCellWidth(this.head, '100%');
     this.panel.setWidth('995px');
-    this.panel.setHeight('400px');
+    this.panel.setHeight('600px');
     ui_RootPanel().add(this.panel);
     this.currpass = ui_Label('No Partner logged in');
     this.onTimer();
@@ -25575,7 +25917,7 @@ function __Basic_initialize() {
     }
     }
     else if ((request_info.method == 'get_meetinginfo')) {
-    this.list = new pyjslib_List([]);
+    var haspassenger = false;
     var previousconsoleID = this.consoleID;
 
         var __tpl = response.__iter__();
@@ -25584,16 +25926,8 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    this.list.append(sprintf('%s', tpl.__getitem__(1)));
-
-            }
-        } catch (e) {
-            if (e != StopIteration) {
-                throw e;
-            }
-        }
-        
-    if ((pyjslib_str(this.list.__getitem__(0)) == 'true')) {
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'isdriver')) {
+    if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     this.isdriver = true;
     if ((this.initEditor == false)) {
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
@@ -25604,19 +25938,51 @@ function __Basic_initialize() {
     this.isdriver = false;
     this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     }
-    this.project = ui_Label(sprintf('%s', this.list.__getitem__(1)));
-    this.driver = ui_Label(sprintf('%s', this.list.__getitem__(2)));
-    this.drivername = ui_Label(sprintf('%s', this.list.__getitem__(3)));
-    this.consoleID = ui_Label(sprintf('%s', this.list.__getitem__(4)));
-    this.passenger = ui_Label(sprintf('%s', this.list.__getitem__(5)));
-    this.passengername = ui_Label(sprintf('%s', this.list.__getitem__(6)));
-    if ((pyjslib_len(this.list.__getitem__(5)) < 1)) {
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'project')) {
+    this.project = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'driver')) {
+    this.driver = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'drivername')) {
+    this.drivername = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_sid')) {
+    this.consoleID = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_ssh')) {
+    this.ssh = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_user')) {
+    this.usr = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_key')) {
+    this.key = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'passenger')) {
+    this.passenger = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    var haspassenger = true;
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'passengername')) {
+    this.passengername = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    if ((haspassenger == false)) {
+    this.passenger = ui_Label('');
+    this.passengername = ui_Label('');
     this.passenger.setText('No Partner logged in');
     this.passengername.setText('No Partner logged in');
     }
     if ((pyjslib_str(this.consoleID) != pyjslib_str(previousconsoleID))) {
-    window.alert('Changing console');
-    this.term.add(ui_HTML( (  (  (  ( '<script>changeSID(\'' + this.consoleID.getText() )  + '\', ' )  + this.isdriver )  + ');</script>' ) ), 'MYtermfunctionID');
+    this.term.add(ui_HTML( (  (  (  (  (  (  (  (  (  ( '<script>changeSID(\'' + this.consoleID )  + '\',\'' )  + this.ssh )  + '\',\'' )  + this.usr )  + '\',\'' )  + this.key )  + '\',\'' )  + this.isdriver )  + '\')</script>' ) ), this.termfunctionID);
     }
     }
     else if ((request_info.method == 'send_chatmessage')) {
@@ -25720,21 +26086,32 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    if (((pyjslib_str(tpl.__getitem__(1)) != 'True')) && ((pyjslib_str(tpl.__getitem__(1)) != 'False'))) {
-    this.consoleID = ui_Label(sprintf('%s', tpl.__getitem__(1)));
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_sid')) {
+    this.consoleID = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_ssh')) {
+    this.ssh = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_user')) {
+    this.usr = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_key')) {
+    this.key = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'isdriver')) {
+    if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
+    if ((this.isdriver == true)) {
+    this.isdriver = false;
+    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
+    this.term.add(ui_HTML( (  (  (  (  (  (  (  (  (  ( '<script>changeSID(\'' + this.consoleID )  + '\',\'' )  + this.ssh )  + '\',\'' )  + this.usr )  + '\',\'' )  + this.key )  + '\',\'' )  + this.isdriver )  + '\')</script>' ) ), this.termfunctionID);
+    }
     }
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
     this.isdriver = true;
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
-    this.term.add(ui_HTML( (  (  (  ( '<script>changeSID(\'' + this.consoleID.getText() )  + '\',' )  + this.isdriver )  + ');</script>' ) ), 'MYtermfunctionID');
+    this.term.add(ui_HTML( (  (  (  (  (  (  (  (  (  ( '<script>changeSID(\'' + this.consoleID )  + '\',\'' )  + this.ssh )  + '\',\'' )  + this.usr )  + '\',\'' )  + this.key )  + '\',\'' )  + this.isdriver )  + '\')</script>' ) ), this.termfunctionID);
     }
-    }
-    else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
-    if ((this.isdriver == true)) {
-    this.isdriver = false;
-    this.editor.add(ui_HTML(this.passengersynch), this.synchID);
-    this.term.add(ui_HTML( (  (  (  ( '<script>changeSID(\'' + this.consoleID.getText() )  + '\',' )  + this.isdriver )  + ');</script>' ) ), 'MYtermfunctionID');
     }
     }
     this.switching = false;
@@ -25756,11 +26133,25 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_sid')) {
+    this.consoleID = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_ssh')) {
+    this.ssh = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_user')) {
+    this.usr = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'new_key')) {
+    this.key = pyjslib_str(tpl.__getitem__(1));
+    }
+    if ((pyjslib_str(tpl.__getitem__(0)) == 'isdriver')) {
     if ((pyjslib_str(tpl.__getitem__(1)) == 'True')) {
     if ((this.isdriver == false)) {
     this.isdriver = true;
     this.editor.add(ui_HTML(this.driversynch), this.synchID);
     this.switching = false;
+    this.term.add(ui_HTML( (  (  (  (  (  (  (  (  (  ( '<script>changeSID(\'' + this.consoleID )  + '\',\'' )  + this.ssh )  + '\',\'' )  + this.usr )  + '\',\'' )  + this.key )  + '\',\'' )  + this.isdriver )  + '\')</script>' ) ), this.termfunctionID);
     }
     }
     else if ((pyjslib_str(tpl.__getitem__(1)) == 'False')) {
@@ -25768,6 +26159,8 @@ function __Basic_initialize() {
     this.isdriver = false;
     this.editor.add(ui_HTML(this.passengersynch), this.synchID);
     this.switching = false;
+    this.term.add(ui_HTML( (  (  (  (  (  (  (  (  (  ( '<script>changeSID(\'' + this.consoleID )  + '\',\'' )  + this.ssh )  + '\',\'' )  + this.usr )  + '\',\'' )  + this.key )  + '\',\'' )  + this.isdriver )  + '\')</script>' ) ), this.termfunctionID);
+    }
     }
     }
 
@@ -25823,7 +26216,9 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    window.alert(pyjslib_str(tpl.__getitem__(1)));
+    this.editor.add(ui_HTML( (  ( '<script>editAreaLoader.setValue(\'MYeditorID\',\'' + tpl.__getitem__(1) )  + '\');</script>' ) ), this.functionID);
+    this.originalContents = pyjslib_str(tpl.__getitem__(1));
+    this.modified = false;
 
             }
         } catch (e) {
@@ -25834,6 +26229,25 @@ function __Basic_initialize() {
         
     }
     else if ((request_info.method == 'save_file')) {
+    this.modified = false;
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(pyjslib_str(tpl.__getitem__(1)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'delete_file')) {
 
         var __tpl = response.__iter__();
         try {
@@ -25852,7 +26266,7 @@ function __Basic_initialize() {
         
     }
     else if ((request_info.method == 'get_file_tree')) {
-    this.file_test = new pyjslib_List([]);
+    this.file_list = new pyjslib_List([]);
 
         var __tpl = response.__iter__();
         try {
@@ -25860,7 +26274,7 @@ function __Basic_initialize() {
                 var tpl = __tpl.next();
                 
         
-    this.file_test.append(tpl);
+    this.file_list.append(tpl);
 
             }
         } catch (e) {
@@ -25873,6 +26287,8 @@ function __Basic_initialize() {
     else if ((request_info.method == 'user_quit')) {
     this.location = Window_getLocation();
     this.location.setHref('http://teamceg.princeton.edu/');
+    }
+    else if ((request_info.method == 'sync_all')) {
     }
     else {
     console.error('Error in onRemoteResponse function in Basic.py');
@@ -25893,10 +26309,15 @@ function __Basic_initialize() {
     __Basic.prototype.onInfoClick = function() {
     if ((this.active_menu.getText() == 'Info')) {
     this.active_menu.setText('');
+    this.info.setStyleName('gwt-button');
     this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Info');
+    this.info.setStyleName('sel-button');
+    this.files.setStyleName('gwt-button');
+    this.mode.setStyleName('gwt-button');
+    this.audio.setStyleName('gwt-button');
     var infomsg = ui_Label(sprintf('Driver: %s, Passenger: %s', new pyjslib_Tuple([this.driver.getText(), this.passenger.getText()])));
     infomsg.setStyleName('not-button');
     this.menu_body.setWidget(infomsg);
@@ -25910,16 +26331,24 @@ function __Basic_initialize() {
     __Basic.prototype.onFilesClick = function() {
     if ((this.active_menu.getText() == 'Files')) {
     this.active_menu.setText('');
+    this.files.setStyleName('gwt-button');
     this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Files');
+    this.info.setStyleName('gwt-button');
+    this.files.setStyleName('sel-button');
+    this.mode.setStyleName('gwt-button');
+    this.audio.setStyleName('gwt-button');
     var filepanel = ui_HorizontalPanel();
     var filetreebutton = ui_Button('File Tree', pyjslib_getattr(this, 'onFileTreeOpenClick'));
+    var filesavebutton = ui_Button('Save', pyjslib_getattr(this, 'onFileSave'));
     var fileuploadbutton = ui_Button('Upload a File', pyjslib_getattr(this, 'onFileUploadOpenClick'));
     filetreebutton.setStyleName('supp-button');
+    filesavebutton.setStyleName('supp-button');
     fileuploadbutton.setStyleName('supp-button');
     filepanel.add(filetreebutton);
+    filepanel.add(filesavebutton);
     filepanel.add(fileuploadbutton);
     this.menu_body.setWidget(filepanel);
     }
@@ -25929,6 +26358,18 @@ function __Basic_initialize() {
     };
     __Basic.prototype.__class__.onFilesClick.unbound_method = true;
     __Basic.prototype.onFilesClick.instance_method = true;
+    __Basic.prototype.onFileSave = function() {
+    if ((this.isdriver == true)) {
+    var content = DOM_getInnerText(DOM_getElementById(this.editorHTMLID));
+    this.remote.save_file(pyjslib_str(this.current_open.__getitem__(2)), content, this);
+    this.originalContents = content;
+    }
+    };
+    __Basic.prototype.__class__.onFileSave = function() {
+        return __Basic.prototype.onFileSave.call.apply(__Basic.prototype.onFileSave, arguments);
+    };
+    __Basic.prototype.__class__.onFileSave.unbound_method = true;
+    __Basic.prototype.onFileSave.instance_method = true;
     __Basic.prototype.onFileUploadOpenClick = function() {
     this.uploadform = ui_FormPanel();
     this.uploadform.setEncoding(__ui_FormPanel.prototype.__class__.ENCODING_MULTIPART);
@@ -25947,14 +26388,14 @@ function __Basic_initialize() {
     uploadbutt_hp.setSpacing(7);
     uploadbutt_hp.add(fileuploadsubmitbutt);
     uploadbutt_hp.add(fileuploadclosebutt);
-    var upload_vp = ui_VerticalPanel();
-    upload_vp.setSpacing(4);
-    upload_vp.add(upload_hp);
+    var upload_vp_right = ui_VerticalPanel();
+    upload_vp_right.setSpacing(4);
+    upload_vp_right.add(upload_hp);
     var results = ui_NamedFrame('results');
-    upload_vp.add(results);
-    upload_vp.add(uploadbutt_hp);
-    upload_vp.setCellHorizontalAlignment(uploadbutt_hp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
-    this.uploadform.add(upload_vp);
+    upload_vp_right.add(results);
+    upload_vp_right.add(uploadbutt_hp);
+    upload_vp_right.setCellHorizontalAlignment(uploadbutt_hp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.uploadform.add(upload_vp_right);
     this.upload_box = ui_DialogBox();
     this.upload_box.setHTML('File Upload');
     this.upload_box.setWidget(this.uploadform);
@@ -25994,27 +26435,27 @@ function __Basic_initialize() {
     var filetree = ui_Tree();
     filetree.addTreeListener(this);
     var i = 0;
-    this.remote.get_file_tree('rd', this);
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '1'))) {
-    var s1 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
+    this.remote.get_file_tree(this);
+    while (((i < pyjslib_len(this.file_list))) && ((this.file_list.__getitem__(i).__getitem__(0).__getitem__(0) == '1'))) {
+    var s1 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_list.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_list.__getitem__(i).__getitem__(0), 1, null))]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '2'))) {
-    var s2 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
+    while (((i < pyjslib_len(this.file_list))) && ((this.file_list.__getitem__(i).__getitem__(0).__getitem__(0) == '2'))) {
+    var s2 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_list.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_list.__getitem__(i).__getitem__(0), 1, null))]);
     s1.addItem(s2);
     pyjs_kwargs_method_call(s1, 'setState', [{fireEvents:false}, true]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '3'))) {
-    var s3 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
+    while (((i < pyjslib_len(this.file_list))) && ((this.file_list.__getitem__(i).__getitem__(0).__getitem__(0) == '3'))) {
+    var s3 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_list.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_list.__getitem__(i).__getitem__(0), 1, null))]);
     s2.addItem(s3);
     pyjs_kwargs_method_call(s2, 'setState', [{fireEvents:false}, false]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '4'))) {
-    var s4 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
+    while (((i < pyjslib_len(this.file_list))) && ((this.file_list.__getitem__(i).__getitem__(0).__getitem__(0) == '4'))) {
+    var s4 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_list.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_list.__getitem__(i).__getitem__(0), 1, null))]);
     s3.addItem(s4);
     pyjs_kwargs_method_call(s3, 'setState', [{fireEvents:false}, false]);
     var i =  ( i + 1 ) ;
-    while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '5'))) {
-    var s5 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
+    while (((i < pyjslib_len(this.file_list))) && ((this.file_list.__getitem__(i).__getitem__(0).__getitem__(0) == '5'))) {
+    var s5 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_list.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_list.__getitem__(i).__getitem__(0), 1, null))]);
     s4.addItem(s5);
     pyjs_kwargs_method_call(s4, 'setState', [{fireEvents:false}, false]);
     var i =  ( i + 1 ) ;
@@ -26047,7 +26488,6 @@ function __Basic_initialize() {
     if (typeof value == 'undefined') value=null;
     var item = ui_TreeItem(label);
     DOM_setStyleAttribute(item.getElement(), 'cursor', 'pointer');
-    item.setContextMenu(this);
     if ((value != null)) {
     item.setUserObject(value);
     }
@@ -26066,8 +26506,86 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.createTreeItem.instance_method = true;
     __Basic.prototype.__class__.createTreeItem.parse_kwargs = __Basic.prototype.createTreeItem.parse_kwargs;
     __Basic.prototype.onTreeItemSelected = function(item) {
+    var acted = false;
     var value = item.getUserObject();
-    window.alert( ( 'You clicked on ' + value ) );
+    if ((this.isdriver == false)) {
+    return;
+    }
+    var currentcontent = DOM_getInnerText(DOM_getElementById(this.editorHTMLID));
+    if ((pyjslib_str(currentcontent) != this.originalContents)) {
+    if ((this.originalContents != null)) {
+    this.modified = true;
+    }
+    }
+
+        var __thing = this.file_list.__iter__();
+        try {
+            while (true) {
+                var thing = __thing.next();
+                
+        
+    if ((pyjslib_str(thing.__getitem__(2)) == pyjslib_str(value))) {
+    if ((pyjslib_str(thing.__getitem__(1)) == 'file')) {
+    if ((this.current_open != null)) {
+    if ((this.modified == true)) {
+    this.nextfile = thing;
+    var guts = ui_VerticalPanel();
+    guts.setSpacing(4);
+    guts.add(ui_HTML('Unsaved changes were detected in an open file. Would you like to save your changes?'));
+    var gutshp = ui_HorizontalPanel();
+    gutshp.setSpacing(7);
+    gutshp.add(ui_Button('Save', pyjslib_getattr(this, 'onDialogSave')));
+    gutshp.add(ui_Button('Discard', pyjslib_getattr(this, 'onDialogDiscard')));
+    guts.add(gutshp);
+    guts.setCellHorizontalAlignment(gutshp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.savediscard_box = ui_DialogBox();
+    this.savediscard_box.setHTML('<b>Warning: Unsaved Changes</b>');
+    this.savediscard_box.setWidget(guts);
+    this.savediscard_box.setPopupPosition(200, 200);
+    this.savediscard_box.show();
+    var acted = true;
+    }
+    else {
+    this.remote.open_file(pyjslib_str(value), this);
+    var acted = true;
+    this.modified = false;
+    this.current_open = thing;
+    }
+    }
+    else {
+    this.remote.open_file(pyjslib_str(value), this);
+    var acted = true;
+    this.modified = false;
+    this.current_open = thing;
+    }
+    }
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    if ((acted == false)) {
+    this.current_directory =  ( pyjslib_str(value) + '/' ) ;
+    var contents = ui_VerticalPanel();
+    contents.setSpacing(4);
+    contents.add(ui_HTML('Add or delete files and directories.'));
+    var contentshp = ui_HorizontalPanel();
+    contentshp.setSpacing(7);
+    contentshp.add(ui_Button('Add', pyjslib_getattr(this, 'onAddDialog')));
+    contentshp.add(ui_Button('Delete', pyjslib_getattr(this, 'onDeleteDialog')));
+    contentshp.add(ui_Button('Cancel', pyjslib_getattr(this, 'onCancelManageDialog')));
+    contents.add(contentshp);
+    contents.setCellHorizontalAlignment(contentshp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.manage_directory_box = ui_DialogBox();
+    this.manage_directory_box.setHTML('<b>Manage Directory</b>');
+    this.manage_directory_box.setWidget(contents);
+    this.manage_directory_box.setPopupPosition(200, 200);
+    this.manage_directory_box.show();
+    }
     };
     __Basic.prototype.__class__.onTreeItemSelected = function() {
         return __Basic.prototype.onTreeItemSelected.call.apply(__Basic.prototype.onTreeItemSelected, arguments);
@@ -26089,13 +26607,292 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     };
     __Basic.prototype.__class__.onFileTreeCloseClick.unbound_method = true;
     __Basic.prototype.onFileTreeCloseClick.instance_method = true;
+    __Basic.prototype.onAddDialog = function() {
+    var contents = ui_VerticalPanel();
+    contents.setSpacing(4);
+    contents.add(ui_HTML('Add files and directories.'));
+    var contentshpfd = ui_HorizontalPanel();
+    this.NewDir = ui_RadioButton('group1', 'directory');
+    this.NewFile = ui_RadioButton('group1', 'file');
+    this.NewFile.setChecked(true);
+    contentshpfd.add(this.NewDir);
+    contentshpfd.add(this.NewFile);
+    var contentshpn = ui_HorizontalPanel();
+    contentshpn.setSpacing(7);
+    this.NewFileName = ui_TextBox();
+    this.NewFileName.setID(this.chatID);
+    contentshpn.add(this.NewFileName);
+    var contentshp = ui_HorizontalPanel();
+    contentshp.setSpacing(7);
+    contentshp.add(ui_Button('Add', pyjslib_getattr(this, 'onAddOK')));
+    contentshp.add(ui_Button('Cancel', pyjslib_getattr(this, 'onCancelAdd')));
+    contents.add(contentshpfd);
+    contents.add(contentshpn);
+    contents.add(contentshp);
+    contents.setCellHorizontalAlignment(contentshp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.manage_add_box = ui_DialogBox();
+    this.manage_add_box.setHTML('<b>Add</b>');
+    this.manage_add_box.setWidget(contents);
+    this.manage_add_box.setPopupPosition(200, 200);
+    this.manage_add_box.show();
+    this.manage_directory_box.hide();
+    this.file_box.hide();
+    };
+    __Basic.prototype.__class__.onAddDialog = function() {
+        return __Basic.prototype.onAddDialog.call.apply(__Basic.prototype.onAddDialog, arguments);
+    };
+    __Basic.prototype.__class__.onAddDialog.unbound_method = true;
+    __Basic.prototype.onAddDialog.instance_method = true;
+    __Basic.prototype.onAddOK = function() {
+    var newfile =  ( this.current_directory + this.NewFileName.getText() ) ;
+    if (this.NewDir.isChecked()) {
+    this.remote.new_directory(newfile, this);
+    this.remote.get_file_tree(this);
+    }
+    else {
+    this.remote.new_file(newfile, this);
+    this.remote.get_file_tree(this);
+    }
+    this.manage_add_box.hide();
+    };
+    __Basic.prototype.__class__.onAddOK = function() {
+        return __Basic.prototype.onAddOK.call.apply(__Basic.prototype.onAddOK, arguments);
+    };
+    __Basic.prototype.__class__.onAddOK.unbound_method = true;
+    __Basic.prototype.onAddOK.instance_method = true;
+    __Basic.prototype.onCancelAdd = function() {
+    this.manage_add_box.hide();
+    };
+    __Basic.prototype.__class__.onCancelAdd = function() {
+        return __Basic.prototype.onCancelAdd.call.apply(__Basic.prototype.onCancelAdd, arguments);
+    };
+    __Basic.prototype.__class__.onCancelAdd.unbound_method = true;
+    __Basic.prototype.onCancelAdd.instance_method = true;
+    __Basic.prototype.onDeleteDialog = function() {
+    var contents = ui_VerticalPanel();
+    contents.setSpacing(4);
+    contents.add(ui_HTML('Delete files and directories.'));
+    var contentshpfd = ui_HorizontalPanel();
+    this.DelDir = ui_RadioButton('group2', 'whole directory');
+    this.DelFile = ui_RadioButton('group2', 'files');
+    this.DelFile.setChecked(true);
+    this.DelFile.addClickListener(pyjslib_getattr(this, 'onFileClick'));
+    this.DelDir.addClickListener(pyjslib_getattr(this, 'onDirClick'));
+    contentshpfd.add(this.DelDir);
+    contentshpfd.add(this.DelFile);
+    var contentshpn = ui_VerticalPanel();
+    contentshpn.setSpacing(7);
+    this.FilesToDelete = new pyjslib_List([]);
+    var level = '0';
+
+        var __i = pyjslib_range(0, pyjslib_len(this.file_list)).__iter__();
+        try {
+            while (true) {
+                var i = __i.next();
+                
+        
+    if ((pyjslib_str(this.file_list.__getitem__(i).__getitem__(2)) == pyjslib_slice(pyjslib_str(this.current_directory), null,  ( pyjslib_len(pyjslib_str(this.current_directory)) - 1 ) ))) {
+    var level = pyjslib_str( ( pyjslib_int(this.file_list.__getitem__(i).__getitem__(0).__getitem__(0)) + 1 ) );
+    var start = i;
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+
+        var __i = pyjslib_range( ( start + 1 ) , pyjslib_len(this.file_list)).__iter__();
+        try {
+            while (true) {
+                var i = __i.next();
+                
+        
+    if ((this.file_list.__getitem__(i).__getitem__(0).__getitem__(0) == level)) {
+    this.FilesToDelete.append(ui_CheckBox(pyjslib_str(this.file_list.__getitem__(i).__getitem__(2))));
+    }
+    else {
+    var level = '0';
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+
+        var __i = pyjslib_range(0, pyjslib_len(this.FilesToDelete)).__iter__();
+        try {
+            while (true) {
+                var i = __i.next();
+                
+        
+    contentshpn.add(this.FilesToDelete.__getitem__(i));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    var contentshp = ui_HorizontalPanel();
+    contentshp.setSpacing(7);
+    contentshp.add(ui_Button('Delete', pyjslib_getattr(this, 'onDelOK')));
+    contentshp.add(ui_Button('Cancel', pyjslib_getattr(this, 'onCancelDel')));
+    contents.add(contentshpfd);
+    contents.add(contentshpn);
+    contents.add(contentshp);
+    contents.setCellHorizontalAlignment(contentshp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    this.manage_del_box = ui_DialogBox();
+    this.manage_del_box.setHTML('<b>Delete</b>');
+    this.manage_del_box.setWidget(contents);
+    this.manage_del_box.setPopupPosition(200, 200);
+    this.manage_del_box.show();
+    this.manage_directory_box.hide();
+    this.file_box.hide();
+    };
+    __Basic.prototype.__class__.onDeleteDialog = function() {
+        return __Basic.prototype.onDeleteDialog.call.apply(__Basic.prototype.onDeleteDialog, arguments);
+    };
+    __Basic.prototype.__class__.onDeleteDialog.unbound_method = true;
+    __Basic.prototype.onDeleteDialog.instance_method = true;
+    __Basic.prototype.onFileClick = function() {
+
+        var __i = pyjslib_range(0, pyjslib_len(this.FilesToDelete)).__iter__();
+        try {
+            while (true) {
+                var i = __i.next();
+                
+        
+    this.FilesToDelete.__getitem__(i).setEnabled(true);
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    };
+    __Basic.prototype.__class__.onFileClick = function() {
+        return __Basic.prototype.onFileClick.call.apply(__Basic.prototype.onFileClick, arguments);
+    };
+    __Basic.prototype.__class__.onFileClick.unbound_method = true;
+    __Basic.prototype.onFileClick.instance_method = true;
+    __Basic.prototype.onDirClick = function() {
+
+        var __i = pyjslib_range(0, pyjslib_len(this.FilesToDelete)).__iter__();
+        try {
+            while (true) {
+                var i = __i.next();
+                
+        
+    this.FilesToDelete.__getitem__(i).setChecked(true);
+    this.FilesToDelete.__getitem__(i).setEnabled(false);
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    };
+    __Basic.prototype.__class__.onDirClick = function() {
+        return __Basic.prototype.onDirClick.call.apply(__Basic.prototype.onDirClick, arguments);
+    };
+    __Basic.prototype.__class__.onDirClick.unbound_method = true;
+    __Basic.prototype.onDirClick.instance_method = true;
+    __Basic.prototype.onDelOK = function() {
+    if (this.DelDir.isChecked()) {
+    this.remote.delete_file(pyjslib_slice(this.current_directory, null,  ( pyjslib_len(this.current_directory) - 1 ) ), this);
+    }
+    else {
+
+        var __i = pyjslib_range(0, pyjslib_len(this.FilesToDelete)).__iter__();
+        try {
+            while (true) {
+                var i = __i.next();
+                
+        
+    if (this.FilesToDelete.__getitem__(i).isChecked()) {
+    var fname =  ( this.current_directory + this.FilesToDelete.__getitem__(i).getText() ) ;
+    this.remote.delete_file(fname, this);
+    }
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    this.remote.get_file_tree(this);
+    this.manage_del_box.hide();
+    };
+    __Basic.prototype.__class__.onDelOK = function() {
+        return __Basic.prototype.onDelOK.call.apply(__Basic.prototype.onDelOK, arguments);
+    };
+    __Basic.prototype.__class__.onDelOK.unbound_method = true;
+    __Basic.prototype.onDelOK.instance_method = true;
+    __Basic.prototype.onCancelDel = function() {
+    this.manage_del_box.hide();
+    };
+    __Basic.prototype.__class__.onCancelDel = function() {
+        return __Basic.prototype.onCancelDel.call.apply(__Basic.prototype.onCancelDel, arguments);
+    };
+    __Basic.prototype.__class__.onCancelDel.unbound_method = true;
+    __Basic.prototype.onCancelDel.instance_method = true;
+    __Basic.prototype.onCancelManageDialog = function() {
+    this.manage_directory_box.hide();
+    };
+    __Basic.prototype.__class__.onCancelManageDialog = function() {
+        return __Basic.prototype.onCancelManageDialog.call.apply(__Basic.prototype.onCancelManageDialog, arguments);
+    };
+    __Basic.prototype.__class__.onCancelManageDialog.unbound_method = true;
+    __Basic.prototype.onCancelManageDialog.instance_method = true;
+    __Basic.prototype.onDialogSave = function() {
+    var content = DOM_getInnerText(DOM_getElementById(this.editorHTMLID));
+    this.remote.save_file(pyjslib_str(this.current_open.__getitem__(2)), content, this);
+    this.remote.open_file(pyjslib_str(this.nextfile.__getitem__(2)), this);
+    this.modified = false;
+    this.current_open = this.nextfile;
+    this.savediscard_box.hide();
+    };
+    __Basic.prototype.__class__.onDialogSave = function() {
+        return __Basic.prototype.onDialogSave.call.apply(__Basic.prototype.onDialogSave, arguments);
+    };
+    __Basic.prototype.__class__.onDialogSave.unbound_method = true;
+    __Basic.prototype.onDialogSave.instance_method = true;
+    __Basic.prototype.onDialogDiscard = function() {
+    this.remote.open_file(pyjslib_str(this.nextfile.__getitem__(2)), this);
+    this.modified = false;
+    this.current_open = this.nextfile;
+    this.savediscard_box.hide();
+    };
+    __Basic.prototype.__class__.onDialogDiscard = function() {
+        return __Basic.prototype.onDialogDiscard.call.apply(__Basic.prototype.onDialogDiscard, arguments);
+    };
+    __Basic.prototype.__class__.onDialogDiscard.unbound_method = true;
+    __Basic.prototype.onDialogDiscard.instance_method = true;
     __Basic.prototype.onModeClick = function() {
     if ((this.active_menu.getText() == 'Mode')) {
     this.active_menu.setText('');
+    this.mode.setStyleName('gwt-button');
     this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Mode');
+    this.info.setStyleName('gwt-button');
+    this.files.setStyleName('gwt-button');
+    this.mode.setStyleName('sel-button');
+    this.audio.setStyleName('gwt-button');
     var modepanel = ui_HorizontalPanel();
     var modebutt = ui_Button('Switch Drivers', pyjslib_getattr(this, 'onSwitchDriversClick'));
     modebutt.setStyleName('supp-button');
@@ -26126,10 +26923,15 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.onAudioClick = function() {
     if ((this.active_menu.getText() == 'Audio')) {
     this.active_menu.setText('');
+    this.audio.setStyleName('gwt-button');
     this.menu_body.setWidget(this.menu_contents);
     }
     else {
     this.active_menu.setText('Audio');
+    this.info.setStyleName('gwt-button');
+    this.files.setStyleName('gwt-button');
+    this.mode.setStyleName('gwt-button');
+    this.audio.setStyleName('sel-button');
     var audiopanel = ui_HorizontalPanel();
     var audiobutton = ui_Button('Skype Call', pyjslib_getattr(this, 'onSkypeClick'));
     audiobutton.setStyleName('supp-button');
@@ -26175,6 +26977,9 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     if ((pyjslib_len(content) > 0)) {
     this.remote.send_editor(content, this);
     }
+    else {
+    this.remote.send_editor(' ', this);
+    }
     }
     else {
     this.remote.receive_editor(this);
@@ -26217,19 +27022,16 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.toggleFlash.unbound_method = true;
     __Basic.prototype.toggleFlash.instance_method = true;
     __Basic.prototype.onTextSend = function() {
+    this.text_send.setStyleName('sel-button');
     var id = this.remote.get_username(this);
     if ((id < 0)) {
     console.error('Server Error or Invalid Response');
     }
     this.remote.receive_chatmessage(this);
-    if (this.isdriver) {
-    var msg =  (  ( this.drivername.getText() + ': ' )  + this.text_box.getText() ) ;
-    }
-    else {
-    var msg =  (  ( this.passengername.getText() + ': ' )  + this.text_box.getText() ) ;
-    }
+    var msg = this.text_box.getText();
     this.remote.send_chatmessage(msg, this);
     this.text_box.setText('');
+    this.text_send.setStyleName('gwt-button');
     };
     __Basic.prototype.__class__.onTextSend = function() {
         return __Basic.prototype.onTextSend.call.apply(__Basic.prototype.onTextSend, arguments);
@@ -26237,6 +27039,9 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onTextSend.unbound_method = true;
     __Basic.prototype.onTextSend.instance_method = true;
     __Basic.prototype.onKeyUp = function(sender, keyCode, modifers) {
+    if (((keyCode == __ui_KeyboardListener.prototype.__class__.KEY_ENTER)) && ((sender == this.text_box))) {
+    this.text_send.setStyleName('gwt-button');
+    }
     };
     __Basic.prototype.__class__.onKeyUp = function() {
         return __Basic.prototype.onKeyUp.call.apply(__Basic.prototype.onKeyUp, arguments);
@@ -26244,6 +27049,9 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onKeyUp.unbound_method = true;
     __Basic.prototype.onKeyUp.instance_method = true;
     __Basic.prototype.onKeyDown = function(sender, keyCode, modifiers) {
+    if (((keyCode == __ui_KeyboardListener.prototype.__class__.KEY_ENTER)) && ((sender == this.text_box))) {
+    this.text_send.setStyleName('sel-button');
+    }
     };
     __Basic.prototype.__class__.onKeyDown = function() {
         return __Basic.prototype.onKeyDown.call.apply(__Basic.prototype.onKeyDown, arguments);
@@ -26257,12 +27065,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     console.error('Server Error or Invalid Response');
     }
     this.remote.receive_chatmessage(this);
-    if (this.isdriver) {
-    var msg =  (  ( this.drivername.getText() + ': ' )  + this.text_box.getText() ) ;
-    }
-    else {
-    var msg =  (  ( this.passengername.getText() + ': ' )  + this.text_box.getText() ) ;
-    }
+    var msg = this.text_box.getText();
     this.remote.send_chatmessage(msg, this);
     this.text_box.setText('');
     }
@@ -26273,19 +27076,20 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onKeyPress.unbound_method = true;
     __Basic.prototype.onKeyPress.instance_method = true;
     __Basic.prototype.onQuitClick = function() {
+    this.quit.setStyleName('sel-button');
     this.quitting = true;
-    var quitvp = ui_VerticalPanel();
-    quitvp.setSpacing(4);
-    quitvp.add(ui_HTML('We hope you had a productive session, come back soon!'));
+    var quitvp_right = ui_VerticalPanel();
+    quitvp_right.setSpacing(4);
+    quitvp_right.add(ui_HTML('We hope you had a productive session, come back soon!'));
     var quithp = ui_HorizontalPanel();
     quithp.setSpacing(7);
     quithp.add(ui_Button('Wait, don\'t quit yet!', pyjslib_getattr(this, 'onQuitCancel')));
     quithp.add(ui_Button('Save and quit', pyjslib_getattr(this, 'onQuitConfirm')));
-    quitvp.add(quithp);
-    quitvp.setCellHorizontalAlignment(quithp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
+    quitvp_right.add(quithp);
+    quitvp_right.setCellHorizontalAlignment(quithp, __ui_HasAlignment.prototype.__class__.ALIGN_CENTER);
     this.quit_box = ui_DialogBox();
     this.quit_box.setHTML('Quit Confirmation');
-    this.quit_box.setWidget(quitvp);
+    this.quit_box.setWidget(quitvp_right);
     this.quit_box.setPopupPosition(350, 200);
     this.quit_box.show();
     };
@@ -26295,6 +27099,7 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onQuitClick.unbound_method = true;
     __Basic.prototype.onQuitClick.instance_method = true;
     __Basic.prototype.onQuitCancel = function() {
+    this.quit.setStyleName('gwt-button');
     this.quit_box.hide();
     this.quitting = false;
     };
@@ -26304,7 +27109,9 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     __Basic.prototype.__class__.onQuitCancel.unbound_method = true;
     __Basic.prototype.onQuitCancel.instance_method = true;
     __Basic.prototype.onQuitConfirm = function() {
+    this.quit.setStyleName('gwt-button');
     this.quit_box.hide();
+    this.remote.sync_all(this);
     this.remote.user_quit(this);
     };
     __Basic.prototype.__class__.onQuitConfirm = function() {
@@ -26312,18 +27119,15 @@ __Basic.prototype.createTreeItem.parse_kwargs = function ( __kwargs, label, valu
     };
     __Basic.prototype.__class__.onQuitConfirm.unbound_method = true;
     __Basic.prototype.onQuitConfirm.instance_method = true;
-    __Basic.prototype.onContextMenu = function(sender) {
-    var event = DOM_eventGetCurrentEvent();
-    var x =  ( DOM_eventsGetClientX(event) + 2 ) ;
-    var y =  ( DOM_eventsGetClientY(event) + 2 ) ;
-    var popup = ui_ContextMenuPopupPanel(this.FileContext);
-    popup.showAt(x, y);
+    __Basic.prototype.onWindowCloseAbrupt = function() {
+    this.remote.sync_all(this);
+    this.remote.user_quit(this);
     };
-    __Basic.prototype.__class__.onContextMenu = function() {
-        return __Basic.prototype.onContextMenu.call.apply(__Basic.prototype.onContextMenu, arguments);
+    __Basic.prototype.__class__.onWindowCloseAbrupt = function() {
+        return __Basic.prototype.onWindowCloseAbrupt.call.apply(__Basic.prototype.onWindowCloseAbrupt, arguments);
     };
-    __Basic.prototype.__class__.onContextMenu.unbound_method = true;
-    __Basic.prototype.onContextMenu.instance_method = true;
+    __Basic.prototype.__class__.onWindowCloseAbrupt.unbound_method = true;
+    __Basic.prototype.onWindowCloseAbrupt.instance_method = true;
 }
 __DataService_initialize();
 __Basic_initialize();
