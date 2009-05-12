@@ -77,7 +77,7 @@ class Basic:
     # This is where we store the stuff going back and forth from the editor in driver mode.
     # listenID no longer exists, fix after demo.
     self.functionHTML = HTML("<script>SetUpEditArea('" + self.editorID +"','"+self.listenID+ "'); </script>")
-    self.editorHTML = HTML("The contents of the editor.")
+    self.editorHTML = HTML(" ")
     self.editorHTML.setVisible(False)
     self.editorHTML.setID(self.editorHTMLID)
     
@@ -805,6 +805,8 @@ class Basic:
         content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
         if len(content) > 0:
           self.remote.send_editor(content, self)
+        else:
+          self.remote.send_editor(" ", self)
       else:
         self.remote.receive_editor(self)
       
