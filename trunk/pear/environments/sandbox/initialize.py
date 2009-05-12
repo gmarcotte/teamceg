@@ -102,7 +102,7 @@ def clear_user_keys():
   for file in os.listdir(settings.RSA_KEY_DIR):
     if os.path.isfile(file):
       write_msg('Deleting RSA key: %s\n' % file, output_file, sys.stdout)
-      os.remove(file)
+      os.remove("%s/%s" % (settings.RSA_KEY_DIR, file))
       
 def clear_repositories():
   for top_dir in os.listdir(settings.SVN_BASE_DIR):
