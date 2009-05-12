@@ -6,8 +6,14 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 		ie=1;
 	//var sid=term_id; // 
 	window.sid=term_id;
-  window.query0suf="&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
-  window.query0="s="+window.sid+window.query0suf;
+  window.width = width;
+  window.height = height;
+  window.ssh = ssh;
+  window.user = user;
+  window.update_url = update_url;
+  window.key = key;
+  //window.query0suf="&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
+  window.query0="s="+window.sid+"&w="+window.width+"&h="+window.height+"&ssh="+window.ssh+"&user="+window.user+"&key="+window.key;
   //var query0="s="+window.sid+"&w="+width+"&h="+height+"&ssh="+ssh+"&user="+user+"&key="+key;
 	window.query1=window.query0+"&c=1&k=";
   //var query1=window.query0+"&c=1&k=";

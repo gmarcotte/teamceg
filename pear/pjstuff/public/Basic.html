@@ -19,15 +19,15 @@ src="http://download.skype.com/share/skypebuttons/js/skypeCheck.js">
           window.ajaxterm_console=ajaxterm.Terminal("term",80,25,'{{ server_host }}','{{ server_logon }}','{{ AJAXTERM_URL }}', '{{ user.id }}', '{{meeting.driverconsole}}');
 				}
 
-        function changeSID(new_sid,drive) {
-          window.alert(new_sid+" "+drive);
-          var temp = window.sid;
-          var temp1 = window.query0;
-          var temp2 = window.query1;
+        function changeSID(new_sid,new_ssh,new_user,new_key,drive) {
+          var temp = window.query1;
           window.sid=new_sid;
-          window.query0="s="+window.sid+window.query0suf;
+          window.ssh = new_ssh;
+          window.user = new_user; // this is actually a userid
+          window.key = new_key; // the number of the key file
+          window.query0="s="+window.sid+"&w="+window.width+"&h="+window.height+"&ssh="+window.ssh+"&user="+window.user+"&key="+window.key;
           window.query1=window.query0+"&c=1&k=";
-          alert(temp + ", " + window.sid+"  "+temp1+", "+window.query0+"  "+temp2+", "+window.query1);
+          alert(temp + ", "+window.query1);
           if (window.isDriver == true) {
             alert("driver->passenger");
             window.isDriver = drive;

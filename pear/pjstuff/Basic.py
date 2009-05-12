@@ -292,35 +292,67 @@ class Basic:
       if self.switching == False:
         self.switching = True
         for tpl in response:
-          if (str(tpl[1])) != "True" and (str(tpl[1])) != "False":
-            self.consoleID = Label("%s" % tpl[1])
+          if (str(tpl[0])) == 'new_sid':
+            self.consoleID = str(tpl[1])
+          if (str(tpl[0])) == 'new_ssh':
+            self.ssh = str(tpl[1])
+          if (str(tpl[0])) == 'new_user':
+            self.usr = str(tpl[1])
+          if (str(tpl[0])) == 'new_key':
+            self.key = str(tpl[1])
+          if (str(tpl[0])) == 'isdriver':
+            if str(tpl[1]) == 'False':
+              if self.isdriver == True:
+                self.isdriver = False 
+                self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+            if str(tpl[1]) == 'True':
+              if self.isdriver == False:
+                self.isdriver = True
+                self.editor.add(HTML(self.driversynch), self.synchID)
+                #new_ssh,new_user,new_key,
+                self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+          
+          #if (str(tpl[1])) != "True" and (str(tpl[1])) != "False":
+          #  self.consoleID = Label("%s" % tpl[1])
+          #if (str(tpl[1])) == "True":
+          #  if self.isdriver == False:
+          #    self.isdriver = True
+          #    self.editor.add(HTML(self.driversynch), self.synchID)
+          #    #alert(self.consoleID.getText())
+          #    # this needs to be changed significantly
+          #    ###self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
+          #elif str(tpl[1]) == "False":
+          #  if self.isdriver == True:
+          #    self.isdriver = False
+          #    self.editor.add(HTML(self.passengersynch), self.synchID)
+          #    #alert(self.consoleID.getText())
+          #    self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
+          #self.switching = False
+    elif request_info.method == 'switch_driver':
+      for tpl in response:
+        if (str(tpl[0])) == 'new_sid':
+            self.consoleID = str(tpl[1])
+        if (str(tpl[0])) == 'new_ssh':
+          self.ssh = str(tpl[1])
+        if (str(tpl[0])) == 'new_user':
+          self.usr = str(tpl[1])
+        if (str(tpl[0])) == 'new_key':
+          self.key = str(tpl[1])
+        if (str(tpl[0])) == 'isdriver':
           if (str(tpl[1])) == "True":
             if self.isdriver == False:
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
-              #alert(self.consoleID.getText())
-              self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
+              self.switching = False
+              self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+              # need to hold off until we know the id self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
-              #alert(self.consoleID.getText())
-              self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"',"+self.isdriver+");</script>"),"MYtermfunctionID")
-          self.switching = False
-    elif request_info.method == 'switch_driver':
-      for tpl in response:
-        if (str(tpl[1])) == "True":
-          if self.isdriver == False:
-            self.isdriver = True
-            self.editor.add(HTML(self.driversynch), self.synchID)
-            self.switching = False
-            # need to hold off until we know the id self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
-        elif str(tpl[1]) == "False":
-          if self.isdriver == True:
-            self.isdriver = False
-            self.editor.add(HTML(self.passengersynch), self.synchID)
-            self.switching = False
-            # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
+              self.switching = False
+              self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+              # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         # Let's wait and try this on driver_status
         #else:
         #  alert(self.consoleID.getText())

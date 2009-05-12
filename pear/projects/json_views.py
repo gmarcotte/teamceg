@@ -272,8 +272,12 @@ def driver_status(request):
     if (meeting == None):
       r.append(('error', 'ERROR: no active meeting!'))
       return r
-      
-    r.append(('consoleid',str(meeting.driverconsole)))
+    
+    r.append(('new_sid', str(meeting.driverconsole)))
+    r.append(('new_ssh', str(meeting.driverssh)))
+    r.append(('new_user', str(meeting.driver_id)))
+    r.append(('new_key', str(meeting.driver_id)))    
+    ##r.append(('consoleid',str(meeting.driverconsole)))
     # if the user is the driver return true 
     if str(request.user.id) == str(meeting.driver_id):
         r.append(('isdriver','True'))
@@ -314,12 +318,22 @@ def switch_driver(request):
         temp = meeting.driver_id
         meeting.driver_id = meeting.passenger_id
         meeting.passenger_id = temp
+        tempssh = meeting.passengerssh
+        meeting.passengerssh = meeting.driverssh 
+        meeting.driverssh = tempssh
         meeting.save()
         #r.append(('notice','we switched drivers'))
+        r.append(('new_sid', str(meeting.driverconsole)))
+        r.append(('new_ssh', str(meeting.driverssh)))
+        r.append(('new_user', str(meeting.driver_id)))
+        r.append(('new_key', str(meeting.driver_id)))
         r.append(('isdriver','False'))
         
-        
       else:
+        r.append(('new_sid', str(meeting.driverconsole)))
+        r.append(('new_ssh', str(meeting.driverssh)))
+        r.append(('new_user', str(meeting.driver_id)))
+        r.append(('new_key', str(meeting.driver_id)))
         # if there is no passenger, do nothing
         #r.append(('notice','no passenger'))
         r.append(('isdriver','True'))
