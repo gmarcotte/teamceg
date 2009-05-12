@@ -416,18 +416,10 @@ class Basic:
       filepanel = HorizontalPanel()
       filetreebutton = Button("File Tree", getattr(self, "onFileTreeOpenClick"))
       filesavebutton = Button("Save", getattr(self,"onFileSave"))
-      ## we may add back later
-      #filedirbutton = Button("Add New Directory", getattr(self, "onFileDirOpenClick"))
-      #fileuploadbutton = Button("Upload a File", getattr(self, "onFileUploadOpenClick"))
       filetreebutton.setStyleName("supp-button")
       filesavebutton.setStyleName("supp-button")
-      ##filedirbutton.setStyleName("supp-button")
-      #fileuploadbutton.setStyleName("supp-button")
       filepanel.add(filetreebutton)
       filepanel.add(filesavebutton)
-      ##filepanel.add(filedirbutton)
-      #filepanel.add(fileuploadbutton)
-      #filepanel.add(Label("%s" % self.current_open[2]))
       self.menu_body.setWidget(filepanel)
  
   def onFileSave(self):
@@ -505,6 +497,7 @@ class Basic:
               s4.addItem(s5)
               s4.setState(False, fireEvents=False)
               i = i + 1
+        s1.setState(True, fireEvents=False)
         filetree.addItem(s1)      
     filetreepanel = VerticalPanel()
     filetreepanel.setSpacing(7)
@@ -516,7 +509,7 @@ class Basic:
     filetreepanel.setWidth("400px")
     self.file_box = DialogBox()
     if self.current_open != None:
-      self.file_box.setHTML("<b>File Navigation</b> <i>%s</i>" % str(self.current_open[2]))
+      self.file_box.setHTML("<b>File Navigation</b> Currently Editing: <i>%s</i>" % str(self.current_open[2]))
     else:
       self.file_box.setHTML("<b>File Navigation</b>")
     self.file_box.setWidget(filetreepanel)
