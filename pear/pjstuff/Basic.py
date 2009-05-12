@@ -171,7 +171,7 @@ class Basic:
     tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
     self.file_tree.add(tempbutt)
     self.file_tree.add(Label("Temp for filler"))
-    self.tree_panel = HTMLPanel("Hello, I want to be a file tree!")
+    self.tree_panel = SimplePanel("Hello, I want to be a file tree!")
     
     filetree = Tree()
     filetree.addTreeListener(self)
@@ -211,7 +211,9 @@ class Basic:
     filetreepanel.add(filetreebutt)
     filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
     filetreepanel.setWidth("400px")
-    self.tree_panel.setWidget(filetreepanel)
+    self.file_box.setWidget(filetreepanel)
+    self.file_box.setPopupPosition(350, 200)
+    self.file_box.show()
     
     
     
