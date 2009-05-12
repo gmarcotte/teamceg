@@ -287,7 +287,7 @@ class Basic:
     elif request_info.method == 'receive_editor':
       # check to see if maybe there is an error here because of empty string?
       for tpl in response:
-        alert(str(tpl[1]))
+        #alert(str(tpl[1]))
         content = tpl[1]
         innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'>" + content+"</div>";
         DOM.setInnerHTML(DOM.getElementById(self.editorHTMLID), innerhtml)#tpl[1]) was innerText
