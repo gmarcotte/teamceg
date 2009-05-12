@@ -154,7 +154,7 @@ class SSHConnection(timestamp.TimestampedModel):
     
   # Common remote operations  
   def get_relative_filename(self, filepath):
-    return os.path.normcase(os.path.normpath(os.path.join(self.base_dir, filepath)))
+    return os.path.normcase(os.path.normpath(os.path.join(self.base_dir, filepath))).rstrip('/')
   
   def save_file(self, session, filename, string=''):   
     filepath = self.get_relative_filename(filename)
@@ -193,8 +193,9 @@ class SSHConnection(timestamp.TimestampedModel):
       file = bits[10]
       if file.find('.svn') > 0:
         continue
-      file = file[len('/'.join(dirpath.split('/')[:-1]))+1:]
-      path = file[len(dirpath.split('/')[-1])+1:]
+      dirbits = dirpath.split('/')
+      path = file[len(dirpath)+1:]
+      file = file[len('/'.join(dirbits[:-1])):].strip('/')
       file_bits = file.split('/')
       depth = len(file_bits)
       if perms[0] == 'd':
