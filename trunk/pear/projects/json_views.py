@@ -47,8 +47,8 @@ def send_chatmessage(request,message):
         msg.receiver = None
     else:
       msg.receiver = PearUser.objects.get(pk=meeting.driver_id)
-    
-    msg.message = message
+    fullmessage = request.user.first_name + ": "+ message
+    msg.message = fullmessage
     msg.save()
     # add this message to the queue in the database
     if meeting.unsent_messages == None:
@@ -58,7 +58,7 @@ def send_chatmessage(request,message):
     
     # now look and see if there are any latent messages
     if meeting.unsent_messages == None:
-      r.append(('success',message))
+      r.append(('msg',fullmessage))
       return r
     
     msgs = meeting.unsent_messages.all()
