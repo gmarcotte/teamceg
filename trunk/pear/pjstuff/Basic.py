@@ -350,7 +350,7 @@ class Basic:
          
     elif request_info.method == 'new_file':
       for tpl in response:
-        #window.alert(str(tpl[1]))
+        window.alert(str(tpl[1]))
     elif request_info.method == 'new_directory':
       for tpl in response:
         window.alert(str(tpl[1]))
