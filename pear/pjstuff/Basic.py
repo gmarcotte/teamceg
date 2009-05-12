@@ -162,20 +162,9 @@ class Basic:
     
     
     # the right side
-    vp_right = VerticalPanel()
-    vp_right.setBorderWidth(1)
     
     # file tree
-    filetree = Tree()
-    filetree.addTreeListener(self)
-    ###Need to fill this in after file tree works as is in dialogbox
-    filetreepanel = VerticalPanel()
-    filetreepanel.setSpacing(7)
-    filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
-    filetreepanel.add(filetree)
-    filetreepanel.setWidth("400px")
-    self.file_tree = SimplePanel()
-    self.file_tree.setWidget(filetreepanel)
+    #(setWidth("370px"))
     
     
     # not so hacky -- indeed, pretty decent little text chat
@@ -183,9 +172,9 @@ class Basic:
     self.text_area.setStyleName("text-area")
     self.text = HTML("(There is a 600 character limit on messages)")
     self.text_area.setWidget(self.text)
-    self.text_area.setSize("370px", "151px")
+    self.text_area.setSize("380px", "151px")
     self.text_box = TextBox()
-    self.text_box.setVisibleLength("41")
+    self.text_box.setVisibleLength("43")
     self.text_box.setMaxLength("600")
     self.text_box.setID(self.chatID)
     self.text_box.addKeyboardListener(self)
@@ -193,7 +182,7 @@ class Basic:
     text_entry = HorizontalPanel()
     text_entry.add(self.text_box)
     text_entry.add(self.text_send)
-    text_entry.setWidth("340px")
+    text_entry.setWidth("350px")
     real_chat = VerticalPanel()
     #real_chat.add(self.chat_transcript)
     real_chat.add(self.text_area)
@@ -202,6 +191,8 @@ class Basic:
     real_chat.setStyleName("whitebg")
     
     # putting the new right side together
+    vp_right = VerticalPanel()
+    vp_right.setBorderWidth(1)
     vp_right.add(self.file_tree)
     vp_right.add(real_chat)
     vp_right.setWidth("100%")
