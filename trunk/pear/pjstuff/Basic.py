@@ -255,7 +255,7 @@ class Basic:
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
       if str(self.consoleID) != str(previousconsoleID):
-        window.alert("Changing console")
+        #window.alert("Changing console")
         self.term.add(HTML("<script>changeSID('"+self.consoleID.getText()+"', "+self.isdriver+");</script>"),"MYtermfunctionID")
         
     elif request_info.method == 'send_chatmessage':
@@ -613,7 +613,7 @@ class Basic:
     self.manage_add_box.hide()
   
   def onDeleteDialog(self):
-    window.alert("Delete files/directories")
+    #window.alert("Delete files/directories")
     contents = VerticalPanel()
     contents.setSpacing(4)
     contents.add(HTML('Delete files and directories.'))
@@ -633,13 +633,13 @@ class Basic:
     for i in range(0,len(self.file_list)):
       alert(str(self.file_list[i][2])+" "+str(self.current_directory))
       if str(self.file_list[i][2]) == str(self.current_directory)[:len(str(self.current_directory))-1]:
-        window.alert("Matched directory")
+        #window.alert("Matched directory")
         level = str(int(self.file_list[i][0][0]) + 1)
         start = i
-        window.alert(level + " " + start)
+        #window.alert(level + " " + start)
     for i in range(start+1, len(self.file_list)):
       if self.file_list[i][0][0] == level:
-        window.alert("found file")
+        #window.alert("found file")
         self.FilesToDelete.append(CheckBox(str(self.file_list[i][2])))
       else:
         level = "0"
@@ -690,6 +690,7 @@ class Basic:
           fname = self.current_directory + self.FilesToDelete[i].getText() # we put file names (not full paths)in the list
           #window.alert(fname)
           self.remote.delete_file(fname,self)
+    # TODO: reload the file tree 
     self.manage_del_box.hide()
       
   def onCancelDel(self):
