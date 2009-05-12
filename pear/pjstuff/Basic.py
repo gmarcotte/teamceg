@@ -694,13 +694,16 @@ class Basic:
  
   def onDelOK(self):
     if self.DelDir.isChecked():
-      self.remote.delete_file(self.current_directory[:len(self.current_directory)-1],self)
+      dir = self.current_directory[:len(self.current_directory)]
+      dir = dir.lstrip("/")
+      self.remote.delete_file(dir,self) # do we need to prevent root?
    
     # just files
     else:
       for i in range(0, len(self.FilesToDelete)):
         if self.FilesToDelete[i].isChecked():
           fname = self.current_directory + self.FilesToDelete[i].getText() # we put file names (not full paths)in the list
+          fname = fname.lstrip("/")
           self.remote.delete_file(fname,self)
     self.remote.get_file_tree(self)
     self.manage_del_box.hide()
