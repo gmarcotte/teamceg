@@ -15,7 +15,7 @@ class NewProjectForm(forms.Form):
   description = forms.CharField('Project Description', required=False,
                               widget=forms.Textarea())
   directory = forms.CharField(
-      'Directory', required=False,
+      'Directory', required=True,
       help_text=('Files for this project will be stored in this directory '
                  '(relative to the base directory that you specify for '
                  'your SSH connection)'))
@@ -88,7 +88,7 @@ class EditProjectForm(forms.Form):
   name = forms.CharField('Project Name', required=True)
   description = forms.CharField('Project Description', required=False,
                                 widget=forms.Textarea())
-  directory = forms.CharField('Directory', required=False)
+  directory = forms.CharField('Directory', required=True)
   
   course = pear_fields.ModelHasOneField(
       label="Course",
