@@ -14,7 +14,7 @@ import sys
 class PearUser(auth_models.User):
   """This model is used to extend the functionality of the Django user model
   without changing the actual Django code.  We can only add methods and
-  attributes here, we can't add any new database fields.s
+  attributes here, we can't add any new database fields.
   """
   class Meta:
     proxy = True
@@ -34,20 +34,17 @@ class PearUser(auth_models.User):
   def update_count(self):
     return self.profile.update_count
   
-  def save(self):
-    self.profile.save()
-    super(PearUser, self).save()
-  
-  def delete(self):
-    """Deleting a server and the user's profile may have custom behavior
-    related to handling the keyfiles.  So we need to explicitly call their
-    delete functions as Django only does a MySQL delete for related objects.
-    """
-    for server in self.servers.all():
-      server.delete()
-    self.profile.delete()
-    super(PearUser, self).delete()
+# This is causing problems.  We don't really use the update/created stats
+# for anything, so we don't need it here.
+#  def save(self):
+#    if self.profile:
+#      self.profile.save()
+#    super(PearUser, self).save()
     
+  def delete(self):
+    u = auth_models.User.objects.get(pk=self.id)
+    u.delete()
+        
   @property
   def current_meeting(self):
     if self.driver_for.count():
@@ -64,7 +61,7 @@ class PearUser(auth_models.User):
 class Profile(timestamp.TimestampedModel):
   major = models.CharField(max_length=30)
   class_year = models.CharField(max_length=30)
-  user = models.OneToOneField(auth_models.User, related_name='profile', primary_key=True)
+  user = models.OneToOneField(PearUser, related_name='profile', primary_key=True)
   
   def delete(self):
     if os.path.exists(self.get_private_file()):
