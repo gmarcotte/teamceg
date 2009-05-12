@@ -263,6 +263,8 @@ class Basic:
         if str(tpl[0]) == 'passengername':
           self.passengername = Label("%s" % tpl[1])
       if haspassenger == False:
+        self.passenger = Label("")
+        self.passengername Label("")
         self.passenger.setText("No Partner logged in")  # so passenger is not undefined,
         self.passengername.setText("No Partner logged in")
       if str(self.consoleID) != str(previousconsoleID):
