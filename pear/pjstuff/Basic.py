@@ -836,10 +836,11 @@ class Basic:
       console.error("Server Error or Invalid Response")
     self.remote.receive_chatmessage(self)
     # wait until we get the response
-    if self.isdriver:
-        msg = self.drivername.getText() + ": " + self.text_box.getText()
-    else:  # if not self.isdriver:
-      msg = self.passengername.getText() + ": " + self.text_box.getText()
+    #if self.isdriver:
+    #    msg = self.drivername.getText() + ": " + self.text_box.getText()
+    #else:  # if not self.isdriver:
+    #  msg = self.passengername.getText() + ": " + self.text_box.getText()
+    msg = self.text_box.getText()
     self.remote.send_chatmessage(msg, self)
     self.text_box.setText("")
     
