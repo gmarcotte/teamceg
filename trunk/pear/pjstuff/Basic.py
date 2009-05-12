@@ -373,6 +373,9 @@ class Basic:
     elif request_info.method == 'save_file':
       for tpl in response:
         window.alert(str(tpl[1]))
+    elif request_info.method == 'delete_file':
+      for tpl in response:
+        window.alert(str(tpl[1]))
     elif request_info.method == 'get_file_tree':
       self.file_list = []
       for tpl in response:
@@ -588,7 +591,6 @@ class Basic:
     self.file_box.hide()
   
   def onAddDialog(self):
-    #window.alert("Add files/directories")
     contents = VerticalPanel()
     contents.setSpacing(4)
     contents.add(HTML('Add files and directories.'))
@@ -622,24 +624,19 @@ class Basic:
     self.file_box.hide()
         
   def onAddOK(self):
-    #window.alert(self.NewFileName.getText())
     newfile = self.current_directory + self.NewFileName.getText()
-    #window.alert(newfile)
     if self.NewDir.isChecked():
-      #window.alert("Directory")
       self.remote.new_directory(newfile,self)
-      # update the file tree! TODO
+      self.remote.get_file_tree(self)
     else:
-      #window.alert("File")
       self.remote.new_file(newfile,self)
-      # update the file tree! TODO
+      self.remote.get_file_tree(self)
     self.manage_add_box.hide()
     
   def onCancelAdd(self):
     self.manage_add_box.hide()
   
   def onDeleteDialog(self):
-    #window.alert("Delete files/directories")
     contents = VerticalPanel()
     contents.setSpacing(4)
     contents.add(HTML('Delete files and directories.'))
@@ -657,22 +654,15 @@ class Basic:
     # find the files in this directory
     level = "0"
     for i in range(0,len(self.file_list)):
-      alert(str(self.file_list[i][2])+" "+str(self.current_directory))
       if str(self.file_list[i][2]) == str(self.current_directory)[:len(str(self.current_directory))-1]:
-        #window.alert("Matched directory")
         level = str(int(self.file_list[i][0][0]) + 1)
         start = i
-        #window.alert(level + " " + start)
     for i in range(start+1, len(self.file_list)):
       if self.file_list[i][0][0] == level:
-        #window.alert("found file")
         self.FilesToDelete.append(CheckBox(str(self.file_list[i][2])))
       else:
         level = "0"
-          
-    self.FilesToDelete.append(CheckBox("File1"))
-    self.FilesToDelete.append(CheckBox("File2"))
-    self.FilesToDelete.append(CheckBox("File3"))
+
     for i in range(0,len(self.FilesToDelete)):
       contentshpn.add(self.FilesToDelete[i])
     contentshp = HorizontalPanel()
@@ -703,10 +693,7 @@ class Basic:
       self.FilesToDelete[i].setEnabled(False)
   
   def onDelOK(self):
-    #window.alert("Deleting!")
-    # whole directory?
     if self.DelDir.isChecked():
-      #window.alert(self.current_directory[:len(self.current_directory)-1])
       self.remote.delete_file(self.current_directory[:len(self.current_directory)-1],self)
     
     # just files
@@ -714,9 +701,8 @@ class Basic:
       for i in range(0, len(self.FilesToDelete)):
         if self.FilesToDelete[i].isChecked():
           fname = self.current_directory + self.FilesToDelete[i].getText() # we put file names (not full paths)in the list
-          #window.alert(fname)
           self.remote.delete_file(fname,self)
-    # TODO: reload the file tree 
+    self.remote.get_file_tree(self)
     self.manage_del_box.hide()
       
   def onCancelDel(self):
@@ -726,18 +712,18 @@ class Basic:
     self.manage_directory_box.hide()
       
   def onDialogSave(self):
-    #window.alert("Saving changes.")
     content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
     self.remote.save_file(str(self.current_open[2]), content, self) #self.current_open
     self.remote.open_file(str(self.nextfile[2]),self) #self.nextfile
     self.modified = False
+    # set the content to none
     self.current_open = self.nextfile
     self.savediscard_box.hide()
   
   def onDialogDiscard(self):
-    #window.alert("Discarding changes.")
     self.remote.open_file(str(self.nextfile[2]),self) # self.nextfile
     self.modified = False
+    # set the content to None
     self.current_open = self.nextfile
     self.savediscard_box.hide()
   
