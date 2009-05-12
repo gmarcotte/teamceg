@@ -25411,20 +25411,10 @@ function __Basic_initialize() {
     this.quitting = false;
     this.switching = false;
     this.remote.get_meetinginfo(this);
+    this.remote.get_file_tree('rd', this);
     this.active_menu = ui_Label('');
     this.info = ui_Button('Info', pyjslib_getattr(this, 'onInfoClick'));
     this.file_test = new pyjslib_List([]);
-    this.file_test.append(new pyjslib_Tuple(['1Top Level', 'dir', 'root/']));
-    this.file_test.append(new pyjslib_Tuple(['2Second Level', 'file', 'root/file1']));
-    this.file_test.append(new pyjslib_Tuple(['2Also Second Level', 'file', 'root/file2']));
-    this.file_test.append(new pyjslib_Tuple(['1Top Level Again', 'dir', 'root/']));
-    this.file_test.append(new pyjslib_Tuple(['2New second level', 'dir', 'root/subdir1/']));
-    this.file_test.append(new pyjslib_Tuple(['3Third Level', 'dir', 'root/subdir1/subdir2/']));
-    this.file_test.append(new pyjslib_Tuple(['4Fourth Level', 'dir', 'root/subdir1/subdir2/subdir3/']));
-    this.file_test.append(new pyjslib_Tuple(['5Fifth Level', 'file', 'root/subdir1/subdir2/subdir3/file3']));
-    this.file_test.append(new pyjslib_Tuple(['3Third Level Again', 'file', 'root/subdir1/subdir2/file4']));
-    this.file_test.append(new pyjslib_Tuple(['3Third Level Again Again', 'file', 'root/subdir1/subdir2/file5']));
-    this.file_test.append(new pyjslib_Tuple(['2Second Level Again', 'file', 'root/subdir1/file6']));
     this.files = ui_Button('Files', pyjslib_getattr(this, 'onFilesClick'));
     this.FileContext = ui_SimplePanel('La di da');
     this.mode = ui_Button('Mode', pyjslib_getattr(this, 'onModeClick'));
@@ -25782,6 +25772,97 @@ function __Basic_initialize() {
         }
         
     }
+    else if ((request_info.method == 'new_file')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(pyjslib_str(tpl.__getitem__(1)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'new_directory')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(pyjslib_str(tpl.__getitem__(1)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'open_file')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(pyjslib_str(tpl.__getitem__(1)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'save_file')) {
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    window.alert(pyjslib_str(tpl.__getitem__(1)));
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
+    else if ((request_info.method == 'get_file_tree')) {
+    this.file_test = new pyjslib_List([]);
+
+        var __tpl = response.__iter__();
+        try {
+            while (true) {
+                var tpl = __tpl.next();
+                
+        
+    this.file_test.append(tpl);
+
+            }
+        } catch (e) {
+            if (e != StopIteration) {
+                throw e;
+            }
+        }
+        
+    }
     else if ((request_info.method == 'user_quit')) {
     this.location = Window_getLocation();
     this.location.setHref('http://teamceg.princeton.edu/');
@@ -25906,6 +25987,7 @@ function __Basic_initialize() {
     var filetree = ui_Tree();
     filetree.addTreeListener(this);
     var i = 0;
+    this.remote.get_file_tree('rd', this);
     while (((i < pyjslib_len(this.file_test))) && ((this.file_test.__getitem__(i).__getitem__(0).__getitem__(0) == '1'))) {
     var s1 = pyjs_kwargs_method_call(this, 'createTreeItem', [{value:this.file_test.__getitem__(i).__getitem__(2)}, pyjslib_str(pyjslib_slice(this.file_test.__getitem__(i).__getitem__(0), 1, null))]);
     var i =  ( i + 1 ) ;
