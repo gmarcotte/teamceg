@@ -167,7 +167,7 @@ class Basic:
     
     # file tree
     #(setWidth("370px"))
-    
+    self.file_tree = SimplePanel("Hello, damn file tree")
     
     # not so hacky -- indeed, pretty decent little text chat
     self.text_area = ScrollPanel()
