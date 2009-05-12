@@ -171,7 +171,7 @@ class Basic:
     tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
     self.file_tree.add(tempbutt)
     self.file_tree.add(Label("Temp for filler"))
-    self.tree_panel = SimplePanel("Hello, I want to be a file tree!")
+    self.tree_panel = SimplePanel()
     
     filetree = Tree()
     filetree.addTreeListener(self)
