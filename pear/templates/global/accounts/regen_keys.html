@@ -1,0 +1,15 @@
+{% extends "global/base.html" %}
+
+{% block content %}
+<h2> Regenerate RSA Keys </h2>
+<p>This will regenerate RSA public and private keys for use in Pairgramming
+SSH connections.  You will no longer be able to use any of your SSH
+connections until you refresh the keys on the remote server.</p>
+
+<form action="" method="POST">
+Are you SURE you want to regenerate the RSA keys??
+<input type="submit" name="confirm_regen" value="Regenerate!" />
+<input type="submit" name="cancel" value="Cancel" /> 
+</form>
+
+{% endblock %}
