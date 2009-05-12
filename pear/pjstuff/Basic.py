@@ -8,11 +8,11 @@ from ContextMenuPopupPanel import ContextMenuPopupPanel
 
 class DataService(JSONProxy):
   def __init__(self):
-    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree","delete_file"])
+    JSONProxy.__init__(self, "/projects/services/", ["get_username", "get_meetinginfo","send_chatmessage","receive_chatmessage","send_flash","receive_flash","send_editor","receive_editor","user_quit", "driver_status","switch_driver","new_file","new_directory","open_file","save_file","get_file_tree","delete_file","sync_all"])
 
 class Basic:
   def onModuleLoad(self):
-    
+    window.addCloseListener(getattr(self,"onWindowCloseAbrupt"))
     self.remote = DataService()
     self.initEditor = False
     # this tells us whether or not we are trying to quit...
@@ -370,9 +370,12 @@ class Basic:
         # add response text to editor
         self.editor.add(HTML("<script>editAreaLoader.setValue('MYeditorID','"+ tpl[1]+"');</script>"), self.functionID)
         self.originalContents = str(tpl[1])
+        self.modified = False
     elif request_info.method == 'save_file':
+      self.modified = False
       for tpl in response:
         window.alert(str(tpl[1]))
+        
     elif request_info.method == 'delete_file':
       for tpl in response:
         window.alert(str(tpl[1]))
@@ -384,9 +387,10 @@ class Basic:
         
       
     elif request_info.method == 'user_quit':
-      ##save everything for them
       self.location = Window.getLocation()
       self.location.setHref("http://teamceg.princeton.edu/")
+    elif request_info.method == 'sync_all':
+      pass
     else:
       console.error("Error in onRemoteResponse function in Basic.py")
   
@@ -430,6 +434,7 @@ class Basic:
     if self.isdriver == True:
       content = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
       self.remote.save_file(str(self.current_open[2]),content, self)
+      self.originalContents = content
   
   def onFileUploadOpenClick(self):
     self.uploadform = FormPanel()
@@ -523,11 +528,16 @@ class Basic:
   def onTreeItemSelected(self, item):
     acted = False
     value = item.getUserObject()
+    # prevent non-driver from modifying file tree structure
+    if self.isdriver == False:
+      return
     #window.alert("You clicked on " + value)
     # check if the file currently opened has been modified
     currentcontent = DOM.getInnerText(DOM.getElementById(self.editorHTMLID))
+    
     if str(currentcontent) != self.originalContents:
-      self.modified = True
+      if self.originalContents != None:
+        self.modified = True
     
     # if it is a file -> open it.
     for thing in self.file_list:
@@ -583,10 +593,9 @@ class Basic:
       self.manage_directory_box.setWidget(contents)
       self.manage_directory_box.setPopupPosition(200,200)
       self.manage_directory_box.show()
-    
-    #self.file_box.hide()
+
   def onTreeItemStateChanged(self, item):
-    pass  # "We ignore this." but why again?
+    pass  
   def onFileTreeCloseClick(self):
     self.file_box.hide()
   
@@ -874,5 +883,12 @@ class Basic:
     self.quitting = False 
   def onQuitConfirm(self):
     self.quit_box.hide()
+    self.remote.sync_all(self)
+    self.remote.user_quit(self)
+    
+  # this is called when we are exiting the actual browser window,
+  # when the user did not quit themselves
+  def onWindowCloseAbrupt(self):
+    self.remote.sync_all(self)
     self.remote.user_quit(self)
     
