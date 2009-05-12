@@ -513,7 +513,10 @@ class Basic:
     filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
     filetreepanel.setWidth("400px")
     self.file_box = DialogBox()
-    self.file_box.setHTML("<b>File Navigation</b> <i>%s</i>" % str(self.current_open[2]))
+    if self.current_open != None:
+      self.file_box.setHTML("<b>File Navigation</b> <i>%s</i>" % str(self.current_open[2]))
+    else:
+      self.file_box.setHTML("<b>File Navigation</b>")
     self.file_box.setWidget(filetreepanel)
     self.file_box.setPopupPosition(350, 200)
     self.file_box.show()
