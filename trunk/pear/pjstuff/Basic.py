@@ -524,7 +524,7 @@ class Basic:
             self.current_open = thing
     # if it is a directory -> make a popup to add/delete files dirs
     if acted == False:
-      window.alert("Will display a dialog window to manage directory: " + str(value))
+      #window.alert("Will display a dialog window to manage directory: " + str(value))
       contents = VerticalPanel()
       contents.setSpacing(4)
       contents.add(HTML('Add or delete files and directories.'))
@@ -549,10 +549,36 @@ class Basic:
   
   def onAddDialog(self):
     window.alert("Add files/directories")
+    contents.setSpacing(4)
+    contents.add(HTML('Add files and directories.'))
+    contentshpn = HorizontalPanel()
+    contentshpn.setSpacing(7)
+    contentshpn.add(TextBox())
+    contentshp = HorizontalPanel()
+    contentshp.setSpacing(7)
+    contentshp.add(Button("Add",getattr(self,"onAddOK")))
+    contentshp.add(Button("Cancel",getattr(self,"onCancelAdd")))
+    
+    contents.add(contentshpn)
+    contents.add(contentshp)
+    contents.setCellHorizontalAlignment(contentshp, HasAlignment.ALIGN_CENTER)
+    self.manage_add_box = DialogBox()
+    self.manage_add_box.setHTML("<b>Add</b>")
+    self.manage_add_box.setWidget(contents)
+    self.manage_add_box.setPopupPosition(200,200)
+    self.manage_add_box.show()
     self.manage_directory_box.hide()
+    
+  def onAddOK(self):
+    self.manage_add_box.hide()
+    
+  def onCancelAdd(self):
+    self.manage_add_box.hide()
+  
   def onDeleteDialog(self):
     window.alert("Delete files/directories")
     self.manage_directory_box.hide()
+    
   def onCancelManageDialog(self):
     self.manage_directory_box.hide()
       
