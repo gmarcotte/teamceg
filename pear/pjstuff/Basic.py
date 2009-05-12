@@ -263,11 +263,13 @@ class Basic:
         
     elif request_info.method == 'send_chatmessage':
       for tpl in response:
+        alert(str(tpl[1]))
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
     elif request_info.method == 'receive_chatmessage':
       for tpl in response:
+        alert(str(tpl[1]))
         self.text.setHTML(self.text.getHTML() + "<br>" + str(tpl[1]))
         self.text_area.setWidget(self.text)
         self.text_area.setScrollPosition(999999)
