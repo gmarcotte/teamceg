@@ -189,7 +189,7 @@ ajaxterm.Terminal_ctor=function(id,width,height,ssh,user,update_url,key,term_id)
 		//alert(query1);
     
 		if (window.isDriver.toString() == 'false') {
-			alert("Passenger, not sending keypress");
+			//alert("Passenger, not sending keypress");
 			return true;
 		}
 		
