@@ -166,14 +166,14 @@ class Basic:
     
     # file tree
     self.file_box = SimplePanel()
-    filetreepanel = VerticalPanel()
-    filetreepanel.setSpacing(7)
-    filetreepanel.setWidth("370px")
+    tree_vp = VerticalPanel()
+    tree_vp.setSpacing(7)
+    tree_vp.setWidth("370px")
     tempbutt = Button("Refresh", getattr("onFileTreeOpenClick"))
-    filetreepanel.add(tempbutt)
-    filetreepanel.setCellHorizontalAlignment(tempbutt, HasAlignment.ALIGN_RIGHT)
-    filetreepanel.add(self.file_box)
-    filetreepanel.setCellHorizontalAlignment(self.file_box, HasAlignment.ALIGN_LEFT)
+    tree_vp.add(tempbutt)
+    tree_vp.setCellHorizontalAlignment(tempbutt, HasAlignment.ALIGN_RIGHT)
+    tree_vp.add(self.file_box)
+    tree_vp.setCellHorizontalAlignment(self.file_box, HasAlignment.ALIGN_LEFT)
     
     
     # not so hacky -- indeed, pretty decent little text chat
