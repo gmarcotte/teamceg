@@ -108,7 +108,7 @@ def clear_user_keys(output_file=None):
 def clear_repositories(output_file=None):
   for top_dir in os.listdir(settings.SVN_BASE_DIR):
     write_msg('Deleting repository: %s\n' % top_dir, output_file, sys.stdout)
-    for root, dirs, files in os.walk(top_dir, topdown=False):
+    for root, dirs, files in os.walk("%s/%s" % (settings.SVN_BASE_DIR, top_dir), topdown=False):
       for name in files:
           os.remove(os.path.join(root, name))
       for name in dirs:
