@@ -221,8 +221,8 @@ class Basic:
       haspassenger = False
       previousconsoleID = self.consoleID
       for tpl in response:
-        if str(tpl[0]) == '':
-          if str(tpl[1]) == 'true':
+        if str(tpl[0]) == 'isdriver':
+          if str(tpl[1]) == 'True':
             self.isdriver = True
             if self.initEditor == False:
               self.editor.add(HTML(self.driversynch), self.synchID)
