@@ -549,6 +549,7 @@ class Basic:
   
   def onAddDialog(self):
     window.alert("Add files/directories")
+    contents = VerticalPanel()
     contents.setSpacing(4)
     contents.add(HTML('Add files and directories.'))
     contentshpn = HorizontalPanel()
