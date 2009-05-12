@@ -1,0 +1,25 @@
+body {
+  background-color: #white;
+  font-family: Comic Sans;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+h1 { text-align: center; }
+h2 { text-align: center; }
+h3 { text-align: center; font-family; Georgia; }
+h4 { text-align: left; }
+p { text-align: left; font-family: Georgia; font-size: 16px; line-height: 23px; }
+b { color: #green; font-family: Comic Sans MS; font-weight: bold; font-size: 19px; }
+b2{ color: #orange; font-family: Comic Sans MS; font-weight: bold; font-size: 19px; }
+img { text-align: center; }
+img.floatLeft {
+  float: left;
+  margin: 6px;
+}
+img.floatRight {
+  float: right;
+  margin: 6px;
+}
+blockquote { text-align: left; }
