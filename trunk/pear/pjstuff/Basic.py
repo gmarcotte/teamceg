@@ -137,7 +137,7 @@ class Basic:
     # the console
     self.term = HTMLPanel(" <script> setterm(''); </script> <div id='term'></div><div id='MYtermfunctionID'></div>")  #Frame("http://127.0.0.1:8023/")
     self.term.setWidth("571px")
-    self.term.setHeight("272px")
+    self.term.setHeight("172px")
     console = SimplePanel()
     console.add(self.term)
     ##console.setWidth("400px")
@@ -154,7 +154,7 @@ class Basic:
     vp_left.setCellHeight(self.editor, "50%")
     self.editor.setHeight("100%")
     vp_left.setCellHeight(console, "50%")
-    console.setHeight("280px") ##vs 100%
+    console.setHeight("100%")
     
     
     
