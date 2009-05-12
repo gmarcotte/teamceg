@@ -365,7 +365,9 @@ class Basic:
         #window.alert(str(tpl[1]))
         # todo: SAVE whatever is currently in the editor
         # add response text to editor
-        self.editor.add(HTML("<script>editAreaLoader.setValue('MYeditorID','''"+ tpl[1]+"''');</script>"), self.functionID)
+        contents = str(tpl[1])
+        contents = contents.replace('\n','\\\n')
+        self.editor.add(HTML("<script>editAreaLoader.setValue('MYeditorID','"+contents+"');</script>"), self.functionID)
         self.originalContents = str(tpl[1])
         self.modified = False
     elif request_info.method == 'save_file':
