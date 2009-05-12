@@ -102,14 +102,15 @@ class LoginForm(forms.Form):
       widget = forms.PasswordInput(attrs={'size': '20'}))
   
   def clean(self):
-    user = auth.authenticate(username=self.cleaned_data['email'],
-                             password=self.cleaned_data['password'])
-    if not user:
-      raise forms.ValidationError(
-            'That email/password combination was not recognized.  Please try'
-            ' again or reset your password by clicking on the link below.')
-    else:
-      self.cleaned_data['user'] = user
+    if self.cleaned_data.has_key('email') and self.cleaned_data.has_key('password'):
+      user = auth.authenticate(username=self.cleaned_data['email'],
+                               password=self.cleaned_data['password'])
+      if not user:
+        raise forms.ValidationError(
+              'That email/password combination was not recognized.  Please try'
+              ' again or reset your password by clicking on the link below.')
+      else:
+        self.cleaned_data['user'] = user
     return self.cleaned_data
   
 
