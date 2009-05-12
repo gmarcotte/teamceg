@@ -207,8 +207,9 @@ class Basic:
     #filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
     #filetreepanel.add(filetree)
     #filetreepanel.setWidth("370px")
-    self.tree_panel.add(filetree)
-    self.file_tree.add(self.tree_panel)
+    ##self.tree_panel.add(filetree)
+    self.file_tree.add(filetree)
+    self.file_tree.add(Label("Temp for filler"))
     self.file_tree.add(Label("Temp for filler"))
     
     
