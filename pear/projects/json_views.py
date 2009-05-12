@@ -132,9 +132,9 @@ def get_meetinginfo(request):
       project = Project.objects.get(pk=meeting.project_id)
       driver = PearUser.objects.get(pk=meeting.driver_id)
       if (str(driver.id) == str(request.user.id)):
-        r.append(('isdriver', 'true'))
+        r.append(('isdriver', 'True'))
       else:
-        r.append(('isdriver', 'false'))
+        r.append(('isdriver', 'False'))
       r.append(('project', project.name))
       r.append(('driver', driver.email))
       r.append(('drivername', driver.first_name))
