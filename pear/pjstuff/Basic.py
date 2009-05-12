@@ -498,12 +498,14 @@ class Basic:
               # force the user to save or discard
               guts = VerticalPanel()
               guts.setSpacing(4)
-              guts.add(HTML('Would you like to save your changes?'))
+              guts.add(HTML('Unsaved changes were detected in an open file. Would you like to save your changes?'))
               guts.add(Button("Save", getattr(self, "onDialogSave")))
               guts.add(Button("Discard", getattr(self, "onDialogDiscard")))
               self.savediscard_box = DialogBox()
               self.savediscard_box.setHTML("<b>Warning: Unsaved Changes</b>")
               self.savediscard_box.setWidget(guts)
+              self.savediscard_box.setCellHorizontalAlignment(guts, HasAlignment.ALIGN_CENTER)
+              self.savediscard_box.setPopupPosition(200, 200)
               self.savediscard_box.show()
             else:
               self.remote.open_file(str(value),self)
