@@ -380,14 +380,14 @@ class Basic:
               self.isdriver = True
               self.editor.add(HTML(self.driversynch), self.synchID)
               self.switching = False
-              self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+              self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
               # need to hold off until we know the id self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
           elif str(tpl[1]) == "False":
             if self.isdriver == True:
               self.isdriver = False
               self.editor.add(HTML(self.passengersynch), self.synchID)
               self.switching = False
-              self.term.add(HTML("<script>changeSID('"self.consoleID"','"self.ssh "','"self.usr "','"self.key"','"self.isdriver "')</script>"), self.termfunctionID)
+              self.term.add(HTML("<script>changeSID('"+self.consoleID+"','"+self.ssh +"','"+self.usr+ "','"+self.key+"','"+self.isdriver+ "')</script>"), self.termfunctionID)
               # self.term.add(HTML("<script>changeSID('"+self.consoleID+"');</script>"),"MYtermfunctionID")
         # Let's wait and try this on driver_status
         #else:
