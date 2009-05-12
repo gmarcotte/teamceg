@@ -208,11 +208,8 @@ class Basic:
     filetreepanel.setSpacing(7)
     filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
     filetreepanel.add(filetree)
-    filetreebutt = Button("Close", getattr(self, "onFileTreeCloseClick"))
-    filetreepanel.add(filetreebutt)
-    filetreepanel.setCellHorizontalAlignment(filetreebutt, HasAlignment.ALIGN_CENTER)
-    filetreepanel.setWidth("400px")
-    self.tree_panel.setWidget(filetreepanel)
+    filetreepanel.setWidth("370px")
+    self.tree_panel.setWidget(filetree)
     
     
     
