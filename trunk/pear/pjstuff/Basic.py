@@ -455,6 +455,7 @@ class Basic:
       for tpl in response:
         window.alert(str(tpl[1]))
     elif request_info.method == 'get_file_tree':
+      window.alert("i asked for file tree info")
       self.file_list = []
       for tpl in response:
         #window.alert(str(tpl[0])+ " " + str(tpl[1]) + " " + str(tpl[2]))
