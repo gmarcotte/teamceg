@@ -166,14 +166,14 @@ class SSHConnection(timestamp.TimestampedModel):
       file = bits[10]
       if file.find('.svn') > 0:
         continue
-      file = file.lstrip(dirpath)
+      file = file.lstrip('/'.join(dirpath.split('/')[:-1]))
       file_bits = file.split('/')
       depth = len(file_bits)
       if perms[0] == 'd':
         tag = 'dir'
       else:
         tag = 'file'
-      tree.append(("%d%s" % (depth, file_bits[-1]), tag, file.lstrip(root_dir)))      
+      tree.append(("%d%s" % (depth, file_bits[-1]), tag, file))      
     return tree
   
   def delete_file(self, session, filename):
