@@ -31,4 +31,5 @@ class ServerAddForm(forms.Form):
         has_valid_keys = False,
         user = u)
     new_serv.has_valid_keys = new_serv.set_remote_keys(self.cleaned_data['password'])
+    new_serv.setup_base_dir()
     new_serv.save()
