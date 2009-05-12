@@ -577,6 +577,7 @@ class Basic:
     
     
   def onAddOK(self):
+    window.alert(self.NewFileName.getText())
     self.manage_add_box.hide()
     
   def onCancelAdd(self):
