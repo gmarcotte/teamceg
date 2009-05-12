@@ -1,4 +1,4 @@
-from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, FileUpload
+from pyjamas.ui import RootPanel, HTML, MenuBar, MenuItem, DockPanel, HorizontalPanel, TabPanel, SimplePanel, PopupPanel, FlowPanel, FormPanel, ScrollPanel, Label, HasAlignment, VerticalPanel, TextArea, TextBox, DialogBox, Frame, NamedFrame, Image, Button, DialogBox, CheckBox, RadioButton, HTMLPanel, MouseListener, KeyboardListener, Hyperlink, Tree, TreeItem, TreeContentPanel, FileUpload
 from pyjamas.Timer import Timer
 from Tooltip import TooltipListener
 from pyjamas import Window, History, DOM
@@ -170,7 +170,7 @@ class Basic:
     self.file_tree = VerticalPanel()
     tempbutt = Button("Refresh", getattr(self, "onFileTreeRefresh"))
     self.file_tree.add(tempbutt)
-    self.tree_panel = SimplePanel()
+    self.tree_panel = TreeContentPanel()
     
     filetree = Tree()
     filetree.addTreeListener(self)
@@ -207,8 +207,8 @@ class Basic:
     #filetreepanel.setCellHorizontalAlignment(filetree, HasAlignment.ALIGN_LEFT)
     #filetreepanel.add(filetree)
     #filetreepanel.setWidth("370px")
-    ##self.tree_panel.add(filetree)
-    self.file_tree.add(filetree)
+    self.tree_panel.setTreeItem(filetree)
+    self.file_tree.add(self.tree_panel)
     self.file_tree.add(Label("Temp for filler"))
     self.file_tree.add(Label("Temp for filler"))
     
