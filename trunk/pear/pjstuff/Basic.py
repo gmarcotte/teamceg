@@ -117,7 +117,7 @@ class Basic:
     initialcontent = """<script> </script> """
     
 
-    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 272px; width: 600px;'></textarea> <div id='" + self.functionID + "'></div>")
+    self.editor = HTMLPanel("<div id='"+self.synchID+"'</div><div id='" + self.editorHTMLID + "'></div>"+ "<textarea id='"+self.editorID+"' style='height: 272px; width: 550px;'></textarea> <div id='" + self.functionID + "'></div>")
 
     self.editorTextArea = TextArea()
     self.editorTextArea.setID(self.editorID)
@@ -126,7 +126,7 @@ class Basic:
     self.editor.add(self.editorHTML, self.editorHTMLID)
     
     self.editor.add(HTML(initialcontent), self.synchID)
-    self.editor.setWidth("600px")
+    self.editor.setWidth("550px")
     self.editor.setHeight("100%")
     
     #innerhtml = "<div id='MYeditorHTMLID' style='white-space: normal; display: none;' class='gwt-HTML'></div>";
