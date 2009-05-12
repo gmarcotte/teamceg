@@ -661,17 +661,17 @@ class Basic:
       self.FilesToDelete[i].setEnabled(False)
   
   def onDelOK(self):
-    window.alert("Deleting!")
+    #window.alert("Deleting!")
     # whole directory?
     if self.DelDir.isChecked():
-      window.alert(self.current_directory[:len(self.current_directory)-1])
+      #window.alert(self.current_directory[:len(self.current_directory)-1])
       self.remote.delete_file(self.current_directory[:len(self.current_directory)-1],self)
     
     # just files
     else:
       for i in range(0, len(self.FilesToDelete)):
         if self.FilesToDelete[i].isChecked():
-          fname = self.current_directory + self.FilesToDelete[i] # we put file names (not full paths)in the list
+          fname = self.current_directory + self.FilesToDelete[i].getText() # we put file names (not full paths)in the list
           window.alert(fname)
           self.remote.delete_file(fname,self)
     self.manage_del_box.hide()
