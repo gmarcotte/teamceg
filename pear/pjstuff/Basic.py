@@ -633,7 +633,8 @@ class Basic:
   def onTreeItemStateChanged(self, item):
     pass  
   def onFileTreeCloseClick(self):
-    self.file_box.hide()
+    ####self.file_box.hide()
+    pass
   
   def onAddDialog(self):
     contents = VerticalPanel()
@@ -666,7 +667,7 @@ class Basic:
     self.manage_add_box.show()
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
-    self.file_box.hide()
+    ####self.file_box.hide()
         
   def onAddOK(self):
     newfile = self.current_directory + self.NewFileName.getText()
@@ -726,7 +727,7 @@ class Basic:
     self.manage_del_box.show()
     # hide the manage directory box, and the file tree -- it's distracting
     self.manage_directory_box.hide()
-    self.file_box.hide()
+    ####self.file_box.hide()
     
   def onFileClick(self):
     for i in range(0, len(self.FilesToDelete)):
