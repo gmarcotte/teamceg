@@ -621,6 +621,8 @@ class Basic:
     self.DelDir = RadioButton("group2","whole directory")
     self.DelFile = RadioButton("group2","files")
     self.DelFile.setChecked(True)
+    self.DelFile.addClickListener(getattr(self,"onFileClick"))
+    self.DelFile.addClickListener(getattr(self,"onDirClick"))
     contentshpfd.add(self.DelDir)
     contentshpfd.add(self.DelFile)
     contentshpn = HorizontalPanel()
@@ -633,8 +635,8 @@ class Basic:
       contentshpn.add(self.FilesToDelete[i])
     contentshp = HorizontalPanel()
     contentshp.setSpacing(7)
-    contentshp.add(Button("Add",getattr(self,"onAddOK")))
-    contentshp.add(Button("Cancel",getattr(self,"onCancelAdd")))
+    contentshp.add(Button("Delete",getattr(self,"onDelOK")))
+    contentshp.add(Button("Cancel",getattr(self,"onCancelDel")))
     contents.add(contentshpfd)
     contents.add(contentshpn)
     contents.add(contentshp)
@@ -649,6 +651,21 @@ class Basic:
     self.manage_directory_box.hide()
     self.file_box.hide()
     
+  def onFileClick(self):
+    for i in range(0, len(self.FilesToDelete)):
+      self.FilesToDelete[i].setEnabled(True)
+  
+  def onDirClick(self):
+    for i in range(0, len(self.FilesToDelete)):
+      self.FilesToDelete[i].setEnabled(False)
+  
+  def onDelOK(self):
+    window.alert("Deleting!")
+    self.manage_del_box.hide()
+      
+  def onCancelDel(self):
+    self.manage_del_box.hide()
+  
   def onCancelManageDialog(self):
     self.manage_directory_box.hide()
       
